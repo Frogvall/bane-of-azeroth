@@ -1,0 +1,40 @@
+{
+  "type": "item",
+  "name": "Ammo Pouch",
+  "system": {
+    "weight": 1,
+    "quantity": 1,
+    "cost": "5 gold",
+    "supply": "uncommon",
+    "worn": false,
+    "memento": false,
+    "boons": "",
+    "banes": "",
+    "type": "item",
+    "gmDescription": "",
+    "itemDescription": "<p>Required to fire firearms.</p>",
+    "storage": false
+  },
+  "img": "modules/dragonbane-coreset/assets/icons/gear/bag-gold.webp",
+  "effects": [],
+  "folder": "Qzw4Jrv7yAOJw0bJ",
+  "sort": 100000,
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "coreVersion": "14.364",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": "Item.N3NiUj3YyV0yjJDm",
+    "duplicateSource": "Item.N3NiUj3YyV0yjJDm",
+    "exportSource": null
+  },
+  "_id": "n0yAAcVxspJur19y",
+  "ownership": {
+    "default": 0
+  }
+}

@@ -16,7 +16,8 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Melee_Weapons_8AjA41VZdNH5rKTX/Warglaive_Mtrym5LUbMbXISlI.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Ranged_Weapons_yZFUQWO9cGOCVO8U/Pistol_3xoYCFEAWm88zRQq.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Ranged_Weapons_yZFUQWO9cGOCVO8U/Blunderbuss_4pgpXANRnIBz5nNF.json",
-    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Skills_PQDBhpvfJksVCCcb/Weapon_Skills_VScbQUiwcbYH3LrY/Firearms_9xauxyQSZXWiD6y4.json"
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Skills_PQDBhpvfJksVCCcb/Weapon_Skills_VScbQUiwcbYH3LrY/Firearms_9xauxyQSZXWiD6y4.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Trade_Goods_Qzw4Jrv7yAOJw0bJ/Ammo_Pouch_n0yAAcVxspJur19y.json"
   ],
   "journal": [],
   "scenes": [],
@@ -34,7 +35,8 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Melee_Weapons_8AjA41VZdNH5rKTX/_Folder.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Ranged_Weapons_yZFUQWO9cGOCVO8U/_Folder.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Skills_PQDBhpvfJksVCCcb/_Folder.json",
-    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Skills_PQDBhpvfJksVCCcb/Weapon_Skills_VScbQUiwcbYH3LrY/_Folder.json"
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Skills_PQDBhpvfJksVCCcb/Weapon_Skills_VScbQUiwcbYH3LrY/_Folder.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Trade_Goods_Qzw4Jrv7yAOJw0bJ/_Folder.json"
   ],
   "_id": "ZoNOXZjdkOjV56e3",
   "folder": null,
@@ -44,7 +46,7 @@
     "systemId": "dragonbane",
     "systemVersion": "4.0.1",
     "createdTime": 1783753374995,
-    "modifiedTime": 1783873886819,
+    "modifiedTime": 1783939962774,
     "lastModifiedBy": "dPkNRPtZkV4wo8eC",
     "compendiumSource": null,
     "duplicateSource": null,
