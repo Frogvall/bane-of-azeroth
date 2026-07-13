@@ -3,3 +3,9 @@ dist/
 module.json.backup-*
 .DS_Store
 Thumbs.db
+
+# LevelDB runtime and diagnostic files
+foundry/packs/**/LOCK
+foundry/packs/**/LOG
+foundry/packs/**/LOG.old
+foundry/packs/**/*.dbtmp

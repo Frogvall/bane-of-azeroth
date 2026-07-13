@@ -57,6 +57,97 @@ The Foundry module is currently under active development.
 
 It adds support for Bane of Azeroth content and mechanics that cannot be represented through standard Dragonbane documents alone.
 
+Currently implemented custom weapon features include:
+
+- Ammunition
+- Armor Piercing
+- Freehanded
+- Returning
+- Scattershot
+
+### Armor Piercing
+
+Eligible ranged weapons can use **Find Weak Spot**, applying one bane to the attack and ignoring armor on a successful hit.
+
+The implementation preserves Dragonbane's normal ranged attack behavior, including ranged mishaps.
+
+### Scattershot
+
+Scattershot weapons:
+
+- Ignore the normal point-blank bane
+- Retain the long-range bane
+- Deal half damage beyond their normal range, rounded up
+- Preserve critical hits, damage types, maximum-range restrictions, and ranged mishaps
+
+## Compatibility
+
+The current version has been developed and tested with:
+
+| Component | Version |
+|---|---:|
+| Foundry Virtual Tabletop | 14.364 |
+| Dragonbane system | 4.0.1 |
+| Dragonbane Core Set | 2.2 |
+| YZE Combat | 1.7.0 |
+
+Compatibility with other versions has not yet been verified.
+
+Detailed test results are available in [`Foundry/TESTING.md`](Foundry/TESTING.md).
+
+## Installation
+
+There is currently no stable public release.
+
+During development, the contents of the `Foundry` directory can be installed manually in:
+
+```text
+Data/modules/bane-of-azeroth/
+```
+
+The installed module directory must contain `module.json` at its root:
+
+```text
+bane-of-azeroth/
+├── module.json
+├── scripts/
+├── lang/
+└── packs/
+```
+
+Restart Foundry VTT after installing or updating the module.
+
+## Development status
+
+Bane of Azeroth is incomplete and should currently be considered an alpha project.
+
+Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
+
+The current development priorities are:
+
+- Establishing the core rules framework
+- Implementing kin and kin abilities
+- Implementing classes and heroic abilities
+- Adding weapons and equipment
+- Expanding Foundry automation
+- Building the Adventure compendium
+- Testing compatibility with future Dragonbane system releases
+
+## Contributing
+
+Bug reports, rules feedback, and compatibility reports are welcome.
+
+When reporting a Foundry issue, include:
+
+- Foundry VTT version
+- Dragonbane system version
+- Bane of Azeroth module version
+- Other relevant active modules
+- Steps required to reproduce the issue
+- Any errors shown in the browser console
+
+The project is currently maintained by **Auvreannia**.
+
 ## Legal notice
 
 Bane of Azeroth is an unofficial, non-commercial fan project.

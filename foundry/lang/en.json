@@ -1,0 +1,16 @@
+{
+  "BOA": {
+    "weaponFeatureTypes": {
+      "freehanded": "Freehanded",
+      "freehandedTooltip": "Freehanded",
+      "returning": "Returning",
+      "returningTooltip": "Returning",
+      "ammunition": "Ammunition",
+      "ammunitionTooltip": "Ammunition",
+      "armorPiercing": "Armor Piercing",
+      "armorPiercingTooltip": "Armor Piercing",
+      "scattershot": "Scattershot",
+      "scattershotTooltip": "Scattershot"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "id": "bane-of-azeroth",
+  "title": "Bane of Azeroth",
+  "description": "Player options for Dragonbane set in the world of Azeroth.",
+  "version": "0.1.2",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
+  },
+  "authors": [
+    {
+      "name": "Auvreannia",
+      "discord": "auvreannia",
+      "flags": {}
+    }
+  ],
+  "esmodules": [
+    "scripts/bane-of-azeroth.js"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dragonbane",
+        "type": "system",
+        "compatibility": {
+          "minimum": "4.0.1",
+          "verified": "4.0.1"
+        }
+      }
+    ]
+  },
+  "flags": {
+    "canUpload": true
+  },
+  "packs": [
+    {
+      "name": "bane-of-azeroth",
+      "label": "Bane of Azeroth",
+      "path": "packs/bane-of-azeroth",
+      "type": "Adventure",
+      "system": "dragonbane",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    }
+  ]
+}
