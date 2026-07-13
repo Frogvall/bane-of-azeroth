@@ -93,13 +93,13 @@ The current version has been developed and tested with:
 
 Compatibility with other versions has not yet been verified.
 
-Detailed test results are available in [`Foundry/TESTING.md`](Foundry/TESTING.md).
+Detailed test results are available in [`foundry/TESTING.md`](Foundry/TESTING.md).
 
 ## Installation
 
 There is currently no stable public release.
 
-During development, the contents of the `Foundry` directory can be installed manually in:
+During development, the contents of the `foundry` directory can be installed manually in:
 
 ```text
 Data/modules/bane-of-azeroth/
