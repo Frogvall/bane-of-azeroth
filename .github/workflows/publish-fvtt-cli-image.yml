@@ -5,7 +5,7 @@ on:
 
   push:
     branches:
-      - foundry
+      - "**"
     paths:
       - tools/foundryvtt-cli/Dockerfile
       - .github/workflows/publish-fvtt-cli-image.yml
@@ -37,13 +37,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch,prefix=${{ env.IMAGE_VERSION }}-
+            type=sha,prefix=${{ env.IMAGE_VERSION }}-
+            type=raw,value=${{ env.IMAGE_VERSION }},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
       - name: Build and publish image
         uses: docker/build-push-action@v7
         with:
           context: tools/foundryvtt-cli
           target: ci
           push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
