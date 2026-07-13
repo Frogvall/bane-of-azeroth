@@ -4,6 +4,8 @@ import DoDWeaponTest from "/systems/dragonbane/modules/tests/weapon-test.js";
 import DoD_Utility from "/systems/dragonbane/modules/utility.js";
 
 const MODULE_ID = "bane-of-azeroth";
+const ADVENTURE_PACK_ID = `${MODULE_ID}.${MODULE_ID}`;
+const ADVENTURE_PROMPT_VERSION_SETTING = "adventurePromptVersion";
 
 const WEAPON_FEATURES = Object.freeze({
   freehanded: "BOA.weaponFeatureTypes.freehanded",
@@ -12,6 +14,73 @@ const WEAPON_FEATURES = Object.freeze({
   armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",
   scattershot: "BOA.weaponFeatureTypes.scattershot"
 });
+
+function registerSettings() {
+  game.settings.register(MODULE_ID, ADVENTURE_PROMPT_VERSION_SETTING, {
+    scope: "world",
+    config: false,
+    type: String,
+    default: ""
+  });
+}
+
+function getContentVersion() {
+  const moduleVersion = game.modules.get(MODULE_ID)?.version ?? "";
+  return moduleVersion.match(/^\d+\.\d+\.\d+/)?.[0] ?? moduleVersion;
+}
+
+async function promptAdventureImport() {
+  if (!game.user.isGM) return;
+
+  const contentVersion = getContentVersion();
+  const promptedVersion = game.settings.get(
+    MODULE_ID,
+    ADVENTURE_PROMPT_VERSION_SETTING
+  );
+
+  if (
+    promptedVersion
+    && !foundry.utils.isNewerVersion(contentVersion, promptedVersion)
+  ) {
+    return;
+  }
+
+  const pack = game.packs.get(ADVENTURE_PACK_ID);
+
+  if (!pack) {
+    console.error(
+      `${MODULE_ID} | Adventure pack ${ADVENTURE_PACK_ID} was not found.`
+    );
+    return;
+  }
+
+  const index = await pack.getIndex();
+  const adventureId = index.contents[0]?._id;
+
+  if (!adventureId) {
+    console.error(
+      `${MODULE_ID} | No Adventure document was found in ${ADVENTURE_PACK_ID}.`
+    );
+    return;
+  }
+
+  const adventure = await pack.getDocument(adventureId);
+
+  if (!adventure) {
+    console.error(
+      `${MODULE_ID} | Adventure ${adventureId} could not be loaded.`
+    );
+    return;
+  }
+
+  await adventure.sheet.render(true);
+
+  await game.settings.set(
+    MODULE_ID,
+    ADVENTURE_PROMPT_VERSION_SETTING,
+    contentVersion
+  );
+}
 
 function isArmorPiercingRangedWeapon(weapon) {
   return Boolean(
@@ -33,9 +102,10 @@ function isScattershotRangedWeapon(weapon) {
 
 function actorHasAmmoPouch(actor) {
   return Boolean(
-    actor?.items?.some(item =>
-      item.type === "item"
-      && item.name?.trim().toLowerCase() === "ammo pouch"
+    actor?.items?.some(
+      item =>
+        item.type === "item"
+        && item.name?.trim().toLowerCase() === "ammo pouch"
     )
   );
 }
@@ -132,7 +202,9 @@ function patchWeaponTests() {
       ) {
         const weakpointAction = {
           id: "weakpoint",
-          label: game.i18n.localize("DoD.attackTypes.weakpoint"),
+          label: game.i18n.localize(
+            "DoD.attackTypes.weakpoint"
+          ),
           tooltip: game.i18n.localize(
             "DoD.attackTypes.weakpointTooltip"
           ),
@@ -162,14 +234,18 @@ function patchWeaponTests() {
       const { distance } = getTargetingData(this);
 
       if (distance !== null) {
-        if (distance <= 2 && Array.isArray(this.dialogData?.banes)) {
+        if (
+          distance <= 2
+          && Array.isArray(this.dialogData?.banes)
+        ) {
           const pointBlankLabel = game.i18n.localize(
             "DoD.weapon.pointBlank"
           );
 
-          this.dialogData.banes = this.dialogData.banes.filter(
-            bane => bane.source !== pointBlankLabel
-          );
+          this.dialogData.banes =
+            this.dialogData.banes.filter(
+              bane => bane.source !== pointBlankLabel
+            );
         }
 
         this._baneOfAzerothScattershotLongRange =
@@ -202,10 +278,8 @@ function patchWeaponTests() {
   const originalCreateMessageData = prototype.createMessageData;
 
   prototype.createMessageData = async function (...args) {
-    const messageData = await originalCreateMessageData.apply(
-      this,
-      args
-    );
+    const messageData =
+      await originalCreateMessageData.apply(this, args);
 
     if (this._baneOfAzerothScattershotLongRange) {
       foundry.utils.setProperty(
@@ -239,9 +313,13 @@ async function rollScattershotDamage(message) {
 
   const target = context.targetActor;
   const damageType = context.damageType;
+
   const ignoreArmor =
     context.ignoreArmor
-    || (context.action === "weakpoint" && context.success)
+    || (
+      context.action === "weakpoint"
+      && context.success
+    )
     || context.criticalEffect === "ignoreArmor";
 
   const skill = actor.findSkill(weapon.system.skill.name);
@@ -266,7 +344,10 @@ async function rollScattershotDamage(message) {
     formula += ` + ${damageBonus}`;
   }
 
-  if (context.extraDamage && context.extraDamage !== "0") {
+  if (
+    context.extraDamage
+    && context.extraDamage !== "0"
+  ) {
     formula += ` + ${context.extraDamage}`;
   }
 
@@ -293,6 +374,7 @@ async function rollScattershotDamage(message) {
    * rounded upward.
    */
   const roll = new Roll(`ceil((${baseRoll.formula}) / 2)`);
+
   await roll.roll({});
 
   const rollDamageMessage =
@@ -349,6 +431,8 @@ function onScattershotDamageClick(event) {
 Hooks.once("init", () => {
   if (game.system.id !== "dragonbane") return;
 
+  registerSettings();
+
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
 
   if (!featureTypes) {
@@ -366,7 +450,7 @@ Hooks.once("init", () => {
   );
 });
 
-Hooks.once("ready", () => {
+Hooks.once("ready", async () => {
   if (game.system.id !== "dragonbane") return;
 
   /*
@@ -378,4 +462,6 @@ Hooks.once("ready", () => {
     onScattershotDamageClick,
     true
   );
+
+  await promptAdventureImport();
 });

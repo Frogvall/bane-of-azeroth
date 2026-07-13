@@ -5,7 +5,4 @@ module.json.backup-*
 Thumbs.db
 
 # LevelDB runtime and diagnostic files
-foundry/packs/**/LOCK
-foundry/packs/**/LOG
-foundry/packs/**/LOG.old
-foundry/packs/**/*.dbtmp
+foundry/packs/
