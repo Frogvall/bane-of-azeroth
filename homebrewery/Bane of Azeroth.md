@@ -1367,7 +1367,7 @@ Firearms are commonly available weapons, attributed to be originally crafted by 
 
 Warglaives and throwing glaives are typical elven weapons, used primarly by the illidari, wardens or troll shadow hunters. Attacks with glaives uses the KNIVES skill.
 
-{{tablebox,wide
+{{tablebox,wide,margin-bottom:20px
 ### Melee Weapons
 
 
@@ -1383,15 +1383,15 @@ Warglaives and throwing glaives are typical elven weapons, used primarly by the 
 **Returning**: This weapon returns to the wielder's hand immediately after it is used to make a ranged attack.
 }}
 
-{{tablebox,wide
+{{tablebox,wide,margin-bottom:20px
 ### Ranged Weapons
 
 
-| Weapon      | Grip | STR | R  | Damage | Dur. | Cost     | Supply   | Features                                              |
-|:----------- |:----:|:---:|:--:|:------:|:----:|:--------:|:-------- |:----------------------------------------------------- |
-| Blunderbuss | 2h   | 10  | 20 | 2D8    | 6    | 150 gold | Uncommon | Ammunition, No damage bonus, Piercing, Scattershot    |
-| Pistol      | 1h   | 7   | 30 | 2D6    | 3    | 75 gold  | Uncommon | Ammunition, Armor piercing, No damage bonus, Piercing |
-| Rifle       | 2h   | 13  | 60 | 2D10   | 6    | 300 gold | Rare     | Ammunition, No damage bonus, Piercing                 |
+| Weapon      | Grip | STR | R  | Damage | Dur. | <div style="width:50px">Cost</div> | Supply   | Features                                              |
+|:----------- |:----:|:---:|:--:|:------:|:----:|:----------------------------------:|:-------- |:----------------------------------------------------- |
+| Blunderbuss | 2h   | 10  | 20 | 2D8    | 6    | 150 gold                           | Uncommon | Ammunition, No damage bonus, Piercing, Scattershot    |
+| Pistol      | 1h   | 7   | 30 | 2D6    | 3    | 75 gold                            | Uncommon | Ammunition, Armor piercing, No damage bonus, Piercing |
+| Rifle       | 2h   | 13  | 60 | 2D10   | 6    | 300 gold                           | Rare     | Ammunition, No damage bonus, Piercing                 |
 }}
 
 {{wide
@@ -1399,13 +1399,14 @@ Warglaives and throwing glaives are typical elven weapons, used primarly by the 
 **Scattershot**: Attacks with this weapon do not get a bane for shooting at a target within 2 meters. For attacks beyond its listed range, damage is halved (round up).
 }}
 
-{{tablebox,wide
+{{tablebox,wide,margin-bottom:20px
 ### Trade Goods
 
 
-| Item       | Cost   | Supply   | Weight | Effect                     |
-|:---------- |:------:|:-------- |:------:|:-------------------------- |
-| Ammo Pouch | 5 gold | Uncommon | 1      | Required to fire firearms. |
+| Item         | Cost     | Supply   | Weight | Effect                                                         |
+|:------------ |:--------:|:-------- |:------:|:-------------------------------------------------------------- |
+| Ammo Pouch   | 5 gold   | Uncommon | 1      | Required to fire firearms.                                     |
+| Sniper Scope | 100 gold | Rare     | 1      | Attach to ranged weapon to give it the Armor Piercing feature. |
 }}
 
 \page
