@@ -8,6 +8,48 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.1.5] - 2026-07-13
+
+### Added
+
+- Added automatic display of the Bane of Azeroth Adventure import screen for game masters.
+- Added a hidden world setting that records the latest content version for which the import screen has been shown.
+
+### Behavior
+
+- The Adventure import screen opens automatically the first time a game master loads a world with a new Bane of Azeroth content version.
+- Only game masters receive the automatic import prompt.
+- Reopening the same world with the same content version does not display the import screen again.
+- Development build suffixes are ignored when determining the content version.
+- Updating between builds such as `0.1.5-foundry.8.1` and `0.1.5-foundry.9.1` does not display the import screen again.
+- Updating to a future content version such as `0.1.6` displays the import screen again.
+
+## [0.1.4] - 2026-07-13
+
+### Added
+
+- Added a reproducible Foundry module packaging workflow.
+- Added automatic generation of the installable module manifest during packaging.
+- Added per-branch development versions and rolling GitHub prereleases.
+- Added installation and update support through Foundry's manifest URL.
+- Added package validation and SHA-256 checksum generation.
+- Added a containerized Foundry VTT CLI build environment.
+
+### Changed
+
+- Converted the unpacked Adventure documents under `foundry/pack-src/` into the canonical compendium source.
+- Foundry LevelDB compendium files are now generated during packaging instead of being maintained as source files.
+- Kept `foundry/module.json` channel-neutral; development versions, manifest URLs, and download URLs are injected only into deliverables.
+- Development package versions now use the version declared in `foundry/module.json` with a branch-specific prerelease suffix.
+- Workflow artifacts now contain the installable module archive, generated manifest, and checksum.
+
+### Verified
+
+- Verified installation through the rolling branch manifest.
+- Verified automatic package updates through Foundry.
+- Verified that the packaged Adventure compendium contains the expected Bane of Azeroth content.
+- Verified that generated packages exclude pack source files and LevelDB runtime files.
+
 ## [0.1.3] - 2026-07-13
 
 ### Added
