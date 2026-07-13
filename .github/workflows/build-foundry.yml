@@ -62,18 +62,12 @@ jobs:
 
           source_version="$(jq -er '.version' "$module_json")"
 
-          if [[ ! "$source_version" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          if [[ ! "$source_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo \
               "Expected a source version in MAJOR.MINOR.PATCH format, got: ${source_version}" \
               >&2
             exit 1
           fi
-
-          major="${BASH_REMATCH[1]}"
-          minor="${BASH_REMATCH[2]}"
-          patch="${BASH_REMATCH[3]}"
-
-          next_patch="$((10#$patch + 1))"
 
           # Convert the current branch name into a value suitable for
           # versions, release tags, artifact names and URLs.
@@ -96,7 +90,7 @@ jobs:
 
           release_tag="branch-${branch_slug}"
 
-          build_version="${major}.${minor}.${next_patch}-${branch_slug}.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
+          build_version="${source_version}-${branch_slug}.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
 
           repository_url="https://github.com/${GITHUB_REPOSITORY}"
 
