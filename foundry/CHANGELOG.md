@@ -8,6 +8,31 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.1.3] - 2026-07-13
+
+### Added
+
+- Added an Ammo Pouch confirmation dialog for weapons with the Ammunition feature.
+- Added localized dialog text for missing ammunition containers.
+
+### Behavior
+
+- Using an Ammunition weapon without an Ammo Pouch displays a confirmation dialog.
+- Perform Action continues the attack normally.
+- Cancel Action cancels the attack.
+- Ammunition is not automatically tracked or consumed.
+- Weapons without Ammunition are unaffected.
+- When multiple warnings apply, dialogs appear in this order:
+  1. Missing Ammo Pouch
+  2. Broken Weapon
+  3. Long Range
+
+### Verified
+
+- Armor Piercing remains functional.
+- Scattershot remains functional.
+- Existing Dragonbane attack behavior remains intact.
+
 ## [0.1.2] - 2026-07-12
 
 ### Added

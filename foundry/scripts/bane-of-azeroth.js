@@ -31,6 +31,15 @@ function isScattershotRangedWeapon(weapon) {
   );
 }
 
+function actorHasAmmoPouch(actor) {
+  return Boolean(
+    actor?.items?.some(item =>
+      item.type === "item"
+      && item.name?.trim().toLowerCase() === "ammo pouch"
+    )
+  );
+}
+
 function getTargetingData(test) {
   const actorToken = canvas.scene?.tokens?.find(
     token => token.actor?.uuid === test.actor.uuid
@@ -63,6 +72,46 @@ function patchWeaponTests() {
   const prototype = DoDWeaponTest.prototype;
 
   if (prototype.__baneOfAzerothPatched) return;
+
+  const originalGetRollOptions = prototype.getRollOptions;
+
+  prototype.getRollOptions = async function (...args) {
+    const requiresAmmunition =
+      this.weapon?.hasWeaponFeature("ammunition");
+
+    if (
+      requiresAmmunition
+      && !actorHasAmmoPouch(this.actor)
+    ) {
+      const confirmAction =
+        await foundry.applications.api.DialogV2.confirm({
+          window: {
+            title: game.i18n.localize(
+              "BOA.dialog.missingAmmoPouchTitle"
+            )
+          },
+          content: game.i18n.localize(
+            "BOA.dialog.missingAmmoPouchContent"
+          ),
+          yes: {
+            label: game.i18n.localize(
+              "DoD.ui.dialog.performAction"
+            )
+          },
+          no: {
+            label: game.i18n.localize(
+              "DoD.ui.dialog.cancelAction"
+            )
+          }
+        });
+
+      if (!confirmAction) {
+        return { cancelled: true };
+      }
+    }
+
+    return originalGetRollOptions.apply(this, args);
+  };
 
   const originalUpdateDialogData = prototype.updateDialogData;
 

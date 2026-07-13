@@ -22,6 +22,7 @@ Tested by **Auvreannia** on 2026-07-12.
 |---|---:|---:|---:|---:|---|---|---|
 | 0.1.1 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-12 |
 | 0.1.2 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-12 |
+| 0.1.3 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-13 |
 
 ## General prerequisites
 
@@ -352,6 +353,21 @@ Verified areas:
 - Maximum-range handling
 - Ranged mishaps
 - Regression of version 0.1.1 behavior
+
+## Version 0.1.3 — Ammunition warning
+
+- [x] An Ammunition weapon without an Ammo Pouch opens the confirmation dialog.
+- [x] Perform Action continues to the normal attack dialog.
+- [x] Cancel Action cancels the attack.
+- [x] No warning appears when the actor carries an Ammo Pouch.
+- [x] No warning appears for a weapon without Ammunition.
+- [x] Ammunition is not consumed or tracked.
+- [x] Multiple confirmation dialogs appear in the expected order:
+  1. Missing Ammo Pouch
+  2. Broken Weapon
+  3. Long Range
+- [x] Armor Piercing remains functional.
+- [x] Scattershot remains functional.
 
 ## Not yet verified
 
