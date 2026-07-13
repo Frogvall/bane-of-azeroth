@@ -1,0 +1,39 @@
+{
+  "folder": "u1gG3wuIcEMyEjhj",
+  "name": "Soothing Mist",
+  "type": "ability",
+  "_id": "gzlUuHeXUc6Hd7zV",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>When you deal damage with an unarmed attack, you can activate this ability to heal another creature within 10 meters of you by the same amount.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Monk's Serenity",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.monk.soothing-mist"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

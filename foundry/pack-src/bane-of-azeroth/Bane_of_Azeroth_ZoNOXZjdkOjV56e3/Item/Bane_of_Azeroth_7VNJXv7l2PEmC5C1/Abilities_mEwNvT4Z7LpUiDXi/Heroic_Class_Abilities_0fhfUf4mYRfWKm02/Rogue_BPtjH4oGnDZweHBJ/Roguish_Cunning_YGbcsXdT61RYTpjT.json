@@ -1,0 +1,39 @@
+{
+  "folder": "BPtjH4oGnDZweHBJ",
+  "name": "Roguish Cunning",
+  "type": "ability",
+  "_id": "YGbcsXdT61RYTpjT",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>Whenever you deal sneak attack damage to a target, the dice increase for damage is increased by two dice instead of one (for example, 3D8 instead of 2D8 for a weapon that deals D8 damage).</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Knives 12",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.rogue.roguish-cunning"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

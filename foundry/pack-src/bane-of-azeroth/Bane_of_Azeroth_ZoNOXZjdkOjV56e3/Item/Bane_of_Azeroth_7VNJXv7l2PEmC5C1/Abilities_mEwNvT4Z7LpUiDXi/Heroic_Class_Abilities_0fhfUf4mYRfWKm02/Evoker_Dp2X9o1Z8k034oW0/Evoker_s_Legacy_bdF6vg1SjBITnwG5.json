@@ -1,0 +1,39 @@
+{
+  "folder": "Dp2X9o1Z8k034oW0",
+  "name": "Evoker's Legacy",
+  "type": "ability",
+  "_id": "bdF6vg1SjBITnwG5",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>Whenever you cast a spell at a power level higher than 1, the cost per power level is reduced to one for every level above the first (2 WP for power level 1, 3 WP for power level 2, and 4 WP for power level 3).</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "One School of Magic",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.evoker.evokers-legacy"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

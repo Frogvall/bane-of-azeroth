@@ -1,0 +1,39 @@
+{
+  "folder": "owVx5oKQQmthyHOZ",
+  "name": "Retaliation",
+  "type": "ability",
+  "_id": "69NxpqbxiReLf6zm",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability (no action) when an enemy within 2 meters of you deals damage to you with a melee attack. You immediately perform a counterattack on your opponent: an automatic hit with your weapon that cannot be dodged or parried.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Warrior's Rage",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.warrior.retaliation"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

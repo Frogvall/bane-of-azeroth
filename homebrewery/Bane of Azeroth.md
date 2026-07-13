@@ -147,7 +147,7 @@ The Homebrewery
 
 Warcraft is one of the most beloved and enduring fantasy franchises in the world. From the real-time strategy campaigns of the original Warcraft games to the sprawling world of World of Warcraft and beyond, Azeroth has been home to decades of epic stories, unforgettable characters, and some of the richest lore in all of fantasy gaming. It is a world of continent-spanning wars, ancient gods sleeping beneath the earth, dragon aspects watching over mortal affairs, and heroes rising from every corner of a deeply detailed civilization.
 
-Dragonbane is a fresh take to the classic Swedish tabletop roleplaying game Drakar och Demoner. It’s a game about telling collaborative stories, making interesting choices, and bringing characters to life in ways no video game ever could.
+Dragonbane is a fresh take to the classic Swedish tabletop roleplaying game Drakar och Demoner. It's a game about telling collaborative stories, making interesting choices, and bringing characters to life in ways no video game ever could.
 
 Bane of Azeroth is a collection of homebrew content that brings the Warcraft setting to Dragonbane, allowing you and your friends to become true heroes of Azeroth, not guided through a predetermined questline, but free to forge your own legend in a world you already know and love.
 
@@ -155,7 +155,7 @@ Bane of Azeroth is a collection of homebrew content that brings the Warcraft set
 
 Azeroth is a remarkable setting for a tabletop campaign. It has everything a great Dragonbane world needs: a rich history stretching back tens of thousands of years, a geography packed with distinct and memorable regions, factions in constant tension with each other, and an enormous cast of cultures, kin, and characters whose stories are still unfolding. Whether your party wants to investigate a conspiracy in Stormwind, explore the ancient ruins of a fallen troll empire, broker a fragile peace between the Horde and the Alliance, or delve into the depths of a titan facility that no one has entered in millennia, Azeroth can support it.
 
-And unlike in World of Warcraft itself, you aren’t on rails. You don’t have to follow the questline. When your party walks into Blackrock Mountain, you don’t have to fight your way through a dungeon in a fixed order. You can talk to the Dark Iron dwarves, learn about their history, figure out what Ragnaros actually wants, and decide for yourselves how to handle it. The story of your campaign is yours to write. Dragonbane gives you the tools to do that, and Azeroth gives you an incredibly rich world to do it in.
+And unlike in World of Warcraft itself, you aren't on rails. You don't have to follow the questline. When your party walks into Blackrock Mountain, you don't have to fight your way through a dungeon in a fixed order. You can talk to the Dark Iron dwarves, learn about their history, figure out what Ragnaros actually wants, and decide for yourselves how to handle it. The story of your campaign is yours to write. Dragonbane gives you the tools to do that, and Azeroth gives you an incredibly rich world to do it in.
 
 ### What is this book?
 
@@ -199,7 +199,7 @@ With that in mind, the design principles for Bane of Azeroth are:
 
 Playing Bane of Azeroth rewards a certain amount of creative buy-in from both players and DMs. The rules give you a framework, but
 the full experience comes from leaning into the fiction. Spell casting in Dragonbane is primarily part of one professions that in Bane of Azeroth is the prerequisite for several heroic class abilities. A player opting for the shadow priest fantasy might learn different spells than a player going for the holy priest fantasy. If you have access to the Book of Magic supplement, the increased variety in that book is great for helping spell caster classes getting more distinguished than using just the core rules, but this supplement works either way.
-On the Dungeon Master’s side, a little flexibility goes a long way: if a player has a clear and reasonable vision for their character, accommodating small requests that help bring that vision to life is usually worth it. If a paladin player wants to pick up a school of magic for increasing their healing capacity (by picking the MAGIC TALENT heroic ability), maybe the skill is granted by the Light and does not require the character to seek out training. The goal is a game that feels like Warcraft in the ways that matter most to your table.
+On the Dungeon Master's side, a little flexibility goes a long way: if a player has a clear and reasonable vision for their character, accommodating small requests that help bring that vision to life is usually worth it. If a paladin player wants to pick up a school of magic for increasing their healing capacity (by picking the MAGIC TALENT heroic ability), maybe the skill is granted by the Light and does not require the character to seek out training. The goal is a game that feels like Warcraft in the ways that matter most to your table.
 
 ### Contact and More
 I welcome any and all feedback, comments, questions, etc. on any of my work! You can reach me on Discord, primarily via either the [Champions of Azeroth](https://discord.com/invite/Z77sexzQ8Y) server or the [Dragonbane Community](https://discord.gg/dragonbane-community-1173874944430579733) server. In both places I go by Auvreannia. There is currently no dedicated Discord server for Bane of Azeroth, but there might be one in the future if this becomes popular enough.
@@ -857,7 +857,7 @@ Death knights are among the most feared warriors in Azeroth's history. Created b
 - **Requirement:** Axes, Hammers, or Swords 12
 - **Willpower Points:** --
 
-You don’t need to eat, drink or breathe. You know how to engrave necromantic runes into a melee weapon. Engraving a rune takes a stretch and replaces any runes you have already engraved, in the same weapon or a different one. You gain the benefits of your choosen rune listed below.
+You don't need to eat, drink or breathe. You know how to engrave necromantic runes into a melee weapon. Engraving a rune takes a stretch and replaces any runes you have already engraved, in the same weapon or a different one. You gain the benefits of your choosen rune listed below.
 
 - **Fallen Crusader:** Whenever you deal damage to a living creature with the weapon, you heal 1 HP.
 - **Razorice:** The weapon is cold to the touch and attacks with it counts as magical.
@@ -1133,26 +1133,26 @@ When you take damage in combat you can activate this ability (no action). The da
 
 The paladins of Azeroth are the champions of the Holy Light, warriors who have dedicated themselves to the service of faith and justice, and who wield divine power alongside their martial skill. The Light responds to belief rather than to any specific deity, making Azeroth's paladin tradition broader and more varied than it might appear. A dwarf Vindicator of the Alliance, a Sunwalker tauren who worships An'she the sun spirit, and a blood elf Blood Knight who once stole their power from a captive Naaru are all paladins, despite their very different relationships to faith. What they share is conviction, and the power that conviction generates.
 
-### Paladin’s Righteousness
+### Paladin's Righteousness
 - **Requirement:** Hammers, Spears, or Swords 12
 - **Willpower Points:** --
 
 Whenever you spend WP, you heal yourself or an ally within 2 meters by the same amount. You also always know if a creature you are looking upon is undead or not.
 
 ### Avenger's Shield
-- **Requirement:** Paladin’s Righteousness
+- **Requirement:** Paladin's Righteousness
 - **Willpower Points:** 3
 
 You can activate this ability as an action if you're wielding a shield. You hurl your shield at a creature within 10 meters, and it then bounces to a creature of your choice withing 10 meters of the first target, and again to third creature within 10 meters of the second target. It then returns to your hand. Make separate attacks with your shield to all three targets with a bane. Finish the first attack, including damage, before rolling the second one, and finish the second one, including damage, before rolling the third one. Creatures that are hit have a bane when attacking any other creature but you, until your turn in the next round.
 
 ### Beacon of Light
-- **Requirement:** Paladin’s Righteousness
+- **Requirement:** Paladin's Righteousness
 - **Willpower Points:** 3
 
 You can activate this ability as an action, making an ally creature within 10 meters a beacon of light. For a stretch of time, whenever you heal yourself or an ally, the beacon of light heals the same amount of HP. This ability also benefits from the HP restored by Paladin's Righteousness when activating this ability.
 
 ### Blade of Justice
-- **Requirement:** Paladin’s Righteousness
+- **Requirement:** Paladin's Righteousness
 - **Willpower Points:** 3
 
 You can activate this ability when you hit an enemy with a melee weapon (but before rolling for damage). The attack deals an extra D8 , or 2d8 damage to an undead target, and is considered magical.
@@ -1168,14 +1168,14 @@ You can activate this ability when you hit an enemy with a melee weapon (but bef
 
 The priests of Azeroth are channelers of divine power in all its forms, from the brilliant radiance of the Holy Light to the consuming shadows of the Void. Holy priests are beacons of hope on the battlefield, mending wounds and bolstering spirits with restorative magic. Discipline priests weave protective wards and sacred power words into their spellcasting, shielding allies as they fight. Shadow priests abandon the light entirely, plumbing the depths of the Void for destructive psychic power that corrodes the minds and bodies of their enemies. All three traditions require profound faith, though the nature of what they have faith in differs considerably.
 
-### Priest’s Zeal
+### Priest's Zeal
 - **Requirement:** One School of Magic
 - **Willpower Points:** --
 
 Your mind fills you with inner fire. Whenever you cast a spell, your armor rating increases by one step for each WP you spend on casting the spell. The effect lasts until your turn in the next round.
 
 ### Darkness
-- **Requirement:** Priest’s Zeal
+- **Requirement:** Priest's Zeal
 - **Willpower Points:** --
 
 \column
@@ -1183,13 +1183,13 @@ Your mind fills you with inner fire. Whenever you cast a spell, your armor ratin
 You know the general spell SHADOWFORM. This spell is always prepared, and doesn't count towards the number of spells you can hold prepared in your memory.
 
 ### Power Word: Shield
-- **Requirement:** Priest’s Zeal
+- **Requirement:** Priest's Zeal
 - **Willpower Points:** 2
 
 If you or a creature within 10 meters of you gets hit by an attack a ,spell or a monster attack, you can activate this ability to shield the target. The damage the target takes from the attack or spell is reduced by 2D6. Using this ability can be done out of turn and it does not count as an action.
 
 ### Sanctify
-- **Requirement:** Priest’s Zeal
+- **Requirement:** Priest's Zeal
 - **Willpower Points:**  3
 
 You can activate this ability when casting a spell that heals a creature. You and all other creatures of your choice within 10 meters of you heals the same amount of HP.
@@ -1380,7 +1380,7 @@ Warglaives and throwing glaives are typical elven weapons, used primarly by the 
 
 {{wide
 **Freehanded**: This weapon is strapped to your wrist and leaves a hand available to hold items, such as a torch or a focus. Attacks with this weapon uses the BRAWLING skill.<br/>
-**Returning**: This weapon returns to the wielder’s hand immediately after it is used to make a ranged attack.
+**Returning**: This weapon returns to the wielder's hand immediately after it is used to make a ranged attack.
 }}
 
 {{tablebox,wide
@@ -1663,7 +1663,7 @@ If the warlock takes damage within 10 meters from the voidwalker, the damage is 
 
 <br/>
 
-**Explore the exciting world of Warcraft with Bane of Azeroth, a homebrew compendium that lets you bring Azeroth to Dragonbane. From kin, to heroic abilities, to spells, and more, Bane of Azeroth contains all new Warcraft-inspired character options for Dragonbane. And since Bane of Azeroth is fully compatible with the core rules of Dragonbane, it’s easier than ever to use.**
+**Explore the exciting world of Warcraft with Bane of Azeroth, a homebrew compendium that lets you bring Azeroth to Dragonbane. From kin, to heroic abilities, to spells, and more, Bane of Azeroth contains all new Warcraft-inspired character options for Dragonbane. And since Bane of Azeroth is fully compatible with the core rules of Dragonbane, it's easier than ever to use.**
 
 <br/>
 

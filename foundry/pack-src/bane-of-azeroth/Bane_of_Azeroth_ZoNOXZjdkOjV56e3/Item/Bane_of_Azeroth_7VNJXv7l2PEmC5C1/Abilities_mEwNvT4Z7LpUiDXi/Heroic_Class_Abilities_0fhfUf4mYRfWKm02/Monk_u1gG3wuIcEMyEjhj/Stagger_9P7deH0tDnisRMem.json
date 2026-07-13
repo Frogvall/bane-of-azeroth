@@ -1,0 +1,39 @@
+{
+  "folder": "u1gG3wuIcEMyEjhj",
+  "name": "Stagger",
+  "type": "ability",
+  "_id": "9P7deH0tDnisRMem",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>When you take damage in combat, you can activate this ability (no action). The damage is halved (rounded up). The next time you take damage in this round, you also take the damage that was reduced by this ability.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Monk's Serenity",
+    "wp": "1",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.monk.stagger"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

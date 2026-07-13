@@ -1,0 +1,39 @@
+{
+  "folder": "u1gG3wuIcEMyEjhj",
+  "name": "Combo Strikes",
+  "type": "ability",
+  "_id": "Rt1ZUmUjltFEktWm",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>You activate this ability on your turn in combat when performing an unarmed attack, and you can then perform two extra unarmed attacks. The second and third attacks are made with a bane. Finish the first attack, including damage, before rolling the second one, and finish the second attack, including damage, before rolling the third one.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Monk's Serenity",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.monk.combo-strikes"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

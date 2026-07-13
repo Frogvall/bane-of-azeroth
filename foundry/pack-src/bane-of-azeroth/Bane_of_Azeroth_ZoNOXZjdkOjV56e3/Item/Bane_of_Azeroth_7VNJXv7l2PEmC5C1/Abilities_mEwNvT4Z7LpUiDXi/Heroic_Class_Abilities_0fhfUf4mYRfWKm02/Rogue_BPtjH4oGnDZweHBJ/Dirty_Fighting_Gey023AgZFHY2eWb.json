@@ -1,0 +1,39 @@
+{
+  "folder": "BPtjH4oGnDZweHBJ",
+  "name": "Dirty Fighting",
+  "type": "ability",
+  "_id": "Gey023AgZFHY2eWb",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>This heroic ability can only be used if you wield a one-handed weapon in one hand and a one-handed ranged weapon in your other hand. The STR requirement of the weapon in your off hand (you decide whether it is right or left) increases by 3. You activate the ability on your turn in combat and can then perform an extra attack with your second weapon. The second attack is made with a bane. You decide in which order to use your two weapons. Finish the first attack, including damage, before rolling the second one.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Roguish Cunning",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.rogue.dirty-fighting"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

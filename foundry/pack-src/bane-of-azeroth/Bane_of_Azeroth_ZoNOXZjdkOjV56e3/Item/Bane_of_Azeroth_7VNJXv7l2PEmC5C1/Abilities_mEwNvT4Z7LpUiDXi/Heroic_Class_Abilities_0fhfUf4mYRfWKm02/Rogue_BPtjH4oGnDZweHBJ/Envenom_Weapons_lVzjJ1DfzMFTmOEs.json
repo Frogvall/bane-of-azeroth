@@ -1,0 +1,39 @@
+{
+  "folder": "BPtjH4oGnDZweHBJ",
+  "name": "Envenom Weapons",
+  "type": "ability",
+  "_id": "lVzjJ1DfzMFTmOEs",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>When you hit with a piercing or slashing weapon, you can activate this ability to also apply one dose of poison that you are carrying, as if it was ingested by the target. You can activate this ability after the roll to hit.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Roguish Cunning",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.rogue.envenom-weapons"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

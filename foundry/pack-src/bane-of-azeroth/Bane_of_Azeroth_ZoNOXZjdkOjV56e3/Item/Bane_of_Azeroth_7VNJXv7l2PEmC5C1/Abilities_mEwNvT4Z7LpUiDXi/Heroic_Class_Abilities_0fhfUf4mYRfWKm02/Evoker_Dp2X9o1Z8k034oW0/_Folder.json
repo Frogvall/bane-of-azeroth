@@ -1,0 +1,27 @@
+{
+  "type": "Item",
+  "folder": "0fhfUf4mYRfWKm02",
+  "name": "Evoker",
+  "color": null,
+  "sorting": "a",
+  "_id": "Dp2X9o1Z8k034oW0",
+  "description": "",
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "class-folder.evoker"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

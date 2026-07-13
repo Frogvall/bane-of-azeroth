@@ -3,6 +3,7 @@ dist/
 module.json.backup-*
 .DS_Store
 Thumbs.db
+__pycache__
 
 # LevelDB runtime and diagnostic files
 foundry/packs/

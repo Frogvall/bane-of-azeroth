@@ -1,0 +1,39 @@
+{
+  "folder": "nbdFr1xtxL2FcEKC",
+  "name": "Stormstrike",
+  "type": "ability",
+  "_id": "MSPREyfVTRi4uUh3",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability when you hit an enemy with a melee weapon, but before rolling for damage. The attack deals an extra D10 damage and is considered magical.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Shamanic Calling",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.shaman.stormstrike"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

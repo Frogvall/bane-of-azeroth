@@ -8,6 +8,26 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.3.0] - 2026-07-13
+
+### Added
+
+- Added structured source data for Heroic Class Abilities in `foundry/content/heroic-class-abilities.json`.
+- Added `tools/generate-heroic-class-abilities.py` for reproducible generation of Heroic Class Ability documents and class folders.
+- Added 13 class folders under Heroic Class Abilities.
+- Added all 50 Heroic Class Ability documents.
+- Added stable Foundry document and folder IDs for generated Heroic Class Ability content.
+- Added automatic updates of the Adventure document's `items` and `folders` references.
+- Added a `--check` mode for verifying that generated content matches its structured source.
+- Added support for rich HTML descriptions used by abilities with lists or embedded creature statistics.
+
+### Changed
+
+- Heroic Class Ability documents now use the Dragonbane Core Set ability icon:
+  `modules/dragonbane-coreset/assets/icons/ability/ability.webp`.
+- Preserved the existing document IDs for Demon Hunter Initiation and Eye Beam while organizing them under the Demon Hunter class folder.
+- The Heroic Class Abilities section of the Adventure source is now generated from structured content instead of being maintained manually.
+
 ## [0.2.0] - 2026-07-13
 
 ### Added

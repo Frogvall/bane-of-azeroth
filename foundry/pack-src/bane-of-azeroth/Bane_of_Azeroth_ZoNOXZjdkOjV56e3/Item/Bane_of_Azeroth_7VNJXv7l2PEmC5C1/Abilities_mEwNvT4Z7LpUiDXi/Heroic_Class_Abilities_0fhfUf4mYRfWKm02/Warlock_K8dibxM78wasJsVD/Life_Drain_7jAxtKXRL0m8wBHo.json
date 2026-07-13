@@ -1,0 +1,39 @@
+{
+  "folder": "K8dibxM78wasJsVD",
+  "name": "Life Drain",
+  "type": "ability",
+  "_id": "7jAxtKXRL0m8wBHo",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability when you deal damage with a spell to one creature. You regain the same amount of HP as the creature lost.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Warlock's Ambition",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.warlock.life-drain"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

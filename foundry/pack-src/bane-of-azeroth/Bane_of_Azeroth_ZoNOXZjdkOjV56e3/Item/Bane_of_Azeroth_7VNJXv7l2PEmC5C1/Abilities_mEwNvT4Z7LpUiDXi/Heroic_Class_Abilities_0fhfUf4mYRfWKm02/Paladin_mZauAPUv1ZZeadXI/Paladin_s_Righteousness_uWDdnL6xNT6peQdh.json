@@ -1,0 +1,39 @@
+{
+  "folder": "mZauAPUv1ZZeadXI",
+  "name": "Paladin's Righteousness",
+  "type": "ability",
+  "_id": "uWDdnL6xNT6peQdh",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>Whenever you spend WP, you heal yourself or an ally within 2 meters by the same amount. You also always know whether a creature you are looking at is undead.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Hammers, Spears, or Swords 12",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.paladin.paladins-righteousness"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}
