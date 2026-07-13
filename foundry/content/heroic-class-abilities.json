@@ -232,7 +232,7 @@
           "wp": "2",
           "description": [
             "You can activate this ability when you or your companion is hit to transfer half the damage received (rounded down) to the other party, sharing the pain. You can do so after the roll for damage.",
-            "Alternatively, you can use an action to activate this ability to revive a fallen companion, as long as it happens within a shift of its death. If its body is within sight, it appears at the body; otherwise, it appears within 2 meters of you. It recovers D6 HP."
+            "Alternatively, you can use an action to activate this ability to revive a fallen companion, as long as it happens within a shift of its death. If its body is within sight, it appears at the body; otherwise, it appears within 2 meters of you. It recovers1 [[/roll D6]] HP."
           ]
         },
         {
@@ -242,7 +242,7 @@
           "requirement": "Hunter's Instincts",
           "wp": "3",
           "description": [
-            "You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature must make an EVADE roll. If it fails, it either takes 2D8 fire damage or loses its actions and movement for the rest of the round as it is frozen in place (your choice)."
+            "You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes [[/roll 2d8]] damage as it burns or loses its actions and movement for the rest of the round as it is frozen in place (your choice)."
           ]
         }
       ]
@@ -424,7 +424,7 @@
           "requirement": "Priest's Zeal",
           "wp": "2",
           "description": [
-            "If you or a creature within 10 meters of you is hit by an attack, spell, or monster attack, you can activate this ability to shield the target. The damage the target takes from the attack or spell is reduced by 2D6. Using this ability can be done out of turn and does not count as an action."
+            "If you or a creature within 10 meters of you is hit by an attack, spell, or monster attack, you can activate this ability to shield the target. The damage the target takes from the attack or spell is reduced by [[/roll 2D6]]. Using this ability can be done out of turn and does not count as an action."
           ]
         },
         {

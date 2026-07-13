@@ -268,7 +268,7 @@
           "name": "War Stomp",
           "wp": "3",
           "description": [
-            "You can, as an action in combat, slam your hooves into the ground. Make an attack (roll just once to hit, with a bane) against all creatures within 2 meters. Any creature hit takes D6 damage and falls to the ground. Damage is rolled separately."
+            "You can, as an action in combat, slam your hooves into the ground. Make a BRAWLING attack with a bane against all creatures within 2 meters, rolling only once to hit. Each creature hit takes [[/roll D6]] damage and falls to the ground. Roll damage separately for each creature."
           ]
         }
       ]
@@ -288,7 +288,7 @@
           "name": "Regeneration",
           "wp": "3",
           "description": [
-            "By activating this ability (a free action in combat) you recover D6 HP. This can be combined with FAST HEALER for 2D6 HP recovered."
+            "By activating this ability (a free action in combat) you recover [[/roll D6]] HP. This can be combined with FAST HEALER for [[/roll 2D6]] HP recovered."
           ]
         }
       ]

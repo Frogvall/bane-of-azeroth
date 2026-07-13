@@ -668,7 +668,7 @@ With a proud nomadic tradition, the mighty tauren have roamed across Azeroth. Fr
 
 - **Willpower Points:** 3
 
-You can, as an action in combat, slam your hooves into the ground. Make an attack (roll just once to hit, with a bane) against all creatures within 2 meters. Any creature hit takes D6 damage and falls to the ground. Damage is rolled separately.
+You can, as an action in combat, slam your hooves into the ground. Make a BRAWLING attack with a bane against all creatures within 2 meters, rolling only once to hit. Each creature hit takes D6 damage and falls to the ground. Roll damage separately for each creature.
 }}
 
 ### Troll
@@ -1047,7 +1047,7 @@ Alternatively, you can use an action to activate this ability to revive a fallen
 - **Requirement:** Hunter's Instincts
 - **Willpower Points:** 3
 
-You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes 2d8 fire damage or loses its actions and movement for the rest of the round as it is frozen in place (your choice).
+You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes 2d8 damage as it burns or loses its actions and movement for the rest of the round as it is frozen in place (your choice).
 
 {{wide
 ![dwarven hunter](https://i.imgur.com/72pGVRr.jpeg) {height:500px,mix-blend-mode:multiply,margin-left:-2cm,margin-top:-1.5cm}
