@@ -1,0 +1,39 @@
+{
+  "folder": "JoJ6HHq9Mi8dAspN",
+  "name": "Soul Cleave",
+  "type": "ability",
+  "_id": "SoulCleave4mR8kZ",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>If you deal damage with an attack to a living creature, you can activate this ability (no action) to heal yourself for the same amount of HP as the target takes in damage.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Demon Hunter Initiation",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.demon-hunter.soul-cleave"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

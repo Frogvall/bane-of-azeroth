@@ -15,7 +15,7 @@ No unreleased changes recorded yet.
 - Added structured source data for Heroic Class Abilities in `foundry/content/heroic-class-abilities.json`.
 - Added `tools/generate-heroic-class-abilities.py` for reproducible generation of Heroic Class Ability documents and class folders.
 - Added 13 class folders under Heroic Class Abilities.
-- Added all 50 Heroic Class Ability documents.
+- Added all 52 Heroic Class Ability documents.
 - Added stable Foundry document and folder IDs for generated Heroic Class Ability content.
 - Added automatic updates of the Adventure document's `items` and `folders` references.
 - Added a `--check` mode for verifying that generated content matches its structured source.

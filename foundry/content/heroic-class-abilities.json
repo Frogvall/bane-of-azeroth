@@ -5,7 +5,7 @@
   },
   "expectedCounts": {
     "classes": 13,
-    "abilities": 50,
+    "abilities": 52,
     "sourceStubs": 0
   },
   "classes": [
@@ -77,6 +77,26 @@
           "wp": "3",
           "description": [
             "You can activate this ability to make your eyes shoot laser beams at a creature within 20 meters. The attack automatically hits and cannot be parried. It deals 2D8 damage and is considered magical."
+          ]
+        },
+        {
+          "key": "live-by-the-glaive",
+          "id": "LbTGlaive7wQ3xN2",
+          "name": "Live by the Glaive",
+          "requirement": "Demon Hunter Initiation",
+          "wp": "3",
+          "description": [
+            "You can activate this ability (no action) when you make a successful parry to turn the roll into a dragon."
+          ]
+        },
+        {
+          "key": "soul-cleave",
+          "id": "SoulCleave4mR8kZ",
+          "name": "Soul Cleave",
+          "requirement": "Demon Hunter Initiation",
+          "wp": "2",
+          "description": [
+            "If you deal damage with an attack to a living creature, you can activate this ability (no action) to heal yourself for the same amount of HP as the target takes in damage."
           ]
         }
       ]
