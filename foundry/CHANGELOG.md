@@ -8,6 +8,33 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.4.0] - 2026-07-13
+
+### Added
+
+- Added structured Foundry source data for Bane of Azeroth gear in `foundry/content/gear.json`.
+- Added `tools/generate-gear.py` for reproducible generation of gear documents.
+- Added the complete Chapter 3 gear selection:
+  - 3 melee weapons
+  - 3 ranged weapons
+  - 2 trade good
+- Added stable Foundry document IDs for all generated gear.
+- Added a `--check` mode for verifying that generated gear matches its structured source.
+
+### Changed
+
+- Gear documents are now generated into the Dragonbane Core-style folders `Melee Weapons`, `Ranged Weapons`, and `Trade Goods`.
+- Throwing Glaive is generated under `Melee Weapons`.
+- Ammo Pouch is generated under `Trade Goods`.
+- Preserved the existing document IDs for Warglaive, Blunderbuss, Pistol, and Ammo Pouch.
+- The Adventure document's gear item references are updated automatically during generation.
+
+### Notes
+
+- Gear currently uses matching Dragonbane Core Set placeholder icons.
+- Dedicated Bane of Azeroth gear artwork can be added later without changing document IDs.
+
+
 ## [0.3.0] - 2026-07-13
 
 ### Added

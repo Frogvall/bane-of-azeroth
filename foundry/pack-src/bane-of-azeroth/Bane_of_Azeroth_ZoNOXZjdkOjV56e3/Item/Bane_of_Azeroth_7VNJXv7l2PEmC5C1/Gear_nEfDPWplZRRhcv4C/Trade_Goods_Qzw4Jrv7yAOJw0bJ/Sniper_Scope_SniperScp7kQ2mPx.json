@@ -1,46 +1,29 @@
 {
-  "folder": "8AjA41VZdNH5rKTX",
-  "name": "Warglaive",
-  "type": "weapon",
-  "_id": "Mtrym5LUbMbXISlI",
-  "img": "modules/dragonbane-coreset/assets/icons/gear/sword.webp",
+  "folder": "Qzw4Jrv7yAOJw0bJ",
+  "name": "Sniper Scope",
+  "type": "item",
+  "_id": "SniperScp7kQ2mPx",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/bag-gold.webp",
   "system": {
     "weight": 1,
     "quantity": 1,
-    "cost": "30 gold",
+    "cost": "100 gold",
     "supply": "rare",
     "worn": false,
     "memento": false,
     "boons": "",
     "banes": "",
     "gmDescription": "",
-    "itemDescription": "",
+    "itemDescription": "<p>Attach to a ranged weapon to give it the Armor Piercing feature.</p>",
     "storage": false,
-    "grip": {
-      "value": "grip1h"
-    },
-    "str": 10,
-    "range": "2",
-    "damage": "2D8",
-    "durability": 15,
-    "skill": {
-      "name": "Knives",
-      "value": 0
-    },
-    "features": [
-      "slashing",
-      "toppling"
-    ],
-    "broken": false,
-    "mainHand": false,
-    "offHand": false
+    "type": "item"
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 200000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-gear.py",
-      "contentKey": "gear.warglaive"
+      "contentKey": "gear.sniper-scope"
     }
   },
   "_stats": {

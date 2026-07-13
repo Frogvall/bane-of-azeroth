@@ -1,13 +1,13 @@
 {
-  "folder": "8AjA41VZdNH5rKTX",
-  "name": "Warglaive",
+  "folder": "yZFUQWO9cGOCVO8U",
+  "name": "Rifle",
   "type": "weapon",
-  "_id": "Mtrym5LUbMbXISlI",
-  "img": "modules/dragonbane-coreset/assets/icons/gear/sword.webp",
+  "_id": "RifleC6n3T9vK2xP",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/bow.webp",
   "system": {
     "weight": 1,
     "quantity": 1,
-    "cost": "30 gold",
+    "cost": "300 gold",
     "supply": "rare",
     "worn": false,
     "memento": false,
@@ -17,19 +17,20 @@
     "itemDescription": "",
     "storage": false,
     "grip": {
-      "value": "grip1h"
+      "value": "grip2h"
     },
-    "str": 10,
-    "range": "2",
-    "damage": "2D8",
-    "durability": 15,
+    "str": 13,
+    "range": "60",
+    "damage": "2D10",
+    "durability": 6,
     "skill": {
-      "name": "Knives",
+      "name": "Firearms",
       "value": 0
     },
     "features": [
-      "slashing",
-      "toppling"
+      "ammunition",
+      "noDamageBonus",
+      "piercing"
     ],
     "broken": false,
     "mainHand": false,
@@ -40,7 +41,7 @@
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-gear.py",
-      "contentKey": "gear.warglaive"
+      "contentKey": "gear.rifle"
     }
   },
   "_stats": {

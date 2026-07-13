@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "expectedCounts": {
+    "meleeWeapons": 3,
+    "rangedWeapons": 3,
+    "tradeGoods": 2
+  },
+  "categories": [
+    {
+      "key": "melee-weapons",
+      "folder": "Melee Weapons",
+      "documentType": "weapon",
+      "defaultImage": "modules/dragonbane-coreset/assets/icons/gear/sword.webp",
+      "items": [
+        {
+          "key": "fist-weapon",
+          "id": "FistWpnA7k2P9xQZ",
+          "name": "Fist Weapon",
+          "weight": 1,
+          "cost": "8 gold",
+          "supply": "uncommon",
+          "grip": "grip1h",
+          "str": 0,
+          "range": "2",
+          "damage": "D10",
+          "durability": 9,
+          "skill": "Brawling",
+          "features": [
+            "freehanded",
+            "piercing"
+          ]
+        },
+        {
+          "key": "throwing-glaive",
+          "id": "ThrowGlvB4m8R2zQ",
+          "name": "Throwing Glaive",
+          "weight": 1,
+          "cost": "15 gold",
+          "supply": "rare",
+          "grip": "grip1h",
+          "str": 10,
+          "range": "STR",
+          "damage": "2D6",
+          "durability": 12,
+          "skill": "Knives",
+          "features": [
+            "returning",
+            "slashing",
+            "thrown"
+          ]
+        },
+        {
+          "key": "warglaive",
+          "id": "Mtrym5LUbMbXISlI",
+          "name": "Warglaive",
+          "weight": 1,
+          "cost": "30 gold",
+          "supply": "rare",
+          "grip": "grip1h",
+          "str": 10,
+          "range": "2",
+          "damage": "2D8",
+          "durability": 15,
+          "skill": "Knives",
+          "features": [
+            "slashing",
+            "toppling"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ranged-weapons",
+      "folder": "Ranged Weapons",
+      "documentType": "weapon",
+      "defaultImage": "modules/dragonbane-coreset/assets/icons/gear/bow.webp",
+      "items": [
+        {
+          "key": "blunderbuss",
+          "id": "4pgpXANRnIBz5nNF",
+          "name": "Blunderbuss",
+          "weight": 1,
+          "cost": "150 gold",
+          "supply": "uncommon",
+          "grip": "grip2h",
+          "str": 10,
+          "range": "20",
+          "damage": "2D8",
+          "durability": 6,
+          "skill": "Firearms",
+          "features": [
+            "ammunition",
+            "noDamageBonus",
+            "piercing",
+            "scattershot"
+          ]
+        },
+        {
+          "key": "pistol",
+          "id": "3xoYCFEAWm88zRQq",
+          "name": "Pistol",
+          "weight": 1,
+          "cost": "75 gold",
+          "supply": "uncommon",
+          "grip": "grip1h",
+          "str": 7,
+          "range": "30",
+          "damage": "2D6",
+          "durability": 3,
+          "skill": "Firearms",
+          "features": [
+            "ammunition",
+            "armorPiercing",
+            "noDamageBonus",
+            "piercing"
+          ]
+        },
+        {
+          "key": "rifle",
+          "id": "RifleC6n3T9vK2xP",
+          "name": "Rifle",
+          "weight": 1,
+          "cost": "300 gold",
+          "supply": "rare",
+          "grip": "grip2h",
+          "str": 13,
+          "range": "60",
+          "damage": "2D10",
+          "durability": 6,
+          "skill": "Firearms",
+          "features": [
+            "ammunition",
+            "noDamageBonus",
+            "piercing"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "trade-goods",
+      "folder": "Trade Goods",
+      "documentType": "item",
+      "defaultImage": "modules/dragonbane-coreset/assets/icons/gear/bag-gold.webp",
+      "items": [
+        {
+          "key": "ammo-pouch",
+          "id": "n0yAAcVxspJur19y",
+          "name": "Ammo Pouch",
+          "weight": 1,
+          "cost": "5 gold",
+          "supply": "uncommon",
+          "description": [
+            "Required to fire firearms."
+          ]
+        },
+        {
+          "key": "sniper-scope",
+          "id": "SniperScp7kQ2mPx",
+          "name": "Sniper Scope",
+          "weight": 1,
+          "cost": "100 gold",
+          "supply": "rare",
+          "description": [
+            "Attach to a ranged weapon to give it the Armor Piercing feature."
+          ]
+        }
+      ]
+    }
+  ]
+}

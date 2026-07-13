@@ -2,6 +2,7 @@
   "folder": "yZFUQWO9cGOCVO8U",
   "name": "Pistol",
   "type": "weapon",
+  "_id": "3xoYCFEAWm88zRQq",
   "img": "modules/dragonbane-coreset/assets/icons/gear/bow.webp",
   "system": {
     "weight": 1,
@@ -12,6 +13,9 @@
     "memento": false,
     "boons": "",
     "banes": "",
+    "gmDescription": "",
+    "itemDescription": "",
+    "storage": false,
     "grip": {
       "value": "grip1h"
     },
@@ -31,26 +35,27 @@
     ],
     "broken": false,
     "mainHand": false,
-    "offHand": false,
-    "gmDescription": "",
-    "itemDescription": "",
-    "storage": false
+    "offHand": false
   },
   "effects": [],
-  "sort": 100000,
-  "flags": {},
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-gear.py",
+      "contentKey": "gear.pistol"
+    }
+  },
   "_stats": {
+    "coreVersion": "14.364",
     "systemId": "dragonbane",
     "systemVersion": "4.0.1",
-    "coreVersion": "14.364",
     "createdTime": null,
     "modifiedTime": null,
     "lastModifiedBy": null,
     "compendiumSource": null,
-    "duplicateSource": "Item.hXfXmtc0nToHlk0s",
+    "duplicateSource": null,
     "exportSource": null
   },
-  "_id": "3xoYCFEAWm88zRQq",
   "ownership": {
     "default": 0
   }

@@ -2,6 +2,7 @@
   "folder": "yZFUQWO9cGOCVO8U",
   "name": "Blunderbuss",
   "type": "weapon",
+  "_id": "4pgpXANRnIBz5nNF",
   "img": "modules/dragonbane-coreset/assets/icons/gear/bow.webp",
   "system": {
     "weight": 1,
@@ -12,6 +13,9 @@
     "memento": false,
     "boons": "",
     "banes": "",
+    "gmDescription": "",
+    "itemDescription": "",
+    "storage": false,
     "grip": {
       "value": "grip2h"
     },
@@ -31,26 +35,27 @@
     ],
     "broken": false,
     "mainHand": false,
-    "offHand": false,
-    "gmDescription": "",
-    "itemDescription": "",
-    "storage": false
+    "offHand": false
   },
   "effects": [],
   "sort": 100000,
-  "flags": {},
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-gear.py",
+      "contentKey": "gear.blunderbuss"
+    }
+  },
   "_stats": {
+    "coreVersion": "14.364",
     "systemId": "dragonbane",
     "systemVersion": "4.0.1",
-    "coreVersion": "14.364",
     "createdTime": null,
     "modifiedTime": null,
     "lastModifiedBy": null,
     "compendiumSource": null,
-    "duplicateSource": "Item.3xoYCFEAWm88zRQq",
+    "duplicateSource": null,
     "exportSource": null
   },
-  "_id": "4pgpXANRnIBz5nNF",
   "ownership": {
     "default": 0
   }

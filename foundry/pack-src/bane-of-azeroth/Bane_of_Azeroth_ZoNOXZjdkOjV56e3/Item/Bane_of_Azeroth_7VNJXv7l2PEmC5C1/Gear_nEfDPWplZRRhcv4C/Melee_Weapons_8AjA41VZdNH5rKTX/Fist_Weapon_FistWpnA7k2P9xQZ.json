@@ -1,14 +1,14 @@
 {
   "folder": "8AjA41VZdNH5rKTX",
-  "name": "Warglaive",
+  "name": "Fist Weapon",
   "type": "weapon",
-  "_id": "Mtrym5LUbMbXISlI",
+  "_id": "FistWpnA7k2P9xQZ",
   "img": "modules/dragonbane-coreset/assets/icons/gear/sword.webp",
   "system": {
     "weight": 1,
     "quantity": 1,
-    "cost": "30 gold",
-    "supply": "rare",
+    "cost": "8 gold",
+    "supply": "uncommon",
     "worn": false,
     "memento": false,
     "boons": "",
@@ -19,28 +19,28 @@
     "grip": {
       "value": "grip1h"
     },
-    "str": 10,
+    "str": 0,
     "range": "2",
-    "damage": "2D8",
-    "durability": 15,
+    "damage": "D10",
+    "durability": 9,
     "skill": {
-      "name": "Knives",
+      "name": "Brawling",
       "value": 0
     },
     "features": [
-      "slashing",
-      "toppling"
+      "freehanded",
+      "piercing"
     ],
     "broken": false,
     "mainHand": false,
     "offHand": false
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 100000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-gear.py",
-      "contentKey": "gear.warglaive"
+      "contentKey": "gear.fist-weapon"
     }
   },
   "_stats": {
