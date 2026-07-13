@@ -322,29 +322,32 @@ jobs:
         run: |
           set -euo pipefail
 
-          published_manifest="$(mktemp)"
-          published_zip="$(mktemp)"
+          verify_dir="$(mktemp -d)"
+          trap 'rm -rf "$verify_dir"' EXIT
 
-          download_release_asset() {
-            local url="$1"
-            local output="$2"
+          release_json="$(
+            gh release view "$RELEASE_TAG" \
+              --json url,isDraft,isPrerelease,assets
+          )"
 
-            curl \
-              --fail \
-              --location \
-              --silent \
-              --show-error \
-              --retry 12 \
-              --retry-delay 5 \
-              --retry-max-time 120 \
-              --retry-all-errors \
-              "$url" \
-              --output "$output"
-          }
+          echo "$release_json" |
+            jq -e '
+              .isDraft == false
+              and .isPrerelease == true
+              and ([.assets[].name] | index("module.json")) != null
+              and ([.assets[].name] | index("bane-of-azeroth.zip")) != null
+              and ([.assets[].name] | index("bane-of-azeroth.zip.sha256")) != null
+            ' >/dev/null
 
-          download_release_asset \
-            "$MANIFEST_URL" \
-            "$published_manifest"
+          gh release download \
+            "$RELEASE_TAG" \
+            --pattern "module.json" \
+            --dir "$verify_dir"
+
+          gh release download \
+            "$RELEASE_TAG" \
+            --pattern "bane-of-azeroth.zip" \
+            --dir "$verify_dir"
 
           jq -e \
             --arg version "$BUILD_VERSION" \
@@ -355,18 +358,14 @@ jobs:
               and .manifest == $manifest
               and .download == $download
             ' \
-            "$published_manifest" >/dev/null
-
-          download_release_asset \
-            "$DOWNLOAD_URL" \
-            "$published_zip"
+            "$verify_dir/module.json" >/dev/null
 
           expected_checksum="$(
             awk '{print $1}' release/bane-of-azeroth.zip.sha256
           )"
 
           actual_checksum="$(
-            sha256sum "$published_zip" |
+            sha256sum "$verify_dir/bane-of-azeroth.zip" |
               awk '{print $1}'
           )"
 
@@ -378,9 +377,8 @@ jobs:
           fi
 
           release_url="$(
-            gh release view "$RELEASE_TAG" \
-              --json url \
-              --jq '.url'
+            echo "$release_json" |
+              jq -r '.url'
           )"
 
           {
