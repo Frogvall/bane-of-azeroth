@@ -1,0 +1,34 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "Visage",
+  "type": "ability",
+  "_id": "goFewdHrbrK7r5qi",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Dracthyr",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "exportSource": null,
+    "compendiumSource": "Compendium.bane-of-azeroth.kin.Item.goFewdHrbrK7r5qi",
+    "duplicateSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  }
+}

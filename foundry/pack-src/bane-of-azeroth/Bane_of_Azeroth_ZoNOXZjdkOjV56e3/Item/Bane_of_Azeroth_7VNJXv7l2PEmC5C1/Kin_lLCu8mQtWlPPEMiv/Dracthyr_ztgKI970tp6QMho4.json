@@ -1,0 +1,30 @@
+{
+  "folder": "lLCu8mQtWlPPEMiv",
+  "name": "Dracthyr",
+  "type": "kin",
+  "_id": "ztgKI970tp6QMho4",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "itemDescription": "<p>The dracthyr are an ancient race of humanoid dragonkin created by the black Dragon Aspect Neltharion, who combined the essence of dragons with the adaptability of mortal races to forge ideal soldiers. Long ago, the dracthyr were put into a long slumber, only to awaken millennia later as new threats emerged. Organized into tightly bonded weyrns, the dracthyr now seek to reclaim what they have lost and forge their own path in a changing Azeroth. Each dracthyr has a visage, a unique humanoid appearance they can turn into.</p>",
+    "gmDescription": "",
+    "abilities": "Draconic Wings (flying), Draconic Wings (falling), Visage",
+    "movement": 10
+  },
+  "effects": [],
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

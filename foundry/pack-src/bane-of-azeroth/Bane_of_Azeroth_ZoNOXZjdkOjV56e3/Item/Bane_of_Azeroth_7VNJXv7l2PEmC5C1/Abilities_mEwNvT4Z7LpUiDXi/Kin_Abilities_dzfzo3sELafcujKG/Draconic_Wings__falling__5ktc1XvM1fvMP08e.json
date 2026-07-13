@@ -1,0 +1,34 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "Draconic Wings (falling)",
+  "type": "ability",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "itemDescription": "<p>When falling, you can spend 1 willpower to slow your fall and land as light as a feather, no matter the height.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Dracthyr",
+    "wp": "1",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "exportSource": null,
+    "compendiumSource": "Compendium.bane-of-azeroth.kin.Item.5ktc1XvM1fvMP08e",
+    "duplicateSource": null
+  },
+  "_id": "5ktc1XvM1fvMP08e",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "folder": "yZFUQWO9cGOCVO8U",
+  "name": "Pistol",
+  "type": "weapon",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/bow.webp",
+  "system": {
+    "weight": 1,
+    "quantity": 1,
+    "cost": "75 gold",
+    "supply": "uncommon",
+    "worn": false,
+    "memento": false,
+    "boons": "",
+    "banes": "",
+    "grip": {
+      "value": "grip1h"
+    },
+    "str": 7,
+    "range": "30",
+    "damage": "2D6",
+    "durability": 3,
+    "skill": {
+      "name": "Firearms",
+      "value": 0
+    },
+    "features": [
+      "ammunition",
+      "armorPiercing",
+      "noDamageBonus",
+      "piercing"
+    ],
+    "broken": false,
+    "mainHand": false,
+    "offHand": false,
+    "gmDescription": "",
+    "itemDescription": "",
+    "storage": false
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {},
+  "_stats": {
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "coreVersion": "14.364",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Item.hXfXmtc0nToHlk0s",
+    "exportSource": null
+  },
+  "_id": "3xoYCFEAWm88zRQq",
+  "ownership": {
+    "default": 0
+  }
+}

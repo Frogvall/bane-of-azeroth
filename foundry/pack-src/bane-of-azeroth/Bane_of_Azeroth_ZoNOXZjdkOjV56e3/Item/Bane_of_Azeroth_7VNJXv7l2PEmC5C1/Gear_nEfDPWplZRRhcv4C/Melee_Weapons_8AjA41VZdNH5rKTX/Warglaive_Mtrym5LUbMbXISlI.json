@@ -1,0 +1,55 @@
+{
+  "type": "weapon",
+  "name": "Warglaive",
+  "system": {
+    "weight": 1,
+    "quantity": 1,
+    "cost": "30 gold",
+    "supply": "rare",
+    "worn": false,
+    "memento": false,
+    "boons": "",
+    "banes": "",
+    "grip": {
+      "value": "grip1h"
+    },
+    "str": 10,
+    "range": "2",
+    "damage": "2D8",
+    "durability": 15,
+    "skill": {
+      "name": "Knives",
+      "value": 0
+    },
+    "features": [
+      "slashing",
+      "toppling"
+    ],
+    "broken": false,
+    "mainHand": false,
+    "offHand": false,
+    "gmDescription": "",
+    "itemDescription": "",
+    "storage": false
+  },
+  "img": "modules/dragonbane-coreset/assets/icons/gear/sword.webp",
+  "effects": [],
+  "folder": "8AjA41VZdNH5rKTX",
+  "sort": 100000,
+  "flags": {},
+  "_stats": {
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "coreVersion": "14.364",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Item.iaw4A60DRS2GRzU0",
+    "exportSource": null
+  },
+  "_id": "Mtrym5LUbMbXISlI",
+  "ownership": {
+    "default": 0
+  }
+}
