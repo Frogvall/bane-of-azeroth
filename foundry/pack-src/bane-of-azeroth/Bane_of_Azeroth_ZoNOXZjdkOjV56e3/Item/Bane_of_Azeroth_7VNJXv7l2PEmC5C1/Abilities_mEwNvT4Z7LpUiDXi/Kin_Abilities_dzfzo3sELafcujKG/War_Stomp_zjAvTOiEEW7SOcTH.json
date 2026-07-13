@@ -5,7 +5,7 @@
   "_id": "zjAvTOiEEW7SOcTH",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>You can, as an action in combat, slam your hooves into the ground. Make an attack (roll just once to hit, with a bane) against all creatures within 2 meters. Any creature hit takes D6 damage and falls to the ground. Damage is rolled separately.</p>",
+    "itemDescription": "<p>You can, as an action in combat, slam your hooves into the ground. Make a BRAWLING attack with a bane against all creatures within 2 meters, rolling only once to hit. Each creature hit takes [[/roll D6]] damage and falls to the ground. Roll damage separately for each creature.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Tauren",
