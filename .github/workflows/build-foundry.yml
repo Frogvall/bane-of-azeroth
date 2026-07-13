@@ -1,4 +1,4 @@
-name: Build Foundry development package
+name: Build Foundry package
 
 on:
   push:
@@ -11,20 +11,29 @@ on:
 
   workflow_dispatch:
 
-permissions:
-  contents: read
-  packages: read
-
 concurrency:
   group: build-foundry-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
+    name: Build package
+
     runs-on: ubuntu-24.04
 
+    permissions:
+      contents: read
+      packages: read
+
+    outputs:
+      artifact_name: ${{ steps.package.outputs.artifact_name }}
+      branch_slug: ${{ steps.package.outputs.branch_slug }}
+      release_tag: ${{ steps.package.outputs.release_tag }}
+      build_version: ${{ steps.package.outputs.build_version }}
+      manifest_url: ${{ steps.package.outputs.manifest_url }}
+      download_url: ${{ steps.package.outputs.download_url }}
+
     container:
-      # Use the branch-neutral published CLI image.
       image: ghcr.io/frogvall/bane-of-azeroth-fvtt-cli:3.0.4
       credentials:
         username: ${{ github.actor }}
@@ -38,7 +47,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
-      - name: Configure Foundry development package
+      - name: Configure Foundry package
         id: package
         run: |
           set -euo pipefail
@@ -64,13 +73,11 @@ jobs:
 
           if [[ ! "$source_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo \
-              "Expected a source version in MAJOR.MINOR.PATCH format, got: ${source_version}" \
+              "Expected source version in MAJOR.MINOR.PATCH format, got: ${source_version}" \
               >&2
             exit 1
           fi
 
-          # Convert the current branch name into a value suitable for
-          # versions, release tags, artifact names and URLs.
           branch_slug="$(
             printf '%s' "$GITHUB_REF_NAME" |
               tr '[:upper:]' '[:lower:]' |
@@ -104,11 +111,16 @@ jobs:
             echo "BOA_MANIFEST_URL=${manifest_url}"
             echo "BOA_DOWNLOAD_URL=${download_url}"
             echo "BOA_ZIP_NAME=bane-of-azeroth.zip"
-            echo "BOA_BRANCH_SLUG=${branch_slug}"
-            echo "BOA_RELEASE_TAG=${release_tag}"
           } >> "$GITHUB_ENV"
 
-          echo "artifact_name=${artifact_name}" >> "$GITHUB_OUTPUT"
+          {
+            echo "artifact_name=${artifact_name}"
+            echo "branch_slug=${branch_slug}"
+            echo "release_tag=${release_tag}"
+            echo "build_version=${build_version}"
+            echo "manifest_url=${manifest_url}"
+            echo "download_url=${download_url}"
+          } >> "$GITHUB_OUTPUT"
 
           {
             echo "### Foundry development build"
@@ -181,7 +193,7 @@ jobs:
           echo
           cat dist/bane-of-azeroth.zip.sha256
 
-      - name: Upload Foundry development package
+      - name: Upload workflow artifact
         uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.package.outputs.artifact_name }}
@@ -192,3 +204,185 @@ jobs:
           if-no-files-found: error
           retention-days: 30
           compression-level: 0
+
+  publish-prerelease:
+    name: Publish rolling prerelease
+
+    needs:
+      - build
+
+    if: >-
+      ${{
+        needs.build.result == 'success'
+        && github.ref_type == 'branch'
+        && github.ref_name != github.event.repository.default_branch
+      }}
+
+    runs-on: ubuntu-24.04
+
+    permissions:
+      actions: read
+      contents: write
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+
+      ARTIFACT_NAME: ${{ needs.build.outputs.artifact_name }}
+      BRANCH_SLUG: ${{ needs.build.outputs.branch_slug }}
+      RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+      BUILD_VERSION: ${{ needs.build.outputs.build_version }}
+      MANIFEST_URL: ${{ needs.build.outputs.manifest_url }}
+      DOWNLOAD_URL: ${{ needs.build.outputs.download_url }}
+
+    steps:
+      - name: Download built package
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ needs.build.outputs.artifact_name }}
+          path: release
+
+      - name: Validate downloaded package
+        run: |
+          set -euo pipefail
+
+          test -f release/bane-of-azeroth.zip
+          test -f release/module.json
+          test -f release/bane-of-azeroth.zip.sha256
+
+          jq -e \
+            --arg version "$BUILD_VERSION" \
+            --arg manifest "$MANIFEST_URL" \
+            --arg download "$DOWNLOAD_URL" \
+            '
+              .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            ' \
+            release/module.json >/dev/null
+
+          (
+            cd release
+            sha256sum -c bane-of-azeroth.zip.sha256
+          )
+
+          unzip -t release/bane-of-azeroth.zip
+
+      - name: Generate prerelease notes
+        run: |
+          set -euo pipefail
+
+          cat > release/RELEASE_NOTES.md <<EOF
+          Automated rolling development release for the \`${GITHUB_REF_NAME}\` branch.
+
+          - Package version: \`${BUILD_VERSION}\`
+          - Branch: \`${GITHUB_REF_NAME}\`
+          - Commit: \`${GITHUB_SHA}\`
+          - Workflow run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+
+          This is a prerelease intended for development and testing.
+          It is replaced whenever a newer build is published from the same branch.
+          EOF
+
+      - name: Replace rolling prerelease
+        run: |
+          set -euo pipefail
+
+          echo "Publishing rolling prerelease: $RELEASE_TAG"
+
+          # Remove the previous rolling release and its movable branch tag.
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release delete \
+              "$RELEASE_TAG" \
+              --cleanup-tag \
+              --yes
+          fi
+
+          # Clean up an orphaned tag left without a release.
+          if gh api \
+            "repos/${GITHUB_REPOSITORY}/git/ref/tags/${RELEASE_TAG}" \
+            >/dev/null 2>&1; then
+            gh api \
+              --method DELETE \
+              "repos/${GITHUB_REPOSITORY}/git/refs/tags/${RELEASE_TAG}"
+          fi
+
+          gh release create \
+            "$RELEASE_TAG" \
+            release/module.json \
+            release/bane-of-azeroth.zip \
+            release/bane-of-azeroth.zip.sha256 \
+            --target "$GITHUB_SHA" \
+            --title "Bane of Azeroth ${BUILD_VERSION}" \
+            --notes-file release/RELEASE_NOTES.md \
+            --prerelease \
+            --latest=false
+
+      - name: Verify published prerelease
+        run: |
+          set -euo pipefail
+
+          published_manifest="$(mktemp)"
+          published_zip="$(mktemp)"
+
+          curl \
+            --fail \
+            --location \
+            --retry 5 \
+            --retry-delay 2 \
+            "$MANIFEST_URL" \
+            --output "$published_manifest"
+
+          jq -e \
+            --arg version "$BUILD_VERSION" \
+            --arg manifest "$MANIFEST_URL" \
+            --arg download "$DOWNLOAD_URL" \
+            '
+              .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            ' \
+            "$published_manifest" >/dev/null
+
+          curl \
+            --fail \
+            --location \
+            --retry 5 \
+            --retry-delay 2 \
+            "$DOWNLOAD_URL" \
+            --output "$published_zip"
+
+          expected_checksum="$(
+            awk '{print $1}' release/bane-of-azeroth.zip.sha256
+          )"
+
+          actual_checksum="$(
+            sha256sum "$published_zip" |
+              awk '{print $1}'
+          )"
+
+          if [[ "$actual_checksum" != "$expected_checksum" ]]; then
+            echo "Published package checksum does not match." >&2
+            echo "Expected: $expected_checksum" >&2
+            echo "Actual:   $actual_checksum" >&2
+            exit 1
+          fi
+
+          release_url="$(
+            gh release view "$RELEASE_TAG" \
+              --json url \
+              --jq '.url'
+          )"
+
+          {
+            echo
+            echo "### Published prerelease"
+            echo
+            echo "- Release: ${release_url}"
+            echo "- Manifest: \`${MANIFEST_URL}\`"
+            echo "- Download: \`${DOWNLOAD_URL}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "Release:  $release_url"
+          echo "Manifest: $MANIFEST_URL"
+          echo "Download: $DOWNLOAD_URL"
