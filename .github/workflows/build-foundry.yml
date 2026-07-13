@@ -325,13 +325,26 @@ jobs:
           published_manifest="$(mktemp)"
           published_zip="$(mktemp)"
 
-          curl \
-            --fail \
-            --location \
-            --retry 5 \
-            --retry-delay 2 \
+          download_release_asset() {
+            local url="$1"
+            local output="$2"
+
+            curl \
+              --fail \
+              --location \
+              --silent \
+              --show-error \
+              --retry 12 \
+              --retry-delay 5 \
+              --retry-max-time 120 \
+              --retry-all-errors \
+              "$url" \
+              --output "$output"
+          }
+
+          download_release_asset \
             "$MANIFEST_URL" \
-            --output "$published_manifest"
+            "$published_manifest"
 
           jq -e \
             --arg version "$BUILD_VERSION" \
@@ -344,13 +357,9 @@ jobs:
             ' \
             "$published_manifest" >/dev/null
 
-          curl \
-            --fail \
-            --location \
-            --retry 5 \
-            --retry-delay 2 \
+          download_release_asset \
             "$DOWNLOAD_URL" \
-            --output "$published_zip"
+            "$published_zip"
 
           expected_checksum="$(
             awk '{print $1}' release/bane-of-azeroth.zip.sha256
