@@ -1,0 +1,35 @@
+{
+  "folder": "lLCu8mQtWlPPEMiv",
+  "name": "Blood Elf",
+  "type": "kin",
+  "_id": "hFopLTbxckPl8yWG",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "itemDescription": "<p>The elves of Azeroth trace their origins to the mystical Well of Eternity, a source of unimaginable arcane power that shaped their society and granted them unparalleled mastery of magic. Over time, their civilization flourished, becoming the dominant force on Azeroth. However, their society shattered during the Sundering, eventually leading to numerous diverse factions and heritages. Elves are typically tall and slender with long pointed ears, and are known for their incredible longevity, keen senses, and exceptional mastery of both war and magic. Elves now find themselves torn between their glorious past and an uncertain future.</p><p>For millennia, high elves thrived in the magical kingdom of Quel'thalas until the arrival of the Scourge decimated their civilization. The destruction of the Sunwell, their source of power, led to their near-extinction. Renamed blood elves or sin'dorei, they seek to reclaim their lost powers and heritage. Blood elves typically possess fair skin and brilliant gold or crimson hair, distinguishing them from their elven kin.</p>",
+    "gmDescription": "",
+    "abilities": "Arcane Affinity",
+    "movement": 10
+  },
+  "effects": [],
+  "sort": 500000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "kin.blood-elf"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

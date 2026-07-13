@@ -1,25 +1,25 @@
 {
   "folder": "dzfzo3sELafcujKG",
-  "name": "Visage",
+  "name": "War Stomp",
   "type": "ability",
-  "_id": "goFewdHrbrK7r5qi",
+  "_id": "zjAvTOiEEW7SOcTH",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics.</p>",
+    "itemDescription": "<p>You can, as an action in combat, slam your hooves into the ground. Make an attack (roll just once to hit, with a bane) against all creatures within 2 meters. Any creature hit takes D6 damage and falls to the ground. Damage is rolled separately.</p>",
     "gmDescription": "",
     "abilityType": "",
-    "requirement": "Dracthyr",
-    "wp": "",
+    "requirement": "Tauren",
+    "wp": "3",
     "boons": "",
     "secondaryAttribute": "none",
     "secondaryAttributeBonus": 0
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 1400000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-kin.py",
-      "contentKey": "ability.visage"
+      "contentKey": "ability.war-stomp"
     }
   },
   "_stats": {

@@ -1,0 +1,35 @@
+{
+  "folder": "lLCu8mQtWlPPEMiv",
+  "name": "Worgen",
+  "type": "kin",
+  "_id": "FAwIDwvx2p8t8MrK",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "itemDescription": "<p>Worgen are large, lupine humanoids that walk upright, hunt and howl like wolves, and can run on all fours. Their origins lie in an ancient curse born from a night elf druidic ritual seeking to harness the fury of the wolf. Thought lost, the curse resurfaced in Gilneas, transforming those bitten or who drink worgen blood. Without control, the afflicted may succumb to mindless ferocity, but with discipline, medication, and magic, some retain a semblance of their former selves.</p>",
+    "gmDescription": "",
+    "abilities": "Darkflight, Two Forms",
+    "movement": 12
+  },
+  "effects": [],
+  "sort": 1600000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "kin.worgen"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

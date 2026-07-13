@@ -1,25 +1,25 @@
 {
   "folder": "dzfzo3sELafcujKG",
-  "name": "Visage",
+  "name": "Rocket Jump",
   "type": "ability",
-  "_id": "goFewdHrbrK7r5qi",
+  "_id": "KGYrdHqPHXFpXBAq",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics.</p>",
+    "itemDescription": "<p>You can leap five times as far as your normal leaping distance, horizontally or vertically. This might render an ACROBATICS roll for climbing unnecessary if the obstacle is lower than the distance you leap.</p><p>Alternatively, you can dash as a free action.</p>",
     "gmDescription": "",
     "abilityType": "",
-    "requirement": "Dracthyr",
-    "wp": "",
+    "requirement": "Goblin",
+    "wp": "3",
     "boons": "",
     "secondaryAttribute": "none",
     "secondaryAttributeBonus": 0
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 1000000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-kin.py",
-      "contentKey": "ability.visage"
+      "contentKey": "ability.rocket-jump"
     }
   },
   "_stats": {

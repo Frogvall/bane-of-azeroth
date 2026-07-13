@@ -1,25 +1,25 @@
 {
   "folder": "dzfzo3sELafcujKG",
-  "name": "Visage",
+  "name": "Inner Peace",
   "type": "ability",
-  "_id": "goFewdHrbrK7r5qi",
+  "_id": "kixSvd82FuAvv6Wg",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics.</p>",
+    "itemDescription": "<p>You can meditate deeply during a stretch rest. You heal an additional D6 HP and a D6 extra WP, and can recover from an additional condition. You are completely unresponsive during your meditation and cannot be awakened.</p>",
     "gmDescription": "",
     "abilityType": "",
-    "requirement": "Dracthyr",
+    "requirement": "Pandaren",
     "wp": "",
     "boons": "",
     "secondaryAttribute": "none",
     "secondaryAttributeBonus": 0
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 1300000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-kin.py",
-      "contentKey": "ability.visage"
+      "contentKey": "ability.inner-peace"
     }
   },
   "_stats": {

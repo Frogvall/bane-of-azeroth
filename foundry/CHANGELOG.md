@@ -8,6 +8,30 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.2.0] - 2026-07-13
+
+### Added
+
+- Added structured Foundry source data for all playable kin in `foundry/content/kin.json`.
+- Added `tools/generate-kin.py` for reproducible generation of Kin and Kin Ability documents.
+- Added 16 playable Kin documents.
+- Added 20 Kin Ability documents.
+- Added stable Foundry document IDs for generated Kin and Kin Ability content.
+- Added automatic updates of the Adventure document references when kin content is generated.
+- Added a `--check` mode for verifying that generated content matches its structured source.
+
+### Changed
+
+- Kin Ability documents now use the Dragonbane Core Set ability icon:
+  `modules/dragonbane-coreset/assets/icons/ability/ability.webp`.
+- The Kin and Kin Abilities folders in the Adventure source are now generated from structured content instead of being maintained manually.
+- Dwarf and Elf variants are presented as separate playable kin using the names Bronzebeard Dwarf, Dark Iron Dwarf, Blood Elf, and Night Elf.
+
+### Notes
+
+- Kin portraits currently use placeholder artwork and will be replaced with dedicated illustrations in a future version.
+- The Dragonbane Core Set ability icon convention will also be used for future Heroic Ability documents.
+
 ## [0.1.5] - 2026-07-13
 
 ### Added

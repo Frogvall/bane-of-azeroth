@@ -1,25 +1,25 @@
 {
   "folder": "dzfzo3sELafcujKG",
-  "name": "Visage",
+  "name": "Resourceful",
   "type": "ability",
-  "_id": "goFewdHrbrK7r5qi",
+  "_id": "si5UsdGWFhcc99Ae",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics.</p>",
+    "itemDescription": "<p>When rolling for a skill, you can choose to make the roll using another skill of your choice. You must be able to justify how you use the selected skill instead of the normal one. The GM has the final word, but should be lenient.</p>",
     "gmDescription": "",
     "abilityType": "",
-    "requirement": "Dracthyr",
-    "wp": "",
+    "requirement": "Human",
+    "wp": "3",
     "boons": "",
     "secondaryAttribute": "none",
     "secondaryAttributeBonus": 0
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 1100000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-kin.py",
-      "contentKey": "ability.visage"
+      "contentKey": "ability.resourceful"
     }
   },
   "_stats": {

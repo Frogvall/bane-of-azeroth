@@ -1,25 +1,25 @@
 {
   "folder": "dzfzo3sELafcujKG",
-  "name": "Visage",
+  "name": "Regeneration",
   "type": "ability",
-  "_id": "goFewdHrbrK7r5qi",
+  "_id": "YBL20kf5fnSbj9x8",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics.</p>",
+    "itemDescription": "<p>By activating this ability (a free action in combat) you recover D6 HP. This can be combined with FAST HEALER for 2D6 HP recovered.</p>",
     "gmDescription": "",
     "abilityType": "",
-    "requirement": "Dracthyr",
-    "wp": "",
+    "requirement": "Troll",
+    "wp": "3",
     "boons": "",
     "secondaryAttribute": "none",
     "secondaryAttributeBonus": 0
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 1500000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-kin.py",
-      "contentKey": "ability.visage"
+      "contentKey": "ability.regeneration"
     }
   },
   "_stats": {

@@ -1,25 +1,25 @@
 {
   "folder": "dzfzo3sELafcujKG",
-  "name": "Visage",
+  "name": "Luck",
   "type": "ability",
-  "_id": "goFewdHrbrK7r5qi",
+  "_id": "9lZJWda5B6Z5Jb82",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics.</p>",
+    "itemDescription": "<p>You re-roll one D20 roll and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice.</p>",
     "gmDescription": "",
     "abilityType": "",
-    "requirement": "Dracthyr",
-    "wp": "",
+    "requirement": "Vulpera",
+    "wp": "3",
     "boons": "",
     "secondaryAttribute": "none",
     "secondaryAttributeBonus": 0
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 1800000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-kin.py",
-      "contentKey": "ability.visage"
+      "contentKey": "ability.luck"
     }
   },
   "_stats": {

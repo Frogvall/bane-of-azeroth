@@ -11,8 +11,13 @@
     "movement": 10
   },
   "effects": [],
-  "sort": 0,
-  "flags": {},
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "kin.dracthyr"
+    }
+  },
   "_stats": {
     "coreVersion": "14.364",
     "systemId": "dragonbane",

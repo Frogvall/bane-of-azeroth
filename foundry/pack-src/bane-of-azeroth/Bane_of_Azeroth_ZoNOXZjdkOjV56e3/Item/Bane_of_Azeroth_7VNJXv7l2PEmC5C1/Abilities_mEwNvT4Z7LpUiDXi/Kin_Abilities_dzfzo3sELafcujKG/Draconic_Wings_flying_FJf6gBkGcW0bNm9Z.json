@@ -3,7 +3,7 @@
   "name": "Draconic Wings (flying)",
   "type": "ability",
   "_id": "FJf6gBkGcW0bNm9Z",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
     "itemDescription": "<p>By spending 3 willpower, you can move freely through the air during your turn.</p>",
     "gmDescription": "",
@@ -15,7 +15,13 @@
     "secondaryAttributeBonus": 0
   },
   "effects": [],
-  "flags": {},
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "ability.draconic-wings-flying"
+    }
+  },
   "_stats": {
     "coreVersion": "14.364",
     "systemId": "dragonbane",
@@ -23,11 +29,10 @@
     "createdTime": null,
     "modifiedTime": null,
     "lastModifiedBy": null,
-    "exportSource": null,
-    "compendiumSource": "Compendium.bane-of-azeroth.kin.Item.FJf6gBkGcW0bNm9Z",
-    "duplicateSource": null
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "sort": 0,
   "ownership": {
     "default": 0
   }

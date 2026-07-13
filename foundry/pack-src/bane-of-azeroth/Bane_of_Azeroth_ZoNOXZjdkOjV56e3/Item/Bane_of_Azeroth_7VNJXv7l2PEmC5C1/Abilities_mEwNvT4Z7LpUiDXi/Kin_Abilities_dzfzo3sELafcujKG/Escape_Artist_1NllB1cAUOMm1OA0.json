@@ -1,25 +1,25 @@
 {
   "folder": "dzfzo3sELafcujKG",
-  "name": "Visage",
+  "name": "Escape Artist",
   "type": "ability",
-  "_id": "goFewdHrbrK7r5qi",
+  "_id": "1NllB1cAUOMm1OA0",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics.</p>",
+    "itemDescription": "<p>You get a boon on opposing a grapple attempt. Or you get a boon on breaking free from a grapple, which can be attempted as a free action.</p><p>If the optional rules for grappling are not used, the gnome can use the Hard to Catch kin ability from the core rules instead.</p>",
     "gmDescription": "",
     "abilityType": "",
-    "requirement": "Dracthyr",
-    "wp": "",
+    "requirement": "Gnome",
+    "wp": "2",
     "boons": "",
     "secondaryAttribute": "none",
     "secondaryAttributeBonus": 0
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 900000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-kin.py",
-      "contentKey": "ability.visage"
+      "contentKey": "ability.escape-artist"
     }
   },
   "_stats": {

@@ -1,0 +1,35 @@
+{
+  "folder": "lLCu8mQtWlPPEMiv",
+  "name": "Pandaren",
+  "type": "kin",
+  "_id": "YB3QGvS8GlZ8AXX2",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "itemDescription": "<p>Veiled in myth and legend, the enigmatic pandaren remain a mystery to most of Azeroth. Their noble history spans thousands of years, predating human empires and even the Sundering. Native to Pandaria, their homeland vanished behind a shrouding mist during that cataclysm. A second pandaren civilization thrives aboard the giant turtle Shen-zin Su, known as the “Wandering Isle.” Unlike their secluded kin, these pandaren roam Azeroth's seas in search of adventure.</p>",
+    "gmDescription": "",
+    "abilities": "Inner Peace",
+    "movement": 10
+  },
+  "effects": [],
+  "sort": 1100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "kin.pandaren"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}
