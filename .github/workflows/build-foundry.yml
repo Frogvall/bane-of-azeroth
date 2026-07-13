@@ -1,28 +1,31 @@
-name: Build Foundry module
+name: Build Foundry development package
 
 on:
-  workflow_dispatch:
-
   push:
     branches:
-      - foundry
-      - main
+      - "**"
     paths:
       - "foundry/**"
       - "tools/package-foundry.sh"
       - ".github/workflows/build-foundry.yml"
 
+  workflow_dispatch:
+
 permissions:
   contents: read
   packages: read
 
+concurrency:
+  group: build-foundry-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    name: Build Foundry package
     runs-on: ubuntu-24.04
 
     container:
-      image: ghcr.io/frogvall/bane-of-azeroth-fvtt-cli:3.0.4-${{ github.ref_name }}
+      # Use the branch-neutral published CLI image.
+      image: ghcr.io/frogvall/bane-of-azeroth-fvtt-cli:3.0.4
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -35,23 +38,163 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
-      - name: Build Foundry module
-        run: tools/package-foundry.sh
-
-      - name: Read package metadata
+      - name: Configure Foundry development package
         id: package
         run: |
-          module_id="$(jq -r '.id' foundry/module.json)"
-          version="$(jq -r '.version' foundry/module.json)"
-          filename="${module_id}-${version}.zip"
+          set -euo pipefail
 
-          echo "filename=${filename}" >> "$GITHUB_OUTPUT"
-          echo "path=dist/${filename}" >> "$GITHUB_OUTPUT"
+          module_json="foundry/module.json"
 
-      - name: Upload Foundry module
+          if [[ ! -f "$module_json" ]]; then
+            echo "Missing module manifest: $module_json" >&2
+            exit 1
+          fi
+
+          # The source manifest must remain channel-neutral.
+          if jq -e '
+            has("manifest") or has("download")
+          ' "$module_json" >/dev/null; then
+            echo \
+              "foundry/module.json must not contain manifest or download fields." \
+              >&2
+            exit 1
+          fi
+
+          source_version="$(jq -er '.version' "$module_json")"
+
+          if [[ ! "$source_version" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo \
+              "Expected a source version in MAJOR.MINOR.PATCH format, got: ${source_version}" \
+              >&2
+            exit 1
+          fi
+
+          major="${BASH_REMATCH[1]}"
+          minor="${BASH_REMATCH[2]}"
+          patch="${BASH_REMATCH[3]}"
+
+          next_patch="$((10#$patch + 1))"
+
+          # Convert the current branch name into a value suitable for
+          # versions, release tags, artifact names and URLs.
+          branch_slug="$(
+            printf '%s' "$GITHUB_REF_NAME" |
+              tr '[:upper:]' '[:lower:]' |
+              sed -E '
+                s/[^a-z0-9]+/-/g
+                s/^-+//
+                s/-+$//
+              '
+          )"
+
+          if [[ -z "$branch_slug" ]]; then
+            echo \
+              "Could not derive a package channel from branch: ${GITHUB_REF_NAME}" \
+              >&2
+            exit 1
+          fi
+
+          release_tag="branch-${branch_slug}"
+
+          build_version="${major}.${minor}.${next_patch}-${branch_slug}.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
+
+          repository_url="https://github.com/${GITHUB_REPOSITORY}"
+
+          manifest_url="${repository_url}/releases/download/${release_tag}/module.json"
+          download_url="${repository_url}/releases/download/${release_tag}/bane-of-azeroth.zip"
+
+          artifact_name="bane-of-azeroth-${branch_slug}"
+
+          {
+            echo "BOA_BUILD_VERSION=${build_version}"
+            echo "BOA_MANIFEST_URL=${manifest_url}"
+            echo "BOA_DOWNLOAD_URL=${download_url}"
+            echo "BOA_ZIP_NAME=bane-of-azeroth.zip"
+            echo "BOA_BRANCH_SLUG=${branch_slug}"
+            echo "BOA_RELEASE_TAG=${release_tag}"
+          } >> "$GITHUB_ENV"
+
+          echo "artifact_name=${artifact_name}" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Foundry development build"
+            echo
+            echo "- Branch: \`${GITHUB_REF_NAME}\`"
+            echo "- Channel: \`${branch_slug}\`"
+            echo "- Source version: \`${source_version}\`"
+            echo "- Package version: \`${build_version}\`"
+            echo "- Rolling release tag: \`${release_tag}\`"
+            echo "- Manifest: \`${manifest_url}\`"
+            echo "- Download: \`${download_url}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "Branch:          $GITHUB_REF_NAME"
+          echo "Channel:         $branch_slug"
+          echo "Source version:  $source_version"
+          echo "Build version:   $build_version"
+          echo "Release tag:     $release_tag"
+          echo "Manifest URL:    $manifest_url"
+          echo "Download URL:    $download_url"
+
+      - name: Build Foundry package
+        run: |
+          set -euo pipefail
+          tools/package-foundry.sh
+
+      - name: Export and validate generated manifest
+        run: |
+          set -euo pipefail
+
+          zip_file="dist/bane-of-azeroth.zip"
+          manifest_file="dist/module.json"
+
+          if [[ ! -f "$zip_file" ]]; then
+            echo "Missing generated package: $zip_file" >&2
+            exit 1
+          fi
+
+          unzip -p "$zip_file" module.json > "$manifest_file"
+
+          jq -e \
+            --arg version "$BOA_BUILD_VERSION" \
+            --arg manifest "$BOA_MANIFEST_URL" \
+            --arg download "$BOA_DOWNLOAD_URL" \
+            '
+              .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            ' \
+            "$manifest_file" >/dev/null
+
+          unzip -t "$zip_file"
+
+          (
+            cd dist
+            sha256sum bane-of-azeroth.zip \
+              > bane-of-azeroth.zip.sha256
+          )
+
+          echo "Generated manifest:"
+
+          jq '{
+            id,
+            title,
+            version,
+            manifest,
+            download
+          }' "$manifest_file"
+
+          echo
+          cat dist/bane-of-azeroth.zip.sha256
+
+      - name: Upload Foundry development package
         uses: actions/upload-artifact@v7
         with:
-          path: ${{ steps.package.outputs.path }}
+          name: ${{ steps.package.outputs.artifact_name }}
+          path: |
+            dist/bane-of-azeroth.zip
+            dist/module.json
+            dist/bane-of-azeroth.zip.sha256
           if-no-files-found: error
-          retention-days: 14
-          archive: false
+          retention-days: 30
+          compression-level: 0
