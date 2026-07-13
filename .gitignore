@@ -1,0 +1,5 @@
+dist/
+*.zip
+module.json.backup-*
+.DS_Store
+Thumbs.db
