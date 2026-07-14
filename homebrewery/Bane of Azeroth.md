@@ -1425,16 +1425,16 @@ Spell casters in Bane of Azeroth uses the same spell casting rules and spells as
 - **Range:** 6 meters
 - **Duration:** Stretch
 
-You instantly summon a small totem of your choice (see below) within range. The totem is a small object with 10 HP and armor rating 2. You and any of your allies within 10 meters of the totem gain the a benefit listed below, once per turn.
+You instantly summon a small totem of your choice (see below) within range. The totem is a small object with 10 HP and armor rating 2. You and any of your allies within 10 meters of the totem gain the a benefit listed below, once per round.
 
 | Totem       | Benefit                                                                   |
 |:------------|:--------------------------------------------------------------------------|
 | Cleansing   | The target can heal a condition of their choice at the end of their turn. |
-| Flametongue | The target deals D4 extra damage with an attack or a spell               |
-| Stoneskin   | The target takes D4 less damage from an attack or a spell                |
-| Windfury    | The target has a boon on an attack roll                                   |
+| Flametongue | The target deals D4 extra damage with an attack or a spell.               |
+| Stoneskin   | The target takes D4 less damage from an attack or a spell.                |
+| Windfury    | The target has a boon on an attack roll.                                   |
 
-Each additional power level lets you choose between summoning an additional totem, double the reach of your totem(s), or doubling your totem(s) HP and armor rating. If you cast this spell while you already have active totems, any of your previous totems disappears immediately.
+Each additional power level lets you choose between summoning an additional totem, doubling the reach of your totem(s), or doubling your totem(s) HP and armor rating. If you cast this spell while you already have active totems, any of your previous totems disappears immediately.
 
 ### Savage Incarnation
 - **Rank:** 1
@@ -1444,10 +1444,10 @@ Each additional power level lets you choose between summoning an additional tote
 - **Range:** Personal
 - **Duration:** Shift
 
-You instantly turn into your travel form. For the duration you can change between your travel form, your humanoid form and any other forms you have activated as an action. The exact looks or species of your form is up to you. While in your travel form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your travel form.
+You instantly turn into your travel form. For the duration you can change between your travel form, your humanoid form, and any other forms you have activated as an action. The exact look or species of your form is up to you. While in your travel form you cannot cast any spells that have any requirements besides WORD or attack with anything other than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your travel form.
 
 <br/>You gain the following benefits while in travel form:<br/>
-At power level 1, your movement rate is doubled. At power level 2, you also can breathe under water, your movement rate in water equals your normal movement rate and you don't have to roll for SWIMMING. At power level 3, you can also move freely through the air.
+At power level 1, your movement rate is doubled. At power level 2, you can also breathe underwater, your movement rate in water equals your normal movement rate, and you don't have to roll for SWIMMING. At power level 3, you can also move freely through the air.
 
 ### Shadowform
 - **Rank:** 1
@@ -1457,14 +1457,14 @@ At power level 1, your movement rate is doubled. At power level 2, you also can 
 - **Range:** Personal
 - **Duration:** Stretch
 
-![shadowform](https://i.imgur.com/TM82ZwN.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-2.1cm,margin-bottom:-1cm}
+![shadowform](https://i.imgur.com/TM82ZwN.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-2.4cm,margin-bottom:-1cm}
 
 \page
 {{pageNumber,auto Spells}}
 
 You turn into a dark and shadowy image of yourself, gaining the following benefits:
-- **Ephemereal:** All non-magical damage is halved (rounded up).
-- **Shadow Weaving:** The damage of your spells increase by D6 per power level.
+- **Ethereal:** All non-magical damage is halved (rounded up).
+- **Shadow Weaving:** The damage of your spells increases by D6 per power level.
 
 ### Feral Incarnation
 - **Rank:** 2
@@ -1474,15 +1474,15 @@ You turn into a dark and shadowy image of yourself, gaining the following benefi
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your bear or cat form. For the duration you can change between your bear form, cat form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your bear or cat form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your bear or cat form.
+You instantly turn into your bear or cat form. For the duration you can change between your bear form, cat form, humanoid form, and any other forms you have activated as an action, or as a free action if you spend one WP. The exact look or species of your form is up to you. While in your bear or cat form you cannot cast any spells that have any requirements beside WORD or attack with anything other than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your bear or cat form.
 
 <br/>You gain the following benefits while in bear form:
-- **Feral Instincts:** You may roll for your SCHOOL OF MAGIC instead of rolling for BRAWLING.
+- **Feral Instincts:** You may roll for any SCHOOL OF MAGIC instead of BRAWLING when making unarmed attacks.
 - **Ironfur**: Your armor rating equals 3 per power level.
 - **Maul:** A creature hit by your unarmed attacks has a bane when attacking any other creature but you, until your turn in the next round.
 
 <br/>You gain the following benefits while in cat form:
-- **Feral Instincts:** You may roll for your SCHOOL OF MAGIC instead of rolling for BRAWLING.
+- **Feral Instincts:** You may roll for any SCHOOL OF MAGIC instead of BRAWLING when making unarmed attacks.
 - **Prowl:** You have a boon on SNEAKING rolls.
 - **Shred** The damage of your unarmed attacks increases by D6 per power level.
 
@@ -1501,7 +1501,7 @@ You instantly turn into your bear or cat form. For the duration you can change b
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your tree form. For the duration you can change between your tree form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your tree form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your tree form.
+You instantly turn into your tree form. For the duration you can change between your tree form, humanoid form, and any other forms you have activated as an action, or as a free action if you spend one WP. The exact look or species of your form is up to you. While in your tree form you cannot attack with anything other than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your tree form.
 
 <br/>You gain the following benefits while in tree form:
 - **Barkskin:** Your armor rating equals 2 per power level.
@@ -1515,7 +1515,7 @@ You instantly turn into your tree form. For the duration you can change between 
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your moonkin form. For the duration you can change between your moonkin form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your moonkin form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.
+You instantly turn into your moonkin form. For the duration you can change between your moonkin form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend one WP. The exact look or species of your form is up to you. While in your moonkin form you cannot attack with anything other than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.
 
 <br/>You gain the following benefits while in moonkin form:
 - **Moonfire:** The cost for casting spells is reduced by 1 WP per power level. This cannot decrease the cost of casting a spell below 1 WP. Magic tricks are cast for free.
