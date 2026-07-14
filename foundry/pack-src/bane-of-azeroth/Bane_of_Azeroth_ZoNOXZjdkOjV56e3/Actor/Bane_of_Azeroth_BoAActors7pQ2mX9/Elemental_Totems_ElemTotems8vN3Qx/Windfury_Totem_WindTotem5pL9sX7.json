@@ -5,7 +5,7 @@
   "_id": "WindTotem5pL9sX7",
   "img": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
   "system": {
-    "description": "<p>A small elemental totem summoned by ELEMENTAL TOTEM.</p>",
+    "description": "<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>",
     "movement": {
       "base": 0,
       "value": 0
@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "<p><strong>Windfury:</strong> The target has a boon on an attack roll.</p>",
+    "traits": "<p><strong>Windfury:</strong> Once per round, each ally within range gains a boon on one attack roll.</p>",
     "currency": {
       "gc": null,
       "sc": null,

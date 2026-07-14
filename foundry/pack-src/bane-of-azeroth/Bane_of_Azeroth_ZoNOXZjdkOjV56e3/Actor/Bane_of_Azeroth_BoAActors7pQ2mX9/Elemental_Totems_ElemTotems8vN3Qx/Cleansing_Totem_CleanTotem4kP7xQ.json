@@ -5,7 +5,7 @@
   "_id": "CleanTotem4kP7xQ",
   "img": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
   "system": {
-    "description": "<p>A small elemental totem summoned by ELEMENTAL TOTEM.</p>",
+    "description": "<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>",
     "movement": {
       "base": 0,
       "value": 0
@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "<p><strong>Cleansing:</strong> The target can heal a condition of their choice at the end of their turn.</p>",
+    "traits": "<p><strong>Cleansing:</strong> Once per round, each ally within range can heal one condition of their choice at the end of their turn.</p>",
     "currency": {
       "gc": null,
       "sc": null,

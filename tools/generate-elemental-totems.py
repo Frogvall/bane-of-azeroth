@@ -370,10 +370,7 @@ def build_actor(
         "_id": actor_id,
         "img": image,
         "system": {
-            "description": (
-                "<p>A small elemental totem summoned by "
-                "ELEMENTAL TOTEM.</p>"
-            ),
+            "description": defaults["descriptionHtml"],
             "movement": {
                 "base": movement,
                 "value": movement,
@@ -549,6 +546,10 @@ def validate_content(
         )
 
     require_string(defaults.get("image"), "defaults.image")
+    require_string(
+        defaults.get("descriptionHtml"),
+        "defaults.descriptionHtml",
+    )
     require_integer(defaults.get("movement"), "defaults.movement")
     require_integer(
         defaults.get("hitPoints"),

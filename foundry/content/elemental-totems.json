@@ -21,6 +21,7 @@
   },
   "defaults": {
     "image": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+    "descriptionHtml": "<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>",
     "movement": 0,
     "hitPoints": 10,
     "willPoints": 0,
@@ -39,7 +40,7 @@
       "name": "Cleansing Totem",
       "element": "water",
       "auraColor": "#3b82f6",
-      "effectHtml": "<p><strong>Cleansing:</strong> The target can heal a condition of their choice at the end of their turn.</p>"
+      "effectHtml": "<p><strong>Cleansing:</strong> Once per round, each ally within range can heal one condition of their choice at the end of their turn.</p>"
     },
     {
       "key": "flametongue",
@@ -48,7 +49,7 @@
       "name": "Flametongue Totem",
       "element": "fire",
       "auraColor": "#f97316",
-      "effectHtml": "<p><strong>Flametongue:</strong> The target deals D4 extra damage with an attack or a spell.</p>"
+      "effectHtml": "<p><strong>Flametongue:</strong> Once per round, each ally within range deals D4 extra damage with one attack or spell.</p>"
     },
     {
       "key": "stoneskin",
@@ -57,7 +58,7 @@
       "name": "Stoneskin Totem",
       "element": "earth",
       "auraColor": "#a16207",
-      "effectHtml": "<p><strong>Stoneskin:</strong> The target takes D4 less damage from an attack or a spell.</p>"
+      "effectHtml": "<p><strong>Stoneskin:</strong> Once per round, each ally within range takes D4 less damage from one attack or spell.</p>"
     },
     {
       "key": "windfury",
@@ -66,7 +67,7 @@
       "name": "Windfury Totem",
       "element": "air",
       "auraColor": "#67e8f9",
-      "effectHtml": "<p><strong>Windfury:</strong> The target has a boon on an attack roll.</p>"
+      "effectHtml": "<p><strong>Windfury:</strong> Once per round, each ally within range gains a boon on one attack roll.</p>"
     }
   ]
 }
