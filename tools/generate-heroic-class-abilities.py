@@ -246,7 +246,7 @@ def build_class_folder(
         "folder": parent_folder_id,
         "name": name,
         "color": None,
-        "sorting": "a",
+        "sorting": "m",
         "_id": folder_id,
         "description": "",
         "sort": sort,
