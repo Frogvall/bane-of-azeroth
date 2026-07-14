@@ -1446,6 +1446,7 @@ Each additional power level lets you choose between summoning an additional tote
 
 You instantly turn into your travel form. For the duration you can change between your travel form, your humanoid form and any other forms you have activated as an action. The exact looks or species of your form is up to you. While in your travel form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your travel form.
 
+<br/>You gain the following benefits while in travel form:<br/>
 At power level 1, your movement rate is doubled. At power level 2, you also can breathe under water, your movement rate in water equals your normal movement rate and you don't have to roll for SWIMMING. At power level 3, you can also move freely through the air.
 
 ### Shadowform
@@ -1456,7 +1457,7 @@ At power level 1, your movement rate is doubled. At power level 2, you also can 
 - **Range:** Personal
 - **Duration:** Stretch
 
-![shadowform](https://i.imgur.com/TM82ZwN.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-1.1cm,margin-bottom:-1cm}
+![shadowform](https://i.imgur.com/TM82ZwN.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-2.1cm,margin-bottom:-1cm}
 
 \page
 {{pageNumber,auto Spells}}
@@ -1517,7 +1518,7 @@ You instantly turn into your tree form. For the duration you can change between 
 You instantly turn into your moonkin form. For the duration you can change between your moonkin form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your moonkin form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.
 
 <br/>You gain the following benefits while in moonkin form:
-- **Moonfire:** The cost for casting spells is reduced by 1 WP per power level. This can not decrease the cost of casting a spell below 1 WP. Magic tricks are cast for free.
+- **Moonfire:** The cost for casting spells is reduced by 1 WP per power level. This cannot decrease the cost of casting a spell below 1 WP. Magic tricks are cast for free.
 - **Sunfire:** Casting spells is done with a boon.
 
 \column
