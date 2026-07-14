@@ -362,20 +362,24 @@ def compare_json(path: Path, expected: dict[str, Any]) -> bool:
         return False
 
 
-def update_adventure_items(
-    existing_items: Sequence[Any],
+def update_adventure_paths(
+    existing_paths: Sequence[Any],
+    *,
+    field_name: str,
     managed_prefix: str,
     generated_paths: Sequence[str],
 ) -> list[str]:
     paths: list[str] = []
-    for index, value in enumerate(existing_items):
+    for index, value in enumerate(existing_paths):
         if not isinstance(value, str):
             raise GenerationError(
-                f"_Adventure.json items[{index}] must be a string."
+                f"_Adventure.json {field_name}[{index}] must be a string."
             )
         paths.append(value)
 
-    unmanaged = [path for path in paths if not path.startswith(managed_prefix)]
+    unmanaged = [
+        path for path in paths if not path.startswith(managed_prefix)
+    ]
     return unmanaged + list(generated_paths)
 
 
@@ -468,12 +472,31 @@ def main() -> int:
                 f"Generated Foundry ID {existing_id} collides with {path}."
             )
 
-        managed_prefix = general_dir.relative_to(adventure_dir).as_posix() + "/"
+        spells_prefix = spells_dir.relative_to(adventure_dir).as_posix() + "/"
+        general_prefix = (
+            general_dir.relative_to(adventure_dir).as_posix() + "/"
+        )
+        generated_folder_paths = [
+            (spells_dir / "_Folder.json")
+            .relative_to(adventure_dir)
+            .as_posix(),
+            (general_dir / "_Folder.json")
+            .relative_to(adventure_dir)
+            .as_posix(),
+        ]
+
         expected_adventure = dict(adventure)
-        expected_adventure["items"] = update_adventure_items(
+        expected_adventure["folders"] = update_adventure_paths(
+            adventure.get("folders", []),
+            field_name="folders",
+            managed_prefix=spells_prefix,
+            generated_paths=generated_folder_paths,
+        )
+        expected_adventure["items"] = update_adventure_paths(
             adventure.get("items", []),
-            managed_prefix,
-            generated_paths,
+            field_name="items",
+            managed_prefix=general_prefix,
+            generated_paths=generated_paths,
         )
 
         expected_files: list[tuple[Path, dict[str, Any]]] = [

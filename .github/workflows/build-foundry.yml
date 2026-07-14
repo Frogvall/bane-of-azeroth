@@ -142,6 +142,15 @@ jobs:
           echo "Manifest URL:    $manifest_url"
           echo "Download URL:    $download_url"
 
+      - name: Verify generated Foundry content
+        run: |
+          set -euo pipefail
+
+          python3 tools/generate-kin.py --check
+          python3 tools/generate-heroic-class-abilities.py --check
+          python3 tools/generate-gear.py --check
+          python3 tools/generate-spells.py --check
+
       - name: Build Foundry package
         run: |
           set -euo pipefail
