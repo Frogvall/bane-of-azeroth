@@ -708,16 +708,36 @@ def update_adventure_paths(
         paths.append(value)
 
     exact = exact_managed_paths or set()
+
+    def is_managed(path: str) -> bool:
+        return (
+            path in exact
+            or any(
+                path.startswith(prefix)
+                for prefix in managed_prefixes
+            )
+        )
+
+    managed_indexes = [
+        index
+        for index, path in enumerate(paths)
+        if is_managed(path)
+    ]
     unmanaged = [
         path
         for path in paths
-        if path not in exact
-        and not any(
-            path.startswith(prefix)
-            for prefix in managed_prefixes
-        )
+        if not is_managed(path)
     ]
-    return unmanaged + list(generated_paths)
+    insert_at = (
+        managed_indexes[0]
+        if managed_indexes
+        else len(unmanaged)
+    )
+    return (
+        unmanaged[:insert_at]
+        + list(generated_paths)
+        + unmanaged[insert_at:]
+    )
 
 
 def validate_id_collisions(

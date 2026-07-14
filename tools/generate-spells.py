@@ -377,10 +377,26 @@ def update_adventure_paths(
             )
         paths.append(value)
 
-    unmanaged = [
-        path for path in paths if not path.startswith(managed_prefix)
+    managed_indexes = [
+        index
+        for index, path in enumerate(paths)
+        if path.startswith(managed_prefix)
     ]
-    return unmanaged + list(generated_paths)
+    unmanaged = [
+        path
+        for path in paths
+        if not path.startswith(managed_prefix)
+    ]
+    insert_at = (
+        managed_indexes[0]
+        if managed_indexes
+        else len(unmanaged)
+    )
+    return (
+        unmanaged[:insert_at]
+        + list(generated_paths)
+        + unmanaged[insert_at:]
+    )
 
 
 def main() -> int:
