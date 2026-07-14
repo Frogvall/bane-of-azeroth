@@ -18,6 +18,9 @@
   "esmodules": [
     "scripts/bane-of-azeroth.js"
   ],
+  "styles": [
+    "styles/bane-of-azeroth.css"
+  ],
   "languages": [
     {
       "lang": "en",
