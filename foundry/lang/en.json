@@ -23,7 +23,13 @@
         "summaryHint": "Token placement will be added in the next implementation step.",
         "confirm": "Confirm",
         "planConfirmed": "Elemental Totem choices confirmed. See the console for the generated plan.",
-        "error": "The Elemental Totem dialog could not be completed. See the console for details."
+        "error": "The Elemental Totem dialog could not be completed. See the console for details.",
+        "placementPrompt": "Place {name} ({index}/{total}) within {range} m. Left-click to place; right-click or press Escape to cancel.",
+        "placementOutOfRange": "That position is {distance} m away; the maximum range is {range} m.",
+        "placementCancelled": "Elemental Totem placement cancelled.",
+        "tokensCreated": "Created {count} Elemental Totem token(s).",
+        "cleanupWarning": "The new totems were created, but old totems could not be removed from: {scenes}.",
+        "placementError": "The Elemental Totem tokens could not be created. See the console for details."
       }
     },
     "spellAutomation": {
