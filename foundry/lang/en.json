@@ -1,5 +1,12 @@
 {
   "BOA": {
+    "dialog": {
+      "missingAmmoPouchTitle": "No Ammo Pouch",
+      "missingAmmoPouchContent": "The character does not have an Ammo Pouch.\nAre you sure you want to perform an action?"
+    },
+    "spellAutomation": {
+      "alwaysPreparedTooltip": "Granted by a Heroic Class Ability and always prepared."
+    },
     "weaponFeatureTypes": {
       "freehanded": "Freehanded",
       "freehandedTooltip": "Freehanded",
@@ -11,10 +18,6 @@
       "armorPiercingTooltip": "Armor Piercing",
       "scattershot": "Scattershot",
       "scattershotTooltip": "Scattershot"
-    },
-    "dialog": {
-      "missingAmmoPouchTitle": "No Ammo Pouch",
-      "missingAmmoPouchContent": "The character does not have an Ammo Pouch.\nAre you sure you want to perform an action?"
     }
   }
 }

@@ -121,8 +121,9 @@ function lockAutoGrantedSpellPreparation(app, html) {
     checkbox.checked = true;
     checkbox.disabled = true;
     checkbox.classList.add("boa-always-prepared");
-    checkbox.title =
-      "Granted by a Heroic Class Ability and always prepared.";
+    checkbox.title = game.i18n.localize(
+      "BOA.spellAutomation.alwaysPreparedTooltip"
+    );
   }
 }
 
