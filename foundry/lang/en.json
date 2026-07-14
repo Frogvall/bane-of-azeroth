@@ -2,7 +2,29 @@
   "BOA": {
     "dialog": {
       "missingAmmoPouchTitle": "No Ammo Pouch",
-      "missingAmmoPouchContent": "The character does not have an Ammo Pouch.\nAre you sure you want to perform an action?"
+      "missingAmmoPouchContent": "The character does not have an Ammo Pouch.\nAre you sure you want to perform an action?",
+      "elementalTotem": {
+        "initialTitle": "Elemental Totem — Power Level {powerLevel}",
+        "totemType": "Totem type",
+        "initialHint": "Choose the first totem summoned by the spell.",
+        "continue": "Continue",
+        "upgradeTitle": "Elemental Totem — Choice {step} of {powerLevel}",
+        "chooseUpgrade": "Choose how to use this additional power level",
+        "additionalTotem": "Summon an additional totem",
+        "additionalTotemType": "Additional totem type",
+        "doubleReach": "Double the reach of all summoned totems",
+        "doubleDurability": "Double the HP and armor rating of all summoned totems",
+        "summaryTitle": "Elemental Totem Summary",
+        "summaryPowerLevel": "Power level: {powerLevel}",
+        "summaryTotems": "Totems",
+        "summaryRange": "Aura range",
+        "summaryHitPoints": "HP",
+        "summaryArmor": "Armor rating",
+        "summaryHint": "Token placement will be added in the next implementation step.",
+        "confirm": "Confirm",
+        "planConfirmed": "Elemental Totem choices confirmed. See the console for the generated plan.",
+        "error": "The Elemental Totem dialog could not be completed. See the console for details."
+      }
     },
     "spellAutomation": {
       "alwaysPreparedTooltip": "Granted by a Heroic Class Ability and always prepared."

@@ -630,7 +630,6 @@ async function grantSpellForAbility(ability) {
   delete spellData._id;
   delete spellData.folder;
   delete spellData.ownership;
-  delete spellData._stats;
 
   foundry.utils.setProperty(
     spellData,
@@ -780,6 +779,565 @@ function onDeleteItem(item, options, userId) {
   });
 }
 
+
+const ELEMENTAL_TOTEM_CONTENT_KEY = "spells.elemental-totem";
+const ELEMENTAL_TOTEM_CONTENT_PATH =
+  `modules/${MODULE_ID}/content/elemental-totems.json`;
+
+const handledElementalTotemMessages = new Set();
+let elementalTotemDefinitionsPromise = null;
+let elementalTotemDialogQueue = Promise.resolve();
+
+function getElementalTotemMessageContext(message) {
+  try {
+    return message.system?.toContext?.() ?? null;
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Could not resolve Elemental Totem message context.`,
+      error,
+      message
+    );
+    return null;
+  }
+}
+
+function isElementalTotemSpellTest(message, context) {
+  return (
+    message?.type === "spellTest" &&
+    getContentKey(context?.spell) === ELEMENTAL_TOTEM_CONTENT_KEY
+  );
+}
+
+function requirePositiveNumber(value, context) {
+  if (
+    typeof value !== "number" ||
+    !Number.isFinite(value) ||
+    value <= 0
+  ) {
+    throw new Error(`${context} must be a positive number.`);
+  }
+
+  return value;
+}
+
+async function loadElementalTotemDefinitions() {
+  const contentUrl = foundry.utils.getRoute(
+    ELEMENTAL_TOTEM_CONTENT_PATH
+  );
+  const response = await fetch(contentUrl);
+
+  if (!response.ok) {
+    throw new Error(
+      `Could not load Elemental Totem content: ` +
+      `${response.status} ${response.statusText}`
+    );
+  }
+
+  const content = await response.json();
+  const defaults = content?.defaults;
+  const totems = content?.totems;
+
+  if (!defaults || !Array.isArray(totems) || totems.length === 0) {
+    throw new Error(
+      "Elemental Totem content is missing defaults or totems."
+    );
+  }
+
+  const definitions = {
+    baseRange: requirePositiveNumber(
+      defaults.auraRange,
+      "defaults.auraRange"
+    ),
+    baseHitPoints: requirePositiveNumber(
+      defaults.hitPoints,
+      "defaults.hitPoints"
+    ),
+    baseArmor: requirePositiveNumber(
+      defaults.armorRating,
+      "defaults.armorRating"
+    ),
+    totems: totems.map(totem => {
+      if (
+        typeof totem?.key !== "string" ||
+        !totem.key ||
+        typeof totem?.name !== "string" ||
+        !totem.name
+      ) {
+        throw new Error(
+          "Each Elemental Totem must have a key and a name."
+        );
+      }
+
+      return {
+        key: totem.key,
+        name: totem.name,
+      };
+    }),
+  };
+
+  const keys = definitions.totems.map(totem => totem.key);
+  if (new Set(keys).size !== keys.length) {
+    throw new Error("Elemental Totem keys must be unique.");
+  }
+
+  return definitions;
+}
+
+function getElementalTotemDefinitions() {
+  elementalTotemDefinitionsPromise ??=
+    loadElementalTotemDefinitions().catch(error => {
+      elementalTotemDefinitionsPromise = null;
+      throw error;
+    });
+
+  return elementalTotemDefinitionsPromise;
+}
+
+function buildTotemOptions(definitions, selectedKey = "") {
+  return definitions.totems
+    .map(totem => {
+      const selected = totem.key === selectedKey
+        ? " selected"
+        : "";
+
+      return (
+        `<option value="${totem.key}"${selected}>` +
+        `${totem.name}</option>`
+      );
+    })
+    .join("");
+}
+
+function getTotemName(definitions, key) {
+  return definitions.totems.find(
+    totem => totem.key === key
+  )?.name ?? key;
+}
+
+async function chooseInitialTotem(definitions, powerLevel) {
+  const formData =
+    await foundry.applications.api.DialogV2.input({
+      window: {
+        title: game.i18n.format(
+          "BOA.dialog.elementalTotem.initialTitle",
+          { powerLevel }
+        ),
+      },
+      content: `
+        <div class="form-group">
+          <label>
+            ${game.i18n.localize(
+              "BOA.dialog.elementalTotem.totemType"
+            )}
+          </label>
+          <div class="form-fields">
+            <select name="totemType" autofocus>
+              ${buildTotemOptions(definitions)}
+            </select>
+          </div>
+        </div>
+        <p class="hint">
+          ${game.i18n.localize(
+            "BOA.dialog.elementalTotem.initialHint"
+          )}
+        </p>
+      `,
+      ok: {
+        label: game.i18n.localize(
+          "BOA.dialog.elementalTotem.continue"
+        ),
+      },
+      rejectClose: false,
+      modal: true,
+    });
+
+  if (!formData) return null;
+
+  const totemType = String(formData.totemType ?? "");
+  if (!definitions.totems.some(
+    totem => totem.key === totemType
+  )) {
+    throw new Error(`Unknown Elemental Totem type: ${totemType}`);
+  }
+
+  return totemType;
+}
+
+async function chooseTotemUpgrade(
+  definitions,
+  step,
+  powerLevel
+) {
+  const formData =
+    await foundry.applications.api.DialogV2.input({
+      window: {
+        title: game.i18n.format(
+          "BOA.dialog.elementalTotem.upgradeTitle",
+          { step, powerLevel }
+        ),
+      },
+      content: `
+        <fieldset>
+          <legend>
+            ${game.i18n.localize(
+              "BOA.dialog.elementalTotem.chooseUpgrade"
+            )}
+          </legend>
+
+          <label class="checkbox">
+            <input
+              type="radio"
+              name="upgrade"
+              value="additionalTotem"
+              checked
+            >
+            ${game.i18n.localize(
+              "BOA.dialog.elementalTotem.additionalTotem"
+            )}
+          </label>
+
+          <div class="form-group">
+            <label>
+              ${game.i18n.localize(
+                "BOA.dialog.elementalTotem.additionalTotemType"
+              )}
+            </label>
+            <div class="form-fields">
+              <select name="totemType">
+                ${buildTotemOptions(definitions)}
+              </select>
+            </div>
+          </div>
+
+          <label class="checkbox">
+            <input
+              type="radio"
+              name="upgrade"
+              value="doubleReach"
+            >
+            ${game.i18n.localize(
+              "BOA.dialog.elementalTotem.doubleReach"
+            )}
+          </label>
+
+          <label class="checkbox">
+            <input
+              type="radio"
+              name="upgrade"
+              value="doubleDurability"
+            >
+            ${game.i18n.localize(
+              "BOA.dialog.elementalTotem.doubleDurability"
+            )}
+          </label>
+        </fieldset>
+      `,
+      ok: {
+        label: game.i18n.localize(
+          "BOA.dialog.elementalTotem.continue"
+        ),
+      },
+      rejectClose: false,
+      modal: true,
+    });
+
+  if (!formData) return null;
+
+  const upgrade = String(formData.upgrade ?? "");
+  if (![
+    "additionalTotem",
+    "doubleReach",
+    "doubleDurability",
+  ].includes(upgrade)) {
+    throw new Error(
+      `Unknown Elemental Totem upgrade: ${upgrade}`
+    );
+  }
+
+  if (upgrade !== "additionalTotem") {
+    return { upgrade };
+  }
+
+  const totemType = String(formData.totemType ?? "");
+  if (!definitions.totems.some(
+    totem => totem.key === totemType
+  )) {
+    throw new Error(`Unknown Elemental Totem type: ${totemType}`);
+  }
+
+  return {
+    upgrade,
+    totemType,
+  };
+}
+
+function buildElementalTotemPlan(
+  message,
+  context,
+  definitions,
+  totemTypes,
+  reachUpgrades,
+  durabilityUpgrades
+) {
+  const powerLevel = Number(context.powerLevel);
+
+  return {
+    sourceMessageId: message.id,
+    actorUuid: context.actor?.uuid ?? null,
+    spellUuid: context.spell?.uuid ?? null,
+    sceneId: message.speaker?.scene ?? canvas.scene?.id ?? null,
+    casterTokenId: message.speaker?.token ?? null,
+    powerLevel,
+    criticalEffect: context.criticalEffect ?? "",
+    totemTypes,
+    reachUpgrades,
+    durabilityUpgrades,
+    auraRange:
+      definitions.baseRange * (2 ** reachUpgrades),
+    hitPoints:
+      definitions.baseHitPoints * (2 ** durabilityUpgrades),
+    armorRating:
+      definitions.baseArmor * (2 ** durabilityUpgrades),
+  };
+}
+
+async function confirmElementalTotemPlan(
+  definitions,
+  plan
+) {
+  const totemNames = plan.totemTypes
+    .map(
+      key =>
+        `<li>${getTotemName(definitions, key)}</li>`
+    )
+    .join("");
+
+  return foundry.applications.api.DialogV2.confirm({
+    window: {
+      title: game.i18n.localize(
+        "BOA.dialog.elementalTotem.summaryTitle"
+      ),
+    },
+    content: `
+      <p>
+        ${game.i18n.format(
+          "BOA.dialog.elementalTotem.summaryPowerLevel",
+          { powerLevel: plan.powerLevel }
+        )}
+      </p>
+
+      <h3>
+        ${game.i18n.localize(
+          "BOA.dialog.elementalTotem.summaryTotems"
+        )}
+      </h3>
+      <ul>${totemNames}</ul>
+
+      <table>
+        <tbody>
+          <tr>
+            <th>
+              ${game.i18n.localize(
+                "BOA.dialog.elementalTotem.summaryRange"
+              )}
+            </th>
+            <td>${plan.auraRange} m</td>
+          </tr>
+          <tr>
+            <th>
+              ${game.i18n.localize(
+                "BOA.dialog.elementalTotem.summaryHitPoints"
+              )}
+            </th>
+            <td>${plan.hitPoints}</td>
+          </tr>
+          <tr>
+            <th>
+              ${game.i18n.localize(
+                "BOA.dialog.elementalTotem.summaryArmor"
+              )}
+            </th>
+            <td>${plan.armorRating}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="hint">
+        ${game.i18n.localize(
+          "BOA.dialog.elementalTotem.summaryHint"
+        )}
+      </p>
+    `,
+    yes: {
+      label: game.i18n.localize(
+        "BOA.dialog.elementalTotem.confirm"
+      ),
+    },
+    no: {
+      label: game.i18n.localize(
+        "DoD.ui.dialog.cancelAction"
+      ),
+    },
+    rejectClose: false,
+    modal: true,
+  });
+}
+
+async function runElementalTotemDialogFlow(message) {
+  const context = getElementalTotemMessageContext(message);
+  if (
+    !context ||
+    !isElementalTotemSpellTest(message, context) ||
+    context.success !== true
+  ) {
+    return;
+  }
+
+  const powerLevel = Number(context.powerLevel);
+  if (!Number.isInteger(powerLevel) || powerLevel < 1) {
+    throw new Error(
+      `Invalid Elemental Totem power level: ${context.powerLevel}`
+    );
+  }
+
+  const definitions = await getElementalTotemDefinitions();
+  const initialTotem = await chooseInitialTotem(
+    definitions,
+    powerLevel
+  );
+  if (!initialTotem) return;
+
+  const totemTypes = [initialTotem];
+  let reachUpgrades = 0;
+  let durabilityUpgrades = 0;
+
+  for (let step = 2; step <= powerLevel; step += 1) {
+    const choice = await chooseTotemUpgrade(
+      definitions,
+      step,
+      powerLevel
+    );
+    if (!choice) return;
+
+    switch (choice.upgrade) {
+      case "additionalTotem":
+        totemTypes.push(choice.totemType);
+        break;
+      case "doubleReach":
+        reachUpgrades += 1;
+        break;
+      case "doubleDurability":
+        durabilityUpgrades += 1;
+        break;
+    }
+  }
+
+  const plan = buildElementalTotemPlan(
+    message,
+    context,
+    definitions,
+    totemTypes,
+    reachUpgrades,
+    durabilityUpgrades
+  );
+
+  const confirmed = await confirmElementalTotemPlan(
+    definitions,
+    plan
+  );
+  if (!confirmed) return;
+
+  console.info(
+    `${MODULE_ID} | Elemental Totem plan confirmed.`,
+    plan
+  );
+
+  ui.notifications.info(
+    game.i18n.localize(
+      "BOA.dialog.elementalTotem.planConfirmed"
+    )
+  );
+
+  /*
+   * Token placement is intentionally implemented in the next step.
+   * The confirmed plan contains all information that placement needs.
+   */
+}
+
+function queueElementalTotemDialog(message) {
+  if (handledElementalTotemMessages.has(message.id)) return;
+  handledElementalTotemMessages.add(message.id);
+
+  elementalTotemDialogQueue =
+    elementalTotemDialogQueue
+      .then(() => runElementalTotemDialogFlow(message))
+      .catch(error => {
+        console.error(
+          `${MODULE_ID} | Elemental Totem dialog flow failed.`,
+          error
+        );
+
+        ui.notifications.error(
+          game.i18n.localize(
+            "BOA.dialog.elementalTotem.error"
+          )
+        );
+      });
+}
+
+function shouldStartElementalTotemDialog(message) {
+  const context = getElementalTotemMessageContext(message);
+
+  if (
+    !context ||
+    !isElementalTotemSpellTest(message, context) ||
+    context.success !== true
+  ) {
+    return false;
+  }
+
+  /*
+   * A dragon result is updated after the critical effect is chosen.
+   * Wait for that update so later token placement can respect it.
+   */
+  if (context.isDragon && !context.criticalEffect) {
+    return false;
+  }
+
+  return true;
+}
+
+function onCreateElementalTotemChatMessage(
+  message,
+  operation,
+  userId
+) {
+  if (
+    userId !== game.user.id ||
+    !shouldStartElementalTotemDialog(message)
+  ) {
+    return;
+  }
+
+  queueElementalTotemDialog(message);
+}
+
+function onUpdateElementalTotemChatMessage(
+  message,
+  changes,
+  operation,
+  userId
+) {
+  if (
+    userId !== game.user.id ||
+    !shouldStartElementalTotemDialog(message)
+  ) {
+    return;
+  }
+
+  queueElementalTotemDialog(message);
+}
+
 Hooks.once("init", () => {
   if (game.system.id !== "dragonbane") return;
 
@@ -787,6 +1345,8 @@ Hooks.once("init", () => {
   Hooks.on("createItem", onCreateItem);
   Hooks.on("updateItem", onUpdateItem);
   Hooks.on("deleteItem", onDeleteItem);
+  Hooks.on("createChatMessage", onCreateElementalTotemChatMessage);
+  Hooks.on("updateChatMessage", onUpdateElementalTotemChatMessage);
   Hooks.on("renderDoDActorBaseSheet", lockAutoGrantedSpellPreparation);
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
