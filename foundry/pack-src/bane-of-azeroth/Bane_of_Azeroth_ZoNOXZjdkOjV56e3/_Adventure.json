@@ -4,7 +4,12 @@
   "caption": "<h1>Test Caption</h1>",
   "description": "<p>Player options for Dragonbane set in the world of Azeroth.</p>",
   "sort": 0,
-  "actors": [],
+  "actors": [
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Cleansing_Totem_CleanTotem4kP7xQ.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Flametongue_Totem_FlameTotem6mR2zV.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Stoneskin_Totem_StoneTotem8nT3wY.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Windfury_Totem_WindTotem5pL9sX7.json"
+  ],
   "combats": [],
   "items": [
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Abilities_mEwNvT4Z7LpUiDXi/Kin_Abilities_dzfzo3sELafcujKG/Draconic_Wings_flying_FJf6gBkGcW0bNm9Z.json",
@@ -143,7 +148,9 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Skills_PQDBhpvfJksVCCcb/Weapon_Skills_VScbQUiwcbYH3LrY/_Folder.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Trade_Goods_Qzw4Jrv7yAOJw0bJ/_Folder.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/_Folder.json",
-    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/_Folder.json"
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/_Folder.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/_Folder.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/_Folder.json"
   ],
   "_id": "ZoNOXZjdkOjV56e3",
   "folder": null,

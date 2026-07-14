@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "expectedCount": 4,
+  "folders": {
+    "root": {
+      "key": "bane-of-azeroth",
+      "id": "BoAActors7pQ2mX9",
+      "name": "Bane of Azeroth",
+      "color": "#0000ff",
+      "sort": 0,
+      "sorting": "a"
+    },
+    "elementalTotems": {
+      "key": "elemental-totems",
+      "id": "ElemTotems8vN3Qx",
+      "name": "Elemental Totems",
+      "color": null,
+      "sort": 100000,
+      "sorting": "a"
+    }
+  },
+  "defaults": {
+    "image": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+    "movement": 0,
+    "hitPoints": 10,
+    "willPoints": 0,
+    "armorRating": 2,
+    "tokenWidth": 0.5,
+    "tokenHeight": 0.5,
+    "tokenDisposition": 1,
+    "auraRange": 10,
+    "auraAlpha": 0.2
+  },
+  "totems": [
+    {
+      "key": "cleansing",
+      "id": "CleanTotem4kP7xQ",
+      "armorId": "CleanArmor8mR2zV",
+      "name": "Cleansing Totem",
+      "element": "water",
+      "auraColor": "#3b82f6",
+      "effectHtml": "<p><strong>Cleansing:</strong> The target can heal a condition of their choice at the end of their turn.</p>"
+    },
+    {
+      "key": "flametongue",
+      "id": "FlameTotem6mR2zV",
+      "armorId": "FlameArmor3pL8sX",
+      "name": "Flametongue Totem",
+      "element": "fire",
+      "auraColor": "#f97316",
+      "effectHtml": "<p><strong>Flametongue:</strong> The target deals D4 extra damage with an attack or a spell.</p>"
+    },
+    {
+      "key": "stoneskin",
+      "id": "StoneTotem8nT3wY",
+      "armorId": "StoneArmor5qK9xM",
+      "name": "Stoneskin Totem",
+      "element": "earth",
+      "auraColor": "#a16207",
+      "effectHtml": "<p><strong>Stoneskin:</strong> The target takes D4 less damage from an attack or a spell.</p>"
+    },
+    {
+      "key": "windfury",
+      "id": "WindTotem5pL9sX7",
+      "armorId": "WindArmor7rN4yB2",
+      "name": "Windfury Totem",
+      "element": "air",
+      "auraColor": "#67e8f9",
+      "effectHtml": "<p><strong>Windfury:</strong> The target has a boon on an attack roll.</p>"
+    }
+  ]
+}
