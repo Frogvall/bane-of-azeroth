@@ -893,8 +893,15 @@ function getElementalTotemDefinitions() {
   return elementalTotemDefinitionsPromise;
 }
 
-function buildTotemOptions(definitions, selectedKey = "") {
+function buildTotemOptions(
+  definitions,
+  selectedKey = "",
+  excludedKeys = []
+) {
+  const excluded = new Set(excludedKeys);
+
   return definitions.totems
+    .filter(totem => !excluded.has(totem.key))
     .map(totem => {
       const selected = totem.key === selectedKey
         ? " selected"
@@ -966,7 +973,8 @@ async function chooseInitialTotem(definitions, powerLevel) {
 async function chooseTotemUpgrade(
   definitions,
   step,
-  powerLevel
+  powerLevel,
+  selectedTotemTypes
 ) {
   const formData =
     await foundry.applications.api.DialogV2.input({
@@ -1004,7 +1012,11 @@ async function chooseTotemUpgrade(
             </label>
             <div class="form-fields">
               <select name="totemType">
-                ${buildTotemOptions(definitions)}
+                ${buildTotemOptions(
+                  definitions,
+                  "",
+                  selectedTotemTypes
+                )}
               </select>
             </div>
           </div>
@@ -1065,6 +1077,12 @@ async function chooseTotemUpgrade(
     throw new Error(`Unknown Elemental Totem type: ${totemType}`);
   }
 
+  if (selectedTotemTypes.includes(totemType)) {
+    throw new Error(
+      `Elemental Totem type already selected: ${totemType}`
+    );
+  }
+
   return {
     upgrade,
     totemType,
@@ -1080,6 +1098,12 @@ function buildElementalTotemPlan(
   durabilityUpgrades
 ) {
   const powerLevel = Number(context.powerLevel);
+
+  if (new Set(totemTypes).size !== totemTypes.length) {
+    throw new Error(
+      "An Elemental Totem plan cannot contain duplicate totem types."
+    );
+  }
 
   return {
     sourceMessageId: message.id,
@@ -1215,7 +1239,8 @@ async function runElementalTotemDialogFlow(message) {
     const choice = await chooseTotemUpgrade(
       definitions,
       step,
-      powerLevel
+      powerLevel,
+      totemTypes
     );
     if (!choice) return;
 
