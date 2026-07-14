@@ -19,7 +19,8 @@
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-heroic-class-abilities.py",
-      "contentKey": "heroic-class-ability.druid.chosen-of-elune"
+      "contentKey": "heroic-class-ability.druid.chosen-of-elune",
+      "grantsSpell": "spells.incarnation-of-the-stars"
     }
   },
   "_stats": {

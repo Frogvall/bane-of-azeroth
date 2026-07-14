@@ -19,7 +19,8 @@
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-heroic-class-abilities.py",
-      "contentKey": "heroic-class-ability.druid.druidic-awakening"
+      "contentKey": "heroic-class-ability.druid.druidic-awakening",
+      "grantsSpell": "spells.savage-incarnation"
     }
   },
   "_stats": {

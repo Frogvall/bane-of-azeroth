@@ -23,6 +23,7 @@ Tested by **Auvreannia** on 2026-07-12.
 | 0.1.1 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-12 |
 | 0.1.2 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-12 |
 | 0.1.3 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-13 |
+| 0.5.1 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pending | — | — |
 
 ## General prerequisites
 
@@ -393,3 +394,98 @@ For each new module release:
 4. Run regression tests for all previously implemented mechanics.
 5. Record failures explicitly rather than removing failed cases.
 6. Mark a version as **Pass** only after every required test has been completed.
+
+---
+
+# Heroic Ability spell grants
+
+Automatic spell grants were introduced in version 0.5.1.
+
+The following Heroic Class Abilities grant spells:
+
+| Heroic Class Ability | Spell |
+|---|---|
+| Druidic Awakening | Savage Incarnation |
+| Chosen of Elune | Incarnation of the Stars |
+| King of the Jungle | Feral Incarnation |
+| Tree of Life | Incarnation of Harmony |
+| Darkness | Shadowform |
+| Shamanic Calling | Elemental Totem |
+
+## SG-01: Add a spell-granting ability
+
+1. Import the current Bane of Azeroth Adventure.
+2. Add one of the listed Heroic Class Abilities to an Actor.
+
+Expected result:
+
+- [ ] The linked spell is added to the Actor.
+- [ ] The spell is marked as memorized.
+- [ ] Exactly one copy of the spell is present.
+
+## SG-02: Remove a spell-granting ability
+
+1. Add a spell-granting Heroic Class Ability to an Actor.
+2. Confirm that its spell was added automatically.
+3. Remove the Heroic Class Ability.
+
+Expected result:
+
+- [ ] The automatically granted spell is removed.
+
+## SG-03: Preserve a manually added spell
+
+1. Add the linked spell to an Actor manually.
+2. Add the Heroic Class Ability that grants the same spell.
+3. Remove the Heroic Class Ability.
+
+Expected result:
+
+- [ ] No duplicate spell is created.
+- [ ] The manually added spell remains after the ability is removed.
+
+## SG-04: Duplicate ability protection
+
+1. Add two copies of the same spell-granting Heroic Class Ability.
+2. Remove one copy.
+
+Expected result:
+
+- [ ] Only one copy of the linked spell exists.
+- [ ] The spell remains while another granting ability is present.
+
+3. Remove the final copy of the ability.
+
+Expected result:
+
+- [ ] The automatically granted spell is removed.
+
+## SG-05: Existing Actors
+
+1. Use an Actor that already has a spell-granting Heroic Class Ability.
+2. Start or reload the world with module version 0.5.1.
+
+Expected result:
+
+- [ ] The linked spell is added if it is missing.
+- [ ] An existing manual or automatically granted copy is not duplicated.
+
+## SG-06: Adventure reimport
+
+1. Reimport the Bane of Azeroth Adventure.
+2. Observe Actors with spell-granting abilities.
+
+Expected result:
+
+- [ ] Reimporting world Items does not create duplicate Actor spells.
+- [ ] All six ability-to-spell relationships continue to work.
+
+## SG-07: Multiplayer ownership
+
+1. Log in as a player who owns an Actor.
+2. Add and remove a spell-granting Heroic Class Ability.
+
+Expected result:
+
+- [ ] The linked spell is created or removed exactly once.
+- [ ] No duplicate operation is performed by another connected client.

@@ -310,6 +310,27 @@ def build_ability_document(
         f"ability {name!r}.image",
     )
 
+    flags = generated_flags(
+        f"heroic-class-ability.{class_key}.{ability_key}"
+    )
+    grants_spell = ability.get("grantsSpell")
+    if grants_spell is not None:
+        grants_spell = require_string(
+            grants_spell,
+            f"ability {name!r}.grantsSpell",
+        )
+        if not re.fullmatch(
+            r"[a-z0-9]+(?:-[a-z0-9]+)*",
+            grants_spell,
+        ):
+            raise GenerationError(
+                f"ability {name!r}.grantsSpell must be a "
+                "lowercase kebab-case key."
+            )
+        flags[MODULE_ID]["grantsSpell"] = (
+            f"spells.{grants_spell}"
+        )
+
     return {
         "folder": folder_id,
         "name": name,
@@ -328,9 +349,7 @@ def build_ability_document(
         },
         "effects": [],
         "sort": sort,
-        "flags": generated_flags(
-            f"heroic-class-ability.{class_key}.{ability_key}"
-        ),
+        "flags": flags,
         "_stats": base_stats(),
         "ownership": {"default": 0},
     }

@@ -19,7 +19,8 @@
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-heroic-class-abilities.py",
-      "contentKey": "heroic-class-ability.druid.tree-of-life"
+      "contentKey": "heroic-class-ability.druid.tree-of-life",
+      "grantsSpell": "spells.incarnation-of-harmony"
     }
   },
   "_stats": {

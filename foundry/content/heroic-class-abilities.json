@@ -116,7 +116,8 @@
           "description": [
             "You know the general spell SAVAGE INCARNATION. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.",
             "When you sleep, you enter a dream state that allows you to stay alert to your surroundings during a shift rest, and you can awaken instantly and at will."
-          ]
+          ],
+          "grantsSpell": "savage-incarnation"
         },
         {
           "key": "chosen-of-elune",
@@ -126,7 +127,8 @@
           "wp": "",
           "description": [
             "You know the general spell INCARNATION OF THE STARS. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
-          ]
+          ],
+          "grantsSpell": "incarnation-of-the-stars"
         },
         {
           "key": "king-of-the-jungle",
@@ -136,7 +138,8 @@
           "wp": "",
           "description": [
             "You know the general spell FERAL INCARNATION. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
-          ]
+          ],
+          "grantsSpell": "feral-incarnation"
         },
         {
           "key": "tree-of-life",
@@ -146,7 +149,8 @@
           "wp": "",
           "description": [
             "You know the general spell INCARNATION OF HARMONY. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
-          ]
+          ],
+          "grantsSpell": "incarnation-of-harmony"
         }
       ]
     },
@@ -415,7 +419,8 @@
           "wp": "",
           "description": [
             "You know the general spell SHADOWFORM. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
-          ]
+          ],
+          "grantsSpell": "shadowform"
         },
         {
           "key": "power-word-shield",
@@ -502,7 +507,8 @@
           "description": [
             "You know the general spell ELEMENTAL TOTEM. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.",
             "You do not have to roll for LANGUAGES when communicating with or trying to understand elementals or their writing."
-          ]
+          ],
+          "grantsSpell": "elemental-totem"
         },
         {
           "key": "bloodlust",

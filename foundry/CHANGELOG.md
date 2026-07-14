@@ -8,6 +8,32 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.5.1] - 2026-07-14
+
+### Added
+
+- Added automatic spell grants for the six Heroic Class Abilities that teach a spell.
+- Added automatic reconciliation for existing Actors with those abilities.
+- Added module flags that identify the spell granted by each generated ability.
+
+### Behavior
+
+- Adding a spell-granting Heroic Class Ability adds its linked spell to the Actor.
+- Granted spells are marked as memorized.
+- Removing the final ability that grants a spell removes only the automatically granted copy.
+- Manually added spells are never removed by the automation.
+- Existing copies of a linked spell prevent duplicate creation.
+
+## [0.5.0] - 2026-07-14
+
+### Added
+
+- Added structured Foundry source data for six Bane of Azeroth spells in `foundry/content/spells.json`.
+- Added `tools/generate-spells.py` for reproducible generation of spell documents and folders.
+- Added the `Spells/General Magic` Adventure folder structure.
+- Added stable Foundry document IDs for all six spells.
+- Added a `--check` mode for verifying generated spells against their structured source.
+
 ## [0.4.0] - 2026-07-13
 
 ### Added
