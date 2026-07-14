@@ -2,7 +2,7 @@
   "id": "bane-of-azeroth",
   "title": "Bane of Azeroth",
   "description": "Player options for Dragonbane set in the world of Azeroth.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "compatibility": {
     "minimum": "14",
     "verified": "14",

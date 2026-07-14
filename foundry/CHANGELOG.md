@@ -8,6 +8,15 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.5.2] - 2026-07-14
+
+### Changed
+
+- Automatically granted spells are now always prepared.
+- The prepared checkbox is disabled for spells granted by Heroic Class Abilities.
+- Attempts to unprepare an automatically granted spell are reverted.
+- Existing automatically granted spells are restored to prepared during reconciliation.
+
 ## [0.5.1] - 2026-07-14
 
 ### Added

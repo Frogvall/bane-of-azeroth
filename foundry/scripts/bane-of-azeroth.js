@@ -82,6 +82,74 @@ async function promptAdventureImport() {
   );
 }
 
+async function ensureAutoGrantedSpellsPrepared(actor) {
+  const updates = actor.items
+    .filter(
+      item =>
+        isAutoGrantedSpell(item) &&
+        item.system.memorized !== true
+    )
+    .map(item => ({
+      _id: item.id,
+      "system.memorized": true,
+    }));
+
+  if (updates.length > 0) {
+    await actor.updateEmbeddedDocuments("Item", updates);
+  }
+}
+
+function isAutoGrantedSpell(item) {
+  return (
+    item?.type === "spell" &&
+    getModuleFlag(item, "autoGranted") === true
+  );
+}
+
+function lockAutoGrantedSpellPreparation(app, html) {
+  const actor = app.actor ?? app.document;
+  if (actor?.documentName !== "Actor") return;
+
+  for (const spell of actor.items.filter(isAutoGrantedSpell)) {
+    const checkbox = html.querySelector(
+      `tr.item[data-item-id="${spell.id}"] ` +
+      `input.inline-edit[data-field="system.memorized"]`
+    );
+
+    if (!checkbox) continue;
+
+    checkbox.checked = true;
+    checkbox.disabled = true;
+    checkbox.title =
+      "Granted by a Heroic Class Ability and always prepared.";
+  }
+}
+
+function protectAutoGrantedSpellPreparation(
+  item,
+  changed
+) {
+  if (!isAutoGrantedSpell(item)) return;
+
+  const flatValue = changed["system.memorized"];
+  const nestedValue = foundry.utils.getProperty(
+    changed,
+    "system.memorized"
+  );
+
+  if (flatValue !== false && nestedValue !== false) return;
+
+  if (Object.hasOwn(changed, "system.memorized")) {
+    changed["system.memorized"] = true;
+  } else {
+    foundry.utils.setProperty(
+      changed,
+      "system.memorized",
+      true
+    );
+  }
+}
+
 function isArmorPiercingRangedWeapon(weapon) {
   return Boolean(
     DoDOptionalRuleSettings.damageTypes
@@ -626,6 +694,7 @@ async function reconcileSpellGrantsForActor(actor) {
   )) {
     await grantSpellForAbility(ability);
   }
+  await ensureAutoGrantedSpellsPrepared(actor);
 }
 
 async function reconcileSpellGrants() {
@@ -716,6 +785,8 @@ Hooks.once("init", () => {
   Hooks.on("createItem", onCreateItem);
   Hooks.on("updateItem", onUpdateItem);
   Hooks.on("deleteItem", onDeleteItem);
+  Hooks.on("renderDoDActorBaseSheet", lockAutoGrantedSpellPreparation);
+  Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
 
