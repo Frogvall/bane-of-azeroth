@@ -8,6 +8,7 @@ RUN apt-get update \
         ca-certificates \
         git \
         jq \
+        python3 \
         unzip \
         zip \
     && npm install --global \
