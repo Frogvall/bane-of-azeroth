@@ -7,6 +7,7 @@ on:
     paths:
       - "foundry/**"
       - "tools/package-foundry.sh"
+      - "tools/generate-*.py"
       - ".github/workflows/build-foundry.yml"
 
   workflow_dispatch:
