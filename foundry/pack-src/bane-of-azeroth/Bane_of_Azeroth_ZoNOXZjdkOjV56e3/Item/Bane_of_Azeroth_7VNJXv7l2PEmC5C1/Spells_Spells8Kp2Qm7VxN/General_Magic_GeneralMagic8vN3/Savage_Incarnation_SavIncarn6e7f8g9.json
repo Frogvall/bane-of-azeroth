@@ -1,0 +1,45 @@
+{
+  "folder": "GeneralMagic8vN3",
+  "name": "Savage Incarnation",
+  "type": "spell",
+  "_id": "SavIncarn6e7f8g9",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "General",
+    "rank": 1,
+    "prerequisite": "Any School of Magic, Druidic Awakening heroic ability",
+    "requirement": "Word",
+    "castingTime": "action",
+    "rangeType": "personal",
+    "range": 0,
+    "areaOfEffect": "none",
+    "duration": "shift",
+    "damage": "",
+    "damagePerPowerlevel": "",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You instantly turn into your travel form. For the duration you can change between your travel form, your humanoid form, and any other forms you have activated as an action. The exact look or species of your form is up to you. While in your travel form you cannot cast any spells that have any requirements besides WORD or attack with anything other than unarmed attacks. You also do not benefit from any armor you wear in your humanoid form.</p><p>Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your travel form.</p><p>At power level 1, your movement rate is doubled. At power level 2, you can also breathe underwater, your movement rate in water equals your normal movement rate, and you do not have to roll for SWIMMING. At power level 3, you can also move freely through the air.</p>"
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.savage-incarnation"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

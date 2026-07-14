@@ -1,0 +1,45 @@
+{
+  "folder": "GeneralMagic8vN3",
+  "name": "Elemental Totem",
+  "type": "spell",
+  "_id": "ElTotem1a2b3c4d5",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "General",
+    "rank": 1,
+    "prerequisite": "Any School of Magic, Shamanic Calling heroic ability",
+    "requirement": "Gesture, focus (a small wooden totem)",
+    "castingTime": "action",
+    "rangeType": "range",
+    "range": 6,
+    "areaOfEffect": "none",
+    "duration": "stretch",
+    "damage": "",
+    "damagePerPowerlevel": "",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You instantly summon a small totem of your choice (see below) within range. The totem is a small object with 10 HP and armor rating 2. You and any of your allies within 10 meters of the totem gain a benefit listed below, once per turn.</p><table><thead><tr><th>Totem</th><th>Benefit</th></tr></thead><tbody><tr><td>Cleansing</td><td>The target can heal a condition of their choice at the end of their turn.</td></tr><tr><td>Flametongue</td><td>The target deals D4 extra damage with an attack or a spell.</td></tr><tr><td>Stoneskin</td><td>The target takes D4 less damage from an attack or a spell.</td></tr><tr><td>Windfury</td><td>The target has a boon on an attack roll.</td></tr></tbody></table><p>Each additional power level lets you choose between summoning an additional totem, doubling the reach of your totem(s), or doubling your totem(s) HP and armor rating. If you cast this spell while you already have active totems, any of your previous totems disappears immediately.</p>"
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.elemental-totem"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

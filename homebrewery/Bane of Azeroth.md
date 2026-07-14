@@ -378,7 +378,7 @@ The Bronzebeard clan is preeminent among the various Ironforge dwarf clans of Kh
 
 - **Willpower Points:** 3
 
-Your skin turns hard and gray, and any non-magical damage is halved (rounded up). The effect lasts until your turn in the next round. You can activate this ability as a reaction when your are hit by an attack.
+Your skin turns hard and gray, and any non-magical damage is halved (rounded up). The effect lasts until your turn in the next round. You can activate this ability as a reaction when you are hit by an attack.
 }}
 
 #### Dark Iron
@@ -1444,7 +1444,7 @@ Each additional power level lets you choose between summoning an additional tote
 - **Range:** Personal
 - **Duration:** Shift
 
-You instantly turn into your travel form. For the duration you can change between your travel form, your humanoid for and any other forms you have activated as an action. The exact looks or species of your form is up to you. While in your travel form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything your are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your travel form.
+You instantly turn into your travel form. For the duration you can change between your travel form, your humanoid form and any other forms you have activated as an action. The exact looks or species of your form is up to you. While in your travel form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your travel form.
 
 At power level 1, your movement rate is doubled. At power level 2, you also can breathe under water, your movement rate in water equals your normal movement rate and you don't have to roll for SWIMMING. At power level 3, you can also move freely through the air.
 
@@ -1473,7 +1473,7 @@ You turn into a dark and shadowy image of yourself, gaining the following benefi
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your bear or cat form. For the duration you can change between your bear form, cat form or your humanoid for and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your bear or cat form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything your are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your bear or cat form.
+You instantly turn into your bear or cat form. For the duration you can change between your bear form, cat form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your bear or cat form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your bear or cat form.
 
 <br/>You gain the following benefits while in bear form:
 - **Feral Instincts:** You may roll for your SCHOOL OF MAGIC instead of rolling for BRAWLING.
@@ -1500,11 +1500,11 @@ You instantly turn into your bear or cat form. For the duration you can change b
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your tree form. For the duration you can change between your tree form or your humanoid for and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your tree form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything your are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your tree form.
+You instantly turn into your tree form. For the duration you can change between your tree form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your tree form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your tree form.
 
 <br/>You gain the following benefits while in tree form:
 - **Barkskin:** Your armor rating equals 2 per power level.
-- **Rejuvenation:** Whenever you heal a creature with a spell, that creature recieves the same healing again on its next power level number of turns.
+- **Rejuvenation:** Whenever you heal a creature with a spell, that creature receives the same healing again on its next power level number of turns.
 
 ### Incarnation of the Stars
 - **Rank:** 2
@@ -1514,7 +1514,7 @@ You instantly turn into your tree form. For the duration you can change between 
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your moonkin form. For the duration you can change between your moonkin form or your humanoid for and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your moonkin form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything your are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.
+You instantly turn into your moonkin form. For the duration you can change between your moonkin form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your moonkin form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.
 
 <br/>You gain the following benefits while in moonkin form:
 - **Moonfire:** The cost for casting spells is reduced by 1 WP per power level. This can not decrease the cost of casting a spell below 1 WP. Magic tricks are cast for free.

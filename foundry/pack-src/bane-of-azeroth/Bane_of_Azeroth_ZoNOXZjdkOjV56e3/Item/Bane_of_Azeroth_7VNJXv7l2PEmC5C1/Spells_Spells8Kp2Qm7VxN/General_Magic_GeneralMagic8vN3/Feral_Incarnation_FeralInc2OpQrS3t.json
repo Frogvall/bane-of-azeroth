@@ -1,0 +1,45 @@
+{
+  "folder": "GeneralMagic8vN3",
+  "name": "Feral Incarnation",
+  "type": "spell",
+  "_id": "FeralInc2OpQrS3t",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "General",
+    "rank": 2,
+    "prerequisite": "Any School of Magic, King of the Jungle heroic ability",
+    "requirement": "Word",
+    "castingTime": "action",
+    "rangeType": "personal",
+    "range": 0,
+    "areaOfEffect": "none",
+    "duration": "stretch",
+    "damage": "",
+    "damagePerPowerlevel": "",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You instantly turn into your bear or cat form. For the duration you can change between your bear form, cat form, humanoid form, and any other forms you have activated as an action, or as a free action if you spend one WP. The exact look or species of your form is up to you. While in your bear or cat form you cannot cast any spells that have any requirements besides WORD or attack with anything other than unarmed attacks. You also do not benefit from any armor you wear in your humanoid form.</p><p>Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your bear or cat form.</p><p>You gain the following benefits while in bear form:</p><ul><li><strong>Feral Instincts:</strong> You may roll for your SCHOOL OF MAGIC instead of BRAWLING.</li><li><strong>Ironfur:</strong> Your armor rating equals 3 per power level.</li><li><strong>Maul:</strong> A creature hit by your unarmed attacks has a bane when attacking any other creature but you, until your turn in the next round.</li></ul><p>You gain the following benefits while in cat form:</p><ul><li><strong>Feral Instincts:</strong> You may roll for your SCHOOL OF MAGIC instead of BRAWLING.</li><li><strong>Prowl:</strong> You have a boon on SNEAKING rolls.</li><li><strong>Shred:</strong> The damage of your unarmed attacks increases by D6 per power level.</li></ul>"
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.feral-incarnation"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

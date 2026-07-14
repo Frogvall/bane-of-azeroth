@@ -1,0 +1,45 @@
+{
+  "folder": "GeneralMagic8vN3",
+  "name": "Incarnation of the Stars",
+  "type": "spell",
+  "_id": "StarsInc6AbCdE7f",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "General",
+    "rank": 2,
+    "prerequisite": "Any School of Magic, Chosen of Elune heroic ability",
+    "requirement": "Word",
+    "castingTime": "action",
+    "rangeType": "personal",
+    "range": 0,
+    "areaOfEffect": "none",
+    "duration": "stretch",
+    "damage": "",
+    "damagePerPowerlevel": "",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You instantly turn into your moonkin form. For the duration you can change between your moonkin form, humanoid form, and any other forms you have activated as an action, or as a free action if you spend one WP. The exact look or species of your form is up to you. While in your moonkin form you cannot attack with anything other than unarmed attacks. You also do not benefit from any armor you wear in your humanoid form.</p><p>Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.</p><p>You gain the following benefits while in moonkin form:</p><ul><li><strong>Moonfire:</strong> The cost for casting spells is reduced by 1 WP per power level. This cannot decrease the cost of casting a spell below 1 WP. Magic tricks are cast for free.</li><li><strong>Sunfire:</strong> Casting spells is done with a boon.</li></ul>"
+  },
+  "effects": [],
+  "sort": 600000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.incarnation-of-the-stars"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}
