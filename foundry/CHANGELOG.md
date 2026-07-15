@@ -8,6 +8,18 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## 0.6.0
+
+### Added
+
+- Added Elemental Totem actors for Cleansing, Flametongue, Stoneskin, and Windfury Totems.
+- Added automated Elemental Totem casting with power-level choices and token placement.
+- Added automatic replacement of previously summoned totems across scenes.
+- Added scalable totem range, hit points, and armor.
+- Added colored visual auras for elemental totems.
+- Added dedicated actor portraits and token artwork.
+- Added player-accessible read-only totem sheets.
+
 ## [0.5.2] - 2026-07-14
 
 ### Changed
