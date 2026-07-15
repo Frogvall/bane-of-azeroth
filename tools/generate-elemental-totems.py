@@ -340,6 +340,7 @@ def build_actor(
     actor_id = totem["id"]
     name = totem["name"]
     image = totem.get("image", defaults["image"])
+    token_image = totem.get("tokenImage", image)
     content_key = f"actors.elemental-totems.{key}"
 
     aura_flags = {
@@ -414,7 +415,7 @@ def build_actor(
             "displayName": 0,
             "actorLink": False,
             "texture": {
-                "src": image,
+                "src": token_image,
                 "scaleX": 1,
                 "scaleY": 1,
                 "tint": "#ffffff",

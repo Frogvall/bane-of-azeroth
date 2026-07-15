@@ -49,7 +49,7 @@
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "modules/bane-of-azeroth/assets/actors/elemental-totems/windfury-totem.webp",
+      "src": "modules/bane-of-azeroth/assets/tokens/elemental-totems/windfury-totem-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",
