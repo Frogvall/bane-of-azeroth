@@ -1409,16 +1409,16 @@ function drawElementalTotemPlacementPreview(
     ? parseHexColor(auraColor)
     : 0xff0000;
 
-  graphics
-    .clear()
-    .rect(
-      candidate.x,
-      candidate.y,
-      candidate.width,
-      candidate.height
-    )
-    .fill({ color, alpha: 0.35 })
-    .stroke({ color, alpha: 0.95, width: 2 });
+  graphics.clear();
+  graphics.lineStyle(2, color, 0.95);
+  graphics.beginFill(color, 0.35);
+  graphics.drawRect(
+    candidate.x,
+    candidate.y,
+    candidate.width,
+    candidate.height
+  );
+  graphics.endFill();
 }
 
 function chooseElementalTotemPosition({
