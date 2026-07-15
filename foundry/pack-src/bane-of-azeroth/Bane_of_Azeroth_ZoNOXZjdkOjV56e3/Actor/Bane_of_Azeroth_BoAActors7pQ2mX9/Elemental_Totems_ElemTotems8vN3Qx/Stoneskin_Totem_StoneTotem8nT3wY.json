@@ -115,7 +115,7 @@
         "totemType": "stoneskin",
         "element": "earth",
         "auraRange": 10,
-        "auraColor": "#a16207",
+        "auraColor": "#d9f04a",
         "auraAlpha": 0.2
       }
     },
@@ -203,7 +203,7 @@
       "totemType": "stoneskin",
       "element": "earth",
       "auraRange": 10,
-      "auraColor": "#a16207",
+      "auraColor": "#d9f04a",
       "auraAlpha": 0.2
     }
   },

@@ -39,10 +39,11 @@
       "armorId": "CleanArmor8mR2zV",
       "name": "Cleansing Totem",
       "element": "water",
-      "auraColor": "#3b82f6",
+      "auraColor": "#38bdf8",
       "effectHtml": "<p><strong>Cleansing:</strong> Once per round, each ally within range can heal one condition of their choice at the end of their turn.</p>",
       "image": "modules/bane-of-azeroth/assets/actors/elemental-totems/cleansing-totem.webp",
-      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/cleansing-totem-token.webp"
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/cleansing-totem-token.webp",
+      "auraAlpha": 0.24
     },
     {
       "key": "flametongue",
@@ -53,7 +54,8 @@
       "auraColor": "#f97316",
       "effectHtml": "<p><strong>Flametongue:</strong> Once per round, each ally within range deals D4 extra damage with one attack or spell.</p>",
       "image": "modules/bane-of-azeroth/assets/actors/elemental-totems/flametongue-totem.webp",
-      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/flametongue-totem-token.webp"
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/flametongue-totem-token.webp",
+      "auraAlpha": 0.22
     },
     {
       "key": "stoneskin",
@@ -61,10 +63,11 @@
       "armorId": "StoneArmor5qK9xM",
       "name": "Stoneskin Totem",
       "element": "earth",
-      "auraColor": "#a16207",
+      "auraColor": "#d9f04a",
       "effectHtml": "<p><strong>Stoneskin:</strong> Once per round, each ally within range takes D4 less damage from one attack or spell.</p>",
       "image": "modules/bane-of-azeroth/assets/actors/elemental-totems/stoneskin-totem.webp",
-      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/stoneskin-totem-token.webp"
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/stoneskin-totem-token.webp",
+      "auraAlpha": 0.28
     },
     {
       "key": "windfury",
@@ -72,10 +75,11 @@
       "armorId": "WindArmor7rN4yB2",
       "name": "Windfury Totem",
       "element": "air",
-      "auraColor": "#67e8f9",
+      "auraColor": "#d8b4fe",
       "effectHtml": "<p><strong>Windfury:</strong> Once per round, each ally within range gains a boon on one attack roll.</p>",
       "image": "modules/bane-of-azeroth/assets/actors/elemental-totems/windfury-totem.webp",
-      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/windfury-totem-token.webp"
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/windfury-totem-token.webp",
+      "auraAlpha": 0.26
     }
   ]
 }

@@ -115,7 +115,7 @@
         "totemType": "cleansing",
         "element": "water",
         "auraRange": 10,
-        "auraColor": "#3b82f6",
+        "auraColor": "#38bdf8",
         "auraAlpha": 0.2
       }
     },
@@ -203,7 +203,7 @@
       "totemType": "cleansing",
       "element": "water",
       "auraRange": 10,
-      "auraColor": "#3b82f6",
+      "auraColor": "#38bdf8",
       "auraAlpha": 0.2
     }
   },
