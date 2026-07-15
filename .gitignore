@@ -8,3 +8,6 @@ apply*.py
 
 # LevelDB runtime and diagnostic files
 foundry/packs/
+node_modules/
+coverage/
+.vitest/

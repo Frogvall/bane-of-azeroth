@@ -6,6 +6,10 @@ on:
       - "**"
     paths:
       - "foundry/**"
+      - "tests/**"
+      - "package.json"
+      - "package-lock.json"
+      - "vitest.config.js"
       - "tools/package-foundry.sh"
       - "tools/generate-*.py"
       - ".github/workflows/build-foundry.yml"
@@ -21,6 +25,26 @@ env:
   IMAGE_VERSION: "3.0.4"
 
 jobs:
+
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install test dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
   resolve-image:
     name: Resolve build image
 
@@ -47,6 +71,7 @@ jobs:
 
     needs:
       - resolve-image
+      - unit-tests
 
     runs-on: ubuntu-24.04
 

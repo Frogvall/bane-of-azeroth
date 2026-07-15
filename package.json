@@ -1,0 +1,16 @@
+{
+  "name": "bane-of-azeroth-tests",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "4.1.10"
+  }
+}
