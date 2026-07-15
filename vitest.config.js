@@ -1,6 +1,9 @@
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
+const isGitHubActions =
+  process.env.GITHUB_ACTIONS === "true";
+
 const sourcePath = fileURLToPath(
   new URL(
     "./foundry/scripts/bane-of-azeroth.js",
@@ -111,5 +114,21 @@ export default defineConfig({
     ],
     clearMocks: true,
     restoreMocks: true,
+
+    reporters: isGitHubActions
+      ? [
+          "default",
+          "github-actions",
+          "junit",
+        ]
+      : [
+          "default",
+        ],
+
+    outputFile: isGitHubActions
+      ? {
+          junit: "./test-results/junit.xml",
+        }
+      : undefined,
   },
 });

@@ -11,3 +11,5 @@ foundry/packs/
 node_modules/
 coverage/
 .vitest/
+
+test-results/
