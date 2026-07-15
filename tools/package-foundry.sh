@@ -130,7 +130,20 @@ rm -f "$ZIP_FILE"
 
 (
   cd "$STAGE_DIR"
-  zip -qr "$ZIP_FILE" .
+  mapfile -d '' zip_entries < <(
+    find . \
+      -mindepth 1 \
+      -maxdepth 1 \
+      -printf '%P\0' \
+      | sort -z
+  )
+
+  if (( ${#zip_entries[@]} == 0 )); then
+    echo "The staging directory is empty." >&2
+    exit 1
+  fi
+
+  zip -qr "$ZIP_FILE" "${zip_entries[@]}"
 )
 
 echo "Validating module zip..."
