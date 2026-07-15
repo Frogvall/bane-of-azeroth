@@ -1825,6 +1825,8 @@ async function configureCreatedElementalTotem(
   }
 
   await actor.update({
+    "ownership.default":
+      CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
     "system.hitPoints.base": plan.hitPoints,
     "system.hitPoints.max": plan.hitPoints,
     "system.hitPoints.value": plan.hitPoints,
