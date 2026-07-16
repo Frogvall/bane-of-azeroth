@@ -1,22 +1,26 @@
 # Testing
 
-This document records manual verification of the **Bane of Azeroth** Foundry
-VTT module.
+This document records automated and manual verification of the **Bane of
+Azeroth** Foundry VTT module.
 
 The module is in early alpha. Test results apply only to the versions and
 configuration listed below.
 
-## Current test environment
+## Current development target
 
 | Component | Version |
 |---|---:|
-| Bane of Azeroth | 0.6.0 |
+| Bane of Azeroth development version | 0.7.0 |
+| Latest fully verified module version | 0.6.0 |
 | Foundry Virtual Tabletop | 14.364 |
 | Dragonbane system | 4.0.1 |
 | Dragonbane Core Set | 2.2 |
 | YZE Combat | 1.7.0 |
 
-Tested by **Auvreannia** through 2026-07-15.
+Compatibility results must be recorded against the exact installed module
+version, including any prerelease suffix.
+
+Tested by **Auvreannia** through 2026-07-16.
 
 ## Version status
 
@@ -29,31 +33,202 @@ Tested by **Auvreannia** through 2026-07-15.
 | 0.5.1 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-14 |
 | 0.5.2 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-14 |
 | 0.6.0 | 14.364 | 4.0.1 | 2.2 | 1.7.0 | Pass | Auvreannia | 2026-07-15 |
+| 0.7.0 | — | — | — | — | In progress | — | — |
 
-## General prerequisites
+---
 
-Before running manual tests:
+# Automated unit and integration tests
+
+Vitest runs during every Foundry package build. A failed test blocks packaging
+and prerelease publication.
+
+Local Docker command:
+
+```bash
+docker run --rm \
+  --user "$(id -u):$(id -g)" \
+  -e HOME=/tmp \
+  -v "$PWD:/workspace" \
+  -w /workspace \
+  node:22-bookworm-slim \
+  bash -lc 'npm ci --ignore-scripts && npm run test:coverage'
+```
+
+## Current automated baseline
+
+Recorded from the Foundry branch pipeline on 2026-07-16:
+
+| Metric | Covered | Total | Coverage |
+|---|---:|---:|---:|
+| Test files | 10 | 10 | 100% passing |
+| Tests | 134 | 134 | 100% passing |
+| Statements | 401 | 772 | 51.94% |
+| Branches | 292 | 535 | 54.57% |
+| Functions | 73 | 132 | 55.30% |
+| Lines | 390 | 725 | 53.79% |
+
+The pipeline publishes:
+
+- a Vitest summary in the GitHub Actions job summary;
+- JUnit XML as the `unit-test-results` artifact; and
+- HTML, LCOV, and JSON coverage as the `unit-test-coverage` artifact.
+
+Coverage is informational and currently has no blocking percentage threshold.
+This baseline must not decrease during a behavior-preserving refactor.
+
+## Automated areas
+
+The current Vitest suite covers positive and negative cases for:
+
+- Adventure import prompting and version handling;
+- custom weapon feature eligibility;
+- Ammo Pouch detection and confirmation handling;
+- Armor Piercing and Scattershot prototype patches;
+- Heroic Ability spell-grant definitions;
+- automatic spell creation, reconciliation, preparation protection, duplicate
+  prevention, and removal;
+- Elemental Totem definition loading;
+- Elemental Totem plan construction and validation;
+- requester, ownership, message, scene, and placement validation;
+- token creation, persistent flags, Observer ownership, rollback, and
+  cross-scene cleanup;
+- aura range, color, and alpha calculations; and
+- Foundry hook registration.
+
+Automated tests use Foundry and Dragonbane test doubles. They do not replace
+tests in a real Foundry world.
+
+---
+
+# Prerelease system-test macros
+
+Development builds include a Macro compendium named:
+
+```text
+Bane of Azeroth – Developer Tests
+```
+
+Pack ID:
+
+```text
+bane-of-azeroth.bane-of-azeroth-dev-tests
+```
+
+The pack is included only when the package is built with:
+
+```text
+BOA_INCLUDE_DEV_TESTS=true
+```
+
+The branch prerelease workflow sets this automatically. Stable/default-branch
+packages do not declare or include the developer-test pack.
+
+No system test runs automatically. A game master starts every macro manually.
+
+## Included macros
+
+### BOA DEV – Run All System Tests
+
+Runs the automated system-test macros in sequence and performs fixture cleanup
+afterwards.
+
+### BOA DEV – Smoke Test
+
+Read-only checks for the active module and system, compendiums, custom weapon
+features, localization, and socket support.
+
+### BOA DEV – Verify Generated Content
+
+Read-only checks against imported Adventure content and the structured runtime
+definitions: generated spells, granting abilities, Elemental Totem templates,
+portraits, token images, statistics, traits, and aura flags.
+
+### BOA DEV – Verify Spell Grants
+
+Creates a temporary flagged Actor and verifies the real Foundry document-hook
+workflow:
+
+- adding Shamanic Calling grants Elemental Totem;
+- the granted spell is prepared and marked as automatic;
+- it cannot be unprepared;
+- duplicate granting abilities do not duplicate it;
+- it remains until the final granting ability is removed; and
+- a manually added spell is preserved.
+
+The temporary Actor is deleted in a `finally` block.
+
+### BOA DEV – Verify Elemental Totems
+
+Checks imported templates and, when summoned totems already exist, checks their
+runtime flags, synthetic Actor ownership, statistics, images, and aura data.
+Runtime-token checks are skipped when no summoned totems exist.
+
+### BOA DEV – Cleanup Test Data
+
+Deletes only documents carrying:
+
+```text
+flags.bane-of-azeroth.testFixture = true
+```
+
+It never deletes documents based on names.
+
+## Running the macro suite
+
+1. Install a branch prerelease.
+2. Import or update the Bane of Azeroth Adventure.
+3. Open **Compendium Packs**.
+4. Open **Bane of Azeroth – Developer Tests**.
+5. Execute **BOA DEV – Run All System Tests** as a game master.
+6. Review the whispered chat report and browser console.
+7. Complete the remaining manual compatibility tests.
+
+## Persistent test reports
+
+Every **BOA DEV – Run All System Tests** execution creates a dated Journal
+Entry under:
+
+```text
+Bane of Azeroth
+└── System Tests
+    └── BOA Test Report – <module version> – <date and time>
+```
+
+The report is created even when an automated test fails. It contains four
+Markdown pages:
+
+1. **Summary** — automatic result, aggregate counts, exact runtime versions,
+   user, world, and timestamps.
+2. **Automated Results** — every PASS, FAIL, and SKIP result with details.
+3. **Manual Checklist** — editable task-list lines using `- [ ]`; change them
+   to `- [x]` as tests are completed.
+4. **Environment and Notes** — browser, scene, active modules, and free-form
+   notes.
+
+The Journal Entry is marked with persistent module flags including automatic
+result, the manual status at creation, module version, Foundry version,
+Dragonbane version, and run timestamp. The completed manual result is kept
+on the editable Summary and Manual Checklist pages.
+
+`Run All` posts only a short whispered chat summary with a link to the complete
+Journal report. The browser console retains the detailed diagnostic tables.
+
+A compatibility run is complete only after the report's manual checklist and
+manual result have been updated.
+
+---
+
+# General manual prerequisites
 
 - Enable the Bane of Azeroth module.
-- Use the Dragonbane system version listed above.
-- Enable the Dragonbane **Damage Types** optional rule for tests involving
-  Piercing and Armor Piercing.
-- Import the current Bane of Azeroth Adventure.
-- Reload the world after changing module scripts, styles, localization, or
-  generated content.
-- Reimport the Adventure after changing generated Actor, Item, or Folder
-  documents.
-- Use an active game master when testing player-initiated Elemental Totem
-  summoning.
-- Place the relevant Actor tokens in the active scene for tests involving
-  distance or token placement.
+- Use the versions listed in the current environment.
+- Enable Dragonbane's **Damage Types** rule for Armor Piercing tests.
+- Import the current Adventure.
+- Reload after changing scripts, styles, localization, or generated content.
+- Reimport the Adventure after changing generated documents.
+- Keep an active game master connected for player-initiated totem summoning.
 
 ## Generated content verification
-
-The structured sources are the canonical source for generated Foundry
-documents.
-
-Run each generator in check mode before release:
 
 ```bash
 python3 tools/generate-kin.py --check
@@ -65,292 +240,88 @@ python3 tools/generate-elemental-totems.py --check
 
 Expected result:
 
-- [x] Every generator exits successfully.
-- [x] Generated Adventure source matches the structured content.
-- [x] A full module build and deployment completes successfully.
-- [x] The installable package contains the dedicated Elemental Totem portrait
-  and token images.
+- [x] Every generator succeeds.
+- [x] Generated Adventure source matches structured content.
+- [x] Unit and integration tests pass.
+- [x] A full package build and deployment succeeds.
+- [x] Prereleases contain the developer-test Macro pack.
+- [x] Stable packages do not contain or declare the developer-test pack.
+- [x] Elemental Totem portraits and token images are packaged.
 
 ---
 
 # Adventure import
 
-## AI-01: New content version prompt
+## AI-01: Version prompt
 
-1. Open a world as a game master after installing a newer content version.
-2. Observe the Bane of Azeroth Adventure import prompt.
-
-Expected result:
-
-- [x] The Adventure import screen opens automatically.
-- [x] The prompt is shown only to game masters.
-- [x] Reopening the same content version does not show the prompt again.
-- [x] Development build suffix changes do not retrigger the prompt.
-- [x] A later semantic content version retriggers the prompt.
+- [x] A game master is prompted for a newer semantic content version.
+- [x] A player is not prompted.
+- [x] A development-build suffix does not retrigger the prompt.
+- [x] A later semantic version does retrigger it.
 
 ## AI-02: Clean-world import
 
-1. Install Bane of Azeroth in a world without previously imported Bane of
-   Azeroth content.
-2. Import the current Adventure.
-3. Inspect its generated folders, Items, and Actors.
-
-Expected result:
-
 - [x] The Adventure imports without errors.
-- [x] Kin, Kin Abilities, Heroic Class Abilities, gear, spells, and Elemental
-  Totem Actors are present.
-- [x] Generated documents appear in their intended folder hierarchy.
-- [x] The four Elemental Totem Actors use their dedicated portraits.
-- [x] The four Elemental Totem prototype tokens use their dedicated token
-  images.
+- [x] Generated folders, Items, and Actors are present.
+- [x] Totem portraits and prototype-token images are correct.
 
 ---
 
 # Custom weapon features
 
-The module registers these custom weapon features:
-
-- Ammunition
-- Armor Piercing
-- Freehanded
-- Returning
-- Scattershot
-
 ## WF-01: Registration and localization
 
-Expected result:
-
-- [x] Every custom feature is available as a selectable weapon feature.
-- [x] Every custom feature has an English label.
-- [x] Every custom feature has an English tooltip.
-- [x] Existing Dragonbane weapon features remain available.
-
----
+- [x] Ammunition, Armor Piercing, Freehanded, Returning, and Scattershot are
+  selectable.
+- [x] Each has an English label and tooltip.
+- [x] Existing Dragonbane features remain available.
 
 # Armor Piercing
 
-An eligible weapon must be:
+## AP-01: Eligibility
 
-- ranged;
-- non-thrown;
-- Piercing; and
-- marked with the Armor Piercing feature.
+- [x] A ranged, non-thrown, Piercing, Armor Piercing weapon receives
+  **Find Weak Spot**.
+- [x] Missing Piercing, missing Armor Piercing, thrown, and melee weapons do
+  not receive the module's option.
+- [x] The option is unavailable when Damage Types is disabled.
 
-## AP-01: Eligible ranged weapon
+## AP-02: Attack behavior
 
-1. Equip a ranged, non-thrown weapon with both **Piercing** and
-   **Armor Piercing**.
-2. Start an attack.
-
-Expected result:
-
-- [x] **Find Weak Spot** is available.
-
-## AP-02: Ineligible weapons
-
-Repeat the attack test with:
-
-- a Piercing weapon without Armor Piercing;
-- an Armor Piercing weapon without Piercing; and
-- a thrown Piercing weapon.
-
-Expected result:
-
-- [x] The module does not add its Armor Piercing version of Find Weak Spot to
-  either ineligible ranged weapon.
-- [x] The thrown weapon does not receive a duplicate Find Weak Spot option.
-- [x] Normal Dragonbane thrown-weapon behavior remains unchanged.
-
-## AP-03: Damage Types disabled
-
-1. Disable Dragonbane's **Damage Types** optional rule.
-2. Start an attack with an otherwise eligible weapon.
-
-Expected result:
-
-- [x] The Armor Piercing Find Weak Spot option is unavailable.
-
-## AP-04: Attack behavior
-
-1. Start an attack with an eligible weapon.
-2. Select **Find Weak Spot**.
-3. Attack an armored target successfully.
-4. Roll damage.
-
-Expected result:
-
-- [x] The attack receives exactly one bane.
-- [x] The successful hit ignores armor.
-
-## AP-05: Ranged mishap
-
-1. Attack with an eligible weapon using Find Weak Spot.
-2. Produce a demon result.
-
-Expected result:
-
-- [x] The attack uses **Ranged Mishap**.
-- [x] The attack does not use melee mishap behavior.
-
----
+- [x] Find Weak Spot applies exactly one bane.
+- [x] A successful hit ignores armor.
+- [x] A demon result uses Ranged Mishap.
 
 # Scattershot
 
-For these tests:
+## SS-01: Distance bands
 
-- **Point blank** is a calculated distance of 2 meters or less.
-- **Normal range** is beyond point blank and no farther than the weapon's
-  listed range.
-- **Long range** is beyond normal range and no farther than double the listed
-  range.
-- **Beyond maximum range** is farther than double the listed range.
+- [x] Point-blank bane is removed at 2 meters or less.
+- [x] Normal-range damage is unchanged.
+- [x] Long-range bane is retained.
+- [x] Long-range damage is halved and rounded up.
+- [x] Critical weapon dice are doubled before halving.
+- [x] Maximum range is preserved.
+- [x] No target means no automatic range effect.
 
-## SS-01: Point blank
+## SS-02: Metadata and controls
 
-1. Attack a target at 2 meters or less with a Scattershot weapon.
-2. Repeat with a comparable ranged weapon without Scattershot.
-
-Expected result:
-
-- [x] Scattershot removes the normal point-blank bane.
-- [x] The control weapon retains the normal point-blank bane.
-
-## SS-02: Normal range
-
-1. Make a successful Scattershot attack within normal range.
-2. Roll damage.
-
-Expected result:
-
-- [x] Damage is not halved.
-- [x] Normal damage calculation is preserved.
-
-## SS-03: Long range
-
-1. Make a successful Scattershot attack beyond normal range but within double
-   range.
-2. Roll both even and odd damage totals.
-
-Expected result:
-
-- [x] The normal long-range bane still applies.
-- [x] Total damage is halved.
-- [x] Fractions are rounded up.
-- [x] An original total of 9 becomes 5.
-
-## SS-04: Critical hit at long range
-
-1. Make a successful critical long-range Scattershot attack.
-2. Roll damage.
-
-Expected result:
-
-- [x] Critical-hit weapon dice are doubled first.
-- [x] The resulting total is then halved.
-- [x] Fractions are rounded up.
-- [x] A verified critical result of 13 becomes 7.
-
-## SS-05: Control weapon at long range
-
-1. Make a long-range attack with a weapon without Scattershot.
-2. Roll damage.
-
-Expected result:
-
-- [x] The module does not halve the damage.
-
-## SS-06: Missing target or distance
-
-1. Attack with a Scattershot weapon without a targeted token or calculated
-   distance.
-2. Roll damage.
-
-Expected result:
-
-- [x] No automatic Scattershot range effect is applied.
-- [x] Damage is not automatically halved.
-
-## SS-07: Beyond double range
-
-1. Target a token beyond double the weapon's listed range.
-2. Attempt an attack.
-
-Expected result:
-
-- [x] Dragonbane's normal maximum-range warning is shown.
-- [x] Scattershot does not bypass the maximum range restriction.
-
-## SS-08: Damage metadata
-
-1. Make a successful long-range Scattershot attack against a targeted,
-   armored creature.
-2. Roll damage.
-
-Expected result:
-
-- [x] The original target is retained.
-- [x] The original damage type is retained.
-- [x] Existing armor-handling information is retained.
-- [x] Existing ignore-armor information is retained when applicable.
-
-## SS-09: Ranged mishap
-
-1. Attack with a Scattershot weapon.
-2. Produce a demon result.
-
-Expected result:
-
-- [x] The attack uses **Ranged Mishap**.
-- [x] Scattershot does not convert the attack to melee behavior.
-
----
+- [x] Target, damage type, armor data, and ignore-armor data are retained.
+- [x] A non-Scattershot control weapon is unaffected.
+- [x] Demon results use Ranged Mishap.
 
 # Ammunition warning
 
-## AM-01: Missing Ammo Pouch
+## AM-01: Dialog behavior
 
-1. Use a weapon with the Ammunition feature on an Actor without an Ammo
-   Pouch.
-2. Test both dialog choices.
-
-Expected result:
-
-- [x] A confirmation dialog is shown.
-- [x] **Perform Action** continues to the normal attack dialog.
-- [x] **Cancel Action** cancels the attack.
-
-## AM-02: Warning eligibility
-
-Expected result:
-
-- [x] No warning appears when the Actor carries an Ammo Pouch.
-- [x] No warning appears for a weapon without Ammunition.
-- [x] Ammunition is not consumed or tracked.
-
-## AM-03: Warning order
-
-Trigger every applicable warning during the same attack.
-
-Expected result:
-
-- [x] Dialogs appear in this order:
-  1. Missing Ammo Pouch
-  2. Broken Weapon
-  3. Long Range
-
-## AM-04: Weapon regression
-
-Expected result:
-
-- [x] Armor Piercing remains functional.
-- [x] Scattershot remains functional.
-
----
+- [x] Missing Ammo Pouch shows a confirmation.
+- [x] **Perform Action** continues.
+- [x] **Cancel Action** cancels.
+- [x] No warning appears with an Ammo Pouch or without Ammunition.
+- [x] Warning order is Ammo Pouch, Broken Weapon, Long Range.
+- [x] Ammunition is not consumed.
 
 # Heroic Ability spell grants
-
-The following Heroic Class Abilities grant spells:
 
 | Heroic Class Ability | Spell |
 |---|---|
@@ -361,392 +332,114 @@ The following Heroic Class Abilities grant spells:
 | Darkness | Shadowform |
 | Shamanic Calling | Elemental Totem |
 
-## SG-01: Add a spell-granting ability
+## SG-01: Lifecycle
 
-1. Add one of the listed Heroic Class Abilities to an Actor.
-
-Expected result:
-
-- [x] The linked spell is added to the Actor.
-- [x] The spell is marked as prepared.
-- [x] The spell is identified as automatically granted.
-- [x] Exactly one copy of the spell is present.
-
-## SG-02: Remove the granting ability
-
-1. Add a spell-granting ability.
-2. Confirm that the spell was added automatically.
-3. Remove the ability.
-
-Expected result:
-
-- [x] The automatically granted spell is removed.
-
-## SG-03: Preserve a manual spell
-
-1. Add the linked spell to an Actor manually.
-2. Add and then remove its granting ability.
-
-Expected result:
-
-- [x] No duplicate spell is created.
-- [x] The manually added spell remains after the ability is removed.
-
-## SG-04: Multiple granting abilities
-
-1. Add two copies of the same granting ability.
-2. Remove one copy.
-3. Remove the final copy.
-
-Expected result:
-
-- [x] Only one copy of the linked spell exists.
-- [x] The spell remains while another granting ability is present.
-- [x] The automatically granted spell is removed after the final granting
-  ability is removed.
-
-## SG-05: Existing Actors and reconciliation
-
-1. Use an Actor that already has a spell-granting ability.
-2. Start or reload the world.
-
-Expected result:
-
-- [x] The linked spell is added if missing.
-- [x] An existing manual or automatically granted spell is not duplicated.
-- [x] An automatically granted spell is restored to prepared if necessary.
-
-## SG-06: Adventure reimport
-
-1. Reimport the current Bane of Azeroth Adventure.
-2. Inspect Actors with spell-granting abilities.
-
-Expected result:
-
-- [x] Reimporting world content does not create duplicate Actor spells.
-- [x] All six ability-to-spell relationships continue to work.
-
-## SG-07: Multiplayer ownership
-
-1. Log in as a player who owns an Actor.
-2. Add and remove a spell-granting Heroic Class Ability.
-
-Expected result:
-
-- [x] The linked spell is created or removed exactly once.
-- [x] No duplicate operation is performed by another connected client.
-
----
-
-# Always-prepared granted spells
-
-## GP-01: Sheet presentation
-
-1. Open an Actor sheet containing an automatically granted spell.
-2. Inspect the prepared checkbox.
-
-Expected result:
-
-- [x] The spell is shown as prepared.
-- [x] Its prepared checkbox is disabled.
-- [x] Its checkbox is visually distinct from normal prepared spells.
-- [x] Hovering the checkbox displays the localized always-prepared tooltip.
-
-## GP-02: Preparation protection
-
-1. Attempt to set an automatically granted spell to unprepared.
-2. Repeat with a normal prepared spell.
-
-Expected result:
-
-- [x] The automatically granted spell remains prepared.
-- [x] The normal spell can be unprepared.
-- [x] The protection does not affect manually managed spells.
-
----
+- [x] Adding an ability adds exactly one prepared linked spell.
+- [x] The automatic spell cannot be unprepared.
+- [x] Duplicate granting abilities do not duplicate the spell.
+- [x] The spell remains until the final granting ability is removed.
+- [x] A manually added spell is preserved.
+- [x] Existing Actors reconcile without duplicates.
+- [x] Player-owned Actors are modified exactly once.
 
 # Elemental Totems
 
-`Elemental Totem` can summon:
-
-- Cleansing Totem
-- Flametongue Totem
-- Stoneskin Totem
-- Windfury Totem
-
-Power level is limited to 1–3 by the Dragonbane spellcasting flow.
-
-At power level 1, the caster summons one chosen totem. Each additional power
-level is spent on one of these choices:
-
-- summon one additional, different totem;
-- double the reach of all summoned totems; or
-- double the HP and armor rating of all summoned totems.
-
-Only one totem of each type can exist in the same casting plan.
-
-## ET-01: Actor templates
-
-Inspect all four imported Elemental Totem Actors.
-
-Expected result:
-
-- [x] Each totem is an NPC Actor.
-- [x] Each totem has 10 base HP.
-- [x] Each totem has 2 armor from its embedded armor Item.
-- [x] Each totem has movement 0.
-- [x] Each prototype token is unlinked and sized 0.5 by 0.5 grid units.
-- [x] Each totem has its own portrait.
-- [x] Each totem has its own token image.
-- [x] Each trait uses the final **once per round** wording.
-- [x] The totem Actors are stored under
-  `Actors/Bane of Azeroth/Elemental Totems`.
-
-## ET-02: Normal success at power level 1
-
-1. Control the caster token.
-2. Cast Elemental Totem at power level 1.
-3. Produce a normal success.
-4. Choose and place one totem within 6 meters.
-
-Expected result:
-
-- [x] The Elemental Totem dialog opens.
-- [x] The caster chooses one of the four totem types.
-- [x] The summary reports one totem, 10-meter aura range, 10 HP, and 2 armor.
-- [x] Placement is allowed within 6 meters of the caster.
-- [x] One token of the selected type is created.
-- [x] The token uses its dedicated token image.
-- [x] The Actor sheet uses its dedicated portrait.
-
-## ET-03: Power level 3 choices
-
-1. Cast Elemental Totem at power level 3.
-2. Choose two different totems.
-3. Spend the remaining choice on either reach or durability.
-
-Expected result:
-
-- [x] One upgrade dialog is shown for each power level above 1.
-- [x] A second totem cannot use a type already selected.
-- [x] The final summary lists the selected totems.
-- [x] A reach upgrade changes all aura ranges from 10 to 20 meters.
-- [x] A durability upgrade changes all summoned totems from 10 HP and
-  2 armor to 20 HP and 4 armor.
-- [x] The calculated values are applied to every totem created by the cast.
-
-## ET-04: Placement range
-
-1. Begin placement.
-2. Move the preview inside and outside 6 meters of the caster.
-3. Attempt to place outside the valid range.
-
-Expected result:
-
-- [x] Valid placement is shown in the selected totem's aura color.
-- [x] Invalid placement is shown in red.
-- [x] Placement outside 6 meters is rejected.
-- [x] Valid placement snaps to the scene grid.
-
-## ET-04: Cancel placement
-
-1. Begin placement while the caster already has summoned totems.
-2. Cancel with Escape or right-click.
-
-Expected result:
-
-- [x] The entire placement flow is cancelled.
-- [x] No partial replacement is performed.
-- [x] Previously summoned totems remain in place.
-
-## ET-04: Failed cast
-
-Produce each of these failed spell tests:
-
-- a normal, pushable failure;
-- a pushed failure; and
-- a demon result.
-
-Expected result:
-
-- [x] No Elemental Totem dialog opens.
-- [x] No totem is created.
-- [x] Existing totems are not removed.
-
-## ET-04: Pushed success
-
-1. Fail the initial spell test.
-2. Push the roll.
-3. Succeed on the pushed roll.
-
-Expected result:
-
-- [x] The dialog opens once for the successful pushed result.
-- [x] The original failed ChatMessage does not open another dialog.
-- [x] The selected totems can be placed normally.
-
-## ET-04: Dragon result
-
-1. Produce a dragon result.
-2. Choose the critical effect offered by Dragonbane.
-
-Expected result:
-
-- [x] The Elemental Totem dialog waits for the critical-effect choice.
-- [x] The dialog opens only once.
-- [x] Placement and creation complete successfully.
-
-## ET-04: Replace previous totems
-
-1. Summon one or more totems.
-2. Cast Elemental Totem again with the same caster.
-3. Complete all new placements.
-
-Expected result:
-
-- [x] New totems are created successfully.
-- [x] Previous Elemental Totems belonging to the caster are removed.
-- [x] Totems belonging to other casters are not removed.
-
-## ET-04: Cross-scene cleanup
-
-1. Move or copy one of the caster's summoned totems to another scene.
-2. Make that scene inactive.
-3. Cast Elemental Totem again on the active scene.
-
-Expected result:
-
-- [x] The previous totem is removed from the inactive scene.
-- [x] All copies carrying the same caster flags are removed.
-- [x] The new cast remains on the active scene.
-
-## ET-04: Player casting with active GM
-
-1. Log in as a player who owns the caster Actor.
-2. Keep a game master connected.
-3. Cast and place Elemental Totem as the player.
-
-Expected result:
-
-- [x] The player receives the choice and placement dialogs.
-- [x] The player selects all token positions.
-- [x] The active game master creates the tokens.
-- [x] The operation is performed exactly once.
-
-## ET-04: Read-only player sheets
-
-1. Summon a totem.
-2. Open it as the caster's player.
-3. Open it as another player.
-
-Expected result:
-
-- [x] Players can open and read the summoned totem's Actor sheet.
-- [x] Players cannot edit its HP, armor, Items, or other Actor data.
-- [x] The source Actor templates do not need to be exposed as player-owned
-  Actors.
-
-## ET-04: Aura range and color
-
-Summon all four totem types and test both normal and upgraded range.
-
-Expected result:
-
-- [x] Cleansing uses its blue/cyan effect color.
-- [x] Flametongue uses its orange effect color.
-- [x] Stoneskin uses its yellow-green effect color.
-- [x] Windfury uses its lavender effect color.
-- [x] The aura radius matches the stored 10-, 20-, or 40-meter range.
-- [x] Different totem types remain visually distinguishable when their auras
-  overlap.
-
-## ET-04: Aura lifecycle
-
-1. Summon a totem.
-2. Move or copy the token.
-3. Reload the scene.
-4. Delete or replace the token.
-
-Expected result:
-
-- [x] The aura follows the token when it moves.
-- [x] A copied token retains its aura data.
-- [x] The aura is restored after the scene reloads.
-- [x] The aura is removed with the token.
-- [x] The aura does not create light or alter token vision.
-- [x] The aura is visual only and does not automate the totem's rules effect.
-
-## ET-04: Reimported content
-
-1. Change generated Elemental Totem data.
-2. Regenerate and rebuild the module.
-3. Reimport the current Adventure.
-4. Cast Elemental Totem again.
-
-Expected result:
-
-- [x] Newly created tokens use the current prototype-token image.
-- [x] Newly created tokens use the current aura color and alpha.
-- [x] Previously imported Actor templates are updated by reimporting.
-- [x] No runtime workaround is required for stale imported template data.
+Power level is limited to 1–3. A cast can include at most one of each type.
+
+## ET-01: Templates
+
+- [x] Four NPC templates exist.
+- [x] Base statistics are 10 HP, armor 2, movement 0.
+- [x] Prototype tokens are unlinked and 0.5 by 0.5.
+- [x] Portraits and token images are correct.
+- [x] Trait text uses **once per round**.
+
+## ET-02: Power levels
+
+- [x] PL 1 creates one baseline totem.
+- [x] PL 3 presents two additional choices.
+- [x] Duplicate types cannot be selected.
+- [x] Reach can become 20 or 40 meters.
+- [x] Durability can become 20 HP/armor 4 or 40 HP/armor 8.
+
+## ET-03: Placement
+
+- [x] Placement is limited to 6 meters.
+- [x] Valid preview uses the totem color.
+- [x] Invalid preview is red.
+- [x] Placement snaps to the grid.
+- [x] Escape and right-click cancel without removing existing totems.
+
+## ET-04: Roll results
+
+- [x] Normal failure, pushed failure, and demon do nothing.
+- [x] Pushed success opens one flow.
+- [x] Dragon waits for the critical-effect choice and opens once.
+
+## ET-05: Replacement and multiplayer
+
+- [x] Previous totems from the caster are removed across all scenes.
+- [x] Other casters' totems remain.
+- [x] A player chooses positions and the primary GM creates tokens once.
+- [x] A player cannot submit a request for an Actor they do not own.
+
+## ET-06: Ownership, images, and auras
+
+- [x] Players can read but not edit summoned totem sheets.
+- [x] Current prototype-token images are used.
+- [x] Cleansing is blue/cyan.
+- [x] Flametongue is orange.
+- [x] Stoneskin is yellow-green.
+- [x] Windfury is lavender.
+- [x] Aura radius is 10, 20, or 40 meters.
+- [x] Auras follow copied or moved tokens and survive scene reload.
+- [x] Auras do not create light or change vision.
+
+---
+
+# Manual tests that macros do not replace
+
+These require human interaction or multiple real clients:
+
+- pointer movement and placement preview;
+- grid snapping;
+- Escape and right-click cancellation;
+- visual distinction of auras on different maps;
+- dialog layout and localization;
+- real player-to-GM socket behavior across two clients;
+- latency and reconnect behavior;
+- Adventure import UI; and
+- browser-specific rendering.
 
 ---
 
 # Release acceptance for 0.6.0
 
-Version 0.6.0 is accepted when all of the following are true:
+- [x] All generators pass.
+- [x] 134 of 134 automated tests pass.
+- [x] Coverage baseline is recorded.
+- [x] Full package build and deployment succeed.
+- [x] Clean-world import succeeds.
+- [x] Spell grants and always-prepared behavior pass.
+- [x] Elemental Totem casting, placement, cleanup, ownership, images, and auras
+  pass.
+- [x] Final **once per round** text is present.
+- [x] Changelog is updated.
 
-- [x] All content generators pass in `--check` mode.
-- [x] Full module build and deployment succeed.
-- [x] Clean-world Adventure import succeeds.
-- [x] Heroic Ability spell grants and always-prepared behavior pass.
-- [x] Elemental Totem normal success, failure, push, and dragon handling pass.
-- [x] Power levels 1 and 3 pass.
-- [x] Placement range and cancellation pass.
-- [x] Previous totem cleanup passes across active and inactive scenes.
-- [x] Player casting with an active GM passes.
-- [x] Player-readable, read-only summoned Actor sheets pass.
-- [x] Dedicated portrait and token artwork is packaged and displayed.
-- [x] Aura colors, ranges, persistence, and cleanup pass.
-- [x] Final **once per round** rules text is present.
-- [x] Changelog is updated for 0.6.0.
+# Known limitations
 
----
-
-# Known limitations and intended manual handling
-
-These are not release failures:
-
-- Elemental Totem aura effects are not applied automatically to nearby Actors.
-- The module does not automatically determine allies inside an aura.
-- Cleansing, bonus damage, damage reduction, and attack boons are resolved
-  manually according to the totem's trait.
+- Totem benefits are resolved manually.
+- The module does not determine which allies are inside an aura.
 - Player-initiated token creation requires an active game master.
-- Automatically granted spells are tied to the current six declarative
-  Heroic Ability relationships.
-- Ammunition requires an Ammo Pouch warning but is not consumed or tracked.
+- Ammunition is warned about but not consumed.
+- System-test macros require imported world content.
+- Visual and multi-client behavior remains manual.
 
-# Compatibility not verified
+# Recording future compatibility runs
 
-The following areas have not been verified and should not be assumed
-compatible:
-
-- Foundry VTT versions other than 14.364
-- Dragonbane system versions other than 4.0.1
-- Dragonbane Core Set versions other than 2.2
-- YZE Combat versions other than 1.7.0
-- Localization languages other than English
-- Conflicts with modules not listed in the test environment
-- High-latency multiplayer sessions
-- Automated migration from arbitrary older world-document states
-
-# Adding future test results
-
-For each release:
-
-1. Update the current test environment.
-2. Add the release to the version status table.
-3. Add test cases for new or changed behavior.
-4. Run relevant regression tests for existing mechanics.
-5. Record failures explicitly rather than removing failed cases.
-6. Mark the version as **Pass** only after every required test has completed.
+1. Record exact module, Foundry, Dragonbane, Core Set, and YZE Combat versions.
+2. Run pipeline unit and integration tests.
+3. Run **BOA DEV – Run All System Tests** from a prerelease.
+4. Complete manual compatibility tests.
+5. Record failures explicitly.
+6. Update `compatibility.verified` only after all required checks pass.

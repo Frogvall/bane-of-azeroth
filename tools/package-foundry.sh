@@ -8,6 +8,8 @@ ROOT_DIR="$(
 
 MODULE_DIR="${ROOT_DIR}/foundry"
 PACK_NAME="bane-of-azeroth"
+DEV_TEST_PACK_NAME="bane-of-azeroth-dev-tests"
+INCLUDE_DEV_TESTS="${BOA_INCLUDE_DEV_TESTS:-false}"
 PACK_SOURCE="${MODULE_DIR}/pack-src/${PACK_NAME}"
 
 DIST_DIR="${ROOT_DIR}/dist"
@@ -15,7 +17,7 @@ STAGE_DIR="${DIST_DIR}/stage/${PACK_NAME}"
 
 MODULE_JSON="${MODULE_DIR}/module.json"
 
-for command in fvtt jq tar zip unzip; do
+for command in fvtt jq tar zip unzip python3; do
   if ! command -v "$command" >/dev/null 2>&1; then
     echo "Required command not found: $command" >&2
     exit 1
@@ -123,6 +125,92 @@ find "$PACK_DIR" \
   -type f \
   -name '*.dbtmp' \
   -delete
+
+if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
+  echo "Building prerelease developer-test Macro pack..."
+
+  DEV_TEST_SOURCE_ROOT="${DIST_DIR}/dev-test-pack-src"
+  DEV_TEST_SOURCE="${DEV_TEST_SOURCE_ROOT}/${DEV_TEST_PACK_NAME}"
+
+  rm -rf "$DEV_TEST_SOURCE_ROOT"
+
+  python3 \
+    "${ROOT_DIR}/tools/generate-system-test-macros.py" \
+    --output-directory "$DEV_TEST_SOURCE"
+
+  fvtt package pack "$DEV_TEST_PACK_NAME" \
+    --inputDirectory "$DEV_TEST_SOURCE" \
+    --outputDirectory "${STAGE_DIR}/packs" \
+    --recursive
+
+  DEV_PACK_DIR="${STAGE_DIR}/packs/${DEV_TEST_PACK_NAME}"
+
+  if [[ ! -f "${DEV_PACK_DIR}/CURRENT" ]]; then
+    echo "Built developer-test pack is missing CURRENT." >&2
+    exit 1
+  fi
+
+  rm -f \
+    "${DEV_PACK_DIR}/LOCK" \
+    "${DEV_PACK_DIR}/LOG" \
+    "${DEV_PACK_DIR}/LOG.old"
+
+  find "$DEV_PACK_DIR" \
+    -maxdepth 1 \
+    -type f \
+    -name '*.dbtmp' \
+    -delete
+
+  jq \
+    --arg packName "$DEV_TEST_PACK_NAME" \
+    '
+      .packs = (
+        ((.packs // []) |
+          map(select(.name != $packName)))
+        + [
+          {
+            "name": $packName,
+            "label": "Bane of Azeroth – Developer Tests",
+            "path": ("packs/" + $packName),
+            "type": "Macro",
+            "system": "dragonbane",
+            "ownership": {
+              "PLAYER": "NONE",
+              "ASSISTANT": "OWNER"
+            },
+            "flags": {
+              "bane-of-azeroth": {
+                "developmentOnly": true
+              }
+            }
+          }
+        ]
+      )
+    ' \
+    "${STAGE_DIR}/module.json" \
+    > "${STAGE_DIR}/module.json.tmp"
+
+  mv \
+    "${STAGE_DIR}/module.json.tmp" \
+    "${STAGE_DIR}/module.json"
+else
+  rm -rf "${STAGE_DIR}/packs/${DEV_TEST_PACK_NAME}"
+
+  jq \
+    --arg packName "$DEV_TEST_PACK_NAME" \
+    '
+      .packs = (
+        (.packs // []) |
+        map(select(.name != $packName))
+      )
+    ' \
+    "${STAGE_DIR}/module.json" \
+    > "${STAGE_DIR}/module.json.tmp"
+
+  mv \
+    "${STAGE_DIR}/module.json.tmp" \
+    "${STAGE_DIR}/module.json"
+fi
 
 echo "Creating module zip..."
 
