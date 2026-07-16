@@ -815,12 +815,16 @@ function boaBuildAutomatedResultsHtml(results) {
 
 function boaBuildManualChecklistHtml() {
   return `
-    
+    <p>
+      This checklist contains tests that require visual judgment,
+      pointer interaction, multiple clients, or deliberate roll
+      outcomes. Follow the procedure in each section before marking
+      its checks as complete.
+    </p>
 
     <p>
-      Edit this page and change
-      <code>[ ]</code> to <code>[x]</code>
-      as each test is completed.
+      Edit this page and change <code>[ ]</code> to
+      <code>[x]</code> as each test is completed.
     </p>
 
     <p>
@@ -831,95 +835,183 @@ function boaBuildManualChecklistHtml() {
       <strong>Completed:</strong>
     </p>
 
+    <h2>Before you start</h2>
+
+    <ol>
+      <li>
+        Use the Foundry, Dragonbane, Core Set, YZE Combat,
+        and Bane of Azeroth versions recorded in this report.
+      </li>
+      <li>
+        Import or update the current Bane of Azeroth Adventure.
+      </li>
+      <li>
+        Place a character token with the
+        <strong>Elemental Totem</strong> spell in an active scene.
+      </li>
+      <li>
+        Ensure the character has enough Willpower Points
+        for repeated casts at power levels 1–3.
+      </li>
+      <li>
+        Keep a game master connected throughout player tests.
+      </li>
+      <li>
+        Open the browser console before testing and leave it open.
+      </li>
+    </ol>
+
     <h2>Elemental Totem placement and interaction</h2>
+
+    <p>
+      Select a token whose Actor has the
+      <strong>Elemental Totem</strong> spell. Cast the spell
+      successfully at power level 1, choose a totem, and move the
+      placement preview around the caster. Repeat the cast as needed
+      to test cancellation separately from successful placement.
+    </p>
+
     <ul>
       <li>[ ] Pointer placement preview follows the cursor.</li>
-      <li>[ ] Valid placement uses the selected totem aura color.</li>
+      <li>[ ] Valid placement uses the selected totem's aura color.</li>
       <li>[ ] Invalid placement is shown in red.</li>
       <li>[ ] Placement snaps correctly to the active grid.</li>
       <li>[ ] Placement is accepted within 6 meters.</li>
       <li>[ ] Placement is rejected beyond 6 meters.</li>
       <li>[ ] Escape cancels the entire placement.</li>
       <li>[ ] Right-click cancels the entire placement.</li>
-      <li>[ ] Canceling preserves existing totems.</li>
+      <li>[ ] Canceling preserves the caster's existing totems.</li>
     </ul>
 
     <h2>Elemental Totem visual verification</h2>
+
+    <p>
+      Successfully summon each totem type and inspect it on the
+      canvas. Recast with reach upgrades to verify larger radii.
+      To test overlapping auras, use two different casters because
+      a new cast replaces the previous totems from the same caster.
+    </p>
+
     <ul>
       <li>[ ] Cleansing aura is blue/cyan.</li>
       <li>[ ] Flametongue aura is orange.</li>
       <li>[ ] Stoneskin aura is yellow-green.</li>
       <li>[ ] Windfury aura is lavender.</li>
-      <li>[ ] Overlapping auras remain distinguishable.</li>
+      <li>[ ] Overlapping auras remain visually distinguishable.</li>
       <li>[ ] Aura radius matches 10, 20, or 40 meters.</li>
       <li>[ ] Auras follow moved tokens.</li>
       <li>[ ] Auras survive copying and scene reload.</li>
-      <li>[ ] Auras disappear with their tokens.</li>
-      <li>[ ] Auras do not alter light or token vision.</li>
+      <li>[ ] Auras disappear when their tokens are deleted.</li>
+      <li>[ ] Auras do not create light or modify token vision.</li>
     </ul>
 
     <h2>Elemental Totem roll workflow</h2>
+
+    <p>
+      Repeat casts until each listed roll outcome has occurred.
+      Push failed rolls where required. For a dragon result, complete
+      the system's critical-effect choice before judging whether the
+      totem dialog starts. Watch for duplicate dialogs after every
+      roll and chat-message update.
+    </p>
+
     <ul>
-      <li>[ ] Normal success opens one selection dialog.</li>
-      <li>[ ] Normal failure opens no dialog.</li>
-      <li>[ ] Pushed failure opens no dialog.</li>
-      <li>[ ] Pushed success opens one dialog.</li>
-      <li>[ ] Demon result opens no dialog.</li>
-      <li>[ ] Dragon result waits for the critical-effect choice.</li>
-      <li>[ ] PL 1 permits one totem.</li>
-      <li>[ ] PL 3 permits two additional choices.</li>
+      <li>[ ] A normal success opens one selection dialog.</li>
+      <li>[ ] A normal failure opens no dialog.</li>
+      <li>[ ] A pushed failure opens no dialog.</li>
+      <li>[ ] A pushed success opens one dialog.</li>
+      <li>[ ] A demon result opens no dialog.</li>
+      <li>[ ] A dragon result waits for the critical-effect choice and opens once.</li>
+      <li>[ ] Power level 1 permits one totem.</li>
+      <li>[ ] Power level 3 permits two additional choices.</li>
       <li>[ ] Duplicate totem types cannot be selected.</li>
-      <li>[ ] Replacement occurs only after successful placement.</li>
+      <li>[ ] Existing totems are replaced only after successful placement.</li>
     </ul>
 
     <h2>Player and game-master workflow</h2>
+
+    <p>
+      Connect to the same world with a game-master client and a
+      separate player client. Give the player Owner permission for
+      one test Actor with Elemental Totem, and no ownership of a
+      second control Actor. Perform the cast and placement from the
+      player client while observing both consoles.
+    </p>
+
     <ul>
       <li>[ ] A player can cast using an owned Actor.</li>
-      <li>[ ] The player chooses totems and positions.</li>
-      <li>[ ] The primary GM creates tokens exactly once.</li>
-      <li>[ ] A player cannot submit an unowned Actor.</li>
-      <li>[ ] Players can read summoned totem sheets.</li>
-      <li>[ ] Players cannot edit summoned totem sheets.</li>
-      <li>[ ] Cross-scene cleanup removes older caster totems.</li>
-      <li>[ ] Other casters totems remain.</li>
+      <li>[ ] The player chooses the totems and placement positions.</li>
+      <li>[ ] The active primary GM creates the tokens exactly once.</li>
+      <li>[ ] A player cannot submit a request for an Actor they do not own.</li>
+      <li>[ ] Summoned totem sheets are readable by players.</li>
+      <li>[ ] Summoned totem sheets are not editable by players.</li>
+      <li>[ ] Cross-scene cleanup removes the caster's older totems.</li>
+      <li>[ ] Other casters' totems remain.</li>
     </ul>
 
     <h2>Adventure and interface verification</h2>
+
+    <p>
+      Use a clean test world for the first import. Then reopen the
+      same world with the same content version, a new development
+      suffix, and finally a later semantic content version. Inspect
+      every dialog and affected Actor or Item sheet at normal browser
+      zoom.
+    </p>
+
     <ul>
       <li>[ ] Clean-world Adventure import succeeds.</li>
-      <li>[ ] Import prompt appears only for newer content.</li>
-      <li>[ ] Development suffixes do not retrigger import.</li>
-      <li>[ ] Dialog layout is readable.</li>
-      <li>[ ] New interface text is localized in English.</li>
-      <li>[ ] Always-prepared state is visually distinct.</li>
-      <li>[ ] Always-prepared tooltip is displayed.</li>
+      <li>[ ] The import prompt appears only for a newer content version.</li>
+      <li>[ ] Development build suffix changes do not retrigger the prompt.</li>
+      <li>[ ] Dialog layout is readable at normal browser zoom.</li>
+      <li>[ ] All new interface text is localized in English.</li>
+      <li>[ ] The always-prepared checkbox is disabled and visually distinct.</li>
+      <li>[ ] The always-prepared tooltip is displayed.</li>
     </ul>
 
     <h2>Weapon feature verification</h2>
+
+    <p>
+      Prepare one eligible ranged weapon and one control weapon.
+      The eligible weapon must be non-thrown, Piercing, and have
+      Armor Piercing or Scattershot as appropriate. Toggle the
+      Dragonbane Damage Types option where instructed, and test at
+      point-blank, normal, and long range against a target token.
+    </p>
+
     <ul>
-      <li>[ ] Eligible Armor Piercing weapon gets one option.</li>
-      <li>[ ] Armor Piercing requires Damage Types.</li>
+      <li>[ ] Armor Piercing adds exactly one Find Weak Spot option to an eligible weapon.</li>
+      <li>[ ] Armor Piercing is unavailable when Damage Types is disabled.</li>
       <li>[ ] Scattershot removes the point-blank bane.</li>
       <li>[ ] Scattershot preserves the long-range bane.</li>
-      <li>[ ] Long-range damage is halved and rounded up.</li>
-      <li>[ ] Missing Ammo Pouch shows confirmation.</li>
-      <li>[ ] Perform Action continues.</li>
-      <li>[ ] Cancel Action cancels.</li>
+      <li>[ ] Scattershot long-range damage is halved and rounded up.</li>
+      <li>[ ] Missing Ammo Pouch shows the confirmation dialog.</li>
+      <li>[ ] Perform Action continues after the warning.</li>
+      <li>[ ] Cancel Action cancels after the warning.</li>
     </ul>
 
     <h2>Compatibility and presentation</h2>
+
+    <p>
+      Review this report's Environment page, the browser console,
+      the chat log, and the created world documents. Record any
+      unexpected behavior in Manual notes, including reproduction
+      steps and screenshots where useful.
+    </p>
+
     <ul>
-      <li>[ ] Browser console has no unexpected errors.</li>
-      <li>[ ] Foundry version is recorded correctly.</li>
-      <li>[ ] Dragonbane version is recorded correctly.</li>
-      <li>[ ] Relevant module versions are correct.</li>
-      <li>[ ] Failures and deviations are documented below.</li>
+      <li>[ ] Browser console contains no unexpected errors.</li>
+      <li>[ ] The tested Foundry version is recorded correctly.</li>
+      <li>[ ] The tested Dragonbane version is recorded correctly.</li>
+      <li>[ ] Relevant module versions are recorded correctly.</li>
+      <li>[ ] Any failures or deviations are documented below.</li>
     </ul>
 
     <h2>Manual notes</h2>
+
     <p>
-      Add observations, screenshots, failures,
-      and reproduction steps here.
+      Add observations, screenshots, failure details, and
+      reproduction steps here.
     </p>
   `;
 }
