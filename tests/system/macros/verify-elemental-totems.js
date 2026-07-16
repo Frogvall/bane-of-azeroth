@@ -24,7 +24,7 @@ try {
       continue;
     }
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} has prototype aura range`,
       Number(
@@ -32,35 +32,25 @@ try {
           actor.prototypeToken,
           "auraRange"
         )
-      ) === Number(defaults.auraRange),
-      String(
-        boaGetFlag(
-          actor.prototypeToken,
-          "auraRange"
-        )
-      )
+      ),
+      Number(defaults.auraRange)
     );
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} has prototype aura color`,
       boaGetFlag(
         actor.prototypeToken,
         "auraColor"
-      ) === definition.auraColor,
-      String(
-        boaGetFlag(
-          actor.prototypeToken,
-          "auraColor"
-        )
-      )
+      ),
+      definition.auraColor
     );
 
     const expectedAlpha =
       definition.auraAlpha ??
       defaults.auraAlpha;
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} has prototype aura alpha`,
       Number(
@@ -68,13 +58,8 @@ try {
           actor.prototypeToken,
           "auraAlpha"
         )
-      ) === Number(expectedAlpha),
-      String(
-        boaGetFlag(
-          actor.prototypeToken,
-          "auraAlpha"
-        )
-      )
+      ),
+      Number(expectedAlpha)
     );
   }
 
@@ -143,12 +128,11 @@ try {
       Number(boaGetFlag(token, "auraAlpha")) > 0
     );
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `Summoned Actor is readable by players: ${token.name}`,
-      actor?.ownership?.default ===
-        CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
-      String(actor?.ownership?.default)
+      actor?.ownership?.default,
+      CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
     );
 
     boaCheck(

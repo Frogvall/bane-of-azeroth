@@ -58,6 +58,70 @@ function boaCheck(
   return Boolean(condition);
 }
 
+function boaDiagnosticValue(value) {
+  if (value === undefined) return "undefined";
+  if (value === null) return "null";
+
+  if (typeof value === "string") {
+    return JSON.stringify(value);
+  }
+
+  if (
+    typeof value === "number" ||
+    typeof value === "boolean" ||
+    typeof value === "bigint"
+  ) {
+    return String(value);
+  }
+
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+}
+
+function boaValuesEqual(actual, expected) {
+  if (Object.is(actual, expected)) return true;
+
+  if (
+    actual &&
+    expected &&
+    typeof actual === "object" &&
+    typeof expected === "object"
+  ) {
+    try {
+      return JSON.stringify(actual) ===
+        JSON.stringify(expected);
+    } catch {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+function boaCheckEqual(
+  checks,
+  description,
+  actual,
+  expected
+) {
+  const equal = boaValuesEqual(actual, expected);
+
+  return boaCheck(
+    checks,
+    description,
+    equal,
+    equal
+      ? ""
+      : (
+          `Expected: ${boaDiagnosticValue(expected)}; ` +
+          `Actual: ${boaDiagnosticValue(actual)}`
+        )
+  );
+}
+
 function boaSkip(checks, description, details = "") {
   checks.push({
     status: "SKIP",

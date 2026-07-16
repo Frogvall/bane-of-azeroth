@@ -3,18 +3,18 @@ const notes = [];
 
 const module = game.modules.get(BOA_TEST_MODULE_ID);
 
-boaCheck(
+boaCheckEqual(
   checks,
   "Bane of Azeroth is active",
-  module?.active === true,
-  module?.version ?? "module not found"
+  module?.active,
+  true
 );
 
-boaCheck(
+boaCheckEqual(
   checks,
   "Dragonbane is the active system",
-  game.system.id === "dragonbane",
-  `${game.system.id} ${game.system.version ?? ""}`.trim()
+  game.system.id,
+  "dragonbane"
 );
 
 boaCheck(

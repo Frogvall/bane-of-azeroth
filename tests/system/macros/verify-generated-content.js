@@ -30,11 +30,11 @@ try {
     }
   }
 
-  boaCheck(
+  boaCheckEqual(
     checks,
     "Six spell-grant relationships are defined",
-    grantingAbilities.length === 6,
-    String(grantingAbilities.length)
+    grantingAbilities.length,
+    6
   );
 
   for (const entry of grantingAbilities) {
@@ -65,11 +65,11 @@ try {
 
   const spells = spellContent.spells ?? [];
 
-  boaCheck(
+  boaCheckEqual(
     checks,
     "Generated spell count matches source",
-    spells.length === spellContent.expectedCount,
-    `${spells.length}/${spellContent.expectedCount}`
+    spells.length,
+    spellContent.expectedCount
   );
 
   for (const definition of spells) {
@@ -88,11 +88,11 @@ try {
   const defaults = totemContent.defaults ?? {};
   const totems = totemContent.totems ?? [];
 
-  boaCheck(
+  boaCheckEqual(
     checks,
     "Elemental Totem count matches source",
-    totems.length === totemContent.expectedCount,
-    `${totems.length}/${totemContent.expectedCount}`
+    totems.length,
+    totemContent.expectedCount
   );
 
   for (const definition of totems) {
@@ -109,46 +109,47 @@ try {
       continue;
     }
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} is an NPC`,
-      actor.type === "npc",
-      actor.type
+      actor.type,
+      "npc"
     );
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} uses its portrait`,
-      actor.img === definition.image,
-      actor.img
+      actor.img,
+      definition.image
     );
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} uses its token image`,
-      actor.prototypeToken?.texture?.src ===
-        definition.tokenImage,
-      actor.prototypeToken?.texture?.src ?? ""
+      actor.prototypeToken?.texture?.src,
+      definition.tokenImage
     );
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} has movement 0`,
-      Number(actor.system?.movement?.value) ===
-        Number(defaults.movement),
-      String(actor.system?.movement?.value)
+      Number(actor.system?.movement?.value),
+      Number(defaults.movement)
     );
 
     const hp = actor.system?.hitPoints;
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} has base HP`,
-      Number(hp?.value) ===
-        Number(defaults.hitPoints) &&
-      Number(hp?.max) ===
-        Number(defaults.hitPoints),
-      `${hp?.value}/${hp?.max}`
+      {
+        value: Number(hp?.value),
+        max: Number(hp?.max),
+      },
+      {
+        value: Number(defaults.hitPoints),
+        max: Number(defaults.hitPoints),
+      }
     );
 
     boaCheck(
@@ -178,12 +179,11 @@ try {
     );
 
     if (armor) {
-      boaCheck(
+      boaCheckEqual(
         checks,
         `${definition.name} has armor rating 2`,
-        Number(armor.system?.rating) ===
-          Number(defaults.armorRating),
-        String(armor.system?.rating)
+        Number(armor.system?.rating),
+        Number(defaults.armorRating)
       );
     }
 
@@ -195,12 +195,11 @@ try {
         .includes("once per round")
     );
 
-    boaCheck(
+    boaCheckEqual(
       checks,
       `${definition.name} has matching aura color`,
-      boaGetFlag(actor, "auraColor") ===
-        definition.auraColor,
-      String(boaGetFlag(actor, "auraColor"))
+      boaGetFlag(actor, "auraColor"),
+      definition.auraColor
     );
 
     boaCheck(
