@@ -598,7 +598,7 @@ function boaBuildSummaryHtml({
     .join("");
 
   return `
-    <h1>Bane of Azeroth System Test Report</h1>
+    
 
     <p>
       <strong>Automated result:</strong>
@@ -808,14 +808,14 @@ function boaBuildAutomatedResultsHtml(results) {
   });
 
   return `
-    <h1>Automated Results</h1>
+    
     ${sections.join("")}
   `;
 }
 
 function boaBuildManualChecklistHtml() {
   return `
-    <h1>Manual Test Checklist</h1>
+    
 
     <p>
       Edit this page and change
@@ -936,7 +936,7 @@ function boaBuildEnvironmentHtml(environment) {
     .join("");
 
   return `
-    <h1>Environment and Notes</h1>
+    
 
     <h2>Runtime</h2>
 
