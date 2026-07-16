@@ -116,7 +116,7 @@
         "element": "earth",
         "auraRange": 10,
         "auraColor": "#d9f04a",
-        "auraAlpha": 0.2
+        "auraAlpha": 0.28
       }
     },
     "randomImg": false,
@@ -204,7 +204,7 @@
       "element": "earth",
       "auraRange": 10,
       "auraColor": "#d9f04a",
-      "auraAlpha": 0.2
+      "auraAlpha": 0.28
     }
   },
   "_stats": {

@@ -342,6 +342,10 @@ def build_actor(
     image = totem.get("image", defaults["image"])
     token_image = totem.get("tokenImage", image)
     content_key = f"actors.elemental-totems.{key}"
+    aura_alpha = totem.get(
+        "auraAlpha",
+        defaults["auraAlpha"],
+    )
 
     aura_flags = {
         "summonType": "elementalTotem",
@@ -350,7 +354,7 @@ def build_actor(
         "element": totem["element"],
         "auraRange": defaults["auraRange"],
         "auraColor": totem["auraColor"],
-        "auraAlpha": defaults["auraAlpha"],
+        "auraAlpha": aura_alpha,
     }
 
     actor_flags = generated_flags(content_key)
@@ -644,6 +648,18 @@ def validate_content(
             raw_totem.get("auraColor"),
             f"totem {key!r}.auraColor",
         )
+        aura_alpha = require_number(
+            raw_totem.get(
+                "auraAlpha",
+                defaults["auraAlpha"],
+            ),
+            f"totem {key!r}.auraAlpha",
+        )
+        if aura_alpha > 1:
+            raise GenerationError(
+                f"totem {key!r}.auraAlpha must not be "
+                "greater than 1."
+            )
         effect_html = require_string(
             raw_totem.get("effectHtml"),
             f"totem {key!r}.effectHtml",
@@ -674,6 +690,7 @@ def validate_content(
 
         normalized = dict(raw_totem)
         normalized["auraColor"] = aura_color
+        normalized["auraAlpha"] = aura_alpha
         normalized["effectHtml"] = effect_html
         validated.append(normalized)
 

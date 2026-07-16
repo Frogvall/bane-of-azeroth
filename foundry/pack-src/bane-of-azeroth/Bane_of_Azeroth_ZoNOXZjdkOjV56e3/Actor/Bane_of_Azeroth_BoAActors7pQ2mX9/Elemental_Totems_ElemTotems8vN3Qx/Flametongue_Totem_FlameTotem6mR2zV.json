@@ -116,7 +116,7 @@
         "element": "fire",
         "auraRange": 10,
         "auraColor": "#f97316",
-        "auraAlpha": 0.2
+        "auraAlpha": 0.22
       }
     },
     "randomImg": false,
@@ -204,7 +204,7 @@
       "element": "fire",
       "auraRange": 10,
       "auraColor": "#f97316",
-      "auraAlpha": 0.2
+      "auraAlpha": 0.22
     }
   },
   "_stats": {
