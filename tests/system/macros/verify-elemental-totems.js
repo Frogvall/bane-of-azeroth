@@ -63,101 +63,338 @@ try {
     );
   }
 
-  const summoned = [];
+  let fixtureScene = null;
 
-  for (const scene of boaCollectionValues(game.scenes)) {
-    for (const token of boaCollectionValues(scene.tokens)) {
-      if (
-        boaGetFlag(token, "summonType") ===
-        "elementalTotem"
-      ) {
-        summoned.push({
-          scene,
-          token,
-        });
+  try {
+    fixtureScene = await Scene.create({
+      name:
+        `[BOA TEST] Elemental Totem Runtime ` +
+        foundry.utils.randomID(6),
+      active: false,
+      navigation: false,
+      width: 2000,
+      height: 1200,
+      padding: 0,
+      grid: {
+        type: CONST.GRID_TYPES?.SQUARE ?? 1,
+        size: 100,
+        distance: 2,
+        units: "m",
+      },
+      flags: {
+        [BOA_TEST_MODULE_ID]: {
+          [BOA_TEST_FIXTURE_FLAG]: true,
+        },
+      },
+    }, {
+      renderSheet: false,
+    });
+
+    boaCheck(
+      checks,
+      "Temporary Elemental Totem test Scene was created",
+      Boolean(fixtureScene?.id),
+      fixtureScene?.uuid ?? ""
+    );
+
+    const castId = foundry.utils.randomID();
+    const casterActorUuid =
+      "Actor.BoaTestCaster";
+    const tokenData = [];
+
+    for (
+      let index = 0;
+      index < definitions.length;
+      index += 1
+    ) {
+      const definition = definitions[index];
+      const actorTemplate = boaFindWorldActor(
+        `actors.elemental-totems.${definition.key}`
+      );
+
+      if (!actorTemplate) {
+        throw new Error(
+          `Missing Elemental Totem Actor template: ` +
+          definition.name
+        );
       }
+
+      const tokenDocument =
+        await actorTemplate.getTokenDocument(
+          {
+            x: 200 + (index * 300),
+            y: 300,
+            actorLink: false,
+          },
+          {
+            parent: fixtureScene,
+          }
+        );
+
+      const data = tokenDocument.toObject();
+
+      delete data._id;
+
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.summonType`,
+        "elementalTotem"
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.casterActorUuid`,
+        casterActorUuid
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.sourceSpell`,
+        "spells.elemental-totem"
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.sourceMessageId`,
+        "BoaTestMessage01"
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.castId`,
+        castId
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.instanceId`,
+        foundry.utils.randomID()
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.totemType`,
+        definition.key
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.auraRange`,
+        defaults.auraRange
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.${BOA_TEST_FIXTURE_FLAG}`,
+        true
+      );
+
+      tokenData.push(data);
     }
-  }
 
-  if (summoned.length === 0) {
-    boaSkip(
-      checks,
-      "Summoned-token runtime checks",
-      "No summoned Elemental Totems exist in any scene."
-    );
-  }
-
-  for (const { scene, token } of summoned) {
-    const type = boaGetFlag(token, "totemType");
-    const actor = token.actor;
-
-    boaCheck(
-      checks,
-      `Summoned token has a known type: ${token.name}`,
-      allowedKeys.has(type),
-      `${scene.name}: ${type}`
-    );
-
-    boaCheck(
-      checks,
-      `Summoned token records its caster: ${token.name}`,
-      typeof boaGetFlag(
-        token,
-        "casterActorUuid"
-      ) === "string" &&
-      boaGetFlag(
-        token,
-        "casterActorUuid"
-      ).length > 0
-    );
-
-    boaCheck(
-      checks,
-      `Summoned token records its cast ID: ${token.name}`,
-      typeof boaGetFlag(token, "castId") ===
-        "string" &&
-      boaGetFlag(token, "castId").length > 0
-    );
-
-    boaCheck(
-      checks,
-      `Summoned token has valid aura data: ${token.name}`,
-      Number(boaGetFlag(token, "auraRange")) > 0 &&
-      typeof boaGetFlag(token, "auraColor") ===
-        "string" &&
-      Number(boaGetFlag(token, "auraAlpha")) > 0
-    );
+    const createdTokens =
+      await fixtureScene.createEmbeddedDocuments(
+        "Token",
+        tokenData
+      );
 
     boaCheckEqual(
       checks,
-      `Summoned Actor is readable by players: ${token.name}`,
-      actor?.ownership?.default,
-      CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+      "Four summoned-token fixtures were created",
+      createdTokens.length,
+      definitions.length
     );
 
-    boaCheck(
-      checks,
-      `Summoned Actor has positive HP: ${token.name}`,
-      Number(actor?.system?.hitPoints?.value) > 0 &&
-      Number(actor?.system?.hitPoints?.max) > 0,
-      `${actor?.system?.hitPoints?.value}/` +
-      `${actor?.system?.hitPoints?.max}`
-    );
+    for (
+      let index = 0;
+      index < createdTokens.length;
+      index += 1
+    ) {
+      const token = createdTokens[index];
+      const definition = definitions[index];
+      const actor = token.actor;
+      const expectedAlpha =
+        definition.auraAlpha ??
+        defaults.auraAlpha;
 
-    const armor = boaCollectionValues(actor?.items)
-      .find(item => item.type === "armor");
+      boaCheck(
+        checks,
+        `Synthetic Actor exists: ${definition.name}`,
+        Boolean(actor?.isToken),
+        actor?.uuid ?? "missing"
+      );
 
-    boaCheck(
-      checks,
-      `Summoned Actor has positive armor: ${token.name}`,
-      Number(armor?.system?.rating) > 0,
-      String(armor?.system?.rating)
+      if (!actor?.isToken) {
+        continue;
+      }
+
+      await actor.update({
+        "ownership.default":
+          CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
+        "system.hitPoints.base":
+          defaults.hitPoints,
+        "system.hitPoints.max":
+          defaults.hitPoints,
+        "system.hitPoints.value":
+          defaults.hitPoints,
+      });
+
+      const armor = boaCollectionValues(actor.items)
+        .find(item =>
+          item.type === "armor" &&
+          (
+            boaContentKey(item).endsWith(".armor") ||
+            item.name === "Totem Armor"
+          )
+        );
+
+      if (armor) {
+        await armor.update({
+          "system.rating":
+            defaults.armorRating,
+          "system.worn": true,
+        });
+      }
+
+      boaCheckEqual(
+        checks,
+        `Summoned type: ${definition.name}`,
+        boaGetFlag(token, "totemType"),
+        definition.key
+      );
+
+      boaCheckEqual(
+        checks,
+        `Summon flag: ${definition.name}`,
+        boaGetFlag(token, "summonType"),
+        "elementalTotem"
+      );
+
+      boaCheckEqual(
+        checks,
+        `Caster UUID: ${definition.name}`,
+        boaGetFlag(token, "casterActorUuid"),
+        casterActorUuid
+      );
+
+      boaCheckEqual(
+        checks,
+        `Cast ID: ${definition.name}`,
+        boaGetFlag(token, "castId"),
+        castId
+      );
+
+      boaCheck(
+        checks,
+        `Instance ID exists: ${definition.name}`,
+        typeof boaGetFlag(token, "instanceId") ===
+          "string" &&
+        boaGetFlag(token, "instanceId").length > 0
+      );
+
+      boaCheckEqual(
+        checks,
+        `Aura range: ${definition.name}`,
+        Number(boaGetFlag(token, "auraRange")),
+        Number(defaults.auraRange)
+      );
+
+      boaCheckEqual(
+        checks,
+        `Aura color: ${definition.name}`,
+        boaGetFlag(token, "auraColor"),
+        definition.auraColor
+      );
+
+      boaCheckEqual(
+        checks,
+        `Aura alpha: ${definition.name}`,
+        Number(boaGetFlag(token, "auraAlpha")),
+        Number(expectedAlpha)
+      );
+
+      boaCheckEqual(
+        checks,
+        `Token image: ${definition.name}`,
+        token.texture?.src,
+        definition.tokenImage
+      );
+
+      boaCheckEqual(
+        checks,
+        `Token is unlinked: ${definition.name}`,
+        token.actorLink,
+        false
+      );
+
+      boaCheckEqual(
+        checks,
+        `Player ownership: ${definition.name}`,
+        actor.ownership?.default,
+        CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+      );
+
+      boaCheckEqual(
+        checks,
+        `Hit points: ${definition.name}`,
+        {
+          base:
+            Number(actor.system?.hitPoints?.base),
+          max:
+            Number(actor.system?.hitPoints?.max),
+          value:
+            Number(actor.system?.hitPoints?.value),
+        },
+        {
+          base: Number(defaults.hitPoints),
+          max: Number(defaults.hitPoints),
+          value: Number(defaults.hitPoints),
+        }
+      );
+
+      boaCheck(
+        checks,
+        `Totem Armor exists: ${definition.name}`,
+        Boolean(armor)
+      );
+
+      if (armor) {
+        boaCheckEqual(
+          checks,
+          `Armor rating: ${definition.name}`,
+          Number(armor.system?.rating),
+          Number(defaults.armorRating)
+        );
+
+        boaCheckEqual(
+          checks,
+          `Armor is worn: ${definition.name}`,
+          armor.system?.worn,
+          true
+        );
+      }
+    }
+
+    notes.push(
+      `${createdTokens.length} temporary summoned ` +
+      "Elemental Totem token(s) were created and inspected."
     );
+  } finally {
+    if (fixtureScene) {
+      try {
+        const sceneName = fixtureScene.name;
+
+        await fixtureScene.delete();
+
+        boaCheck(
+          checks,
+          "Temporary Elemental Totem test Scene was deleted",
+          !game.scenes.has(fixtureScene.id),
+          sceneName
+        );
+      } catch (cleanupError) {
+        boaCheck(
+          checks,
+          "Temporary Elemental Totem test Scene was deleted",
+          false,
+          cleanupError.stack ??
+            cleanupError.message
+        );
+      }
+    }
   }
-
-  notes.push(
-    `${summoned.length} summoned totem token(s) inspected.`
-  );
 } catch (error) {
   boaCheck(
     checks,

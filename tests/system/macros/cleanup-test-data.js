@@ -17,11 +17,27 @@ if (!game.user.isGM) {
   );
 }
 
+let deletedScenes = 0;
 let deletedTokens = 0;
 let deletedActors = 0;
 let deletedItems = 0;
 
 try {
+  const fixtureScenes =
+    boaCollectionValues(game.scenes)
+      .filter(
+        scene =>
+          boaGetFlag(
+            scene,
+            BOA_TEST_FIXTURE_FLAG
+          ) === true
+      );
+
+  for (const scene of fixtureScenes) {
+    await scene.delete();
+    deletedScenes += 1;
+  }
+
   for (const scene of boaCollectionValues(game.scenes)) {
     const tokenIds = boaCollectionValues(scene.tokens)
       .filter(
@@ -74,6 +90,7 @@ try {
     checks,
     "Flagged test fixtures were removed",
     true,
+    `${deletedScenes} Scenes, ` +
     `${deletedActors} Actors, ` +
     `${deletedItems} Items, ` +
     `${deletedTokens} Tokens`
