@@ -68,7 +68,7 @@ MACROS = [
         "file": "cleanup-test-data.js",
         "order": 6,
         "suiteMember": False,
-        "img": "icons/svg/trash.svg",
+        "img": "icons/svg/bones.svg",
     },
 ]
 

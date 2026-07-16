@@ -462,7 +462,41 @@ function boaSystemTestTotals(results) {
   );
 }
 
-function boaBuildSummaryMarkdown({
+function boaHtmlText(value) {
+  return boaHtmlEscape(value ?? "")
+    .replaceAll("\r", "")
+    .replaceAll("\n", "<br>");
+}
+
+function boaStatusHtml(status) {
+  const symbol =
+    status === "PASS" ? "✓" :
+    status === "FAIL" ? "✕" :
+    "–";
+
+  return (
+    `<strong>${symbol} ` +
+    `${boaHtmlEscape(status)}</strong>`
+  );
+}
+
+function boaInterestingChecks(results) {
+  return results.flatMap(result =>
+    (result.checks ?? [])
+      .filter(check =>
+        check.status === "FAIL" ||
+        check.status === "SKIP"
+      )
+      .map(check => ({
+        suite: result.name,
+        status: check.status,
+        description: check.description,
+        details: check.details ?? "",
+      }))
+  );
+}
+
+function boaBuildSummaryHtml({
   suiteResult,
   results,
   environment,
@@ -472,236 +506,476 @@ function boaBuildSummaryMarkdown({
   const automaticResult =
     suiteResult.passed ? "PASS" : "FAIL";
 
+  const issueRows = boaInterestingChecks(results)
+    .map(issue => `
+      <tr>
+        <td>${boaStatusHtml(issue.status)}</td>
+        <td>${boaHtmlText(issue.suite)}</td>
+        <td>${boaHtmlText(issue.description)}</td>
+        <td>${boaHtmlText(issue.details)}</td>
+      </tr>
+    `)
+    .join("");
+
   const suiteRows = results
-    .map(result =>
-      `| ${boaMarkdownCell(
-        result.passed ? "PASS" : "FAIL"
-      )} | ${boaMarkdownCell(result.name)} | ` +
-      `${result.passedCount ?? 0} | ` +
-      `${result.failedCount ?? 0} | ` +
-      `${result.skippedCount ?? 0} |`
-    )
-    .join("\n");
+    .map(result => `
+      <tr>
+        <td>
+          ${boaStatusHtml(
+            result.passed ? "PASS" : "FAIL"
+          )}
+        </td>
+        <td>${boaHtmlText(result.name)}</td>
+        <td>${result.passedCount ?? 0}</td>
+        <td>${result.failedCount ?? 0}</td>
+        <td>${result.skippedCount ?? 0}</td>
+      </tr>
+    `)
+    .join("");
 
-  return `# Bane of Azeroth System Test Report
+  return `
+    <h1>Bane of Azeroth System Test Report</h1>
 
-**Automated result:** ${automaticResult}  
-**Manual result:** PENDING  
-**Created:** ${boaLocalTimestamp(createdAt)}
+    <p>
+      <strong>Automated result:</strong>
+      ${boaStatusHtml(automaticResult)}
+      <br>
+      <strong>Manual result:</strong> PENDING
+      <br>
+      <strong>Created:</strong>
+      ${boaHtmlText(boaLocalTimestamp(createdAt))}
+    </p>
 
-## Environment
+    <h2>Needs attention</h2>
 
-| Component | Version |
-|---|---|
-| Bane of Azeroth | ${boaMarkdownCell(environment.moduleVersion)} |
-| Foundry VTT | ${boaMarkdownCell(environment.foundryVersion)} |
-| Dragonbane | ${boaMarkdownCell(environment.dragonbaneVersion)} |
-| Dragonbane Core Set | ${boaMarkdownCell(environment.dragonbaneCoreSetVersion)} |
-| YZE Combat | ${boaMarkdownCell(environment.yzeCombatVersion)} |
+    ${
+      issueRows
+        ? `
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Suite</th>
+                <th>Check</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>${issueRows}</tbody>
+          </table>
+        `
+        : `
+          <p>
+            <strong>
+              No failed or skipped automated checks.
+            </strong>
+          </p>
+        `
+    }
 
-**World:** ${boaMarkdownCell(environment.worldTitle)}  
-**Run by:** ${boaMarkdownCell(environment.userName)}  
-**Started:** ${boaLocalTimestamp(new Date(environment.startedAt))}  
-**Completed:** ${boaLocalTimestamp(new Date(environment.completedAt))}  
-**Duration:** ${(environment.durationMs / 1000).toFixed(2)} seconds
+    <h2>Automated totals</h2>
 
-## Automated totals
+    <table>
+      <thead>
+        <tr>
+          <th>Passed</th>
+          <th>Failed</th>
+          <th>Skipped</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>${totals.passed}</td>
+          <td>${totals.failed}</td>
+          <td>${totals.skipped}</td>
+        </tr>
+      </tbody>
+    </table>
 
-| Passed | Failed | Skipped |
-|---:|---:|---:|
-| ${totals.passed} | ${totals.failed} | ${totals.skipped} |
+    <h2>Suite overview</h2>
 
-## Test suites
+    <table>
+      <thead>
+        <tr>
+          <th>Result</th>
+          <th>Suite</th>
+          <th>Passed</th>
+          <th>Failed</th>
+          <th>Skipped</th>
+        </tr>
+      </thead>
+      <tbody>${suiteRows}</tbody>
+    </table>
 
-| Result | Test suite | Passed | Failed | Skipped |
-|---|---|---:|---:|---:|
-${suiteRows}
+    <h2>Environment</h2>
 
-## Manual completion
+    <table>
+      <tbody>
+        <tr>
+          <th>Bane of Azeroth</th>
+          <td>${boaHtmlText(environment.moduleVersion)}</td>
+        </tr>
+        <tr>
+          <th>Foundry VTT</th>
+          <td>${boaHtmlText(environment.foundryVersion)}</td>
+        </tr>
+        <tr>
+          <th>Dragonbane</th>
+          <td>${boaHtmlText(environment.dragonbaneVersion)}</td>
+        </tr>
+        <tr>
+          <th>Dragonbane Core Set</th>
+          <td>${boaHtmlText(
+            environment.dragonbaneCoreSetVersion
+          )}</td>
+        </tr>
+        <tr>
+          <th>YZE Combat</th>
+          <td>${boaHtmlText(environment.yzeCombatVersion)}</td>
+        </tr>
+        <tr>
+          <th>World</th>
+          <td>${boaHtmlText(environment.worldTitle)}</td>
+        </tr>
+        <tr>
+          <th>Run by</th>
+          <td>${boaHtmlText(environment.userName)}</td>
+        </tr>
+        <tr>
+          <th>Started</th>
+          <td>${boaHtmlText(
+            boaLocalTimestamp(new Date(environment.startedAt))
+          )}</td>
+        </tr>
+        <tr>
+          <th>Completed</th>
+          <td>${boaHtmlText(
+            boaLocalTimestamp(new Date(environment.completedAt))
+          )}</td>
+        </tr>
+        <tr>
+          <th>Duration</th>
+          <td>
+            ${(environment.durationMs / 1000).toFixed(2)}
+            seconds
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-- [ ] All required manual tests have been completed.
-- [ ] All manual tests passed, or failures are documented.
-- [ ] The final manual result above has been changed from PENDING to PASS or FAIL.
-`;
+    <h2>Manual completion</h2>
+
+    <ul>
+      <li>[ ] All required manual tests were completed.</li>
+      <li>[ ] All manual failures are documented.</li>
+      <li>
+        [ ] Manual result was changed from
+        PENDING to PASS or FAIL.
+      </li>
+    </ul>
+  `;
 }
 
-function boaBuildAutomatedResultsMarkdown(
-  results
-) {
+function boaBuildAutomatedResultsHtml(results) {
   const sections = results.map(result => {
-    const rows = result.checks
-      .map(check =>
-        `| ${boaMarkdownCell(check.status)} | ` +
-        `${boaMarkdownCell(check.description)} | ` +
-        `${boaMarkdownCell(check.details)} |`
-      )
-      .join("\n");
+    const rows = (result.checks ?? [])
+      .map(check => `
+        <tr>
+          <td>${boaStatusHtml(check.status)}</td>
+          <td>${boaHtmlText(check.description)}</td>
+          <td>${boaHtmlText(check.details ?? "")}</td>
+        </tr>
+      `)
+      .join("");
 
     const notes = (result.notes ?? [])
-      .map(note => `- ${note}`)
-      .join("\n");
+      .map(note => `<li>${boaHtmlText(note)}</li>`)
+      .join("");
 
-    return `## ${result.name}
+    return `
+      <h2>${boaHtmlText(result.name)}</h2>
 
-**Result:** ${result.passed ? "PASS" : "FAIL"}  
-**Passed:** ${result.passedCount ?? 0}  
-**Failed:** ${result.failedCount ?? 0}  
-**Skipped:** ${result.skippedCount ?? 0}
+      <p>
+        <strong>Result:</strong>
+        ${boaStatusHtml(result.passed ? "PASS" : "FAIL")}
+        <br>
+        <strong>Passed:</strong>
+        ${result.passedCount ?? 0}
+        <br>
+        <strong>Failed:</strong>
+        ${result.failedCount ?? 0}
+        <br>
+        <strong>Skipped:</strong>
+        ${result.skippedCount ?? 0}
+      </p>
 
-| Status | Check | Details |
-|---|---|---|
-${rows || "| SKIP | No checks were returned | |"}
+      <table>
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Check</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${
+            rows ||
+            `
+              <tr>
+                <td>${boaStatusHtml("SKIP")}</td>
+                <td>No checks were returned.</td>
+                <td></td>
+              </tr>
+            `
+          }
+        </tbody>
+      </table>
 
-${notes ? `### Notes\n\n${notes}` : ""}
-`;
+      ${
+        notes
+          ? `
+            <h3>Notes</h3>
+            <ul>${notes}</ul>
+          `
+          : ""
+      }
+
+      <hr>
+    `;
   });
 
-  return `# Automated Results
-
-${sections.join("\n---\n\n")}
-`;
+  return `
+    <h1>Automated Results</h1>
+    ${sections.join("")}
+  `;
 }
 
-function boaBuildManualChecklistMarkdown() {
-  return `# Manual Test Checklist
+function boaBuildManualChecklistHtml() {
+  return `
+    <h1>Manual Test Checklist</h1>
 
-Edit this Markdown page and change \`[ ]\` to \`[x]\` as each test is completed.
+    <p>
+      Edit this page and change
+      <code>[ ]</code> to <code>[x]</code>
+      as each test is completed.
+    </p>
 
-**Manual result:** PENDING  
-**Tested by:**  
-**Completed:**  
+    <p>
+      <strong>Manual result:</strong> PENDING
+      <br>
+      <strong>Tested by:</strong>
+      <br>
+      <strong>Completed:</strong>
+    </p>
 
-## Elemental Totem placement and interaction
+    <h2>Elemental Totem placement and interaction</h2>
+    <ul>
+      <li>[ ] Pointer placement preview follows the cursor.</li>
+      <li>[ ] Valid placement uses the selected totem aura color.</li>
+      <li>[ ] Invalid placement is shown in red.</li>
+      <li>[ ] Placement snaps correctly to the active grid.</li>
+      <li>[ ] Placement is accepted within 6 meters.</li>
+      <li>[ ] Placement is rejected beyond 6 meters.</li>
+      <li>[ ] Escape cancels the entire placement.</li>
+      <li>[ ] Right-click cancels the entire placement.</li>
+      <li>[ ] Canceling preserves existing totems.</li>
+    </ul>
 
-- [ ] Pointer placement preview follows the cursor.
-- [ ] Valid placement uses the selected totem's aura color.
-- [ ] Invalid placement is shown in red.
-- [ ] Placement snaps correctly to the active grid.
-- [ ] Placement is accepted within 6 meters.
-- [ ] Placement is rejected beyond 6 meters.
-- [ ] Escape cancels the entire placement.
-- [ ] Right-click cancels the entire placement.
-- [ ] Canceling preserves the caster's existing totems.
+    <h2>Elemental Totem visual verification</h2>
+    <ul>
+      <li>[ ] Cleansing aura is blue/cyan.</li>
+      <li>[ ] Flametongue aura is orange.</li>
+      <li>[ ] Stoneskin aura is yellow-green.</li>
+      <li>[ ] Windfury aura is lavender.</li>
+      <li>[ ] Overlapping auras remain distinguishable.</li>
+      <li>[ ] Aura radius matches 10, 20, or 40 meters.</li>
+      <li>[ ] Auras follow moved tokens.</li>
+      <li>[ ] Auras survive copying and scene reload.</li>
+      <li>[ ] Auras disappear with their tokens.</li>
+      <li>[ ] Auras do not alter light or token vision.</li>
+    </ul>
 
-## Elemental Totem visual verification
+    <h2>Elemental Totem roll workflow</h2>
+    <ul>
+      <li>[ ] Normal success opens one selection dialog.</li>
+      <li>[ ] Normal failure opens no dialog.</li>
+      <li>[ ] Pushed failure opens no dialog.</li>
+      <li>[ ] Pushed success opens one dialog.</li>
+      <li>[ ] Demon result opens no dialog.</li>
+      <li>[ ] Dragon result waits for the critical-effect choice.</li>
+      <li>[ ] PL 1 permits one totem.</li>
+      <li>[ ] PL 3 permits two additional choices.</li>
+      <li>[ ] Duplicate totem types cannot be selected.</li>
+      <li>[ ] Replacement occurs only after successful placement.</li>
+    </ul>
 
-- [ ] Cleansing aura is blue/cyan.
-- [ ] Flametongue aura is orange.
-- [ ] Stoneskin aura is yellow-green.
-- [ ] Windfury aura is lavender.
-- [ ] Overlapping auras remain visually distinguishable.
-- [ ] Aura radius matches 10, 20, or 40 meters.
-- [ ] Auras follow moved tokens.
-- [ ] Auras survive copying and scene reload.
-- [ ] Auras disappear when their tokens are deleted.
-- [ ] Auras do not create light or modify token vision.
+    <h2>Player and game-master workflow</h2>
+    <ul>
+      <li>[ ] A player can cast using an owned Actor.</li>
+      <li>[ ] The player chooses totems and positions.</li>
+      <li>[ ] The primary GM creates tokens exactly once.</li>
+      <li>[ ] A player cannot submit an unowned Actor.</li>
+      <li>[ ] Players can read summoned totem sheets.</li>
+      <li>[ ] Players cannot edit summoned totem sheets.</li>
+      <li>[ ] Cross-scene cleanup removes older caster totems.</li>
+      <li>[ ] Other casters totems remain.</li>
+    </ul>
 
-## Elemental Totem roll workflow
+    <h2>Adventure and interface verification</h2>
+    <ul>
+      <li>[ ] Clean-world Adventure import succeeds.</li>
+      <li>[ ] Import prompt appears only for newer content.</li>
+      <li>[ ] Development suffixes do not retrigger import.</li>
+      <li>[ ] Dialog layout is readable.</li>
+      <li>[ ] New interface text is localized in English.</li>
+      <li>[ ] Always-prepared state is visually distinct.</li>
+      <li>[ ] Always-prepared tooltip is displayed.</li>
+    </ul>
 
-- [ ] A normal success opens the selection dialog once.
-- [ ] A normal failure opens no dialog.
-- [ ] A pushed failure opens no dialog.
-- [ ] A pushed success opens one dialog.
-- [ ] A demon result opens no dialog.
-- [ ] A dragon result waits for the critical-effect choice and opens once.
-- [ ] PL 1 permits one totem.
-- [ ] PL 3 permits two additional distinct choices.
-- [ ] Duplicate totem types cannot be selected.
-- [ ] Existing totems are replaced only after successful placement.
+    <h2>Weapon feature verification</h2>
+    <ul>
+      <li>[ ] Eligible Armor Piercing weapon gets one option.</li>
+      <li>[ ] Armor Piercing requires Damage Types.</li>
+      <li>[ ] Scattershot removes the point-blank bane.</li>
+      <li>[ ] Scattershot preserves the long-range bane.</li>
+      <li>[ ] Long-range damage is halved and rounded up.</li>
+      <li>[ ] Missing Ammo Pouch shows confirmation.</li>
+      <li>[ ] Perform Action continues.</li>
+      <li>[ ] Cancel Action cancels.</li>
+    </ul>
 
-## Player and game-master workflow
+    <h2>Compatibility and presentation</h2>
+    <ul>
+      <li>[ ] Browser console has no unexpected errors.</li>
+      <li>[ ] Foundry version is recorded correctly.</li>
+      <li>[ ] Dragonbane version is recorded correctly.</li>
+      <li>[ ] Relevant module versions are correct.</li>
+      <li>[ ] Failures and deviations are documented below.</li>
+    </ul>
 
-- [ ] A player can cast using an owned Actor.
-- [ ] The player chooses the totems and placement positions.
-- [ ] The active primary GM creates the tokens exactly once.
-- [ ] A player cannot submit a request for an Actor they do not own.
-- [ ] Summoned totem sheets are readable by players.
-- [ ] Summoned totem sheets are not editable by players.
-- [ ] Cross-scene cleanup removes the caster's older totems.
-- [ ] Other casters' totems remain.
-
-## Adventure and interface verification
-
-- [ ] Clean-world Adventure import succeeds.
-- [ ] The Adventure import prompt appears only for a newer content version.
-- [ ] Development build suffix changes do not retrigger the import prompt.
-- [ ] Dialog layout is readable at the normal browser zoom.
-- [ ] All new interface text is localized in English.
-- [ ] The always-prepared checkbox is disabled and visually distinct.
-- [ ] The always-prepared tooltip is displayed.
-
-## Weapon feature verification
-
-- [ ] Armor Piercing adds exactly one Find Weak Spot option to an eligible weapon.
-- [ ] Armor Piercing remains unavailable when Damage Types is disabled.
-- [ ] Scattershot removes the point-blank bane.
-- [ ] Scattershot preserves the long-range bane.
-- [ ] Scattershot long-range damage is halved and rounded up.
-- [ ] Missing Ammo Pouch shows the confirmation dialog.
-- [ ] Perform Action continues after the warning.
-- [ ] Cancel Action cancels after the warning.
-
-## Compatibility and presentation
-
-- [ ] Browser console contains no unexpected errors.
-- [ ] The tested Foundry version is recorded correctly.
-- [ ] The tested Dragonbane version is recorded correctly.
-- [ ] Relevant module versions are recorded correctly.
-- [ ] Any failures or deviations are documented below.
-
-## Manual notes
-
-Add observations, screenshots, failure details, or reproduction steps here.
-
-`;
+    <h2>Manual notes</h2>
+    <p>
+      Add observations, screenshots, failures,
+      and reproduction steps here.
+    </p>
+  `;
 }
 
-function boaBuildEnvironmentMarkdown(environment) {
-  const activeModuleRows = environment.activeModules
-    .map(module =>
-      `| ${boaMarkdownCell(module.title)} | ` +
-      `${boaMarkdownCell(module.id)} | ` +
-      `${boaMarkdownCell(module.version)} |`
-    )
-    .join("\n");
+function boaBuildEnvironmentHtml(environment) {
+  const moduleRows = environment.activeModules
+    .map(module => `
+      <tr>
+        <td>${boaHtmlText(module.title)}</td>
+        <td>${boaHtmlText(module.id)}</td>
+        <td>${boaHtmlText(module.version)}</td>
+      </tr>
+    `)
+    .join("");
 
-  return `# Environment and Notes
+  return `
+    <h1>Environment and Notes</h1>
 
-## Runtime
+    <h2>Runtime</h2>
 
-| Property | Value |
-|---|---|
-| Bane of Azeroth | ${boaMarkdownCell(environment.moduleVersion)} |
-| Foundry VTT | ${boaMarkdownCell(environment.foundryVersion)} |
-| Dragonbane | ${boaMarkdownCell(environment.dragonbaneVersion)} |
-| Dragonbane Core Set | ${boaMarkdownCell(environment.dragonbaneCoreSetVersion)} |
-| YZE Combat | ${boaMarkdownCell(environment.yzeCombatVersion)} |
-| World | ${boaMarkdownCell(environment.worldTitle)} |
-| World ID | ${boaMarkdownCell(environment.worldId)} |
-| Active scene | ${boaMarkdownCell(environment.sceneName)} |
-| User | ${boaMarkdownCell(environment.userName)} |
-| User ID | ${boaMarkdownCell(environment.userId)} |
-| Game master | ${environment.userIsGM ? "Yes" : "No"} |
-| Started | ${boaMarkdownCell(environment.startedAt)} |
-| Completed | ${boaMarkdownCell(environment.completedAt)} |
-| Duration | ${(environment.durationMs / 1000).toFixed(2)} seconds |
-| Browser | ${boaMarkdownCell(environment.browser)} |
+    <table>
+      <tbody>
+        <tr>
+          <th>Bane of Azeroth</th>
+          <td>${boaHtmlText(environment.moduleVersion)}</td>
+        </tr>
+        <tr>
+          <th>Foundry VTT</th>
+          <td>${boaHtmlText(environment.foundryVersion)}</td>
+        </tr>
+        <tr>
+          <th>Dragonbane</th>
+          <td>${boaHtmlText(environment.dragonbaneVersion)}</td>
+        </tr>
+        <tr>
+          <th>Dragonbane Core Set</th>
+          <td>${boaHtmlText(
+            environment.dragonbaneCoreSetVersion
+          )}</td>
+        </tr>
+        <tr>
+          <th>YZE Combat</th>
+          <td>${boaHtmlText(environment.yzeCombatVersion)}</td>
+        </tr>
+        <tr>
+          <th>World</th>
+          <td>${boaHtmlText(environment.worldTitle)}</td>
+        </tr>
+        <tr>
+          <th>World ID</th>
+          <td>${boaHtmlText(environment.worldId)}</td>
+        </tr>
+        <tr>
+          <th>Active scene</th>
+          <td>${boaHtmlText(environment.sceneName)}</td>
+        </tr>
+        <tr>
+          <th>User</th>
+          <td>${boaHtmlText(environment.userName)}</td>
+        </tr>
+        <tr>
+          <th>User ID</th>
+          <td>${boaHtmlText(environment.userId)}</td>
+        </tr>
+        <tr>
+          <th>Game master</th>
+          <td>${environment.userIsGM ? "Yes" : "No"}</td>
+        </tr>
+        <tr>
+          <th>Started</th>
+          <td>${boaHtmlText(environment.startedAt)}</td>
+        </tr>
+        <tr>
+          <th>Completed</th>
+          <td>${boaHtmlText(environment.completedAt)}</td>
+        </tr>
+        <tr>
+          <th>Duration</th>
+          <td>
+            ${(environment.durationMs / 1000).toFixed(2)}
+            seconds
+          </td>
+        </tr>
+        <tr>
+          <th>Browser</th>
+          <td>${boaHtmlText(environment.browser)}</td>
+        </tr>
+      </tbody>
+    </table>
 
-## Active modules
+    <h2>Active modules</h2>
 
-| Module | ID | Version |
-|---|---|---|
-${activeModuleRows || "| None | | |"}
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>ID</th>
+          <th>Version</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${
+          moduleRows ||
+          `
+            <tr>
+              <td colspan="3">None</td>
+            </tr>
+          `
+        }
+      </tbody>
+    </table>
 
-## Additional notes
-
-Add environment-specific observations here.
-`;
+    <h2>Additional notes</h2>
+    <p>Add environment-specific observations here.</p>
+  `;
 }
 
-function boaMarkdownPage(
+function boaHtmlPage(
   name,
-  markdown,
+  content,
   sort
 ) {
   return {
@@ -710,8 +984,8 @@ function boaMarkdownPage(
     sort,
     text: {
       format:
-        CONST.JOURNAL_ENTRY_PAGE_FORMATS.MARKDOWN,
-      markdown,
+        CONST.JOURNAL_ENTRY_PAGE_FORMATS.HTML,
+      content,
     },
   };
 }
@@ -771,9 +1045,9 @@ async function boaCreateSystemTestReport({
       },
     },
     pages: [
-      boaMarkdownPage(
+      boaHtmlPage(
         "Summary",
-        boaBuildSummaryMarkdown({
+        boaBuildSummaryHtml({
           suiteResult,
           results,
           environment,
@@ -781,19 +1055,19 @@ async function boaCreateSystemTestReport({
         }),
         100000
       ),
-      boaMarkdownPage(
+      boaHtmlPage(
         "Automated Results",
-        boaBuildAutomatedResultsMarkdown(results),
+        boaBuildAutomatedResultsHtml(results),
         200000
       ),
-      boaMarkdownPage(
+      boaHtmlPage(
         "Manual Checklist",
-        boaBuildManualChecklistMarkdown(),
+        boaBuildManualChecklistHtml(),
         300000
       ),
-      boaMarkdownPage(
+      boaHtmlPage(
         "Environment and Notes",
-        boaBuildEnvironmentMarkdown(environment),
+        boaBuildEnvironmentHtml(environment),
         400000
       ),
     ],
