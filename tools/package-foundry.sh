@@ -138,10 +138,55 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
     "${ROOT_DIR}/tools/generate-system-test-macros.py" \
     --output-directory "$DEV_TEST_SOURCE"
 
+  DEV_TEST_SOURCE_COUNT="$(
+    find "$DEV_TEST_SOURCE" \
+      -maxdepth 1 \
+      -type f \
+      -name '*.json' \
+      -print |
+    wc -l |
+    tr -d '[:space:]'
+  )"
+
+  if [[ "$DEV_TEST_SOURCE_COUNT" == "0" ]]; then
+    echo "No developer-test Macro documents were generated." >&2
+    exit 1
+  fi
+
   fvtt package pack "$DEV_TEST_PACK_NAME" \
     --inputDirectory "$DEV_TEST_SOURCE" \
     --outputDirectory "${STAGE_DIR}/packs" \
     --recursive
+
+  DEV_TEST_VERIFY="${DEV_TEST_SOURCE_ROOT}/verify"
+
+  rm -rf "$DEV_TEST_VERIFY"
+
+  fvtt package unpack "$DEV_TEST_PACK_NAME" \
+    --inputDirectory "${STAGE_DIR}/packs" \
+    --outputDirectory "$DEV_TEST_VERIFY" \
+    --clean
+
+  DEV_TEST_PACKED_COUNT="$(
+    find "$DEV_TEST_VERIFY" \
+      -type f \
+      -name '*.json' \
+      -print |
+    wc -l |
+    tr -d '[:space:]'
+  )"
+
+  if [[ "$DEV_TEST_PACKED_COUNT" != "$DEV_TEST_SOURCE_COUNT" ]]; then
+    echo \
+      "Developer-test Macro pack verification failed: " \
+      "generated ${DEV_TEST_SOURCE_COUNT}, " \
+      "packed ${DEV_TEST_PACKED_COUNT}." >&2
+    exit 1
+  fi
+
+  echo \
+    "Verified ${DEV_TEST_PACKED_COUNT} developer-test " \
+    "Macros in the compiled pack."
 
   DEV_PACK_DIR="${STAGE_DIR}/packs/${DEV_TEST_PACK_NAME}"
 
@@ -161,9 +206,21 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
     -name '*.dbtmp' \
     -delete
 
+  install \
+    -D \
+    -m 0644 \
+    "${ROOT_DIR}/tests/system/runtime/import-system-test-macros.js" \
+    "${STAGE_DIR}/scripts/boa-dev-system-tests.js"
+
   jq \
     --arg packName "$DEV_TEST_PACK_NAME" \
     '
+      .scripts = (
+        (((.scripts // []) |
+          map(select(. != "scripts/boa-dev-system-tests.js")))
+        + ["scripts/boa-dev-system-tests.js"])
+      )
+      |
       .packs = (
         ((.packs // []) |
           map(select(.name != $packName)))
@@ -195,10 +252,16 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
     "${STAGE_DIR}/module.json"
 else
   rm -rf "${STAGE_DIR}/packs/${DEV_TEST_PACK_NAME}"
+  rm -f "${STAGE_DIR}/scripts/boa-dev-system-tests.js"
 
   jq \
     --arg packName "$DEV_TEST_PACK_NAME" \
     '
+      .scripts = (
+        (.scripts // []) |
+        map(select(. != "scripts/boa-dev-system-tests.js"))
+      )
+      |
       .packs = (
         (.packs // []) |
         map(select(.name != $packName))

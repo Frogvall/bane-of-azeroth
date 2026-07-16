@@ -162,6 +162,7 @@ def main() -> int:
         )
 
         document = {
+            "_key": f"!macros!{document_id}",
             "_id": document_id,
             "name": macro["name"],
             "type": "script",
