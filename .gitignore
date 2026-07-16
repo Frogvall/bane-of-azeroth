@@ -5,6 +5,7 @@ module.json.backup-*
 Thumbs.db
 __pycache__
 apply*.py
+fix*.py
 
 # LevelDB runtime and diagnostic files
 foundry/packs/

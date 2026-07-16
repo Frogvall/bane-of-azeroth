@@ -8,9 +8,11 @@
   "scripts": {
     "test": "vitest run",
     "test:unit": "vitest run tests/unit",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "vitest": "4.1.10"
+    "vitest": "4.1.10",
+    "@vitest/coverage-v8": "4.1.10"
   }
 }

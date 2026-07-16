@@ -21,6 +21,23 @@ const testExports = [
   "isScattershotRangedWeapon",
   "protectAutoGrantedSpellPreparation",
   "shouldStartElementalTotemDialog",
+  "actorHasSpell",
+  "configureCreatedElementalTotem",
+  "deletePreviousElementalTotems",
+  "executeElementalTotemCreation",
+  "getContentVersion",
+  "getElementalTotemPlacementRange",
+  "getPrimaryActiveGMUser",
+  "grantSpellForAbility",
+  "loadElementalTotemDefinitions",
+  "loadSpellGrantDefinitions",
+  "patchWeaponTests",
+  "promptAdventureImport",
+  "reconcileSpellGrantsForActor",
+  "removeSpellForAbility",
+  "resolveGrantedSpellContentKey",
+  "validateElementalTotemCreationRequest",
+  "validateElementalTotemPlanShape",
 ];
 
 function testOnlyBaneOfAzerothExports() {
@@ -111,6 +128,7 @@ export default defineConfig({
     ],
     include: [
       "tests/unit/**/*.test.js",
+    "tests/integration/**/*.test.js",
     ],
     clearMocks: true,
     restoreMocks: true,
@@ -130,5 +148,21 @@ export default defineConfig({
           junit: "./test-results/junit.xml",
         }
       : undefined,
+
+    coverage: {
+      provider: "v8",
+      include: [
+        "foundry/scripts/**/*.js",
+      ],
+      reportsDirectory: "./coverage",
+      reporter: [
+        "text",
+        "json-summary",
+        "html",
+        "lcov",
+      ],
+      reportOnFailure: true,
+      excludeAfterRemap: true,
+    },
   },
 });

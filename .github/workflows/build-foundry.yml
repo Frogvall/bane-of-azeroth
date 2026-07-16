@@ -46,7 +46,7 @@ jobs:
       - name: Run unit tests
         run: |
           mkdir -p test-results
-          npm test
+          npm run test:coverage
 
       - name: Upload unit test report
         if: ${{ always() }}
@@ -56,6 +56,21 @@ jobs:
           path: test-results/junit.xml
           if-no-files-found: ignore
           retention-days: 30
+
+
+      - name: Publish coverage summary
+        if: ${{ always() }}
+        run: node tests/write-coverage-summary.mjs >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-coverage
+          path: coverage/
+          if-no-files-found: ignore
+          retention-days: 30
+
   resolve-image:
     name: Resolve build image
 
