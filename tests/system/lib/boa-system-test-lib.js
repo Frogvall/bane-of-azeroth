@@ -278,7 +278,8 @@ function boaDocumentParentFolderId(folder) {
 
 async function boaEnsureJournalFolder(
   name,
-  parent = null
+  parent = null,
+  color = null
 ) {
   const parentId = parent?.id ?? null;
 
@@ -289,13 +290,20 @@ async function boaEnsureJournalFolder(
       boaDocumentParentFolderId(folder) === parentId
     );
 
-  if (existing) return existing;
+  if (existing) {
+    if ((existing.color ?? null) !== color) {
+      await existing.update({ color });
+    }
+
+    return existing;
+  }
 
   return Folder.create({
     name,
     type: "JournalEntry",
     folder: parentId,
     sorting: "a",
+    color,
   });
 }
 
@@ -721,13 +729,16 @@ async function boaCreateSystemTestReport({
   );
 
   const rootFolder = await boaEnsureJournalFolder(
-    "Bane of Azeroth"
+    "Bane of Azeroth",
+    null,
+    "#1f5fbf"
   );
 
   const systemTestsFolder =
     await boaEnsureJournalFolder(
       "System Tests",
-      rootFolder
+      rootFolder,
+      null
     );
 
   const reportName =

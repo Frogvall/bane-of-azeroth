@@ -27,7 +27,8 @@
 
   async function ensureMacroFolder(
     name,
-    parent = null
+    parent = null,
+    color = null
   ) {
     const parentId = parent?.id ?? null;
 
@@ -38,13 +39,20 @@
         parentFolderId(folder) === parentId
       );
 
-    if (existing) return existing;
+    if (existing) {
+      if ((existing.color ?? null) !== color) {
+        await existing.update({ color });
+      }
+
+      return existing;
+    }
 
     return Folder.create({
       name,
       type: "Macro",
       folder: parentId,
       sorting: "a",
+      color,
     });
   }
 
@@ -150,12 +158,15 @@
     }
 
     const rootFolder = await ensureMacroFolder(
-      ROOT_FOLDER_NAME
+      ROOT_FOLDER_NAME,
+      null,
+      "#1f5fbf"
     );
 
     const testFolder = await ensureMacroFolder(
       TEST_FOLDER_NAME,
-      rootFolder
+      rootFolder,
+      null
     );
 
     const managedWorldMacros =
