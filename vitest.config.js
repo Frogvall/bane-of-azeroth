@@ -12,18 +12,8 @@ const sourcePath = fileURLToPath(
 );
 
 const testExports = [
-  "buildElementalTotemPlan",
-  "buildTotemOptions",
-  "getElementalTotemAuraData",
-  "shouldStartElementalTotemDialog",
-  "configureCreatedElementalTotem",
-  "deletePreviousElementalTotems",
   "executeElementalTotemCreation",
-  "getElementalTotemPlacementRange",
-  "getPrimaryActiveGMUser",
-  "loadElementalTotemDefinitions",
   "validateElementalTotemCreationRequest",
-  "validateElementalTotemPlanShape",
 ];
 
 function testOnlyBaneOfAzerothExports() {

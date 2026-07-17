@@ -9,7 +9,7 @@ import {
   buildTotemOptions,
   getElementalTotemAuraData,
   shouldStartElementalTotemDialog,
-} from "../../foundry/scripts/bane-of-azeroth.js";
+} from "../../foundry/scripts/elemental-totems.js";
 
 const definitions = {
   baseArmor: 2,

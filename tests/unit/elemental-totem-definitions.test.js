@@ -9,7 +9,7 @@ import {
 
 import {
   loadElementalTotemDefinitions,
-} from "../../foundry/scripts/bane-of-azeroth.js";
+} from "../../foundry/scripts/elemental-totems.js";
 
 function validContent(overrides = {}) {
   return {
