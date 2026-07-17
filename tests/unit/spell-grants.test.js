@@ -14,7 +14,7 @@ import {
   reconcileSpellGrantsForActor,
   removeSpellForAbility,
   resolveGrantedSpellContentKey,
-} from "../../foundry/scripts/bane-of-azeroth.js";
+} from "../../foundry/scripts/spell-grants.js";
 
 import {
   makeAbility,
