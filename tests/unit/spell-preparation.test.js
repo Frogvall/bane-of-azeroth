@@ -7,7 +7,7 @@ import {
 import {
   isAutoGrantedSpell,
   protectAutoGrantedSpellPreparation,
-} from "../../foundry/scripts/bane-of-azeroth.js";
+} from "../../foundry/scripts/spell-preparation.js";
 
 function makeItem({
   autoGranted = true,

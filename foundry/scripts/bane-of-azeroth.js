@@ -3,154 +3,21 @@ import DoDRollDamageMessageData from "/systems/dragonbane/modules/data/messages/
 import DoDWeaponTest from "/systems/dragonbane/modules/tests/weapon-test.js";
 import DoD_Utility from "/systems/dragonbane/modules/utility.js";
 
-const MODULE_ID = "bane-of-azeroth";
-const ADVENTURE_PACK_ID = `${MODULE_ID}.${MODULE_ID}`;
-const ADVENTURE_PROMPT_VERSION_SETTING = "adventurePromptVersion";
-
-const WEAPON_FEATURES = Object.freeze({
-  freehanded: "BOA.weaponFeatureTypes.freehanded",
-  returning: "BOA.weaponFeatureTypes.returning",
-  ammunition: "BOA.weaponFeatureTypes.ammunition",
-  armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",
-  scattershot: "BOA.weaponFeatureTypes.scattershot"
-});
-
-function registerSettings() {
-  game.settings.register(MODULE_ID, ADVENTURE_PROMPT_VERSION_SETTING, {
-    scope: "world",
-    config: false,
-    type: String,
-    default: ""
-  });
-}
-
-function getContentVersion() {
-  const moduleVersion = game.modules.get(MODULE_ID)?.version ?? "";
-  return moduleVersion.match(/^\d+\.\d+\.\d+/)?.[0] ?? moduleVersion;
-}
-
-async function promptAdventureImport() {
-  if (!game.user.isGM) return;
-
-  const contentVersion = getContentVersion();
-  const promptedVersion = game.settings.get(
-    MODULE_ID,
-    ADVENTURE_PROMPT_VERSION_SETTING
-  );
-
-  if (
-    promptedVersion
-    && !foundry.utils.isNewerVersion(contentVersion, promptedVersion)
-  ) {
-    return;
-  }
-
-  const pack = game.packs.get(ADVENTURE_PACK_ID);
-
-  if (!pack) {
-    console.error(
-      `${MODULE_ID} | Adventure pack ${ADVENTURE_PACK_ID} was not found.`
-    );
-    return;
-  }
-
-  const index = await pack.getIndex();
-  const adventureId = index.contents[0]?._id;
-
-  if (!adventureId) {
-    console.error(
-      `${MODULE_ID} | No Adventure document was found in ${ADVENTURE_PACK_ID}.`
-    );
-    return;
-  }
-
-  const adventure = await pack.getDocument(adventureId);
-
-  if (!adventure) {
-    console.error(
-      `${MODULE_ID} | Adventure ${adventureId} could not be loaded.`
-    );
-    return;
-  }
-
-  await adventure.sheet.render(true);
-
-  await game.settings.set(
-    MODULE_ID,
-    ADVENTURE_PROMPT_VERSION_SETTING,
-    contentVersion
-  );
-}
-
-async function ensureAutoGrantedSpellsPrepared(actor) {
-  const updates = actor.items
-    .filter(
-      item =>
-        isAutoGrantedSpell(item) &&
-        item.system.memorized !== true
-    )
-    .map(item => ({
-      _id: item.id,
-      "system.memorized": true,
-    }));
-
-  if (updates.length > 0) {
-    await actor.updateEmbeddedDocuments("Item", updates);
-  }
-}
-
-function isAutoGrantedSpell(item) {
-  return (
-    item?.type === "spell" &&
-    getModuleFlag(item, "autoGranted") === true
-  );
-}
-
-function lockAutoGrantedSpellPreparation(app, html) {
-  const actor = app.actor ?? app.document;
-  if (actor?.documentName !== "Actor") return;
-
-  for (const spell of actor.items.filter(isAutoGrantedSpell)) {
-    const checkbox = html.querySelector(
-      `tr.item[data-item-id="${spell.id}"] ` +
-      `input.inline-edit[data-field="system.memorized"]`
-    );
-
-    if (!checkbox) continue;
-
-    checkbox.checked = true;
-    checkbox.disabled = true;
-    checkbox.classList.add("boa-always-prepared");
-    checkbox.title = game.i18n.localize(
-      "BOA.spellAutomation.alwaysPreparedTooltip"
-    );
-  }
-}
-
-function protectAutoGrantedSpellPreparation(
-  item,
-  changed
-) {
-  if (!isAutoGrantedSpell(item)) return;
-
-  const flatValue = changed["system.memorized"];
-  const nestedValue = foundry.utils.getProperty(
-    changed,
-    "system.memorized"
-  );
-
-  if (flatValue !== false && nestedValue !== false) return;
-
-  if (Object.hasOwn(changed, "system.memorized")) {
-    changed["system.memorized"] = true;
-  } else {
-    foundry.utils.setProperty(
-      changed,
-      "system.memorized",
-      true
-    );
-  }
-}
+import {
+  MODULE_ID,
+  WEAPON_FEATURES,
+} from "./core/constants.js";
+import {
+  getContentVersion,
+  promptAdventureImport,
+  registerSettings,
+} from "./adventure-import.js";
+import {
+  ensureAutoGrantedSpellsPrepared,
+  isAutoGrantedSpell,
+  lockAutoGrantedSpellPreparation,
+  protectAutoGrantedSpellPreparation,
+} from "./spell-preparation.js";
 
 function isArmorPiercingRangedWeapon(weapon) {
   return Boolean(

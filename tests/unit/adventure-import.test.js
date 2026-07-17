@@ -9,7 +9,7 @@ import {
 import {
   getContentVersion,
   promptAdventureImport,
-} from "../../foundry/scripts/bane-of-azeroth.js";
+} from "../../foundry/scripts/adventure-import.js";
 
 describe("Adventure import version handling", () => {
   beforeEach(() => {
