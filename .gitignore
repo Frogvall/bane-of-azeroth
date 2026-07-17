@@ -10,6 +10,7 @@ apply-*.py
 patch-*.py
 fix-*.py
 refactor-*.py
+repair-*.py
 
 # LevelDB runtime and diagnostic files
 foundry/packs/

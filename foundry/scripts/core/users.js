@@ -6,3 +6,7 @@ export function isPrimaryActiveGM() {
   );
   return activeGMs[0]?.id === game.user.id;
 }
+
+export function getPrimaryActiveGMUser() {
+  return game.users.find(user => user.active && user.isGM) ?? null;
+}
