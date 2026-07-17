@@ -197,13 +197,27 @@ try {
       definitions.length
     );
 
-    for (
-      let index = 0;
-      index < createdTokens.length;
-      index += 1
-    ) {
-      const token = createdTokens[index];
-      const definition = definitions[index];
+    const tokensByType = new Map(
+      createdTokens.map(token => [
+        boaGetFlag(token, "totemType"),
+        token,
+      ])
+    );
+
+    for (const definition of definitions) {
+      const token = tokensByType.get(definition.key);
+
+      boaCheck(
+        checks,
+        `Summoned token exists: ${definition.name}`,
+        Boolean(token),
+        `Expected totemType: ${definition.key}`
+      );
+
+      if (!token) {
+        continue;
+      }
+
       const actor = token.actor;
       const expectedAlpha =
         definition.auraAlpha ??
