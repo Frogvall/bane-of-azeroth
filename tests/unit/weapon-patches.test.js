@@ -16,7 +16,7 @@ import DoD_Utility from
 
 import {
   patchWeaponTests,
-} from "../../foundry/scripts/bane-of-azeroth.js";
+} from "../../foundry/scripts/weapon-features.js";
 
 function makeWeapon({
   features = [],

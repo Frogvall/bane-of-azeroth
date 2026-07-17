@@ -12,12 +12,9 @@ const sourcePath = fileURLToPath(
 );
 
 const testExports = [
-  "actorHasAmmoPouch",
   "buildElementalTotemPlan",
   "buildTotemOptions",
   "getElementalTotemAuraData",
-  "isArmorPiercingRangedWeapon",
-  "isScattershotRangedWeapon",
   "shouldStartElementalTotemDialog",
   "configureCreatedElementalTotem",
   "deletePreviousElementalTotems",
@@ -25,7 +22,6 @@ const testExports = [
   "getElementalTotemPlacementRange",
   "getPrimaryActiveGMUser",
   "loadElementalTotemDefinitions",
-  "patchWeaponTests",
   "validateElementalTotemCreationRequest",
   "validateElementalTotemPlanShape",
 ];

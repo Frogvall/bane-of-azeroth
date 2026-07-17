@@ -12,7 +12,7 @@ import {
   actorHasAmmoPouch,
   isArmorPiercingRangedWeapon,
   isScattershotRangedWeapon,
-} from "../../foundry/scripts/bane-of-azeroth.js";
+} from "../../foundry/scripts/weapon-features.js";
 
 function makeWeapon({
   isRangedWeapon = true,
