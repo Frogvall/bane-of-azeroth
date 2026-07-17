@@ -12,8 +12,6 @@ const sourcePath = fileURLToPath(
 );
 
 const testExports = [
-  "executeElementalTotemCreation",
-  "validateElementalTotemCreationRequest",
 ];
 
 function testOnlyBaneOfAzerothExports() {

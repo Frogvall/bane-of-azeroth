@@ -9,7 +9,7 @@ import {
 import {
   executeElementalTotemCreation,
   validateElementalTotemCreationRequest,
-} from "../../foundry/scripts/bane-of-azeroth.js";
+} from "../../foundry/scripts/elemental-totems.js";
 
 import {
   makeActor,

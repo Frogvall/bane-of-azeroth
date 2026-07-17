@@ -897,7 +897,7 @@ export function validateElementalTotemPlanShape(plan, definitions) {
   }
 }
 
-async function validateElementalTotemCreationRequest(
+export async function validateElementalTotemCreationRequest(
   plan,
   positions,
   requesterUserId
@@ -1107,7 +1107,7 @@ export async function deletePreviousElementalTotems(
   return failedScenes;
 }
 
-async function executeElementalTotemCreation(
+export async function executeElementalTotemCreation(
   plan,
   positions,
   requesterUserId
