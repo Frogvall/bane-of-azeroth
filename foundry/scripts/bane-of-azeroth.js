@@ -39,6 +39,7 @@ import {
   onUpdateElementalTotemAura,
   onUpdateElementalTotemChatMessage,
   registerElementalTotemSocket,
+  protectElementalTotemMovement,
 } from "./elemental-totems.js";
 import {
   isPrimaryActiveGM,
@@ -49,6 +50,10 @@ Hooks.once("init", () => {
   Hooks.on("drawToken", drawElementalTotemAura);
   Hooks.on("updateToken", onUpdateElementalTotemAura);
   Hooks.on("deleteToken", onDeleteElementalTotemAura);
+  Hooks.on(
+    "preUpdateToken",
+    protectElementalTotemMovement
+  );
   Hooks.on("canvasReady", drawAllElementalTotemAuras);
 
   registerSettings();

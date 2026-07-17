@@ -20,6 +20,61 @@ No unreleased changes recorded yet.
 - Added dedicated actor portraits and token artwork.
 - Added player-accessible read-only totem sheets.
 
+## [0.7.1] - 2026-07-17
+
+### Changed
+
+- Split the Foundry runtime into focused modules for adventure import,
+  spell preparation, spell grants, weapon features, shared helpers, and
+  Elemental Totems.
+- Split Elemental Totem behavior into dedicated modules for definitions,
+  planning, placement, creation, socket handling, dialogs, aura
+  rendering, and token controls.
+- Reduced `bane-of-azeroth.js` to the runtime entry point and Foundry
+  hook registration.
+- Preserved the existing public runtime exports while moving their
+  implementations into focused modules.
+
+### Fixed
+
+- Users who own the caster Actor now receive Owner permission on its
+  summoned Elemental Totems.
+- Other players retain Observer permission on summoned Elemental Totems.
+- Non-GM users can no longer reposition Elemental Totem tokens after
+  placement.
+- Game masters can still reposition Elemental Totems when required.
+
+### Testing
+
+- Added automated coverage for Elemental Totem ownership propagation and
+  movement protection.
+- Retained passing unit, integration, and system tests throughout the
+  behavior-preserving runtime refactor.
+
+## [0.7.0] - 2026-07-17
+
+### Added
+
+- Added a Vitest unit and integration test suite for the Foundry runtime.
+- Added V8 coverage reporting.
+- Added prerelease-only Developer Tests macros for Foundry system
+  testing.
+- Added Run All system tests with Journal Entry reports, cleanup tools,
+  manual procedures, and expected-versus-actual diagnostics.
+- Added automated Elemental Totem fixtures.
+
+### Changed
+
+- System tests identify created Elemental Totems by stored totem type
+  rather than token creation order.
+- Developer test content is generated from source and included only in
+  prerelease packages.
+
+### Verified
+
+- Verified adventure import, spell grants, always-prepared spells,
+  weapon features, runtime hooks, and Elemental Totem workflows.
+
 ## [0.5.2] - 2026-07-14
 
 ### Changed

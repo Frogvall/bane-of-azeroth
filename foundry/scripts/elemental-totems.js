@@ -40,3 +40,7 @@ export {
   onUpdateElementalTotemChatMessage,
   shouldStartElementalTotemDialog,
 } from "./elemental-totems/dialogs.js";
+
+export {
+  protectElementalTotemMovement,
+} from "./elemental-totems/token-controls.js";

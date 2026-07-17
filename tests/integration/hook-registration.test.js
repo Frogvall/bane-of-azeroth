@@ -52,6 +52,7 @@ describe("Foundry hook registration", () => {
       "drawToken",
       "updateToken",
       "deleteToken",
+      "preUpdateToken",
       "canvasReady",
       "createItem",
       "updateItem",

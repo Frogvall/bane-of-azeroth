@@ -165,9 +165,26 @@ export async function validateElementalTotemCreationRequest(
   };
 }
 
+export function getElementalTotemOwnerUserIds(
+  casterActor
+) {
+  return game.users
+    .filter(
+      user => (
+        !user.isGM
+        && casterActor.testUserPermission(
+          user,
+          CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
+        )
+      )
+    )
+    .map(user => user.id);
+}
+
 export async function configureCreatedElementalTotem(
   token,
-  plan
+  plan,
+  ownerUserIds = []
 ) {
   const actor = token.actor;
   if (!actor?.isToken) {
@@ -176,9 +193,20 @@ export async function configureCreatedElementalTotem(
     );
   }
 
-  await actor.update({
+  const ownershipUpdates = {
     "ownership.default":
       CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
+  };
+
+  for (const userId of ownerUserIds) {
+    if (typeof userId !== "string" || !userId) continue;
+
+    ownershipUpdates[`ownership.${userId}`] =
+      CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+  }
+
+  await actor.update({
+    ...ownershipUpdates,
     "system.hitPoints.base": plan.hitPoints,
     "system.hitPoints.max": plan.hitPoints,
     "system.hitPoints.value": plan.hitPoints,
@@ -244,6 +272,7 @@ export async function executeElementalTotemCreation(
 ) {
   const {
     scene,
+    actor,
     totemActors,
   } = await validateElementalTotemCreationRequest(
     plan,
@@ -251,6 +280,8 @@ export async function executeElementalTotemCreation(
     requesterUserId
   );
 
+  const ownerUserIds =
+    getElementalTotemOwnerUserIds(actor);
   const castId = foundry.utils.randomID();
   const tokenData = [];
 
@@ -321,7 +352,11 @@ export async function executeElementalTotemCreation(
 
   try {
     for (const token of createdTokens) {
-      await configureCreatedElementalTotem(token, plan);
+      await configureCreatedElementalTotem(
+        token,
+        plan,
+        ownerUserIds
+      );
     }
   } catch (error) {
     await scene.deleteEmbeddedDocuments(
