@@ -4,6 +4,24 @@ import { isPrimaryActiveGM } from "./core/users.js";
 
 import { parseHexColor } from "./core/colors.js";
 
+import {
+  buildTotemOptions,
+  getElementalTotemDefinitions,
+  getTotemName,
+  loadElementalTotemDefinitions,
+} from "./elemental-totems/definitions.js";
+import {
+  buildElementalTotemPlan,
+  validateElementalTotemPlanShape,
+} from "./elemental-totems/planning.js";
+
+export {
+  buildTotemOptions,
+  loadElementalTotemDefinitions,
+  buildElementalTotemPlan,
+  validateElementalTotemPlanShape,
+};
+
 export {
   drawAllElementalTotemAuras,
   drawElementalTotemAura,
@@ -13,11 +31,7 @@ export {
 } from "./elemental-totems/aura.js";
 
 const ELEMENTAL_TOTEM_CONTENT_KEY = "spells.elemental-totem";
-const ELEMENTAL_TOTEM_CONTENT_PATH =
-  `modules/${MODULE_ID}/content/elemental-totems.json`;
-
 const handledElementalTotemMessages = new Set();
-let elementalTotemDefinitionsPromise = null;
 let elementalTotemDialogQueue = Promise.resolve();
 
 function getElementalTotemMessageContext(message) {
@@ -38,130 +52,6 @@ function isElementalTotemSpellTest(message, context) {
     message?.type === "spellTest" &&
     getContentKey(context?.spell) === ELEMENTAL_TOTEM_CONTENT_KEY
   );
-}
-
-function requirePositiveNumber(value, context) {
-  if (
-    typeof value !== "number" ||
-    !Number.isFinite(value) ||
-    value <= 0
-  ) {
-    throw new Error(`${context} must be a positive number.`);
-  }
-
-  return value;
-}
-
-export async function loadElementalTotemDefinitions() {
-  const contentUrl = foundry.utils.getRoute(
-    ELEMENTAL_TOTEM_CONTENT_PATH
-  );
-  const response = await fetch(contentUrl);
-
-  if (!response.ok) {
-    throw new Error(
-      `Could not load Elemental Totem content: ` +
-      `${response.status} ${response.statusText}`
-    );
-  }
-
-  const content = await response.json();
-  const defaults = content?.defaults;
-  const totems = content?.totems;
-
-  if (!defaults || !Array.isArray(totems) || totems.length === 0) {
-    throw new Error(
-      "Elemental Totem content is missing defaults or totems."
-    );
-  }
-
-  const definitions = {
-    baseRange: requirePositiveNumber(
-      defaults.auraRange,
-      "defaults.auraRange"
-    ),
-    baseHitPoints: requirePositiveNumber(
-      defaults.hitPoints,
-      "defaults.hitPoints"
-    ),
-    baseArmor: requirePositiveNumber(
-      defaults.armorRating,
-      "defaults.armorRating"
-    ),
-    tokenWidth: requirePositiveNumber(
-      defaults.tokenWidth,
-      "defaults.tokenWidth"
-    ),
-    tokenHeight: requirePositiveNumber(
-      defaults.tokenHeight,
-      "defaults.tokenHeight"
-    ),
-    totems: totems.map(totem => {
-      if (
-        typeof totem?.key !== "string" ||
-        !totem.key ||
-        typeof totem?.name !== "string" ||
-        !totem.name
-      ) {
-        throw new Error(
-          "Each Elemental Totem must have a key and a name."
-        );
-      }
-
-      return {
-        key: totem.key,
-        name: totem.name,
-        auraColor: typeof totem.auraColor === "string"
-          ? totem.auraColor
-          : "#00ff00",
-      };
-    }),
-  };
-
-  const keys = definitions.totems.map(totem => totem.key);
-  if (new Set(keys).size !== keys.length) {
-    throw new Error("Elemental Totem keys must be unique.");
-  }
-
-  return definitions;
-}
-
-function getElementalTotemDefinitions() {
-  elementalTotemDefinitionsPromise ??=
-    loadElementalTotemDefinitions().catch(error => {
-      elementalTotemDefinitionsPromise = null;
-      throw error;
-    });
-
-  return elementalTotemDefinitionsPromise;
-}
-
-export function buildTotemOptions(
-  definitions,
-  selectedKey = "",
-  excludedKeys = []
-) {
-  const excluded = new Set(excludedKeys);
-
-  return definitions.totems
-    .filter(totem => !excluded.has(totem.key))
-    .map(totem => {
-      const selected = totem.key === selectedKey
-        ? " selected"
-        : "";
-
-      return (
-        `<option value="${totem.key}"${selected}>` +
-        `${totem.name}</option>`
-      );
-    })
-    .join("");
-}
-
-function getTotemName(definitions, key) {
-  return definitions.totems.find(
-    totem => totem.key === key
-  )?.name ?? key;
 }
 
 async function chooseInitialTotem(definitions, powerLevel) {
@@ -329,42 +219,6 @@ async function chooseTotemUpgrade(
   return {
     upgrade,
     totemType,
-  };
-}
-
-export function buildElementalTotemPlan(
-  message,
-  context,
-  definitions,
-  totemTypes,
-  reachUpgrades,
-  durabilityUpgrades
-) {
-  const powerLevel = Number(context.powerLevel);
-
-  if (new Set(totemTypes).size !== totemTypes.length) {
-    throw new Error(
-      "An Elemental Totem plan cannot contain duplicate totem types."
-    );
-  }
-
-  return {
-    sourceMessageId: message.id,
-    actorUuid: context.actor?.uuid ?? null,
-    spellUuid: context.spell?.uuid ?? null,
-    sceneId: message.speaker?.scene ?? canvas.scene?.id ?? null,
-    casterTokenId: message.speaker?.token ?? null,
-    powerLevel,
-    criticalEffect: context.criticalEffect ?? "",
-    totemTypes,
-    reachUpgrades,
-    durabilityUpgrades,
-    auraRange:
-      definitions.baseRange * (2 ** reachUpgrades),
-    hitPoints:
-      definitions.baseHitPoints * (2 ** durabilityUpgrades),
-    armorRating:
-      definitions.baseArmor * (2 ** durabilityUpgrades),
   };
 }
 
@@ -832,72 +686,6 @@ function findWorldElementalTotemActor(totemType) {
   return game.actors.find(
     actor => getContentKey(actor) === contentKey
   ) ?? null;
-}
-
-export function validateElementalTotemPlanShape(plan, definitions) {
-  if (!plan || typeof plan !== "object") {
-    throw new Error("Missing Elemental Totem plan.");
-  }
-
-  const powerLevel = Number(plan.powerLevel);
-  const reachUpgrades = Number(plan.reachUpgrades);
-  const durabilityUpgrades = Number(plan.durabilityUpgrades);
-
-  if (!Number.isInteger(powerLevel) || powerLevel < 1) {
-    throw new Error("Invalid Elemental Totem power level.");
-  }
-  if (!Number.isInteger(reachUpgrades) || reachUpgrades < 0) {
-    throw new Error("Invalid Elemental Totem reach upgrades.");
-  }
-  if (
-    !Number.isInteger(durabilityUpgrades) ||
-    durabilityUpgrades < 0
-  ) {
-    throw new Error("Invalid Elemental Totem durability upgrades.");
-  }
-  if (
-    !Array.isArray(plan.totemTypes) ||
-    plan.totemTypes.length < 1 ||
-    new Set(plan.totemTypes).size !== plan.totemTypes.length
-  ) {
-    throw new Error(
-      "Elemental Totem types must be a non-empty unique list."
-    );
-  }
-  if (
-    plan.totemTypes.length +
-      reachUpgrades +
-      durabilityUpgrades !==
-    powerLevel
-  ) {
-    throw new Error(
-      "Elemental Totem choices do not match the power level."
-    );
-  }
-
-  const validTypes = new Set(
-    definitions.totems.map(totem => totem.key)
-  );
-  if (plan.totemTypes.some(type => !validTypes.has(type))) {
-    throw new Error("The plan contains an unknown totem type.");
-  }
-
-  const expectedRange =
-    definitions.baseRange * (2 ** reachUpgrades);
-  const expectedHitPoints =
-    definitions.baseHitPoints * (2 ** durabilityUpgrades);
-  const expectedArmor =
-    definitions.baseArmor * (2 ** durabilityUpgrades);
-
-  if (
-    Number(plan.auraRange) !== expectedRange ||
-    Number(plan.hitPoints) !== expectedHitPoints ||
-    Number(plan.armorRating) !== expectedArmor
-  ) {
-    throw new Error(
-      "Elemental Totem statistics do not match the selected upgrades."
-    );
-  }
 }
 
 export async function validateElementalTotemCreationRequest(
