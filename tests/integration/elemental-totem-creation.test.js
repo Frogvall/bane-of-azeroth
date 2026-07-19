@@ -323,6 +323,30 @@ describe("validateElementalTotemCreationRequest", () => {
     ).rejects.toThrow(/position is invalid/i);
   });
 
+  test("accepts a position exactly at placement range", async () => {
+    makeEnvironment({ measuredDistance: 6 });
+
+    await expect(
+      validateElementalTotemCreationRequest(
+        validPlan(),
+        [{ x: 100, y: 100 }],
+        requesterId
+      )
+    ).resolves.toBeDefined();
+  });
+
+  test("rejects a measured distance that rounds beyond placement range", async () => {
+    makeEnvironment({ measuredDistance: 6.5 });
+
+    await expect(
+      validateElementalTotemCreationRequest(
+        validPlan(),
+        [{ x: 100, y: 100 }],
+        requesterId
+      )
+    ).rejects.toThrow(/outside range/i);
+  });
+
   test("rejects a position outside placement range", async () => {
     makeEnvironment({ measuredDistance: 7 });
 

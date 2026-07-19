@@ -227,6 +227,26 @@ describe("Scattershot weapon patch", () => {
     ]);
   });
 
+  test("preserves the long-range bane while removing point-blank", () => {
+    const weaponTest = makeTargetedTest({ distance: 2 });
+    weaponTest.dialogData.banes = [
+      {
+        source: "DoD.weapon.pointBlank",
+      },
+      {
+        source: "DoD.weapon.longRange",
+      },
+    ];
+
+    weaponTest.updateDialogData();
+
+    expect(weaponTest.dialogData.banes).toEqual([
+      {
+        source: "DoD.weapon.longRange",
+      },
+    ]);
+  });
+
   test("marks an attack beyond normal range", async () => {
     const weaponTest = makeTargetedTest({ distance: 11 });
 

@@ -62,11 +62,13 @@ function makeSpellMessage({
   criticalEffect = "",
   isDragon = false,
   success = true,
+  ...contextOverrides
 } = {}) {
   const context = {
     criticalEffect,
     isDragon,
     success,
+    ...contextOverrides,
     spell: {
       getFlag(moduleId, key) {
         if (
@@ -245,6 +247,39 @@ describe("Elemental Totem ChatMessage trigger", () => {
         makeSpellMessage()
       )
     ).toBe(true);
+  });
+
+  test("starts after a pushed success", () => {
+    expect(
+      shouldStartElementalTotemDialog(
+        makeSpellMessage({
+          isPushed: true,
+          success: true,
+        })
+      )
+    ).toBe(true);
+  });
+
+  test("ignores a pushed failure", () => {
+    expect(
+      shouldStartElementalTotemDialog(
+        makeSpellMessage({
+          isPushed: true,
+          success: false,
+        })
+      )
+    ).toBe(false);
+  });
+
+  test("ignores a demon result", () => {
+    expect(
+      shouldStartElementalTotemDialog(
+        makeSpellMessage({
+          isDemon: true,
+          success: false,
+        })
+      )
+    ).toBe(false);
   });
 
   test("ignores failed spell tests", () => {
