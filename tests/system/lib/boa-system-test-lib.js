@@ -930,26 +930,34 @@ function boaBuildManualChecklistHtml() {
 
     <h2>Player and game-master workflow</h2>
 
-    <p>
-      Connect to the same world with a game-master client and a
-      separate player client. Give the player Owner permission for
-      one test Actor with Elemental Totem, and no ownership of a
-      second control Actor. Perform the cast and placement from the
-      player client while observing both consoles.
-    </p>
+  <p>
+  Connect to the same world with a game-master user and two
+  ordinary player users, using separate clients or testing the
+  player users sequentially. Give the first player Owner
+  permission for one test Actor with Elemental Totem, and no
+  ownership of a second control Actor. Do not give the second
+  player ownership of the caster Actor. Perform the cast and
+  placement from the owning player client while observing the
+  relevant consoles.
+  </p>
 
-    <ul>
-      <li>[ ] A player can cast using an owned Actor.</li>
-      <li>[ ] The player chooses the totems and placement positions.</li>
-      <li>[ ] The active primary GM creates the tokens exactly once.</li>
-      <li>[ ] A player cannot submit a request for an Actor they do not own.</li>
-      <li>[ ] Summoned totem sheets are readable by players.</li>
-      <li>[ ] Summoned totem sheets are not editable by players.</li>
-      <li>[ ] Cross-scene cleanup removes the caster's older totems.</li>
-      <li>[ ] Other casters' totems remain.</li>
-    </ul>
+  <ul>
+  <li>[ ] A player can cast using an owned Actor.</li>
+  <li>[ ] The player chooses the totems and placement positions.</li>
+  <li>[ ] The active primary GM creates the tokens exactly once.</li>
+  <li>[ ] A player cannot submit a request for an Actor they do not own.</li>
+  <li>[ ] The caster Actor owner receives Owner permission for the summoned totem.</li>
+  <li>[ ] Another ordinary player receives Observer permission only.</li>
+  <li>[ ] The owning player can read and edit the summoned totem Actor sheet.</li>
+  <li>[ ] The observing player can read but not edit the summoned totem Actor sheet.</li>
+  <li>[ ] The owning player cannot drag or reposition the summoned totem.</li>
+  <li>[ ] The game master can drag and reposition the summoned totem.</li>
+  <li>[ ] A permitted non-position token update remains possible for the owning player.</li>
+  <li>[ ] Cross-scene cleanup removes the caster's older totems.</li>
+  <li>[ ] Other casters' totems remain.</li>
+  </ul>
 
-    <h2>Adventure and interface verification</h2>
+  <h2>Adventure and interface verification</h2>
 
     <p>
       Use a clean test world for the first import. Then reopen the
