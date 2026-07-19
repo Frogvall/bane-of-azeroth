@@ -75,12 +75,35 @@ export function drawElementalTotemAura(token) {
   );
   graphics.endFill();
 
-  graphics.eventMode = "none";
   graphics.interactive = false;
+  graphics.eventMode = "none";
   graphics.zIndex = -1000;
 
   token.addChildAt(graphics, 0);
   elementalTotemAuraGraphics.set(token, graphics);
+}
+
+function redrawElementalTotemAuraForDocument(
+  tokenDocument
+) {
+  if (
+    canvas.scene?.id !== tokenDocument?.parent?.id
+  ) {
+    return;
+  }
+
+  const token = tokenDocument.object;
+  if (!token) return;
+
+  /*
+   * Let Foundry apply its own token refresh flags before
+   * measuring the token's current pixel width and height.
+   */
+  requestAnimationFrame(() => {
+    if (!token.destroyed) {
+      drawElementalTotemAura(token);
+    }
+  });
 }
 
 export function onUpdateElementalTotemAura(
