@@ -2,6 +2,16 @@ const checks = [];
 const notes = [];
 
 try {
+  const {
+    configureCreatedElementalTotem,
+    deletePreviousElementalTotems,
+    drawElementalTotemAura,
+    onDeleteElementalTotemAura,
+    onUpdateElementalTotemAura,
+  } = await import(
+    `/modules/${BOA_TEST_MODULE_ID}/scripts/elemental-totems.js`
+  );
+
   const content = await boaFetchJson(
     "content/elemental-totems.json"
   );
@@ -64,6 +74,7 @@ try {
   }
 
   let fixtureScene = null;
+  let cleanupScene = null;
 
   try {
     fixtureScene = await Scene.create({
@@ -100,6 +111,8 @@ try {
     const castId = foundry.utils.randomID();
     const casterActorUuid =
       "Actor.BoaTestCaster";
+    const ownerUserId = "BoaOwnerUser0001";
+    const observerUserId = "BoaObserverUsr01";
     const tokenData = [];
 
     for (
@@ -204,6 +217,15 @@ try {
       ])
     );
 
+    const sourceTokenDataByType = new Map(
+      tokenData.map(data => [
+        foundry.utils.getProperty(
+          data,
+          `flags.${BOA_TEST_MODULE_ID}.totemType`
+        ),
+        data,
+      ])
+    );
     for (const definition of definitions) {
       const token = tokensByType.get(definition.key);
 
@@ -223,6 +245,8 @@ try {
         definition.auraAlpha ??
         defaults.auraAlpha;
 
+      const sourceTokenData =
+        sourceTokenDataByType.get(definition.key);
       boaCheck(
         checks,
         `Synthetic Actor exists: ${definition.name}`,
@@ -234,16 +258,14 @@ try {
         continue;
       }
 
-      await actor.update({
-        "ownership.default":
-          CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
-        "system.hitPoints.base":
-          defaults.hitPoints,
-        "system.hitPoints.max":
-          defaults.hitPoints,
-        "system.hitPoints.value":
-          defaults.hitPoints,
-      });
+      await configureCreatedElementalTotem(
+        token,
+        {
+          hitPoints: Number(defaults.hitPoints),
+          armorRating: Number(defaults.armorRating),
+        },
+        [ownerUserId]
+      );
 
       const armor = boaCollectionValues(actor.items)
         .find(item =>
@@ -253,14 +275,6 @@ try {
             item.name === "Totem Armor"
           )
         );
-
-      if (armor) {
-        await armor.update({
-          "system.rating":
-            defaults.armorRating,
-          "system.worn": true,
-        });
-      }
 
       boaCheckEqual(
         checks,
@@ -326,6 +340,24 @@ try {
         definition.tokenImage
       );
 
+      boaCheck(
+        checks,
+        `Source token fixture exists: ${definition.name}`,
+        Boolean(sourceTokenData)
+      );
+      const createdTokenData = token.toObject();
+      boaCheckEqual(
+        checks,
+        `Light data is preserved: ${definition.name}`,
+        createdTokenData.light ?? {},
+        sourceTokenData?.light ?? {}
+      );
+      boaCheckEqual(
+        checks,
+        `Sight data is preserved: ${definition.name}`,
+        createdTokenData.sight ?? {},
+        sourceTokenData?.sight ?? {}
+      );
       boaCheckEqual(
         checks,
         `Token is unlinked: ${definition.name}`,
@@ -340,6 +372,19 @@ try {
         CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
       );
 
+      boaCheckEqual(
+        checks,
+        `Caster-owner ownership: ${definition.name}`,
+        actor.ownership?.[ownerUserId],
+        CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
+      );
+      boaCheck(
+        checks,
+        `Observer relies on default ownership: ${definition.name}`,
+        actor.ownership?.[observerUserId] === undefined &&
+          actor.ownership?.default ===
+            CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+      );
       boaCheckEqual(
         checks,
         `Hit points: ${definition.name}`,
@@ -381,11 +426,259 @@ try {
       }
     }
 
+    cleanupScene = await Scene.create({
+      name:
+        `[BOA TEST] Elemental Totem Cleanup ` +
+        foundry.utils.randomID(6),
+      active: false,
+      navigation: false,
+      width: 2000,
+      height: 1200,
+      padding: 0,
+      grid: {
+        type: CONST.GRID_TYPES?.SQUARE ?? 1,
+        size: 100,
+        distance: 2,
+        units: "m",
+      },
+      flags: {
+        [BOA_TEST_MODULE_ID]: {
+          [BOA_TEST_FIXTURE_FLAG]: true,
+        },
+      },
+    }, {
+      renderSheet: false,
+    });
+    boaCheck(
+      checks,
+      "Temporary cleanup test Scene was created",
+      Boolean(cleanupScene?.id),
+      cleanupScene?.uuid ?? ""
+    );
+
+    const oldCastId = foundry.utils.randomID();
+    const otherCasterActorUuid = "Actor.BoaOtherCaster";
+
+    function makeCleanupTokenData({
+      casterUuid,
+      cleanupCastId,
+      x,
+      y,
+    }) {
+      const data = foundry.utils.deepClone(tokenData[0]);
+      delete data._id;
+      data.x = x;
+      data.y = y;
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.casterActorUuid`,
+        casterUuid
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.castId`,
+        cleanupCastId
+      );
+      foundry.utils.setProperty(
+        data,
+        `flags.${BOA_TEST_MODULE_ID}.instanceId`,
+        foundry.utils.randomID()
+      );
+      return data;
+    }
+
+    const [oldLocalToken] =
+      await fixtureScene.createEmbeddedDocuments(
+        "Token",
+        [
+          makeCleanupTokenData({
+            casterUuid: casterActorUuid,
+            cleanupCastId: oldCastId,
+            x: 200,
+            y: 700,
+          }),
+        ]
+      );
+
+    const [
+      oldRemoteToken,
+      currentRemoteToken,
+      otherCasterToken,
+    ] = await cleanupScene.createEmbeddedDocuments(
+      "Token",
+      [
+        makeCleanupTokenData({
+          casterUuid: casterActorUuid,
+          cleanupCastId: oldCastId,
+          x: 200,
+          y: 300,
+        }),
+        makeCleanupTokenData({
+          casterUuid: casterActorUuid,
+          cleanupCastId: castId,
+          x: 500,
+          y: 300,
+        }),
+        makeCleanupTokenData({
+          casterUuid: otherCasterActorUuid,
+          cleanupCastId: oldCastId,
+          x: 800,
+          y: 300,
+        }),
+      ]
+    );
+
+    const cleanupFailures =
+      await deletePreviousElementalTotems(
+        casterActorUuid,
+        castId
+      );
+
+    boaCheckEqual(
+      checks,
+      "Cross-scene cleanup reported no failed Scenes",
+      cleanupFailures,
+      []
+    );
+    boaCheck(
+      checks,
+      "Cross-scene cleanup removed the local previous cast",
+      !fixtureScene.tokens.get(oldLocalToken.id)
+    );
+    boaCheck(
+      checks,
+      "Cross-scene cleanup removed the remote previous cast",
+      !cleanupScene.tokens.get(oldRemoteToken.id)
+    );
+    boaCheck(
+      checks,
+      "Cross-scene cleanup preserved the current cast",
+      Boolean(cleanupScene.tokens.get(currentRemoteToken.id))
+    );
+    boaCheck(
+      checks,
+      "Cross-scene cleanup preserved another caster's totem",
+      Boolean(cleanupScene.tokens.get(otherCasterToken.id))
+    );
+    boaCheck(
+      checks,
+      "Cross-scene cleanup preserved all primary current-cast tokens",
+      createdTokens.every(token =>
+        Boolean(fixtureScene.tokens.get(token.id))
+      )
+    );
+
+    const auraChildren = [];
+    const auraDocument = {
+      flags: {
+        [BOA_TEST_MODULE_ID]: {
+          summonType: "elementalTotem",
+          auraRange: defaults.auraRange,
+          auraColor:
+            definitions[0]?.auraColor ?? "#00ff00",
+          auraAlpha:
+            definitions[0]?.auraAlpha ??
+            defaults.auraAlpha,
+        },
+      },
+      parent: fixtureScene,
+      object: null,
+    };
+    const auraToken = {
+      document: auraDocument,
+      scene: fixtureScene,
+      destroyed: false,
+      w: 50,
+      h: 50,
+      addChildAt(graphics, index) {
+        auraChildren.splice(index, 0, graphics);
+        return graphics;
+      },
+    };
+    auraDocument.object = auraToken;
+
+    drawElementalTotemAura(auraToken);
+    const firstAuraGraphics = auraChildren[0];
+
+    boaCheck(
+      checks,
+      "Aura draw creates PIXI graphics",
+      Boolean(firstAuraGraphics) &&
+        firstAuraGraphics.destroyed !== true
+    );
+    boaCheckEqual(
+      checks,
+      "Aura graphics do not receive pointer events",
+      {
+        eventMode: firstAuraGraphics?.eventMode,
+        interactive: firstAuraGraphics?.interactive,
+      },
+      {
+        eventMode: "none",
+        interactive: false,
+      }
+    );
+
+    onUpdateElementalTotemAura(
+      auraDocument,
+      {
+        x: 100,
+      },
+      {},
+      game.user.id
+    );
+    const secondAuraGraphics = auraChildren[0];
+
+    boaCheck(
+      checks,
+      "Aura redraw destroys the previous graphics",
+      firstAuraGraphics?.destroyed === true
+    );
+    boaCheck(
+      checks,
+      "Aura redraw creates replacement graphics",
+      Boolean(secondAuraGraphics) &&
+        secondAuraGraphics !== firstAuraGraphics &&
+        secondAuraGraphics.destroyed !== true
+    );
+
+    onDeleteElementalTotemAura(
+      auraDocument,
+      {},
+      game.user.id
+    );
+    boaCheck(
+      checks,
+      "Aura deletion destroys the active graphics",
+      secondAuraGraphics?.destroyed === true
+    );
+
     notes.push(
       `${createdTokens.length} temporary summoned ` +
       "Elemental Totem token(s) were created and inspected."
     );
   } finally {
+      if (cleanupScene) {
+        try {
+          const cleanupSceneName = cleanupScene.name;
+          await cleanupScene.delete();
+          boaCheck(
+            checks,
+            "Temporary cleanup test Scene was deleted",
+            !game.scenes.has(cleanupScene.id),
+            cleanupSceneName
+          );
+        } catch (cleanupError) {
+          boaCheck(
+            checks,
+            "Temporary cleanup test Scene was deleted",
+            false,
+            cleanupError.stack ??
+              cleanupError.message
+          );
+        }
+      }
+
     if (fixtureScene) {
       try {
         const sceneName = fixtureScene.name;
