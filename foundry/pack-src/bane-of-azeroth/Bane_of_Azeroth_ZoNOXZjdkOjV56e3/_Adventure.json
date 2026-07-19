@@ -1,6 +1,6 @@
 {
   "name": "Bane of Azeroth",
-  "img": "assets2/bane_of_azeroth_cover.png",
+  "img": "modules/bane-of-azeroth/assets/adventure/banner.webp",
   "caption": "<h1>Test Caption</h1>",
   "description": "<p>Player options for Dragonbane set in the world of Azeroth.</p>",
   "sort": 0,
