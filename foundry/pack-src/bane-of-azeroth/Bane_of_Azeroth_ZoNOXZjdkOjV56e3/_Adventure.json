@@ -1,8 +1,8 @@
 {
   "name": "Bane of Azeroth",
   "img": "modules/bane-of-azeroth/assets/adventure/banner.webp",
-  "caption": "<h1>Test Caption</h1>",
-  "description": "<p>Player options for Dragonbane set in the world of Azeroth.</p>",
+  "caption": "<h1>Bane of Azeroth</h1><p>Player options for Dragonbane, set in the world of Azeroth.</p>",
+  "description": "<p>Import this Adventure to add the Bane of Azeroth module content to the current world.</p><p>The imported folders and documents contain the player options included in this installed version of the module.</p>",
   "sort": 0,
   "actors": [
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Cleansing_Totem_CleanTotem4kP7xQ.json",
