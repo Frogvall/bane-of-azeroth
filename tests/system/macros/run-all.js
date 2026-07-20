@@ -40,6 +40,7 @@ const orderedKeys = [
   "generated-content",
   "spell-grants",
   "elemental-totems",
+  "adventure-ownership",
 ];
 
 const index = await pack.getIndex({
