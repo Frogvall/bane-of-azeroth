@@ -863,142 +863,102 @@ function boaBuildManualChecklistHtml() {
 
     <h2>Elemental Totem placement and interaction</h2>
 
-    <p>
-      Select a token whose Actor has the
-      <strong>Elemental Totem</strong> spell. Cast the spell
-      successfully at power level 1, choose a totem, and move the
-      placement preview around the caster. Repeat the cast as needed
-      to test cancellation separately from successful placement.
-    </p>
-
-    <ul>
-      <li>[ ] Pointer placement preview follows the cursor.</li>
-      <li>[ ] Valid placement uses the selected totem's aura color.</li>
-      <li>[ ] Invalid placement is shown in red.</li>
-      <li>[ ] Placement snaps correctly to the active grid.</li>
-      <li>[ ] Placement is accepted within 6 meters.</li>
-      <li>[ ] Placement is rejected beyond 6 meters.</li>
-      <li>[ ] Escape cancels the entire placement.</li>
-      <li>[ ] Right-click cancels the entire placement.</li>
-      <li>[ ] Canceling preserves the caster's existing totems.</li>
-    </ul>
-
-    <h2>Elemental Totem visual verification</h2>
-
-    <p>
-      Successfully summon each totem type and inspect it on the
-      canvas. Recast with reach upgrades to verify larger radii.
-      To test overlapping auras, use two different casters because
-      a new cast replaces the previous totems from the same caster.
-    </p>
-
-    <ul>
-      <li>[ ] Cleansing aura is blue/cyan.</li>
-      <li>[ ] Flametongue aura is orange.</li>
-      <li>[ ] Stoneskin aura is yellow-green.</li>
-      <li>[ ] Windfury aura is lavender.</li>
-      <li>[ ] Overlapping auras remain visually distinguishable.</li>
-      <li>[ ] Aura radius matches 10, 20, or 40 meters.</li>
-      <li>[ ] Auras follow moved tokens.</li>
-      <li>[ ] Auras survive copying and scene reload.</li>
-      <li>[ ] Auras disappear when their tokens are deleted.</li>
-      <li>[ ] Auras do not create light or modify token vision.</li>
-    </ul>
-
-    <h2>Elemental Totem roll workflow</h2>
-
-    <p>
-      Repeat casts until each listed roll outcome has occurred.
-      Push failed rolls where required. For a dragon result, complete
-      the system's critical-effect choice before judging whether the
-      totem dialog starts. Watch for duplicate dialogs after every
-      roll and chat-message update.
-    </p>
-
-    <ul>
-      <li>[ ] A normal success opens one selection dialog.</li>
-      <li>[ ] A normal failure opens no dialog.</li>
-      <li>[ ] A pushed failure opens no dialog.</li>
-      <li>[ ] A pushed success opens one dialog.</li>
-      <li>[ ] A demon result opens no dialog.</li>
-      <li>[ ] A dragon result waits for the critical-effect choice and opens once.</li>
-      <li>[ ] Power level 1 permits one totem.</li>
-      <li>[ ] Power level 3 permits two additional choices.</li>
-      <li>[ ] Duplicate totem types cannot be selected.</li>
-      <li>[ ] Existing totems are replaced only after successful placement.</li>
-    </ul>
-
-    <h2>Player and game-master workflow</h2>
-
   <p>
-  Connect to the same world with a game-master user and two
-  ordinary player users, using separate clients or testing the
-  player users sequentially. Give the first player Owner
-  permission for one test Actor with Elemental Totem, and no
-  ownership of a second control Actor. Do not give the second
-  player ownership of the caster Actor. Perform the cast and
-  placement from the owning player client while observing the
-  relevant consoles.
+  Automated tests cover placement-range validation and server-side
+  rejection. Use the real canvas to verify pointer interaction, grid
+  measurement, preview rendering, and cancellation behavior.
   </p>
 
   <ul>
-  <li>[ ] A player can cast using an owned Actor.</li>
-  <li>[ ] The player chooses the totems and placement positions.</li>
-  <li>[ ] The active primary GM creates the tokens exactly once.</li>
-  <li>[ ] A player cannot submit a request for an Actor they do not own.</li>
-  <li>[ ] The caster Actor owner receives Owner permission for the summoned totem.</li>
-  <li>[ ] Another ordinary player receives Observer permission only.</li>
-  <li>[ ] The owning player can read and edit the summoned totem Actor sheet.</li>
-  <li>[ ] The observing player can read but not edit the summoned totem Actor sheet.</li>
-  <li>[ ] The owning player cannot drag or reposition the summoned totem.</li>
-  <li>[ ] The game master can drag and reposition the summoned totem.</li>
-  <li>[ ] A permitted non-position token update remains possible for the owning player.</li>
-  <li>[ ] Cross-scene cleanup removes the caster's older totems.</li>
-  <li>[ ] Other casters' totems remain.</li>
+  <li>[ ] The placement preview follows the cursor.</li>
+  <li>[ ] Valid placement uses the selected totem's aura color, while invalid placement is red.</li>
+  <li>[ ] Placement snaps correctly to the active grid.</li>
+  <li>[ ] A grid position displayed as 6 meters is accepted, while one displayed beyond 6 meters is rejected.</li>
+  <li>[ ] Escape and right-click each cancel the entire placement flow.</li>
+  <li>[ ] Canceling any PL1–PL3 placement preserves the caster's existing totems.</li>
+  </ul>
+
+  <h2>Elemental Totem visual verification</h2>
+
+  <p>
+  Automated tests verify configured aura values, light and sight data,
+  redraw lifecycle, and graphics cleanup. Inspect the rendered result on
+  the real canvas, including copy, reload, overlap, and visibility.
+  </p>
+
+  <ul>
+  <li>[ ] All four totem auras visually match their configured colors and apparent radii.</li>
+  <li>[ ] Overlapping auras remain visually distinguishable.</li>
+  <li>[ ] Auras follow moved tokens smoothly.</li>
+  <li>[ ] Auras survive token copying and scene reload.</li>
+  <li>[ ] Auras disappear visually when their tokens are deleted.</li>
+  <li>[ ] Aura rendering does not visibly create light or modify token vision.</li>
+  </ul>
+
+  <h2>Elemental Totem roll workflow</h2>
+
+  <p>
+  Automated tests cover normal, pushed, dragon, and demon result
+  classification, power-level plans, duplicate prevention, and cleanup.
+  Perform a compact end-to-end smoke test through Dragonbane's real roll
+  and chat-message workflow. To reach edge results faster, temporarily
+  add nine boons for dragons or nine banes for demons.
+  </p>
+
+  <ul>
+  <li>[ ] A real normal success opens exactly one selection dialog and completed placement creates the expected totem.</li>
+  <li>[ ] A real dragon waits for the critical-effect choice and opens exactly once; a real demon opens no dialog.</li>
+  <li>[ ] PL1 and PL3 dialogs show the expected number of choices and prevent duplicate totem types.</li>
+  <li>[ ] Aborting any placement preserves the previous cast, while a completed recast replaces it.</li>
+  </ul>
+
+  <h2>Player and game-master workflow</h2>
+
+  <p>
+  Automated tests cover request authorization, ownership propagation,
+  Observer defaults, movement-hook logic, non-position updates, and
+  cross-scene cleanup. Use separate clients to verify Foundry's actual
+  sheet permissions, drag interaction, and socket workflow.
+  </p>
+
+  <ul>
+  <li>[ ] An owning player can cast, select totems, and complete placement through the primary GM.</li>
+  <li>[ ] The owning player can open and edit the summoned totem Actor sheet; an observing player can open but not edit it.</li>
+  <li>[ ] The owning player cannot drag or reposition the totem, while the game master can.</li>
+  <li>[ ] The complete player/GM flow creates no duplicate tokens or dialogs and produces no unexpected console errors.</li>
   </ul>
 
   <h2>Adventure and interface verification</h2>
 
-    <p>
-      Use a clean test world for the first import. Then reopen the
-      same world with the same content version, a new development
-      suffix, and finally a later semantic content version. Inspect
-      every dialog and affected Actor or Item sheet at normal browser
-      zoom.
-    </p>
+  <p>
+  Automated tests cover semantic-version prompt rules and preparation
+  enforcement. Use a clean world and the packaged module to verify the
+  actual import sheet, rendered layouts, localization, and visual state.
+  </p>
 
-    <ul>
-      <li>[ ] Clean-world Adventure import succeeds.</li>
-      <li>[ ] The import prompt appears only for a newer content version.</li>
-      <li>[ ] Development build suffix changes do not retrigger the prompt.</li>
-      <li>[ ] Dialog layout is readable at normal browser zoom.</li>
-      <li>[ ] All new interface text is localized in English.</li>
-      <li>[ ] The always-prepared checkbox is disabled and visually distinct.</li>
-      <li>[ ] The always-prepared tooltip is displayed.</li>
-    </ul>
+  <ul>
+  <li>[ ] Clean-world Adventure import succeeds from the packaged prerelease module.</li>
+  <li>[ ] The import sheet and all affected dialogs are readable at normal browser zoom, with every referenced image loading.</li>
+  <li>[ ] New interface text appears as natural English without untranslated localization keys.</li>
+  <li>[ ] The always-prepared checkbox is disabled and visually distinct, and its tooltip is displayed.</li>
+  </ul>
 
-    <h2>Weapon feature verification</h2>
+  <h2>Weapon feature verification</h2>
 
-    <p>
-      Prepare one eligible ranged weapon and one control weapon.
-      The eligible weapon must be non-thrown, Piercing, and have
-      Armor Piercing or Scattershot as appropriate. Toggle the
-      Dragonbane Damage Types option where instructed, and test at
-      point-blank, normal, and long range against a target token.
-    </p>
+  <p>
+  Automated tests cover Find Weak Spot eligibility and duplication,
+  Damage Types gating, Scattershot bane handling and rounded damage, and
+  both Ammo Pouch confirmation outcomes. Perform a small end-to-end smoke
+  test through Dragonbane's actual action and chat interfaces.
+  </p>
 
-    <ul>
-      <li>[ ] Armor Piercing adds exactly one Find Weak Spot option to an eligible weapon.</li>
-      <li>[ ] Armor Piercing is unavailable when Damage Types is disabled.</li>
-      <li>[ ] Scattershot removes the point-blank bane.</li>
-      <li>[ ] Scattershot preserves the long-range bane.</li>
-      <li>[ ] Scattershot long-range damage is halved and rounded up.</li>
-      <li>[ ] Missing Ammo Pouch shows the confirmation dialog.</li>
-      <li>[ ] Perform Action continues after the warning.</li>
-      <li>[ ] Cancel Action cancels after the warning.</li>
-    </ul>
+  <ul>
+  <li>[ ] Armor Piercing and Scattershot appear correctly in the real action dialog for eligible weapons and settings.</li>
+  <li>[ ] One Scattershot sequence confirms point-blank handling, preserved long-range bane, and the expected halved damage result in chat.</li>
+  <li>[ ] The Ammo Pouch warning is readable; accepting continues the action and canceling stops it.</li>
+  </ul>
 
-    <h2>Compatibility and presentation</h2>
+<h2>Compatibility and presentation</h2>
 
     <p>
       Review this report's Environment page, the browser console,
