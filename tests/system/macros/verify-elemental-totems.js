@@ -627,6 +627,10 @@ try {
       {},
       game.user.id
     );
+    await new Promise(resolve => {
+      requestAnimationFrame(resolve);
+    });
+
     const secondAuraGraphics = auraChildren[0];
 
     boaCheck(
