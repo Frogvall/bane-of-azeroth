@@ -569,6 +569,14 @@ try {
     );
 
     const auraChildren = [];
+    const auraScene = canvas.scene;
+    boaCheck(
+      checks,
+      "Active canvas Scene exists for aura lifecycle checks",
+      Boolean(auraScene?.id),
+      auraScene?.id ?? ""
+    );
+
     const auraDocument = {
       flags: {
         [BOA_TEST_MODULE_ID]: {
@@ -581,12 +589,12 @@ try {
             defaults.auraAlpha,
         },
       },
-      parent: fixtureScene,
+      parent: auraScene,
       object: null,
     };
     const auraToken = {
       document: auraDocument,
-      scene: fixtureScene,
+      scene: auraScene,
       destroyed: false,
       w: 50,
       h: 50,
