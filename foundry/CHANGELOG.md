@@ -8,6 +8,20 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.7.2] - 2026-07-20
+
+### Fixed
+
+  * Restored Elemental Totem aura redraw after token updates, which had been lost during the runtime refactor.
+  * Ensured Elemental Totem aura graphics remain fully non-interactive in Foundry's PIXI compatibility layer.
+
+### Testing
+
+  * Added automated coverage for pushed successes and failures, demon results, Elemental Totem placement-range boundaries, Scattershot long-range bane preservation, and rounded half damage.
+  * Added focused regression tests for Elemental Totem aura drawing, redraw, inactive-scene handling, deletion, and pointer-event behavior.
+  * Expanded prerelease Developer Tests to verify production ownership propagation, Observer access, light and sight preservation, cross-scene cleanup, and aura lifecycle behavior.
+  * Consolidated the manual checklist around checks that still require visual inspection, real canvas interaction, or separate player and game-master clients.
+
 ## [0.7.1] - 2026-07-17
 
 ### Changed
