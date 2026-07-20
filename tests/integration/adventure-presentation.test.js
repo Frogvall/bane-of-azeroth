@@ -209,33 +209,80 @@ describe("Adventure import presentation", () => {
     ).toBeLessThanOrEqual(512 * 1024);
   });
 
-  test("uses intentional HTML caption content without placeholders", () => {
+  test("leaves the Adventure caption blank", () => {
     const adventure = readAdventure();
-    const caption = String(
-      adventure.caption ?? ""
-    ).trim();
 
-    expect(caption).not.toBe("");
-    expect(caption).not.toMatch(
-      /test caption|placeholder|todo/i
-    );
-    expect(caption).not.toMatch(/^#{1,6}\s/m);
-    expect(caption).toMatch(/<[^>]+>/);
-    expect(caption).toMatch(/bane of azeroth/i);
+    expect(
+      String(adventure.caption ?? "").trim()
+    ).toBe("");
   });
 
-  test("explains what importing the Adventure does", () => {
+  const OVERVIEW_LOGO =
+    "modules/bane-of-azeroth/assets/adventure/logo.webp";
+
+  function readOverview() {
     const adventure = readAdventure();
-    const description = String(
+
+    return String(
       adventure.description ?? ""
     ).trim();
+  }
+
+  function findOverviewLogoTag(description) {
+    return description.match(
+      /<img\b[^>]*>/i
+    )?.[0] ?? "";
+  }
+
+  test("uses the packaged Bane of Azeroth logo in Overview", () => {
+    const description = readOverview();
+    const logoTag = findOverviewLogoTag(
+      description
+    );
 
     expect(description).not.toBe("");
+    expect(description).toMatch(/<[^>]+>/);
+    expect(logoTag).not.toBe("");
+    expect(logoTag).toMatch(
+      new RegExp(
+        `\\bsrc=["']${OVERVIEW_LOGO.replaceAll(
+          "/",
+          "\\/"
+        )}["']`,
+        "i"
+      )
+    );
+    expect(logoTag).toMatch(
+      /\balt=["'][^"']*bane of azeroth[^"']*["']/i
+    );
+  });
+
+  test("ships the Overview logo", () => {
+    const logoPath = resolveModuleAsset(
+      OVERVIEW_LOGO
+    );
+
+    expect(existsSync(logoPath)).toBe(true);
+    expect(statSync(logoPath).isFile()).toBe(
+      true
+    );
+  });
+
+  test("explains re-import behavior without hard-coded counts", () => {
+    const description = readOverview();
+
     expect(description).not.toMatch(
       /placeholder|todo/i
     );
     expect(description).toMatch(/import/i);
     expect(description).toMatch(/adventure/i);
     expect(description).toMatch(/world/i);
+    expect(description).toMatch(
+      /re-import|overwrite|replace|existing/i
+    );
+    expect(description).not.toMatch(
+      /\b\d+\s+(?:actors?|items?|folders?|journals?|scenes?|tables?|macros?)\b/i
+    );
   });
+
 });
