@@ -68,7 +68,7 @@ MACROS = [
         "file": "verify-adventure-ownership.js",
         "order": 6,
         "suiteMember": True,
-        "img": "icons/svg/lock.svg",
+        "img": "icons/svg/castle.svg",
     },
     {
         "key": "cleanup",
