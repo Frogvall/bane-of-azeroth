@@ -232,7 +232,7 @@ jobs:
           python3 tools/generate-gear.py --check
           python3 tools/generate-spells.py --check
           python3 tools/generate-elemental-totems.py --check
-      python3 tools/generate-hunter-companions.py --check
+          python3 tools/generate-hunter-companions.py --check
 
       - name: Build Foundry package
         run: |
