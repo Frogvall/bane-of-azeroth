@@ -1047,7 +1047,7 @@ Alternatively, you can use an action to activate this ability to revive a fallen
 - **Requirement:** Hunter's Instincts
 - **Willpower Points:** 3
 
-You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes 2d8 damage as it burns or loses its actions and movement for the rest of the round as it is frozen in place (your choice).
+You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes 2D8 damage as it burns or loses its actions and movement for the rest of the round as it is frozen in place (your choice).
 
 {{wide
 ![dwarven hunter](https://i.imgur.com/72pGVRr.jpeg) {height:500px,mix-blend-mode:multiply,margin-left:-2cm,margin-top:-1.5cm}
@@ -1155,7 +1155,7 @@ You can activate this ability as an action, making an ally creature within 10 me
 - **Requirement:** Paladin's Righteousness
 - **Willpower Points:** 3
 
-You can activate this ability when you hit an enemy with a melee weapon (but before rolling for damage). The attack deals an extra D8 , or 2d8 damage to an undead target, and is considered magical.
+You can activate this ability when you hit an enemy with a melee weapon (but before rolling for damage). The attack deals an extra D8 , or 2D8 damage to an undead target, and is considered magical.
 
 {{wide
 ![draenei paladin](https://i.imgur.com/ZbajQTc.png) {height:500px,mix-blend-mode:multiply,margin-left:-1.5cm,margin-top:-1.2cm}
@@ -1543,21 +1543,21 @@ Hunters on Azeroth tend to find companions in a multitude of places. The Compani
 | Giant Bat    | 2<br/>Fly 8   | 10             | Bite (skill level 10, damage D10)<br/>Sonic Wave (skill level 10, damage D6, range 10m) | Awareness 16, Evade 12 |
 | Giant Owl    | 2<br/>Fly 14  | 8              | Beak (skill level 10, D10)<br/>Talons (skill level 12, damage 2D4) | Awareness 16, Evade 10 |
 | Large Serpent | 10            | 8              | Bite (skill level 12, damage D6, lethal poison 15)<br/>Constriction (skill level 10, damage D6, constrain 12) | Awareness 12, Evade 16 |
-| Giant Spider | 8             | 10             | Bite (skill level 10, damage D4, leathal poison 12)<br/>Web (skill level 10, no damage, range 6m, constrain 10) | Awareness 12, Evade 12, Stealth 12 |
+| Giant Spider | 8             | 10             | Bite (skill level 10, damage D4, lethal poison 12)<br/>Web (skill level 10, no damage, range 6m, constrain 10) | Awareness 12, Evade 12, Stealth 12 |
 | Gorilla      | 8             | 16             | Bite (skill level 12, damage 2D6)<br/>Fist (skill level 14, damage 2D4)    | Acrobatics 15, Awareness 10, Evade 14           |
 | Large Cat    | 16            | 12             | Bite (skill level 12, damage 2D6)<br/>Claws (skill level 14, damage 2D4) | Awareness 12, Evade 12, Stealth 14 |
 | Raptor       | 16            | 10            | Bite (skill level 12, damage 2D6)<br/>Claws (skill level 12, damage 2D4) | Awareness 14, Evade 14 |
 | Ravager      | 10            | 14<br/>Armor 2 | Bite (skill level 10, damage 2D4) | Awareness 10, Evade 14 |
-| Scorpid      | 8             | 12<br/>Armor 2 | Claws (skill level 12, damage D10)<br/>Tail (skill level 12, damage D6, leathal poison 12) | Awareness 8, Evade 8 |
+| Scorpid      | 8             | 12<br/>Armor 2 | Claws (skill level 12, damage D10)<br/>Tail (skill level 12, damage D6, lethal poison 12) | Awareness 8, Evade 8 |
 | Tallstrider  | 20            | 10             | Beak (skill level 10, damage D10) | Awareness 14, Evade 14 |
-| Turtle       | 6<br/>Swim 10 | 20<br/>Armor 4 | Beak (skill level 10, damage 2d6) | Awareness 8, Evade 6 |
+| Turtle       | 6<br/>Swim 10 | 20<br/>Armor 4 | Beak (skill level 10, damage 2D6) | Awareness 8, Evade 6 |
 | Wind Serpent | 2<br/>Fly 14  | 6              | Lightning Breath (skill level 12, damage D10, range 10m) | Awareness 12, Evade 14 |
 }}
 
 {{wide
-**Constrain**: Getting hit by an attack with the constrain keyword makes you unable to move or take actions other than to try to escape (an open STR opposed roll against the number following the contrain keyword). The target can still parry while constrained, but not evade.<br/>
+**Constrain**: Getting hit by an attack with the constrain keyword makes you unable to move or take actions other than to try to escape (an open STR opposed roll against the number following the constrain keyword). The target can still parry while constrained, but not evade.<br/>
 **Fly**: The animal moves freely through the air. The number that follows is the movement rate while flying.<br/>
-**Leathal Poison**: Getting hit by an attack with this keyword applies lethal poison to the target. The number that follows is the potency. Follow the poison rules as if the poison had been ingested.<br/>
+**Lethal Poison**: Getting hit by an attack with this keyword applies lethal poison to the target. The number that follows is the potency. Follow the poison rules as if the poison had been ingested.<br/>
 **Swim**: The animal moves without penalties when swimming. The number that follows is the movement rate while swimming.
 }}
 
