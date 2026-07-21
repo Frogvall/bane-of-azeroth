@@ -1,0 +1,27 @@
+{
+  "type": "Actor",
+  "folder": "2dkrC4gndsTQ383p",
+  "name": "Hunter Companions",
+  "color": null,
+  "sorting": "a",
+  "_id": "fhRR85jaNT9rPFhJ",
+  "description": "",
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-hunter-companions.py",
+      "contentKey": "actors.folder.hunter-companions"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Folder.fhRR85jaNT9rPFhJ",
+    "exportSource": null
+  }
+}

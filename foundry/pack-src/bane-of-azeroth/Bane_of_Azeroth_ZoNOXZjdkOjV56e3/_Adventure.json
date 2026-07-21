@@ -8,7 +8,11 @@
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Cleansing_Totem_CleanTotem4kP7xQ.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Flametongue_Totem_FlameTotem6mR2zV.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Stoneskin_Totem_StoneTotem8nT3wY.json",
-    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Windfury_Totem_WindTotem5pL9sX7.json"
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Windfury_Totem_WindTotem5pL9sX7.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Companions_2dkrC4gndsTQ383p/Hunter_Companions_fhRR85jaNT9rPFhJ/Crocolisk_NH7xTDsdAaPgm0Xv.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Companions_2dkrC4gndsTQ383p/Hunter_Companions_fhRR85jaNT9rPFhJ/Dragonhawk_W7alXfXLGiNx7s7E.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Companions_2dkrC4gndsTQ383p/Hunter_Companions_fhRR85jaNT9rPFhJ/Large_Serpent_um17JUy9CcBXlloq.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Companions_2dkrC4gndsTQ383p/Hunter_Companions_fhRR85jaNT9rPFhJ/Gorilla_OelrGFsAvekzqSQi.json"
   ],
   "combats": [],
   "items": [
@@ -150,7 +154,9 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/_Folder.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/_Folder.json",
-    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/_Folder.json"
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/_Folder.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Companions_2dkrC4gndsTQ383p/_Folder.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Companions_2dkrC4gndsTQ383p/Hunter_Companions_fhRR85jaNT9rPFhJ/_Folder.json"
   ],
   "_id": "ZoNOXZjdkOjV56e3",
   "folder": null,

@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "plannedCount": 14,
+  "expectedCount": 4,
+  "remainingKeys": [
+    "giant-bat",
+    "giant-owl",
+    "giant-spider",
+    "large-cat",
+    "raptor",
+    "ravager",
+    "scorpid",
+    "tallstrider",
+    "turtle",
+    "wind-serpent"
+  ],
+  "folders": {
+    "root": {
+      "key": "bane-of-azeroth",
+      "id": "BoAActors7pQ2mX9",
+      "name": "Bane of Azeroth",
+      "color": "#0000ff",
+      "sort": 0,
+      "sorting": "a"
+    },
+    "companions": {
+      "key": "companions",
+      "id": "2dkrC4gndsTQ383p",
+      "name": "Companions",
+      "color": null,
+      "sort": 200000,
+      "sorting": "a"
+    },
+    "hunterCompanions": {
+      "key": "hunter-companions",
+      "id": "fhRR85jaNT9rPFhJ",
+      "name": "Hunter Companions",
+      "color": null,
+      "sort": 100000,
+      "sorting": "a"
+    }
+  },
+  "defaults": {
+    "image": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+    "descriptionHtml": "<p>A loyal Hunter companion.</p>",
+    "tokenWidth": 1,
+    "tokenHeight": 1,
+    "tokenDisposition": 0
+  },
+  "companions": [
+    {
+      "key": "crocolisk",
+      "id": "NH7xTDsdAaPgm0Xv",
+      "armorId": "tSSfleAd9ytQIKQt",
+      "name": "Crocolisk",
+      "movement": {
+        "base": 6,
+        "swim": 12
+      },
+      "hitPoints": 15,
+      "armorRating": 1,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "0wpr2vStAhV8a5Es",
+          "weaponId": "jWskIChpUZbzhtc6",
+          "skillLevel": 12,
+          "damage": "2D8",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "bdLNy3SsumAfGzOO",
+          "name": "Awareness",
+          "value": 10
+        },
+        {
+          "id": "oda0MGJP83ai8xRX",
+          "name": "Evade",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "key": "dragonhawk",
+      "id": "W7alXfXLGiNx7s7E",
+      "armorId": null,
+      "name": "Dragonhawk",
+      "movement": {
+        "base": 2,
+        "fly": 14
+      },
+      "hitPoints": 8,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Beak",
+          "skillId": "EdwzusB8CvCN4Jt1",
+          "weaponId": "ImqvdDlORUaMh9Oa",
+          "skillLevel": 10,
+          "damage": "D10",
+          "range": 2
+        },
+        {
+          "name": "Talons",
+          "skillId": "FodLOqspDSKlucht",
+          "weaponId": "VmQNPkNsFZ2ZhSCl",
+          "skillLevel": 12,
+          "damage": "2D4",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "laVH2eyyA0ATB8U6",
+          "name": "Awareness",
+          "value": 14
+        },
+        {
+          "id": "viJdDBN8n9HJTeIS",
+          "name": "Evade",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "key": "large-serpent",
+      "id": "um17JUy9CcBXlloq",
+      "armorId": null,
+      "name": "Large Serpent",
+      "movement": {
+        "base": 10
+      },
+      "hitPoints": 8,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "PCcAfLOA62Glsgzo",
+          "weaponId": "BXVm6tQuny3rD39C",
+          "skillLevel": 12,
+          "damage": "D6",
+          "range": 2,
+          "lethalPoison": 15
+        },
+        {
+          "name": "Constriction",
+          "skillId": "jz4xk7Xftewict8u",
+          "weaponId": "K9VpeZGmCu9Z1oqR",
+          "skillLevel": 10,
+          "damage": "D6",
+          "range": 2,
+          "constrain": 12
+        }
+      ],
+      "skills": [
+        {
+          "id": "LbtNPCXuYQ0Nc3ZN",
+          "name": "Awareness",
+          "value": 12
+        },
+        {
+          "id": "AuM4EESlBWwCMsIE",
+          "name": "Evade",
+          "value": 16
+        }
+      ]
+    },
+    {
+      "key": "gorilla",
+      "id": "OelrGFsAvekzqSQi",
+      "armorId": null,
+      "name": "Gorilla",
+      "movement": {
+        "base": 8
+      },
+      "hitPoints": 16,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "NZfCU9F8ZeqtNAO9",
+          "weaponId": "EhvhZFJGsSzvoxtS",
+          "skillLevel": 12,
+          "damage": "2D6",
+          "range": 2
+        },
+        {
+          "name": "Fist",
+          "skillId": "iSli5PHYHe7MUiEO",
+          "weaponId": "yzU7vJBUO1upLeMM",
+          "skillLevel": 14,
+          "damage": "2D4",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "Al8cPe3MQlc03KcD",
+          "name": "Acrobatics",
+          "value": 15
+        },
+        {
+          "id": "0VPuFSVF2CE8j892",
+          "name": "Awareness",
+          "value": 10
+        },
+        {
+          "id": "CvJKmnQtw5ZXz30z",
+          "name": "Evade",
+          "value": 14
+        }
+      ]
+    }
+  ]
+}

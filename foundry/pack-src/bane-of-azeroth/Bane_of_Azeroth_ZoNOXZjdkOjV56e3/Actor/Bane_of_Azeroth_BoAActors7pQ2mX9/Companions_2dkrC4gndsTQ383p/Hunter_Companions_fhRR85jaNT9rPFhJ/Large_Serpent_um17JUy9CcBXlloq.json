@@ -1,0 +1,433 @@
+{
+  "folder": "fhRR85jaNT9rPFhJ",
+  "name": "Large Serpent",
+  "type": "npc",
+  "_id": "um17JUy9CcBXlloq",
+  "img": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+  "system": {
+    "description": "<p>A loyal Hunter companion.</p>",
+    "movement": {
+      "base": 10,
+      "value": 10
+    },
+    "hitPoints": {
+      "value": 8,
+      "max": 8,
+      "base": 8
+    },
+    "willPoints": {
+      "value": 0,
+      "max": 0,
+      "base": 0
+    },
+    "damageBonus": {
+      "agl": {
+        "base": "none",
+        "value": "none"
+      },
+      "str": {
+        "base": "none",
+        "value": "none"
+      }
+    },
+    "traits": "",
+    "currency": {
+      "gc": null,
+      "sc": null,
+      "cc": null
+    },
+    "encumbrance": {
+      "value": 0
+    },
+    "kin": "",
+    "age": "",
+    "profession": "",
+    "motivation": ""
+  },
+  "prototypeToken": {
+    "name": "Large Serpent",
+    "displayName": 0,
+    "actorLink": false,
+    "texture": {
+      "src": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "alphaThreshold": 0.75
+    },
+    "width": 1,
+    "height": 1,
+    "lockRotation": true,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": 0,
+    "displayBars": 20,
+    "bar1": {
+      "attribute": "hitPoints"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "negative": false,
+      "priority": 0
+    },
+    "sight": {
+      "enabled": false,
+      "range": 0,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": {},
+    "flags": {},
+    "randomImg": false,
+    "appendNumber": false,
+    "prependAdjective": false,
+    "depth": 1,
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null
+  },
+  "items": [
+    {
+      "folder": null,
+      "name": "Bite",
+      "type": "skill",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "skillType": "weapon",
+        "attribute": "str",
+        "value": 12,
+        "advance": 0,
+        "hideTrained": true,
+        "gmDescription": "",
+        "itemDescription": "",
+        "taught": false
+      },
+      "effects": [],
+      "sort": 100000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.hunter-companions.large-serpent.attack.bite.skill"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "PCcAfLOA62Glsgzo",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "type": "weapon",
+      "name": "Bite",
+      "system": {
+        "weight": null,
+        "quantity": 1,
+        "cost": "–",
+        "supply": "common",
+        "worn": true,
+        "memento": false,
+        "boons": "",
+        "banes": "",
+        "grip": {
+          "value": "none"
+        },
+        "str": null,
+        "range": "2",
+        "damage": "D6",
+        "durability": null,
+        "skill": {
+          "name": "Bite",
+          "value": 0
+        },
+        "features": [],
+        "broken": false,
+        "mainHand": false,
+        "offHand": false,
+        "gmDescription": "",
+        "itemDescription": "<p><strong>Lethal poison:</strong> Potency 15.</p>",
+        "storage": false
+      },
+      "img": "icons/svg/item-bag.svg",
+      "effects": [],
+      "folder": null,
+      "sort": 200000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.hunter-companions.large-serpent.attack.bite.weapon"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "BXVm6tQuny3rD39C",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "folder": null,
+      "name": "Constriction",
+      "type": "skill",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "skillType": "weapon",
+        "attribute": "str",
+        "value": 10,
+        "advance": 0,
+        "hideTrained": true,
+        "gmDescription": "",
+        "itemDescription": "",
+        "taught": false
+      },
+      "effects": [],
+      "sort": 300000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.hunter-companions.large-serpent.attack.constriction.skill"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "jz4xk7Xftewict8u",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "type": "weapon",
+      "name": "Constriction",
+      "system": {
+        "weight": null,
+        "quantity": 1,
+        "cost": "–",
+        "supply": "common",
+        "worn": true,
+        "memento": false,
+        "boons": "",
+        "banes": "",
+        "grip": {
+          "value": "none"
+        },
+        "str": null,
+        "range": "2",
+        "damage": "D6",
+        "durability": null,
+        "skill": {
+          "name": "Constriction",
+          "value": 0
+        },
+        "features": [],
+        "broken": false,
+        "mainHand": false,
+        "offHand": false,
+        "gmDescription": "",
+        "itemDescription": "<p><strong>Constrain:</strong> Strength 12.</p>",
+        "storage": false
+      },
+      "img": "icons/svg/item-bag.svg",
+      "effects": [],
+      "folder": null,
+      "sort": 400000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.hunter-companions.large-serpent.attack.constriction.weapon"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "K9VpeZGmCu9Z1oqR",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "folder": null,
+      "name": "Awareness",
+      "type": "skill",
+      "img": "modules/dragonbane-coreset/assets/icons/gear/book.webp",
+      "system": {
+        "skillType": "core",
+        "attribute": "int",
+        "value": 12,
+        "advance": 0,
+        "hideTrained": false,
+        "gmDescription": "",
+        "itemDescription": "",
+        "taught": false
+      },
+      "effects": [],
+      "sort": 500000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.hunter-companions.large-serpent.skill.awareness"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "LbtNPCXuYQ0Nc3ZN",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "folder": null,
+      "name": "Evade",
+      "type": "skill",
+      "img": "modules/dragonbane-coreset/assets/icons/gear/book.webp",
+      "system": {
+        "skillType": "core",
+        "attribute": "agl",
+        "value": 16,
+        "advance": 0,
+        "hideTrained": false,
+        "gmDescription": "",
+        "itemDescription": "",
+        "taught": false
+      },
+      "effects": [],
+      "sort": 600000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.hunter-companions.large-serpent.skill.evade"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "AuM4EESlBWwCMsIE",
+      "ownership": {
+        "default": 0
+      }
+    }
+  ],
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-hunter-companions.py",
+      "contentKey": "actors.hunter-companions.large-serpent"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -508,6 +508,34 @@ const EXPECTED_COMPANIONS = [
   },
 ];
 
+const IMPLEMENTED_COMPANION_KEYS = [
+  "crocolisk",
+  "dragonhawk",
+  "large-serpent",
+  "gorilla",
+];
+
+const REMAINING_COMPANION_KEYS = [
+  "giant-bat",
+  "giant-owl",
+  "giant-spider",
+  "large-cat",
+  "raptor",
+  "ravager",
+  "scorpid",
+  "tallstrider",
+  "turtle",
+  "wind-serpent",
+];
+
+const EXPECTED_IMPLEMENTED_COMPANIONS =
+  EXPECTED_COMPANIONS.filter(
+    companion =>
+      IMPLEMENTED_COMPANION_KEYS.includes(
+        companion.key
+      )
+  );
+
 const CORE_SKILL_ATTRIBUTES = {
   Acrobatics: "agl",
   Awareness: "int",
@@ -755,18 +783,46 @@ function expectCoreNpcShell(
 }
 
 describe("Hunter companion source contract", () => {
-  test("defines exactly the 14 companions from Appendix A", () => {
+  test("tracks the current batch within the complete 14-companion plan", () => {
     const source = requireJson(
       CONTENT_SOURCE
     );
+    const implementedKeys = (
+      source.companions ?? []
+    ).map(companion => companion.key);
+    const partitionKeys = [
+      ...implementedKeys,
+      ...(source.remainingKeys ?? []),
+    ];
+    const plannedKeys =
+      EXPECTED_COMPANIONS.map(
+        companion => companion.key
+      );
 
     expect(source.schemaVersion).toBe(1);
-    expect(source.expectedCount).toBe(14);
+    expect(source.plannedCount).toBe(14);
+    expect(source.expectedCount).toBe(
+      EXPECTED_IMPLEMENTED_COMPANIONS.length
+    );
+    expect(implementedKeys).toEqual(
+      IMPLEMENTED_COMPANION_KEYS
+    );
+    expect(source.remainingKeys).toEqual(
+      REMAINING_COMPANION_KEYS
+    );
+    expect(new Set(partitionKeys).size).toBe(
+      plannedKeys.length
+    );
+    expect([...partitionKeys].sort()).toEqual(
+      [...plannedKeys].sort()
+    );
     expect(
       (source.companions ?? []).map(
         normalizeCompanion
       )
-    ).toEqual(EXPECTED_COMPANIONS);
+    ).toEqual(
+      EXPECTED_IMPLEMENTED_COMPANIONS
+    );
   });
 
   test("uses deterministic unique Foundry IDs", () => {
@@ -851,7 +907,7 @@ describe("Generated Hunter companion Actors", () => {
         ({ document }) => document.name
       ).sort()
     ).toEqual(
-      EXPECTED_COMPANIONS
+      EXPECTED_IMPLEMENTED_COMPANIONS
         .map(companion => companion.name)
         .sort()
     );
@@ -866,7 +922,7 @@ describe("Generated Hunter companion Actors", () => {
     );
 
     for (const expected of (
-      EXPECTED_COMPANIONS
+      EXPECTED_IMPLEMENTED_COMPANIONS
     )) {
       const actor = actorsByName.get(
         expected.name
@@ -893,7 +949,7 @@ describe("Generated Hunter companion Actors", () => {
     const actors = hunterActorEntries();
 
     expect(actors).toHaveLength(
-      EXPECTED_COMPANIONS.length
+      EXPECTED_IMPLEMENTED_COMPANIONS.length
     );
 
     const actorsByName = new Map(
@@ -906,7 +962,7 @@ describe("Generated Hunter companion Actors", () => {
     );
 
     for (const expected of (
-      EXPECTED_COMPANIONS
+      EXPECTED_IMPLEMENTED_COMPANIONS
     )) {
       const actor = actorsByName.get(
         expected.name
@@ -1070,7 +1126,7 @@ describe("Generated Hunter companion Actors", () => {
     ];
 
     expect(actors).toHaveLength(
-      EXPECTED_COMPANIONS.length
+      EXPECTED_IMPLEMENTED_COMPANIONS.length
     );
 
     for (const entry of actors) {
