@@ -8,6 +8,28 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.8.0] - 2026-07-21
+
+### Added
+
+- Added a dedicated Bane of Azeroth logo and expanded HTML Overview to the Adventure import screen.
+- Added integration tests for the packaged Adventure banner, logo, caption, Overview content, and asset paths.
+- Added the `BOA DEV – Verify Adventure Ownership` Developer Test Macro.
+- Added Adventure ownership verification to the complete Developer Test suite.
+
+### Changed
+
+- Simplified the Adventure import presentation by leaving the caption blank and using the standard Foundry title, banner, and Overview layout.
+- Expanded the Overview with an import explanation, overwrite warning, Dragonbane ownership-setting guidance, project credits, licensing information, and attribution.
+- Kept the Overview free from hard-coded document counts so it remains accurate as the Adventure grows.
+
+### Verified
+
+- Verified the Adventure banner is packaged as a 1536 by 600 WebP and remains within the expected file-size limit.
+- Verified that Dragonbane's `Keep ownership on import` world setting preserves ownership on existing documents when Adventure content is re-imported.
+- Verified both enabled and disabled ownership-setting behavior through Dragonbane's registered Adventure import hook.
+- Verified the Adventure import screen and the complete Bane of Azeroth test suite with Foundry Virtual Tabletop 14.365.
+
 ## [0.7.2] - 2026-07-20
 
 ### Fixed
