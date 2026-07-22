@@ -338,3 +338,297 @@ export async function onCommonAnimalWeaponTestChatMessage(
   });
 }
 
+function effectTargetName(targetName) {
+  const normalized = String(
+    targetName ?? ""
+  ).trim();
+
+  return normalized || null;
+}
+
+function displayName(document) {
+  if (!document) {
+    return "";
+  }
+
+  if (document.isToken) {
+    return String(
+      document.token?.name ??
+      document.name ??
+      ""
+    );
+  }
+
+  return String(document.name ?? "");
+}
+
+/**
+ * Build one plain sentence for a supported Common Animal attack effect.
+ *
+ * The returned text is intended for Dragonbane's existing damage paragraph,
+ * not for a separate ChatMessage.
+ */
+export function buildCommonAnimalAttackEffectText({
+  effect,
+  attackerName,
+  targetName,
+} = {}) {
+  if (
+    !effect ||
+    typeof effect !== "object"
+  ) {
+    return null;
+  }
+
+  const safeAttacker = escapeHtml(
+    attackerName
+  );
+  const normalizedTarget =
+    effectTargetName(targetName);
+  const safeTarget = normalizedTarget
+    ? escapeHtml(normalizedTarget)
+    : "the target";
+
+  if (effect.type === "lethalPoison") {
+    const potency = finiteNumber(
+      effect.potency
+    );
+
+    if (potency == null) {
+      return null;
+    }
+
+    const ruleUuid = String(
+      effect.ruleUuid ??
+      LETHAL_POISON_RULE_UUID
+    ).trim();
+
+    if (!ruleUuid) {
+      return null;
+    }
+
+    return (
+      `${safeAttacker} exposes ${safeTarget} to ` +
+      `@UUID[${ruleUuid}]{lethal poison} ` +
+      `with a potency of ${potency}, as if the ` +
+      "poison had been ingested."
+    );
+  }
+
+  if (effect.type === "constrain") {
+    const strength = finiteNumber(
+      effect.strength
+    );
+
+    if (strength == null) {
+      return null;
+    }
+
+    const sentenceTarget = normalizedTarget
+      ? safeTarget
+      : "The target";
+
+    return (
+      `${safeAttacker} constrains ${safeTarget}. ` +
+      `${sentenceTarget} is unable to move or take ` +
+      "actions other than trying to escape with an " +
+      `open opposed STR roll against ${strength}. ` +
+      `${sentenceTarget} can still parry while ` +
+      "constrained, but cannot evade."
+    );
+  }
+
+  return null;
+}
+
+function insertEffectText(
+  content,
+  effectText
+) {
+  const strongParagraphEnd =
+    "</strong></p>";
+
+  if (content.includes(
+    strongParagraphEnd
+  )) {
+    return content.replace(
+      strongParagraphEnd,
+      `</strong> ${effectText}</p>`
+    );
+  }
+
+  const templateSeparator =
+    content.search(
+      /\n\s*\n(?=<[A-Za-z!/])/
+    );
+
+  if (templateSeparator >= 0) {
+    const prefix = content.slice(
+      0,
+      templateSeparator
+    ).trimEnd();
+    const suffix = content.slice(
+      templateSeparator
+    );
+
+    return (
+      `${prefix} ${effectText}` +
+      suffix
+    );
+  }
+
+  const firstHtmlTag =
+    content.search(
+      /<(?=[A-Za-z!/])/
+    );
+
+  if (firstHtmlTag > 0) {
+    const prefix = content.slice(
+      0,
+      firstHtmlTag
+    );
+    const trimmedPrefix =
+      prefix.trimEnd();
+    const preservedWhitespace =
+      prefix.slice(
+        trimmedPrefix.length
+      );
+
+    return (
+      `${trimmedPrefix} ${effectText}` +
+      preservedWhitespace +
+      content.slice(firstHtmlTag)
+    );
+  }
+
+  const trimmed = content.trimEnd();
+  const trailingWhitespace =
+    content.slice(trimmed.length);
+
+  return (
+    `${trimmed} ${effectText}` +
+    trailingWhitespace
+  );
+}
+
+/**
+ * Append supported effects to Dragonbane's existing damage text.
+ *
+ * Roll markup and action buttons remain untouched. Calling this function
+ * repeatedly with the same effects is idempotent.
+ */
+export function appendCommonAnimalAttackEffectsToDamageContent({
+  content = "",
+  effects = [],
+  attackerName = "",
+  targetName = null,
+} = {}) {
+  if (!Array.isArray(effects)) {
+    return content;
+  }
+
+  const effectTexts = effects
+    .map(effect =>
+      buildCommonAnimalAttackEffectText({
+        effect,
+        attackerName,
+        targetName,
+      })
+    )
+    .filter(Boolean)
+    .filter(text =>
+      !content.includes(text)
+    );
+
+  if (effectTexts.length === 0) {
+    return content;
+  }
+
+  return insertEffectText(
+    content,
+    effectTexts.join(" ")
+  );
+}
+
+function rollDamageContext(message) {
+  try {
+    return (
+      message?.system?.toContext?.() ??
+      null
+    );
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Could not resolve ` +
+      "Common Animal rollDamage context.",
+      error,
+      message
+    );
+    return null;
+  }
+}
+
+/**
+ * Enrich Dragonbane's existing rollDamage ChatMessage in place.
+ *
+ * Only the client that created the message performs the update, preventing
+ * duplicate work on other connected clients.
+ */
+export async function onCommonAnimalRollDamageChatMessage(
+  message,
+  _options,
+  userId
+) {
+  if (userId !== game.user.id) {
+    return message;
+  }
+
+  if (message?.type !== "rollDamage") {
+    return message;
+  }
+
+  const context =
+    rollDamageContext(message);
+
+  if (!context) {
+    return message;
+  }
+
+  const effects =
+    context.weapon?.getFlag?.(
+      MODULE_ID,
+      "attackEffects"
+    );
+
+  if (
+    !Array.isArray(effects) ||
+    effects.length === 0
+  ) {
+    return message;
+  }
+
+  const content =
+    appendCommonAnimalAttackEffectsToDamageContent({
+      content:
+        String(message.content ?? ""),
+      effects,
+      attackerName:
+        displayName(context.actor),
+      targetName:
+        context.targetActor
+          ? displayName(
+              context.targetActor
+            )
+          : null,
+    });
+
+  if (content === message.content) {
+    return message;
+  }
+
+  await message.update({
+    content,
+  });
+
+  return message;
+}
+

@@ -45,7 +45,7 @@ import {
   isPrimaryActiveGM,
 } from "./core/users.js";
 import {
-  onCommonAnimalWeaponTestChatMessage,
+  onCommonAnimalRollDamageChatMessage,
   processCommonAnimalAttackResult,
 } from "./common-animal-attack-effects.js";
 
@@ -78,7 +78,7 @@ Hooks.once("init", () => {
   Hooks.on("createChatMessage", onCreateElementalTotemChatMessage);
   Hooks.on(
     "createChatMessage",
-    onCommonAnimalWeaponTestChatMessage
+    onCommonAnimalRollDamageChatMessage
   );
   Hooks.on("updateChatMessage", onUpdateElementalTotemChatMessage);
   Hooks.on("renderDoDActorBaseSheet", lockAutoGrantedSpellPreparation);
