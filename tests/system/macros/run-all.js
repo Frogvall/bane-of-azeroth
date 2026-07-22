@@ -38,6 +38,7 @@ if (!boaCheck(
 const orderedKeys = [
   "smoke",
   "generated-content",
+  "common-animals",
   "spell-grants",
   "elemental-totems",
   "adventure-ownership",
