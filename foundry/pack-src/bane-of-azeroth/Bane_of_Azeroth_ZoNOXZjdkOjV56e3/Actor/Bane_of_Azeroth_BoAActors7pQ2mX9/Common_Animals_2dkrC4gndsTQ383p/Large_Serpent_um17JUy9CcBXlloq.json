@@ -3,7 +3,7 @@
   "name": "Large Serpent",
   "type": "npc",
   "_id": "um17JUy9CcBXlloq",
-  "img": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+  "img": "modules/bane-of-azeroth/assets/actors/common-animals/large-serpent.webp",
   "system": {
     "description": "",
     "movement": {
@@ -49,7 +49,7 @@
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/large-serpent-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",

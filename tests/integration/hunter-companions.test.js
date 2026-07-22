@@ -531,6 +531,41 @@ const REMAINING_COMPANION_KEYS = [
   "wind-serpent",
 ];
 
+const EXPECTED_COMMON_ANIMAL_ARTWORK = {
+  crocolisk: {
+    image:
+      "modules/bane-of-azeroth/assets/actors/" +
+      "common-animals/crocolisk.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/" +
+      "common-animals/crocolisk-token.webp",
+  },
+  dragonhawk: {
+    image:
+      "modules/bane-of-azeroth/assets/actors/" +
+      "common-animals/dragonhawk.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/" +
+      "common-animals/dragonhawk-token.webp",
+  },
+  "large-serpent": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/" +
+      "common-animals/large-serpent.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/" +
+      "common-animals/large-serpent-token.webp",
+  },
+  gorilla: {
+    image:
+      "modules/bane-of-azeroth/assets/actors/" +
+      "common-animals/gorilla.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/" +
+      "common-animals/gorilla-token.webp",
+  },
+};
+
 const EXPECTED_IMPLEMENTED_COMPANIONS =
   EXPECTED_COMPANIONS.filter(
     companion =>
@@ -600,6 +635,21 @@ function readDocuments(root) {
 
 function moduleFlags(document) {
   return document?.flags?.[MODULE_ID] ?? {};
+}
+
+function repositoryModuleAssetPath(
+  moduleAssetPath
+) {
+  const prefix = `modules/${MODULE_ID}/`;
+
+  expect(
+    moduleAssetPath.startsWith(prefix)
+  ).toBe(true);
+
+  return resolve(
+    "foundry",
+    moduleAssetPath.slice(prefix.length)
+  );
 }
 
 function commonAnimalActorEntries() {
@@ -915,6 +965,55 @@ describe("Hunter companion source contract", () => {
     );
   });
 
+  test("references the exact packaged portrait and token artwork", () => {
+    const source = requireJson(
+      CONTENT_SOURCE
+    );
+    const companionsByKey = new Map(
+      (source.companions ?? []).map(
+        companion => [
+          companion.key,
+          companion,
+        ]
+      )
+    );
+
+    for (const expected of (
+      EXPECTED_IMPLEMENTED_COMPANIONS
+    )) {
+      const companion = companionsByKey.get(
+        expected.key
+      );
+      const artwork =
+        EXPECTED_COMMON_ANIMAL_ARTWORK[
+          expected.key
+        ];
+
+      expect(companion).toBeDefined();
+      expect(artwork).toBeDefined();
+      expect(companion).toMatchObject(
+        artwork
+      );
+
+      for (const moduleAssetPath of [
+        artwork.image,
+        artwork.tokenImage,
+      ]) {
+        const repositoryPath =
+          repositoryModuleAssetPath(
+            moduleAssetPath
+          );
+
+        expect(
+          existsSync(repositoryPath)
+        ).toBe(true);
+        expect(
+          statSync(repositoryPath).isFile()
+        ).toBe(true);
+      }
+    }
+  });
+
   test("uses deterministic unique Foundry IDs", () => {
     const source = requireJson(
       CONTENT_SOURCE
@@ -1020,6 +1119,20 @@ describe("Generated common-animal Actors", () => {
         actor,
         expected,
         commonAnimalsFolder.document._id
+      );
+      const artwork =
+        EXPECTED_COMMON_ANIMAL_ARTWORK[
+          expected.key
+        ];
+
+      expect(artwork).toBeDefined();
+      expect(actor.img).toBe(
+        artwork.image
+      );
+      expect(
+        actor.prototypeToken.texture.src
+      ).toBe(
+        artwork.tokenImage
       );
       expect(
         moduleFlags(actor).generatedBy

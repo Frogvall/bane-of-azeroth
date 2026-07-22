@@ -3,7 +3,7 @@
   "name": "Gorilla",
   "type": "npc",
   "_id": "OelrGFsAvekzqSQi",
-  "img": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+  "img": "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
   "system": {
     "description": "",
     "movement": {
@@ -49,7 +49,7 @@
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",

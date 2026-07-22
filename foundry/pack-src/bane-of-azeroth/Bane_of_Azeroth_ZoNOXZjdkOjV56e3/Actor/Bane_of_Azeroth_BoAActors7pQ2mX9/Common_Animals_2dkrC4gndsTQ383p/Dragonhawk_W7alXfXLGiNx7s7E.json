@@ -3,7 +3,7 @@
   "name": "Dragonhawk",
   "type": "npc",
   "_id": "W7alXfXLGiNx7s7E",
-  "img": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+  "img": "modules/bane-of-azeroth/assets/actors/common-animals/dragonhawk.webp",
   "system": {
     "description": "",
     "movement": {
@@ -49,7 +49,7 @@
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/dragonhawk-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",

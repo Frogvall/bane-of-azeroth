@@ -45,6 +45,8 @@
       "id": "NH7xTDsdAaPgm0Xv",
       "armorId": "tSSfleAd9ytQIKQt",
       "name": "Crocolisk",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/crocolisk.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/crocolisk-token.webp",
       "movement": {
         "base": 6,
         "swim": 12
@@ -79,6 +81,8 @@
       "id": "W7alXfXLGiNx7s7E",
       "armorId": null,
       "name": "Dragonhawk",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/dragonhawk.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/dragonhawk-token.webp",
       "movement": {
         "base": 2,
         "fly": 14
@@ -121,6 +125,8 @@
       "id": "um17JUy9CcBXlloq",
       "armorId": null,
       "name": "Large Serpent",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/large-serpent.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/large-serpent-token.webp",
       "movement": {
         "base": 10
       },
@@ -164,6 +170,8 @@
       "id": "OelrGFsAvekzqSQi",
       "armorId": null,
       "name": "Gorilla",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
       "movement": {
         "base": 8
       },

@@ -25,6 +25,10 @@ const expectedAnimals = [
   {
     key: "crocolisk",
     name: "Crocolisk",
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/crocolisk.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/crocolisk-token.webp",
     movement: 6,
     hitPoints: 15,
     armorRating: 1,
@@ -56,6 +60,10 @@ const expectedAnimals = [
   {
     key: "dragonhawk",
     name: "Dragonhawk",
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/dragonhawk.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/dragonhawk-token.webp",
     movement: 2,
     hitPoints: 8,
     armorRating: 0,
@@ -94,6 +102,10 @@ const expectedAnimals = [
   {
     key: "large-serpent",
     name: "Large Serpent",
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/large-serpent.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/large-serpent-token.webp",
     movement: 10,
     hitPoints: 8,
     armorRating: 0,
@@ -148,6 +160,10 @@ const expectedAnimals = [
   {
     key: "gorilla",
     name: "Gorilla",
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
     movement: 8,
     hitPoints: 16,
     armorRating: 0,
@@ -262,6 +278,18 @@ for (const expected of expectedAnimals) {
     `${expected.name} has a blank description`,
     actor.system.description,
     ""
+  );
+  boaCheckEqual(
+    checks,
+    `${expected.name} portrait artwork is correct`,
+    actor.img,
+    expected.image
+  );
+  boaCheckEqual(
+    checks,
+    `${expected.name} prototype-token artwork is correct`,
+    actor.prototypeToken?.texture?.src ?? null,
+    expected.tokenImage
   );
   boaCheckEqual(
     checks,
