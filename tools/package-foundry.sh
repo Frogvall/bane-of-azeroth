@@ -299,13 +299,21 @@ rm -f "$ZIP_FILE"
 
 echo "Validating module zip..."
 
-if ! unzip -Z1 "$ZIP_FILE" | grep -qx 'module.json'; then
+# Read the complete archive listing before searching it. With pipefail,
+# grep -q can otherwise close a live unzip pipeline after an early match,
+# causing unzip to exit with SIGPIPE and making a valid archive look invalid.
+ZIP_CONTENTS="$(
+  unzip -Z1 "$ZIP_FILE"
+)"
+
+if ! grep -Fxq 'module.json' <<< "$ZIP_CONTENTS"; then
   echo "module.json is not at the root of the zip." >&2
   exit 1
 fi
 
-if unzip -Z1 "$ZIP_FILE" |
-  grep -Eq '(^|/)pack-src/|(^|/)(LOCK|LOG|LOG\.old)$|\.dbtmp$'; then
+if grep -Eq \
+  '(^|/)pack-src/|(^|/)(LOCK|LOG|LOG\.old)$|\.dbtmp$' \
+  <<< "$ZIP_CONTENTS"; then
   echo "The zip contains source or LevelDB runtime files." >&2
   exit 1
 fi
