@@ -14,17 +14,31 @@ import {
 
 const MODULE_ID = "bane-of-azeroth";
 
-const processAttackResult =
-  attackEffects.processCommonAnimalAttackResult;
-const onWeaponTestMessage =
-  attackEffects.onCommonAnimalWeaponTestChatMessage;
+const onRollDamageMessage =
+  attackEffects.onCommonAnimalRollDamageChatMessage;
+
+const DAMAGE_CONTENT = [
+  "<p><strong>",
+  "Large Serpent inflicts 11 points Damage ",
+  "on Test using Bite.",
+  "</strong></p>",
+  '<div class="dice-roll">',
+  '<div class="dice-formula">2d6</div>',
+  '<div class="dice-total">11</div>',
+  "</div>",
+  '<button data-action="dealDamage">',
+  "Deal damage",
+  "</button>",
+].join("");
 
 function makeWeapon({
   name = "Bite",
   effects = [],
 } = {}) {
   return makeFlagDocument({
-    id: `weapon-${name.toLowerCase()}`,
+    id: `weapon-${
+      name.toLowerCase()
+    }`,
     name,
     type: "weapon",
     flags: {
@@ -36,202 +50,262 @@ function makeWeapon({
 }
 
 function makeTarget(
-  name = "Test Adventurer"
+  name = "Test"
 ) {
   return makeActor({
-    id: `actor-${name.toLowerCase().replaceAll(" ", "-")}`,
+    id: `actor-${
+      name.toLowerCase()
+        .replaceAll(" ", "-")
+    }`,
     name,
   });
 }
 
-function makeWeaponTestMessage({
-  success = true,
+function makeRollDamageMessage({
   actor = makeActor({
     id: "large-serpent",
     name: "Large Serpent",
   }),
-  weapon = makeWeapon(),
+  weapon = makeWeapon({
+    effects: [
+      {
+        type: "lethalPoison",
+        potency: 15,
+        ruleUuid:
+          attackEffects
+            .LETHAL_POISON_RULE_UUID,
+      },
+    ],
+  }),
   targetActor = makeTarget(),
-  type = "weaponTest",
+  type = "rollDamage",
+  content = DAMAGE_CONTENT,
 } = {}) {
-  return {
+  const message = {
+    id: "roll-damage-message",
     type,
+    content,
+    speaker: {
+      alias: actor.name,
+    },
     system: {
       toContext: vi.fn(() => ({
         actor,
         weapon,
         targetActor,
-        success,
       })),
     },
+    update: vi.fn(
+      async changes => {
+        Object.assign(
+          message,
+          changes
+        );
+        return message;
+      }
+    ),
   };
+
+  return message;
 }
 
-test("exports the Common Animal attack-result integration functions", () => {
-  expect(processAttackResult).toEqual(
-    expect.any(Function)
-  );
-  expect(onWeaponTestMessage).toEqual(
+test("exports the rollDamage ChatMessage handler", () => {
+  expect(onRollDamageMessage).toEqual(
     expect.any(Function)
   );
 });
 
 describe.skipIf(
-  typeof processAttackResult !== "function"
-)("processCommonAnimalAttackResult", () => {
-  let createChatMessage;
-
+  typeof onRollDamageMessage !== "function"
+)("onCommonAnimalRollDamageChatMessage", () => {
   beforeEach(() => {
-    createChatMessage = vi.fn(
-      async data => ({
-        id: `message-${createChatMessage.mock.calls.length}`,
-        ...data,
-      })
-    );
+    game.user.id =
+      "originating-user";
   });
 
-  test("creates one informational ChatMessage for a successful supported effect", async () => {
-    const attacker = makeActor({
-      id: "large-serpent",
-      name: "Large Serpent",
-    });
-    const target = makeTarget();
-    const weapon = makeWeapon({
-      effects: [
-        {
-          type: "lethalPoison",
-          potency: 15,
-          ruleUuid:
-            attackEffects.LETHAL_POISON_RULE_UUID,
-        },
-      ],
-    });
+  test("enriches the same targeted Bite damage card", async () => {
+    const message =
+      makeRollDamageMessage();
 
-    const messages = await processAttackResult({
-      successful: true,
-      attackerActor: attacker,
-      weaponItem: weapon,
-      targets: [target],
-      createChatMessage,
-    });
+    const result =
+      await onRollDamageMessage(
+        message,
+        {},
+        "originating-user"
+      );
 
-    expect(messages).toHaveLength(1);
-    expect(createChatMessage).toHaveBeenCalledOnce();
-    expect(createChatMessage).toHaveBeenCalledWith(
-      expect.objectContaining({
-        user: game.user.id,
-        content: expect.stringContaining(
-          "Lethal Poison"
-        ),
-      })
+    expect(message.update)
+      .toHaveBeenCalledOnce();
+    expect(message.update)
+      .toHaveBeenCalledWith({
+        content:
+          expect.stringContaining(
+            "Large Serpent exposes Test"
+          ),
+      });
+    expect(message.content).toContain(
+      "Large Serpent inflicts 11 points Damage"
     );
-    expect(
-      createChatMessage.mock.calls[0][0].content
-    ).toContain("potency of 15");
-    expect(
-      createChatMessage.mock.calls[0][0].content
-    ).toContain(target.name);
+    expect(message.content).toContain(
+      "Large Serpent exposes Test"
+    );
+    expect(message.content).toContain(
+      "potency of 15"
+    );
+    expect(message.content).toContain(
+      '<div class="dice-formula">2d6</div>'
+    );
+    expect(message.content).toContain(
+      '<button data-action="dealDamage">'
+    );
+    expect(message.speaker.alias).toBe(
+      "Large Serpent"
+    );
+    expect(result).toBe(message);
   });
 
-  test("creates one message per target and supported effect", async () => {
-    const targets = [
-      makeTarget("Test Adventurer"),
-      makeTarget("Test Knight"),
-    ];
-    const weapon = makeWeapon({
-      effects: [
-        {
-          type: "lethalPoison",
-          potency: 15,
-        },
-        {
-          type: "constrain",
-          strength: 12,
-        },
-        {
-          type: "unknown",
-        },
-      ],
-    });
+  test("enriches untargeted damage with the target placeholder", async () => {
+    const message =
+      makeRollDamageMessage({
+        targetActor: null,
+        content: DAMAGE_CONTENT
+          .replace(
+            " on Test",
+            ""
+          ),
+      });
 
-    const messages = await processAttackResult({
-      successful: true,
-      attackerActor: makeActor({
-        name: "Large Serpent",
-      }),
-      weaponItem: weapon,
-      targets,
-      createChatMessage,
-    });
+    await onRollDamageMessage(
+      message,
+      {},
+      "originating-user"
+    );
 
-    expect(messages).toHaveLength(4);
-    expect(createChatMessage).toHaveBeenCalledTimes(4);
-    expect(
-      createChatMessage.mock.calls.map(
-        ([data]) => data.content
-      )
-    ).toEqual([
-      expect.stringContaining("Test Adventurer"),
-      expect.stringContaining("Test Adventurer"),
-      expect.stringContaining("Test Knight"),
-      expect.stringContaining("Test Knight"),
-    ]);
+    expect(message.content).toContain(
+      "Large Serpent exposes the target"
+    );
+    expect(message.update)
+      .toHaveBeenCalledOnce();
+  });
+
+  test("enriches Constriction in the same damage card", async () => {
+    const message =
+      makeRollDamageMessage({
+        weapon: makeWeapon({
+          name: "Constriction",
+          effects: [
+            {
+              type: "constrain",
+              strength: 12,
+            },
+          ],
+        }),
+        content: DAMAGE_CONTENT
+          .replace(
+            "Bite",
+            "Constriction"
+          ),
+      });
+
+    await onRollDamageMessage(
+      message,
+      {},
+      "originating-user"
+    );
+
+    expect(message.content).toContain(
+      "Large Serpent constrains Test"
+    );
+    expect(message.content).toContain(
+      "open opposed STR roll against 12"
+    );
+    expect(message.content).toContain(
+      "can still parry"
+    );
+    expect(message.content).toContain(
+      "cannot evade"
+    );
   });
 
   test.each([
     {
-      label: "failed attack",
-      successful: false,
-      targets: [makeTarget()],
-      effects: [
-        {
-          type: "lethalPoison",
-          potency: 15,
-        },
-      ],
+      label:
+        "another client's message",
+      message:
+        makeRollDamageMessage(),
+      userId: "another-user",
     },
     {
-      label: "missing targets",
-      successful: true,
-      targets: [],
-      effects: [
-        {
-          type: "lethalPoison",
-          potency: 15,
-        },
-      ],
+      label:
+        "a non-rollDamage message",
+      message:
+        makeRollDamageMessage({
+          type: "weaponTest",
+        }),
+      userId: "originating-user",
     },
     {
-      label: "missing effects",
-      successful: true,
-      targets: [makeTarget()],
-      effects: [],
+      label:
+        "a weapon without attack effects",
+      message:
+        makeRollDamageMessage({
+          weapon: makeWeapon({
+            effects: [],
+          }),
+        }),
+      userId: "originating-user",
     },
-  ])("creates nothing for $label", async ({
-    successful,
-    targets,
-    effects,
+  ])("does not update $label", async ({
+    message,
+    userId,
   }) => {
-    const messages = await processAttackResult({
-      successful,
-      attackerActor: makeActor({
-        name: "Large Serpent",
-      }),
-      weaponItem: makeWeapon({ effects }),
-      targets,
-      createChatMessage,
-    });
+    const originalContent =
+      message.content;
 
-    expect(messages).toEqual([]);
-    expect(createChatMessage).not.toHaveBeenCalled();
+    const result =
+      await onRollDamageMessage(
+        message,
+        {},
+        userId
+      );
+
+    expect(message.update)
+      .not.toHaveBeenCalled();
+    expect(message.content)
+      .toBe(originalContent);
+    expect(result).toBe(message);
   });
 
-  test("reads attackEffects through the module flag API", async () => {
+  test("does not enrich the same damage card twice", async () => {
+    const message =
+      makeRollDamageMessage();
+
+    await onRollDamageMessage(
+      message,
+      {},
+      "originating-user"
+    );
+    await onRollDamageMessage(
+      message,
+      {},
+      "originating-user"
+    );
+
+    expect(message.update)
+      .toHaveBeenCalledOnce();
+    expect(
+      message.content.match(
+        /exposes Test/g
+      )
+    ).toHaveLength(1);
+  });
+
+  test("reads weapon effects through the module flag API", async () => {
     const weapon = makeWeapon({
       effects: [
         {
-          type: "constrain",
-          strength: 12,
+          type: "lethalPoison",
+          potency: 15,
         },
       ],
     });
@@ -239,119 +313,20 @@ describe.skipIf(
       weapon,
       "getFlag"
     );
+    const message =
+      makeRollDamageMessage({
+        weapon,
+      });
 
-    await processAttackResult({
-      successful: true,
-      attackerActor: makeActor({
-        name: "Large Serpent",
-      }),
-      weaponItem: weapon,
-      targets: [makeTarget()],
-      createChatMessage,
-    });
+    await onRollDamageMessage(
+      message,
+      {},
+      "originating-user"
+    );
 
     expect(getFlag).toHaveBeenCalledWith(
       MODULE_ID,
       "attackEffects"
     );
-  });
-});
-
-describe.skipIf(
-  typeof onWeaponTestMessage !== "function"
-)("onCommonAnimalWeaponTestChatMessage", () => {
-  beforeEach(() => {
-    game.user.id = "originating-user";
-    game.user.targets = new Set();
-  });
-
-  test("normalizes a successful Dragonbane weaponTest message", async () => {
-    const message = makeWeaponTestMessage();
-    const process = vi.fn(
-      async () => []
-    );
-
-    await onWeaponTestMessage(
-      message,
-      {},
-      "originating-user",
-      {
-        processAttackResult: process,
-      }
-    );
-
-    const context =
-      message.system.toContext.mock.results[0].value;
-
-    expect(process).toHaveBeenCalledOnce();
-    expect(process).toHaveBeenCalledWith({
-      successful: true,
-      attackerActor: context.actor,
-      weaponItem: context.weapon,
-      targets: [context.targetActor],
-    });
-  });
-
-  test("uses current user targets when Dragonbane has no targetActor", async () => {
-    const first = makeTarget("Test Adventurer");
-    const second = makeTarget("Test Knight");
-    game.user.targets = new Set([
-      { actor: first },
-      { actor: second },
-    ]);
-    const message = makeWeaponTestMessage({
-      targetActor: null,
-    });
-    const process = vi.fn(
-      async () => []
-    );
-
-    await onWeaponTestMessage(
-      message,
-      {},
-      "originating-user",
-      {
-        processAttackResult: process,
-      }
-    );
-
-    expect(process).toHaveBeenCalledWith(
-      expect.objectContaining({
-        targets: [first, second],
-      })
-    );
-  });
-
-  test.each([
-    {
-      label: "another client's message",
-      message: makeWeaponTestMessage(),
-      userId: "another-user",
-    },
-    {
-      label: "a non-weapon message",
-      message: makeWeaponTestMessage({
-        type: "skillTest",
-      }),
-      userId: "originating-user",
-    },
-  ])("ignores $label", async ({
-    message,
-    userId,
-  }) => {
-    const process = vi.fn(
-      async () => []
-    );
-
-    await onWeaponTestMessage(
-      message,
-      {},
-      userId,
-      {
-        processAttackResult: process,
-      }
-    );
-
-    expect(process).not.toHaveBeenCalled();
   });
 });
