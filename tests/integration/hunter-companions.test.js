@@ -1025,6 +1025,9 @@ describe("Generated common-animal Actors", () => {
       ).toBe(
         `actors.common-animals.${expected.key}`
       );
+      expect(
+        moduleFlags(actor).movementRates
+      ).toEqual(expected.movement);
     }
   });
 

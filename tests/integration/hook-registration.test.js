@@ -54,6 +54,13 @@ describe("Foundry hook registration", () => {
       onCommonAnimalRollDamageChatMessage,
       onCommonAnimalWeaponTestChatMessage,
     } = attackEffects;
+    const movement =
+      await import(
+        "../../foundry/scripts/common-animal-movement.js"
+      );
+    const {
+      onUpdateCommonAnimalMovementToken,
+    } = movement;
 
     const registeredHooks =
       Hooks.on.mock.calls;
@@ -64,6 +71,13 @@ describe("Foundry hook registration", () => {
         .filter(
           ([name]) =>
             name === "createChatMessage"
+        )
+        .map(([, callback]) => callback);
+    const updateTokenCallbacks =
+      registeredHooks
+        .filter(
+          ([name]) =>
+            name === "updateToken"
         )
         .map(([, callback]) => callback);
 
@@ -91,6 +105,22 @@ describe("Foundry hook registration", () => {
         createChatMessageCallbacks
       ).size
     ).toBe(2);
+    expect(
+      onUpdateCommonAnimalMovementToken
+    ).toEqual(expect.any(Function));
+    expect(
+      updateTokenCallbacks
+    ).toHaveLength(2);
+    expect(
+      new Set(
+        updateTokenCallbacks
+      ).size
+    ).toBe(2);
+    expect(
+      updateTokenCallbacks
+    ).toContain(
+      onUpdateCommonAnimalMovementToken
+    );
     expect(
       onCommonAnimalRollDamageChatMessage
     ).toEqual(expect.any(Function));
