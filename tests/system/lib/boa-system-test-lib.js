@@ -958,6 +958,26 @@ function boaBuildManualChecklistHtml() {
   <li>[ ] The Ammo Pouch warning is readable; accepting continues the action and canceling stops it.</li>
   </ul>
 
+<h2>Common Animal movement ruler</h2>
+
+  <p>
+  Automated tests verify alternate-movement metadata, token-local
+  ActorDelta updates, base-rate restoration, and world-Actor isolation.
+  Use Dragonbane's real movement-action selector and ruler on a gridded
+  scene to verify the visible movement classification at the exact limit
+  and immediately beyond it. Verify the functional classification rather
+  than relying on a specific color or wording.
+  </p>
+
+  <ul>
+  <li>[ ] With normal movement selected, a Dragonhawk path of exactly 2 meters is shown within its normal allowance, while a path immediately beyond 2 meters is visibly classified beyond that allowance.</li>
+  <li>[ ] After selecting Fly, a Dragonhawk path of exactly 14 meters is shown within its normal allowance, while a path immediately beyond 14 meters is visibly classified beyond that allowance.</li>
+  <li>[ ] Switching the Dragonhawk back from Fly to normal movement immediately restores the visible ruler limit from 14 meters to 2 meters.</li>
+  <li>[ ] With normal movement selected, a Crocolisk path of exactly 6 meters is shown within its normal allowance; Swim changes that limit to 12 meters, and switching back restores 6 meters.</li>
+  <li>[ ] Two Dragonhawk tokens from the same world Actor can simultaneously show ruler limits of 14 meters for Fly and 2 meters for normal movement, while the world Actor remains at movement 2.</li>
+  <li>[ ] Changing movement actions on a Gorilla does not change its movement limit from 8 meters or produce an unexpected ruler, warning, token, or Actor-sheet state.</li>
+  </ul>
+
 <h2>Compatibility and presentation</h2>
 
     <p>
