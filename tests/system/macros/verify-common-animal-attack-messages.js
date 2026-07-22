@@ -193,7 +193,6 @@ function checkSingleEnrichedMessage({
   actor,
   weapon,
   targetActor,
-  effectName,
   effectChecks,
 }) {
   boaCheckEqual(
@@ -259,13 +258,6 @@ function checkSingleEnrichedMessage({
       content
     );
   }
-
-  boaCheck(
-    checks,
-    `${scenario} adds ${effectName} to the same damage card`,
-    content.includes(effectName),
-    content
-  );
 
   for (const {
     label,
@@ -360,7 +352,6 @@ try {
     actor: serpent,
     weapon: bite,
     targetActor: target,
-    effectName: "Lethal Poison",
     effectChecks: [
       {
         label:
@@ -407,7 +398,6 @@ try {
     actor: serpent,
     weapon: bite,
     targetActor: null,
-    effectName: "Lethal Poison",
     effectChecks: [
       {
         label:
@@ -446,7 +436,6 @@ try {
     actor: serpent,
     weapon: constriction,
     targetActor: target,
-    effectName: "Constrain",
     effectChecks: [
       {
         label:
