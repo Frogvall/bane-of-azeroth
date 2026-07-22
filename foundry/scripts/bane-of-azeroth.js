@@ -44,6 +44,10 @@ import {
 import {
   isPrimaryActiveGM,
 } from "./core/users.js";
+import {
+  onCommonAnimalWeaponTestChatMessage,
+  processCommonAnimalAttackResult,
+} from "./common-animal-attack-effects.js";
 
 Hooks.once("init", () => {
   if (game.system.id !== "dragonbane") return;
@@ -57,10 +61,25 @@ Hooks.once("init", () => {
   Hooks.on("canvasReady", drawAllElementalTotemAuras);
 
   registerSettings();
+
+  const boaModule =
+    game.modules.get(MODULE_ID);
+
+  if (boaModule) {
+    boaModule.api = {
+      ...(boaModule.api ?? {}),
+      processCommonAnimalAttackResult,
+    };
+  }
+
   Hooks.on("createItem", onCreateItem);
   Hooks.on("updateItem", onUpdateItem);
   Hooks.on("deleteItem", onDeleteItem);
   Hooks.on("createChatMessage", onCreateElementalTotemChatMessage);
+  Hooks.on(
+    "createChatMessage",
+    onCommonAnimalWeaponTestChatMessage
+  );
   Hooks.on("updateChatMessage", onUpdateElementalTotemChatMessage);
   Hooks.on("renderDoDActorBaseSheet", lockAutoGrantedSpellPreparation);
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
