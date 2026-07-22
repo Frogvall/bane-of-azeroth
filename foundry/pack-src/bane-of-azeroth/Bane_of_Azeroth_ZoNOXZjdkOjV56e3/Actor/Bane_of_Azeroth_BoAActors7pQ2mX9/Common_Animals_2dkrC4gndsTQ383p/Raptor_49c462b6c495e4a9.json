@@ -1,19 +1,19 @@
 {
   "folder": "2dkrC4gndsTQ383p",
-  "name": "Gorilla",
+  "name": "Raptor",
   "type": "npc",
-  "_id": "OelrGFsAvekzqSQi",
-  "img": "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+  "_id": "49c462b6c495e4a9",
+  "img": "modules/bane-of-azeroth/assets/actors/common-animals/raptor.webp",
   "system": {
     "description": "",
     "movement": {
-      "base": 8,
-      "value": 8
+      "base": 16,
+      "value": 16
     },
     "hitPoints": {
-      "value": 16,
-      "max": 16,
-      "base": 16
+      "value": 10,
+      "max": 10,
+      "base": 10
     },
     "willPoints": {
       "value": 0,
@@ -45,11 +45,11 @@
     "motivation": ""
   },
   "prototypeToken": {
-    "name": "Gorilla",
+    "name": "Raptor",
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
+      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/raptor-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",
@@ -157,7 +157,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.bite.skill"
+          "contentKey": "actors.common-animals.raptor.attack.bite.skill"
         }
       },
       "_stats": {
@@ -171,7 +171,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "NZfCU9F8ZeqtNAO9",
+      "_id": "f7d803357f4631ca",
       "ownership": {
         "default": 0
       }
@@ -214,7 +214,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.bite.weapon"
+          "contentKey": "actors.common-animals.raptor.attack.bite.weapon"
         }
       },
       "_stats": {
@@ -228,20 +228,20 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "EhvhZFJGsSzvoxtS",
+      "_id": "81010eda999e80ba",
       "ownership": {
         "default": 0
       }
     },
     {
       "folder": null,
-      "name": "Fist",
+      "name": "Claws",
       "type": "skill",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "skillType": "weapon",
         "attribute": "str",
-        "value": 14,
+        "value": 12,
         "advance": 0,
         "hideTrained": true,
         "gmDescription": "",
@@ -253,7 +253,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.fist.skill"
+          "contentKey": "actors.common-animals.raptor.attack.claws.skill"
         }
       },
       "_stats": {
@@ -267,14 +267,14 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "iSli5PHYHe7MUiEO",
+      "_id": "26e701dcfcf73b34",
       "ownership": {
         "default": 0
       }
     },
     {
       "type": "weapon",
-      "name": "Fist",
+      "name": "Claws",
       "system": {
         "weight": null,
         "quantity": 1,
@@ -292,7 +292,7 @@
         "damage": "2D4",
         "durability": null,
         "skill": {
-          "name": "Fist",
+          "name": "Claws",
           "value": 0
         },
         "features": [],
@@ -310,7 +310,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.fist.weapon"
+          "contentKey": "actors.common-animals.raptor.attack.claws.weapon"
         }
       },
       "_stats": {
@@ -324,46 +324,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "yzU7vJBUO1upLeMM",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "folder": null,
-      "name": "Acrobatics",
-      "type": "skill",
-      "img": "modules/dragonbane-coreset/assets/icons/gear/book.webp",
-      "system": {
-        "skillType": "core",
-        "attribute": "agl",
-        "value": 15,
-        "advance": 0,
-        "hideTrained": false,
-        "gmDescription": "",
-        "itemDescription": "",
-        "taught": false
-      },
-      "effects": [],
-      "sort": 500000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.acrobatics"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "Al8cPe3MQlc03KcD",
+      "_id": "d5111c8125ab95e8",
       "ownership": {
         "default": 0
       }
@@ -376,7 +337,7 @@
       "system": {
         "skillType": "core",
         "attribute": "int",
-        "value": 10,
+        "value": 14,
         "advance": 0,
         "hideTrained": false,
         "gmDescription": "",
@@ -384,11 +345,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 600000,
+      "sort": 500000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.awareness"
+          "contentKey": "actors.common-animals.raptor.skill.awareness"
         }
       },
       "_stats": {
@@ -402,7 +363,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "0VPuFSVF2CE8j892",
+      "_id": "4266bc4a632725f6",
       "ownership": {
         "default": 0
       }
@@ -423,11 +384,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 700000,
+      "sort": 600000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.evade"
+          "contentKey": "actors.common-animals.raptor.skill.evade"
         }
       },
       "_stats": {
@@ -441,18 +402,18 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "CvJKmnQtw5ZXz30z",
+      "_id": "f92cf4f540c21622",
       "ownership": {
         "default": 0
       }
     }
   ],
   "effects": [],
-  "sort": 700000,
+  "sort": 900000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",
-      "contentKey": "actors.common-animals.gorilla"
+      "contentKey": "actors.common-animals.raptor"
     }
   },
   "_stats": {

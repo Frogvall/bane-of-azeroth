@@ -422,7 +422,7 @@
     }
   ],
   "effects": [],
-  "sort": 300000,
+  "sort": 500000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",

@@ -1,19 +1,19 @@
 {
   "folder": "2dkrC4gndsTQ383p",
-  "name": "Gorilla",
+  "name": "Wind Serpent",
   "type": "npc",
-  "_id": "OelrGFsAvekzqSQi",
-  "img": "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+  "_id": "be5c82639dabe7c1",
+  "img": "modules/bane-of-azeroth/assets/actors/common-animals/wind-serpent.webp",
   "system": {
     "description": "",
     "movement": {
-      "base": 8,
-      "value": 8
+      "base": 2,
+      "value": 2
     },
     "hitPoints": {
-      "value": 16,
-      "max": 16,
-      "base": 16
+      "value": 6,
+      "max": 6,
+      "base": 6
     },
     "willPoints": {
       "value": 0,
@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "",
+    "traits": "<p><strong>Fly:</strong> The wind serpent moves freely through the air. While flying, it has a movement rate of 14. Its movement rate on the ground is 2.</p>",
     "currency": {
       "gc": null,
       "sc": null,
@@ -45,11 +45,11 @@
     "motivation": ""
   },
   "prototypeToken": {
-    "name": "Gorilla",
+    "name": "Wind Serpent",
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
+      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/wind-serpent-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",
@@ -139,7 +139,7 @@
   "items": [
     {
       "folder": null,
-      "name": "Bite",
+      "name": "Lightning Breath",
       "type": "skill",
       "img": "icons/svg/item-bag.svg",
       "system": {
@@ -157,7 +157,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.bite.skill"
+          "contentKey": "actors.common-animals.wind-serpent.attack.lightning-breath.skill"
         }
       },
       "_stats": {
@@ -171,14 +171,14 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "NZfCU9F8ZeqtNAO9",
+      "_id": "db6d28b930b23fff",
       "ownership": {
         "default": 0
       }
     },
     {
       "type": "weapon",
-      "name": "Bite",
+      "name": "Lightning Breath",
       "system": {
         "weight": null,
         "quantity": 1,
@@ -192,11 +192,11 @@
           "value": "none"
         },
         "str": null,
-        "range": "2",
-        "damage": "2D6",
+        "range": "10",
+        "damage": "D10",
         "durability": null,
         "skill": {
-          "name": "Bite",
+          "name": "Lightning Breath",
           "value": 0
         },
         "features": [],
@@ -214,7 +214,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.bite.weapon"
+          "contentKey": "actors.common-animals.wind-serpent.attack.lightning-breath.weapon"
         }
       },
       "_stats": {
@@ -228,142 +228,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "EhvhZFJGsSzvoxtS",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "folder": null,
-      "name": "Fist",
-      "type": "skill",
-      "img": "icons/svg/item-bag.svg",
-      "system": {
-        "skillType": "weapon",
-        "attribute": "str",
-        "value": 14,
-        "advance": 0,
-        "hideTrained": true,
-        "gmDescription": "",
-        "itemDescription": "",
-        "taught": false
-      },
-      "effects": [],
-      "sort": 300000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.fist.skill"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "iSli5PHYHe7MUiEO",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "type": "weapon",
-      "name": "Fist",
-      "system": {
-        "weight": null,
-        "quantity": 1,
-        "cost": "–",
-        "supply": "common",
-        "worn": true,
-        "memento": false,
-        "boons": "",
-        "banes": "",
-        "grip": {
-          "value": "none"
-        },
-        "str": null,
-        "range": "2",
-        "damage": "2D4",
-        "durability": null,
-        "skill": {
-          "name": "Fist",
-          "value": 0
-        },
-        "features": [],
-        "broken": false,
-        "mainHand": false,
-        "offHand": false,
-        "gmDescription": "",
-        "itemDescription": "",
-        "storage": false
-      },
-      "img": "icons/svg/item-bag.svg",
-      "effects": [],
-      "folder": null,
-      "sort": 400000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.fist.weapon"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "yzU7vJBUO1upLeMM",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "folder": null,
-      "name": "Acrobatics",
-      "type": "skill",
-      "img": "modules/dragonbane-coreset/assets/icons/gear/book.webp",
-      "system": {
-        "skillType": "core",
-        "attribute": "agl",
-        "value": 15,
-        "advance": 0,
-        "hideTrained": false,
-        "gmDescription": "",
-        "itemDescription": "",
-        "taught": false
-      },
-      "effects": [],
-      "sort": 500000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.acrobatics"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "Al8cPe3MQlc03KcD",
+      "_id": "af6a5baec9746a02",
       "ownership": {
         "default": 0
       }
@@ -376,7 +241,7 @@
       "system": {
         "skillType": "core",
         "attribute": "int",
-        "value": 10,
+        "value": 12,
         "advance": 0,
         "hideTrained": false,
         "gmDescription": "",
@@ -384,11 +249,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 600000,
+      "sort": 300000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.awareness"
+          "contentKey": "actors.common-animals.wind-serpent.skill.awareness"
         }
       },
       "_stats": {
@@ -402,7 +267,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "0VPuFSVF2CE8j892",
+      "_id": "a83c8a63f99ba675",
       "ownership": {
         "default": 0
       }
@@ -423,11 +288,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 700000,
+      "sort": 400000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.evade"
+          "contentKey": "actors.common-animals.wind-serpent.skill.evade"
         }
       },
       "_stats": {
@@ -441,18 +306,21 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "CvJKmnQtw5ZXz30z",
+      "_id": "cd3f7d2300076c70",
       "ownership": {
         "default": 0
       }
     }
   ],
   "effects": [],
-  "sort": 700000,
+  "sort": 1400000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",
-      "contentKey": "actors.common-animals.gorilla"
+      "contentKey": "actors.common-animals.wind-serpent",
+      "movementRates": {
+        "fly": 14
+      }
     }
   },
   "_stats": {

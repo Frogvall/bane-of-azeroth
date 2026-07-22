@@ -1,19 +1,19 @@
 {
   "folder": "2dkrC4gndsTQ383p",
-  "name": "Gorilla",
+  "name": "Ravager",
   "type": "npc",
-  "_id": "OelrGFsAvekzqSQi",
-  "img": "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+  "_id": "9a7429aca7ad9296",
+  "img": "modules/bane-of-azeroth/assets/actors/common-animals/ravager.webp",
   "system": {
     "description": "",
     "movement": {
-      "base": 8,
-      "value": 8
+      "base": 10,
+      "value": 10
     },
     "hitPoints": {
-      "value": 16,
-      "max": 16,
-      "base": 16
+      "value": 14,
+      "max": 14,
+      "base": 14
     },
     "willPoints": {
       "value": 0,
@@ -45,11 +45,11 @@
     "motivation": ""
   },
   "prototypeToken": {
-    "name": "Gorilla",
+    "name": "Ravager",
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
+      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/ravager-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",
@@ -145,7 +145,7 @@
       "system": {
         "skillType": "weapon",
         "attribute": "str",
-        "value": 12,
+        "value": 10,
         "advance": 0,
         "hideTrained": true,
         "gmDescription": "",
@@ -157,7 +157,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.bite.skill"
+          "contentKey": "actors.common-animals.ravager.attack.bite.skill"
         }
       },
       "_stats": {
@@ -171,7 +171,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "NZfCU9F8ZeqtNAO9",
+      "_id": "2dd19e566d298699",
       "ownership": {
         "default": 0
       }
@@ -193,7 +193,7 @@
         },
         "str": null,
         "range": "2",
-        "damage": "2D6",
+        "damage": "2D4",
         "durability": null,
         "skill": {
           "name": "Bite",
@@ -214,7 +214,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.bite.weapon"
+          "contentKey": "actors.common-animals.ravager.attack.bite.weapon"
         }
       },
       "_stats": {
@@ -228,142 +228,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "EhvhZFJGsSzvoxtS",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "folder": null,
-      "name": "Fist",
-      "type": "skill",
-      "img": "icons/svg/item-bag.svg",
-      "system": {
-        "skillType": "weapon",
-        "attribute": "str",
-        "value": 14,
-        "advance": 0,
-        "hideTrained": true,
-        "gmDescription": "",
-        "itemDescription": "",
-        "taught": false
-      },
-      "effects": [],
-      "sort": 300000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.fist.skill"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "iSli5PHYHe7MUiEO",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "type": "weapon",
-      "name": "Fist",
-      "system": {
-        "weight": null,
-        "quantity": 1,
-        "cost": "–",
-        "supply": "common",
-        "worn": true,
-        "memento": false,
-        "boons": "",
-        "banes": "",
-        "grip": {
-          "value": "none"
-        },
-        "str": null,
-        "range": "2",
-        "damage": "2D4",
-        "durability": null,
-        "skill": {
-          "name": "Fist",
-          "value": 0
-        },
-        "features": [],
-        "broken": false,
-        "mainHand": false,
-        "offHand": false,
-        "gmDescription": "",
-        "itemDescription": "",
-        "storage": false
-      },
-      "img": "icons/svg/item-bag.svg",
-      "effects": [],
-      "folder": null,
-      "sort": 400000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.fist.weapon"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "yzU7vJBUO1upLeMM",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "folder": null,
-      "name": "Acrobatics",
-      "type": "skill",
-      "img": "modules/dragonbane-coreset/assets/icons/gear/book.webp",
-      "system": {
-        "skillType": "core",
-        "attribute": "agl",
-        "value": 15,
-        "advance": 0,
-        "hideTrained": false,
-        "gmDescription": "",
-        "itemDescription": "",
-        "taught": false
-      },
-      "effects": [],
-      "sort": 500000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.acrobatics"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "Al8cPe3MQlc03KcD",
+      "_id": "e77d97cac853861a",
       "ownership": {
         "default": 0
       }
@@ -384,11 +249,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 600000,
+      "sort": 300000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.awareness"
+          "contentKey": "actors.common-animals.ravager.skill.awareness"
         }
       },
       "_stats": {
@@ -402,7 +267,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "0VPuFSVF2CE8j892",
+      "_id": "e81b50212cf66d9c",
       "ownership": {
         "default": 0
       }
@@ -423,11 +288,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 700000,
+      "sort": 400000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.evade"
+          "contentKey": "actors.common-animals.ravager.skill.evade"
         }
       },
       "_stats": {
@@ -441,18 +306,62 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "CvJKmnQtw5ZXz30z",
+      "_id": "3ba681b8102c45f8",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "type": "armor",
+      "name": "Natural Armor",
+      "system": {
+        "weight": 0,
+        "quantity": 1,
+        "cost": "–",
+        "supply": "common",
+        "worn": true,
+        "memento": false,
+        "boons": "",
+        "banes": "",
+        "rating": 2,
+        "bonuses": [],
+        "gmDescription": "",
+        "itemDescription": "<p>Natural armor.</p>",
+        "storage": false
+      },
+      "img": "modules/dragonbane-coreset/assets/icons/gear/armor.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 500000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.common-animals.ravager.armor"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "3831df427bef3d12",
       "ownership": {
         "default": 0
       }
     }
   ],
   "effects": [],
-  "sort": 700000,
+  "sort": 1000000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",
-      "contentKey": "actors.common-animals.gorilla"
+      "contentKey": "actors.common-animals.ravager"
     }
   },
   "_stats": {

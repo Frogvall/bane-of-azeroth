@@ -1,19 +1,19 @@
 {
   "folder": "2dkrC4gndsTQ383p",
-  "name": "Gorilla",
+  "name": "Turtle",
   "type": "npc",
-  "_id": "OelrGFsAvekzqSQi",
-  "img": "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+  "_id": "9ff4f73ac72b45c4",
+  "img": "modules/bane-of-azeroth/assets/actors/common-animals/turtle.webp",
   "system": {
     "description": "",
     "movement": {
-      "base": 8,
-      "value": 8
+      "base": 6,
+      "value": 6
     },
     "hitPoints": {
-      "value": 16,
-      "max": 16,
-      "base": 16
+      "value": 20,
+      "max": 20,
+      "base": 20
     },
     "willPoints": {
       "value": 0,
@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "",
+    "traits": "<p><strong>Swim:</strong> The turtle moves without penalties while swimming and automatically succeeds on SWIMMING rolls. While swimming, it has a movement rate of 10. Its movement rate on land is 6.</p>",
     "currency": {
       "gc": null,
       "sc": null,
@@ -45,11 +45,11 @@
     "motivation": ""
   },
   "prototypeToken": {
-    "name": "Gorilla",
+    "name": "Turtle",
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
+      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/turtle-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",
@@ -139,13 +139,13 @@
   "items": [
     {
       "folder": null,
-      "name": "Bite",
+      "name": "Beak",
       "type": "skill",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "skillType": "weapon",
         "attribute": "str",
-        "value": 12,
+        "value": 10,
         "advance": 0,
         "hideTrained": true,
         "gmDescription": "",
@@ -157,7 +157,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.bite.skill"
+          "contentKey": "actors.common-animals.turtle.attack.beak.skill"
         }
       },
       "_stats": {
@@ -171,14 +171,14 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "NZfCU9F8ZeqtNAO9",
+      "_id": "7922768f7f7db83c",
       "ownership": {
         "default": 0
       }
     },
     {
       "type": "weapon",
-      "name": "Bite",
+      "name": "Beak",
       "system": {
         "weight": null,
         "quantity": 1,
@@ -196,7 +196,7 @@
         "damage": "2D6",
         "durability": null,
         "skill": {
-          "name": "Bite",
+          "name": "Beak",
           "value": 0
         },
         "features": [],
@@ -214,7 +214,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.bite.weapon"
+          "contentKey": "actors.common-animals.turtle.attack.beak.weapon"
         }
       },
       "_stats": {
@@ -228,142 +228,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "EhvhZFJGsSzvoxtS",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "folder": null,
-      "name": "Fist",
-      "type": "skill",
-      "img": "icons/svg/item-bag.svg",
-      "system": {
-        "skillType": "weapon",
-        "attribute": "str",
-        "value": 14,
-        "advance": 0,
-        "hideTrained": true,
-        "gmDescription": "",
-        "itemDescription": "",
-        "taught": false
-      },
-      "effects": [],
-      "sort": 300000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.fist.skill"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "iSli5PHYHe7MUiEO",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "type": "weapon",
-      "name": "Fist",
-      "system": {
-        "weight": null,
-        "quantity": 1,
-        "cost": "–",
-        "supply": "common",
-        "worn": true,
-        "memento": false,
-        "boons": "",
-        "banes": "",
-        "grip": {
-          "value": "none"
-        },
-        "str": null,
-        "range": "2",
-        "damage": "2D4",
-        "durability": null,
-        "skill": {
-          "name": "Fist",
-          "value": 0
-        },
-        "features": [],
-        "broken": false,
-        "mainHand": false,
-        "offHand": false,
-        "gmDescription": "",
-        "itemDescription": "",
-        "storage": false
-      },
-      "img": "icons/svg/item-bag.svg",
-      "effects": [],
-      "folder": null,
-      "sort": 400000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.attack.fist.weapon"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "yzU7vJBUO1upLeMM",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "folder": null,
-      "name": "Acrobatics",
-      "type": "skill",
-      "img": "modules/dragonbane-coreset/assets/icons/gear/book.webp",
-      "system": {
-        "skillType": "core",
-        "attribute": "agl",
-        "value": 15,
-        "advance": 0,
-        "hideTrained": false,
-        "gmDescription": "",
-        "itemDescription": "",
-        "taught": false
-      },
-      "effects": [],
-      "sort": 500000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.acrobatics"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "Al8cPe3MQlc03KcD",
+      "_id": "f4054baaa18e4c01",
       "ownership": {
         "default": 0
       }
@@ -376,7 +241,7 @@
       "system": {
         "skillType": "core",
         "attribute": "int",
-        "value": 10,
+        "value": 8,
         "advance": 0,
         "hideTrained": false,
         "gmDescription": "",
@@ -384,11 +249,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 600000,
+      "sort": 300000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.awareness"
+          "contentKey": "actors.common-animals.turtle.skill.awareness"
         }
       },
       "_stats": {
@@ -402,7 +267,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "0VPuFSVF2CE8j892",
+      "_id": "fc482727b6a37ec3",
       "ownership": {
         "default": 0
       }
@@ -415,7 +280,7 @@
       "system": {
         "skillType": "core",
         "attribute": "agl",
-        "value": 14,
+        "value": 6,
         "advance": 0,
         "hideTrained": false,
         "gmDescription": "",
@@ -423,11 +288,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 700000,
+      "sort": 400000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.common-animals.gorilla.skill.evade"
+          "contentKey": "actors.common-animals.turtle.skill.evade"
         }
       },
       "_stats": {
@@ -441,18 +306,65 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "CvJKmnQtw5ZXz30z",
+      "_id": "0efc2b9ae0e96b00",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "type": "armor",
+      "name": "Natural Armor",
+      "system": {
+        "weight": 0,
+        "quantity": 1,
+        "cost": "–",
+        "supply": "common",
+        "worn": true,
+        "memento": false,
+        "boons": "",
+        "banes": "",
+        "rating": 4,
+        "bonuses": [],
+        "gmDescription": "",
+        "itemDescription": "<p>Natural armor.</p>",
+        "storage": false
+      },
+      "img": "modules/dragonbane-coreset/assets/icons/gear/armor.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 500000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.common-animals.turtle.armor"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "4896ac87aa3cc94e",
       "ownership": {
         "default": 0
       }
     }
   ],
   "effects": [],
-  "sort": 700000,
+  "sort": 1300000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",
-      "contentKey": "actors.common-animals.gorilla"
+      "contentKey": "actors.common-animals.turtle",
+      "movementRates": {
+        "swim": 10
+      }
     }
   },
   "_stats": {

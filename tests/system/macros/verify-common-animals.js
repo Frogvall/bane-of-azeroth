@@ -25,11 +25,12 @@ const expectedAnimals = [
   {
     key: "crocolisk",
     name: "Crocolisk",
-    image:
-      "modules/bane-of-azeroth/assets/actors/common-animals/crocolisk.webp",
-    tokenImage:
-      "modules/bane-of-azeroth/assets/tokens/common-animals/crocolisk-token.webp",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/crocolisk.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/crocolisk-token.webp",
     movement: 6,
+    movementRates: {
+      swim: 12,
+    },
     hitPoints: 15,
     armorRating: 1,
     attacks: [
@@ -38,7 +39,8 @@ const expectedAnimals = [
         skillLevel: 12,
         damage: "2D8",
         range: "2",
-        effects: [],
+        effects: [
+        ],
       },
     ],
     skills: [
@@ -55,16 +57,18 @@ const expectedAnimals = [
       "Swim:",
       "automatically succeeds on SWIMMING rolls",
       "movement rate of 12",
+      "movement rate on land is 6",
     ],
   },
   {
     key: "dragonhawk",
     name: "Dragonhawk",
-    image:
-      "modules/bane-of-azeroth/assets/actors/common-animals/dragonhawk.webp",
-    tokenImage:
-      "modules/bane-of-azeroth/assets/tokens/common-animals/dragonhawk-token.webp",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/dragonhawk.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/dragonhawk-token.webp",
     movement: 2,
+    movementRates: {
+      fly: 14,
+    },
     hitPoints: 8,
     armorRating: 0,
     attacks: [
@@ -73,14 +77,16 @@ const expectedAnimals = [
         skillLevel: 10,
         damage: "D10",
         range: "2",
-        effects: [],
+        effects: [
+        ],
       },
       {
         name: "Talons",
         skillLevel: 12,
         damage: "2D4",
         range: "2",
-        effects: [],
+        effects: [
+        ],
       },
     ],
     skills: [
@@ -97,16 +103,108 @@ const expectedAnimals = [
       "Fly:",
       "moves freely through the air",
       "movement rate of 14",
+      "movement rate on the ground is 2",
+    ],
+  },
+  {
+    key: "giant-bat",
+    name: "Giant Bat",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/giant-bat.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/giant-bat-token.webp",
+    movement: 2,
+    movementRates: {
+      fly: 8,
+    },
+    hitPoints: 10,
+    armorRating: 0,
+    attacks: [
+      {
+        name: "Bite",
+        skillLevel: 10,
+        damage: "D10",
+        range: "2",
+        effects: [
+        ],
+      },
+      {
+        name: "Sonic Wave",
+        skillLevel: 10,
+        damage: "D6",
+        range: "10",
+        effects: [
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 16,
+      },
+      {
+        name: "Evade",
+        value: 12,
+      },
+    ],
+    traitSnippets: [
+      "Fly:",
+      "moves freely through the air",
+      "movement rate of 8",
+      "movement rate on the ground is 2",
+    ],
+  },
+  {
+    key: "giant-owl",
+    name: "Giant Owl",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/giant-owl.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/giant-owl-token.webp",
+    movement: 2,
+    movementRates: {
+      fly: 14,
+    },
+    hitPoints: 8,
+    armorRating: 0,
+    attacks: [
+      {
+        name: "Beak",
+        skillLevel: 10,
+        damage: "D10",
+        range: "2",
+        effects: [
+        ],
+      },
+      {
+        name: "Talons",
+        skillLevel: 12,
+        damage: "2D4",
+        range: "2",
+        effects: [
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 16,
+      },
+      {
+        name: "Evade",
+        value: 10,
+      },
+    ],
+    traitSnippets: [
+      "Fly:",
+      "moves freely through the air",
+      "movement rate of 14",
+      "movement rate on the ground is 2",
     ],
   },
   {
     key: "large-serpent",
     name: "Large Serpent",
-    image:
-      "modules/bane-of-azeroth/assets/actors/common-animals/large-serpent.webp",
-    tokenImage:
-      "modules/bane-of-azeroth/assets/tokens/common-animals/large-serpent-token.webp",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/large-serpent.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/large-serpent-token.webp",
     movement: 10,
+    movementRates: undefined,
     hitPoints: 8,
     armorRating: 0,
     attacks: [
@@ -158,13 +256,73 @@ const expectedAnimals = [
     ],
   },
   {
+    key: "giant-spider",
+    name: "Giant Spider",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/giant-spider.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/giant-spider-token.webp",
+    movement: 8,
+    movementRates: undefined,
+    hitPoints: 10,
+    armorRating: 0,
+    attacks: [
+      {
+        name: "Bite",
+        skillLevel: 10,
+        damage: "D4",
+        range: "2",
+        effects: [
+          {
+            type: "lethalPoison",
+            potency: 12,
+            ruleUuid: poisonRuleUuid,
+          },
+        ],
+      },
+      {
+        name: "Web",
+        skillLevel: 10,
+        damage: "",
+        range: "6",
+        effects: [
+          {
+            type: "constrain",
+            strength: 10,
+          },
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 12,
+      },
+      {
+        name: "Evade",
+        value: 12,
+      },
+      {
+        name: "Stealth",
+        value: 12,
+      },
+    ],
+    traitSnippets: [
+      "Lethal Poison:",
+      `@UUID[${poisonRuleUuid}]{lethal poison}`,
+      "potency of 12",
+      "as if the poison had been ingested",
+      "Constrain:",
+      "open opposed STR roll against 10",
+      "can still parry while constrained",
+      "cannot evade",
+    ],
+  },
+  {
     key: "gorilla",
     name: "Gorilla",
-    image:
-      "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
-    tokenImage:
-      "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
     movement: 8,
+    movementRates: undefined,
     hitPoints: 16,
     armorRating: 0,
     attacks: [
@@ -173,14 +331,16 @@ const expectedAnimals = [
         skillLevel: 12,
         damage: "2D6",
         range: "2",
-        effects: [],
+        effects: [
+        ],
       },
       {
         name: "Fist",
         skillLevel: 14,
         damage: "2D4",
         range: "2",
-        effects: [],
+        effects: [
+        ],
       },
     ],
     skills: [
@@ -197,7 +357,281 @@ const expectedAnimals = [
         value: 14,
       },
     ],
-    traitSnippets: [],
+    traitSnippets: [
+    ],
+  },
+  {
+    key: "large-cat",
+    name: "Large Cat",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/large-cat.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/large-cat-token.webp",
+    movement: 16,
+    movementRates: undefined,
+    hitPoints: 12,
+    armorRating: 0,
+    attacks: [
+      {
+        name: "Bite",
+        skillLevel: 12,
+        damage: "2D6",
+        range: "2",
+        effects: [
+        ],
+      },
+      {
+        name: "Claws",
+        skillLevel: 14,
+        damage: "2D4",
+        range: "2",
+        effects: [
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 12,
+      },
+      {
+        name: "Evade",
+        value: 12,
+      },
+      {
+        name: "Stealth",
+        value: 14,
+      },
+    ],
+    traitSnippets: [
+    ],
+  },
+  {
+    key: "raptor",
+    name: "Raptor",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/raptor.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/raptor-token.webp",
+    movement: 16,
+    movementRates: undefined,
+    hitPoints: 10,
+    armorRating: 0,
+    attacks: [
+      {
+        name: "Bite",
+        skillLevel: 12,
+        damage: "2D6",
+        range: "2",
+        effects: [
+        ],
+      },
+      {
+        name: "Claws",
+        skillLevel: 12,
+        damage: "2D4",
+        range: "2",
+        effects: [
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 14,
+      },
+      {
+        name: "Evade",
+        value: 14,
+      },
+    ],
+    traitSnippets: [
+    ],
+  },
+  {
+    key: "ravager",
+    name: "Ravager",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/ravager.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/ravager-token.webp",
+    movement: 10,
+    movementRates: undefined,
+    hitPoints: 14,
+    armorRating: 2,
+    attacks: [
+      {
+        name: "Bite",
+        skillLevel: 10,
+        damage: "2D4",
+        range: "2",
+        effects: [
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 10,
+      },
+      {
+        name: "Evade",
+        value: 14,
+      },
+    ],
+    traitSnippets: [
+    ],
+  },
+  {
+    key: "scorpid",
+    name: "Scorpid",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/scorpid.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/scorpid-token.webp",
+    movement: 8,
+    movementRates: undefined,
+    hitPoints: 12,
+    armorRating: 2,
+    attacks: [
+      {
+        name: "Claws",
+        skillLevel: 12,
+        damage: "D10",
+        range: "2",
+        effects: [
+        ],
+      },
+      {
+        name: "Tail",
+        skillLevel: 12,
+        damage: "D6",
+        range: "2",
+        effects: [
+          {
+            type: "lethalPoison",
+            potency: 12,
+            ruleUuid: poisonRuleUuid,
+          },
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 8,
+      },
+      {
+        name: "Evade",
+        value: 8,
+      },
+    ],
+    traitSnippets: [
+      "Lethal Poison:",
+      `@UUID[${poisonRuleUuid}]{lethal poison}`,
+      "potency of 12",
+      "as if the poison had been ingested",
+    ],
+  },
+  {
+    key: "tallstrider",
+    name: "Tallstrider",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/tallstrider.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/tallstrider-token.webp",
+    movement: 20,
+    movementRates: undefined,
+    hitPoints: 10,
+    armorRating: 0,
+    attacks: [
+      {
+        name: "Beak",
+        skillLevel: 10,
+        damage: "D10",
+        range: "2",
+        effects: [
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 14,
+      },
+      {
+        name: "Evade",
+        value: 14,
+      },
+    ],
+    traitSnippets: [
+    ],
+  },
+  {
+    key: "turtle",
+    name: "Turtle",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/turtle.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/turtle-token.webp",
+    movement: 6,
+    movementRates: {
+      swim: 10,
+    },
+    hitPoints: 20,
+    armorRating: 4,
+    attacks: [
+      {
+        name: "Beak",
+        skillLevel: 10,
+        damage: "2D6",
+        range: "2",
+        effects: [
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 8,
+      },
+      {
+        name: "Evade",
+        value: 6,
+      },
+    ],
+    traitSnippets: [
+      "Swim:",
+      "automatically succeeds on SWIMMING rolls",
+      "movement rate of 10",
+      "movement rate on land is 6",
+    ],
+  },
+  {
+    key: "wind-serpent",
+    name: "Wind Serpent",
+    image: "modules/bane-of-azeroth/assets/actors/common-animals/wind-serpent.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/common-animals/wind-serpent-token.webp",
+    movement: 2,
+    movementRates: {
+      fly: 14,
+    },
+    hitPoints: 6,
+    armorRating: 0,
+    attacks: [
+      {
+        name: "Lightning Breath",
+        skillLevel: 12,
+        damage: "D10",
+        range: "10",
+        effects: [
+        ],
+      },
+    ],
+    skills: [
+      {
+        name: "Awareness",
+        value: 12,
+      },
+      {
+        name: "Evade",
+        value: 14,
+      },
+    ],
+    traitSnippets: [
+      "Fly:",
+      "moves freely through the air",
+      "movement rate of 14",
+      "movement rate on the ground is 2",
+    ],
   },
 ];
 
@@ -244,7 +678,7 @@ const importedAnimals =
 
 boaCheckEqual(
   checks,
-  "Exactly the current four Common Animals are imported",
+  "Exactly all fourteen Common Animals are imported",
   importedAnimals
     .map(actor => actor.name)
     .sort(),
@@ -296,6 +730,15 @@ for (const expected of expectedAnimals) {
     `${expected.name} base movement is correct`,
     actor.system.movement.base,
     expected.movement
+  );
+  boaCheckEqual(
+    checks,
+    `${expected.name} alternate movement metadata is correct`,
+    boaGetFlag(
+      actor,
+      "movementRates"
+    ),
+    expected.movementRates
   );
   boaCheckEqual(
     checks,
@@ -428,27 +871,38 @@ for (const expected of expectedAnimals) {
       expectedAttack.effects
     );
 
-    try {
-      const roll = await new Roll(
-        weapon.system.damage
-      ).evaluate();
+    if (expectedAttack.damage === "") {
+      boaCheckEqual(
+        checks,
+        `${expected.name} ${expectedAttack.name} has no damage formula`,
+        String(
+          weapon.system.damage ?? ""
+        ).trim(),
+        ""
+      );
+    } else {
+      try {
+        const roll = await new Roll(
+          weapon.system.damage
+        ).evaluate();
 
-      boaCheck(
-        checks,
-        `${expected.name} ${expectedAttack.name} damage formula evaluates`,
-        Number.isFinite(Number(roll.total)),
-        (
-          `Formula: ${weapon.system.damage}; ` +
-          `Result: ${boaDiagnosticValue(roll.total)}`
-        )
-      );
-    } catch (error) {
-      boaCheck(
-        checks,
-        `${expected.name} ${expectedAttack.name} damage formula evaluates`,
-        false,
-        error.stack ?? error.message
-      );
+        boaCheck(
+          checks,
+          `${expected.name} ${expectedAttack.name} damage formula evaluates`,
+          Number.isFinite(Number(roll.total)),
+          (
+            `Formula: ${weapon.system.damage}; ` +
+            `Result: ${boaDiagnosticValue(roll.total)}`
+          )
+        );
+      } catch (error) {
+        boaCheck(
+          checks,
+          `${expected.name} ${expectedAttack.name} damage formula evaluates`,
+          false,
+          error.stack ?? error.message
+        );
+      }
     }
   }
 
@@ -525,7 +979,7 @@ for (const expected of expectedAnimals) {
 }
 
 notes.push(
-  "Damage formulas were evaluated through Foundry's Roll engine " +
+  "Damage formulas for attacks that deal damage were evaluated through Foundry's Roll engine " +
   "without creating chat messages."
 );
 notes.push(

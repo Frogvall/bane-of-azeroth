@@ -514,14 +514,11 @@ const EXPECTED_COMPANIONS = [
 const IMPLEMENTED_COMPANION_KEYS = [
   "crocolisk",
   "dragonhawk",
-  "large-serpent",
-  "gorilla",
-];
-
-const REMAINING_COMPANION_KEYS = [
   "giant-bat",
   "giant-owl",
+  "large-serpent",
   "giant-spider",
+  "gorilla",
   "large-cat",
   "raptor",
   "ravager",
@@ -531,38 +528,93 @@ const REMAINING_COMPANION_KEYS = [
   "wind-serpent",
 ];
 
+const REMAINING_COMPANION_KEYS = [
+];
+
 const EXPECTED_COMMON_ANIMAL_ARTWORK = {
-  crocolisk: {
+  "crocolisk": {
     image:
-      "modules/bane-of-azeroth/assets/actors/" +
-      "common-animals/crocolisk.webp",
+      "modules/bane-of-azeroth/assets/actors/common-animals/crocolisk.webp",
     tokenImage:
-      "modules/bane-of-azeroth/assets/tokens/" +
-      "common-animals/crocolisk-token.webp",
+      "modules/bane-of-azeroth/assets/tokens/common-animals/crocolisk-token.webp",
   },
-  dragonhawk: {
+  "dragonhawk": {
     image:
-      "modules/bane-of-azeroth/assets/actors/" +
-      "common-animals/dragonhawk.webp",
+      "modules/bane-of-azeroth/assets/actors/common-animals/dragonhawk.webp",
     tokenImage:
-      "modules/bane-of-azeroth/assets/tokens/" +
-      "common-animals/dragonhawk-token.webp",
+      "modules/bane-of-azeroth/assets/tokens/common-animals/dragonhawk-token.webp",
+  },
+  "giant-bat": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/giant-bat.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/giant-bat-token.webp",
+  },
+  "giant-owl": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/giant-owl.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/giant-owl-token.webp",
   },
   "large-serpent": {
     image:
-      "modules/bane-of-azeroth/assets/actors/" +
-      "common-animals/large-serpent.webp",
+      "modules/bane-of-azeroth/assets/actors/common-animals/large-serpent.webp",
     tokenImage:
-      "modules/bane-of-azeroth/assets/tokens/" +
-      "common-animals/large-serpent-token.webp",
+      "modules/bane-of-azeroth/assets/tokens/common-animals/large-serpent-token.webp",
   },
-  gorilla: {
+  "giant-spider": {
     image:
-      "modules/bane-of-azeroth/assets/actors/" +
-      "common-animals/gorilla.webp",
+      "modules/bane-of-azeroth/assets/actors/common-animals/giant-spider.webp",
     tokenImage:
-      "modules/bane-of-azeroth/assets/tokens/" +
-      "common-animals/gorilla-token.webp",
+      "modules/bane-of-azeroth/assets/tokens/common-animals/giant-spider-token.webp",
+  },
+  "gorilla": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
+  },
+  "large-cat": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/large-cat.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/large-cat-token.webp",
+  },
+  "raptor": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/raptor.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/raptor-token.webp",
+  },
+  "ravager": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/ravager.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/ravager-token.webp",
+  },
+  "scorpid": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/scorpid.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/scorpid-token.webp",
+  },
+  "tallstrider": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/tallstrider.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/tallstrider-token.webp",
+  },
+  "turtle": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/turtle.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/turtle-token.webp",
+  },
+  "wind-serpent": {
+    image:
+      "modules/bane-of-azeroth/assets/actors/common-animals/wind-serpent.webp",
+    tokenImage:
+      "modules/bane-of-azeroth/assets/tokens/common-animals/wind-serpent-token.webp",
   },
 };
 
@@ -914,7 +966,7 @@ function expectCoreNpcShell(
 }
 
 describe("Hunter companion source contract", () => {
-  test("tracks the current batch within the complete 14-companion plan", () => {
+  test("tracks the complete 14-companion set", () => {
     const source = requireJson(
       CONTENT_SOURCE
     );
