@@ -2,7 +2,6 @@ const checks = [];
 const notes = [];
 const createdMessageIds = [];
 
-const moduleId = "bane-of-azeroth";
 const testKey =
   "common-animal-attack-messages";
 const testName =
@@ -13,7 +12,7 @@ if (!game.user.isGM) {
     checks,
     "Attack-message verification is run by a game master",
     false,
-    "The test creates and deletes temporary ChatMessages."
+    "The test creates and deletes temporary rollDamage ChatMessages."
   );
 
   return boaFinish(
@@ -36,23 +35,36 @@ function itemByTypeAndName(
     );
 }
 
-function actorState(actor) {
-  return {
-    hitPoints:
-      actor?.system?.hitPoints?.value ?? null,
-    activeEffectIds:
-      boaCollectionValues(actor?.effects)
-        .map(effect => effect.id)
-        .sort(),
-    statuses:
-      Array.from(actor?.statuses ?? [])
-        .map(value => String(value))
-        .sort(),
-  };
+function liveMessageIds() {
+  return new Set(
+    boaCollectionValues(game.messages)
+      .map(message => message.id)
+  );
+}
+
+function messagesCreatedSince(beforeIds) {
+  return boaCollectionValues(game.messages)
+    .filter(message =>
+      !beforeIds.has(message.id)
+    );
+}
+
+function recordMessages(messages) {
+  for (const message of messages) {
+    if (message?.id) {
+      createdMessageIds.push(message.id);
+    }
+  }
 }
 
 function messageContent(message) {
   return String(message?.content ?? "");
+}
+
+function normalizedText(value) {
+  return String(value ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function containsPoisonRuleLink(content) {
@@ -70,43 +82,96 @@ function containsPoisonRuleLink(content) {
   );
 }
 
-function recordCreatedMessages(messages) {
-  for (const message of messages) {
-    if (message?.id) {
-      createdMessageIds.push(message.id);
+async function waitFor(
+  predicate,
+  timeoutMs = 1500
+) {
+  const started = Date.now();
+
+  while (Date.now() - started < timeoutMs) {
+    if (predicate()) {
+      return true;
     }
+
+    await new Promise(resolve =>
+      setTimeout(resolve, 25)
+    );
   }
+
+  return predicate();
 }
 
-function liveMessageIds() {
-  return new Set(
-    boaCollectionValues(game.messages)
-      .map(message => message.id)
+function rollDamageModelClass() {
+  return (
+    CONFIG.ChatMessage
+      ?.dataModels
+      ?.rollDamage ??
+    null
   );
 }
 
-async function callAdapter(
-  processAttackResult,
-  options
-) {
-  const beforeIds = liveMessageIds();
-  const result =
-    await processAttackResult(options);
-  const afterMessages =
-    boaCollectionValues(game.messages)
-      .filter(message =>
-        !beforeIds.has(message.id)
-      );
+async function createRollDamageMessage({
+  actor,
+  weapon,
+  targetActor = null,
+  formula,
+}) {
+  const Model =
+    rollDamageModelClass();
 
-  if (Array.isArray(result)) {
-    recordCreatedMessages(result);
+  if (!Model) {
+    throw new Error(
+      "Dragonbane's rollDamage ChatMessage " +
+      "data model is not registered."
+    );
   }
 
-  recordCreatedMessages(afterMessages);
+  const roll =
+    await new Roll(formula).evaluate();
+  const model = Model.fromContext({
+    actor,
+    weapon,
+    targetActor,
+    damage: Number(roll.total),
+    damageType: "DoD.damageTypes.none",
+    formula,
+    isHealing: false,
+    ignoreArmor: false,
+    penetrating: 0,
+  });
+  const messageData =
+    await model.createMessageData(roll);
+  const beforeIds = liveMessageIds();
+  const message =
+    await ChatMessage.create(messageData);
+
+  await waitFor(() => {
+    const current =
+      game.messages.get(message.id);
+
+    return Boolean(
+      current &&
+      current.content !== messageData.content
+    );
+  });
+
+  await new Promise(resolve =>
+    setTimeout(resolve, 50)
+  );
+
+  const created =
+    messagesCreatedSince(beforeIds);
+
+  recordMessages(created);
 
   return {
-    result,
-    createdMessages: afterMessages,
+    message:
+      game.messages.get(message.id) ??
+      message,
+    created,
+    originalContent:
+      String(messageData.content ?? ""),
+    roll,
   };
 }
 
@@ -122,44 +187,97 @@ async function deleteCreatedMessages() {
   await ChatMessage.deleteDocuments(ids);
 }
 
-const boaModule = game.modules.get(
-  moduleId
-);
-
-boaCheck(
-  checks,
-  "Bane of Azeroth module is active",
-  boaModule?.active === true,
-  boaModule
-    ? `${boaModule.id} ${boaModule.version}`
-    : moduleId
-);
-
-const processAttackResult =
-  boaModule?.api
-    ?.processCommonAnimalAttackResult;
-
-if (!boaCheck(
-  checks,
-  "Common Animal attack-result adapter is available",
-  typeof processAttackResult === "function",
-  (
-    "Expected game.modules.get(" +
-    "'bane-of-azeroth').api." +
-    "processCommonAnimalAttackResult"
-  )
-)) {
-  notes.push(
-    "This failure is expected in the red-test step. " +
-    "No ChatMessages or world documents were changed."
-  );
-
-  return boaFinish(
-    testKey,
-    testName,
+function checkSingleEnrichedMessage({
+  scenario,
+  run,
+  actor,
+  weapon,
+  targetActor,
+  effectName,
+  effectChecks,
+}) {
+  boaCheckEqual(
     checks,
-    notes
+    `${scenario} creates only the Dragonbane damage ChatMessage`,
+    run.created.length,
+    1
   );
+  boaCheckEqual(
+    checks,
+    `${scenario} keeps the original ChatMessage document`,
+    run.created[0]?.id ?? null,
+    run.message.id
+  );
+  boaCheckEqual(
+    checks,
+    `${scenario} keeps the rollDamage message type`,
+    run.message.type,
+    "rollDamage"
+  );
+  boaCheckEqual(
+    checks,
+    `${scenario} keeps the Large Serpent speaker`,
+    run.message.speaker?.alias ?? null,
+    actor.name
+  );
+  boaCheckEqual(
+    checks,
+    `${scenario} keeps the original damage formula`,
+    run.message.system?.formula ?? null,
+    run.roll.formula
+  );
+  boaCheckEqual(
+    checks,
+    `${scenario} keeps the original damage total`,
+    run.message.system?.damage ?? null,
+    Number(run.roll.total)
+  );
+
+  const content =
+    normalizedText(
+      messageContent(run.message)
+    );
+
+  boaCheck(
+    checks,
+    `${scenario} keeps Dragonbane's damage text`,
+    (
+      content.includes(actor.name) &&
+      content.includes(weapon.name) &&
+      content.includes(
+        String(run.roll.total)
+      )
+    ),
+    content
+  );
+
+  if (targetActor) {
+    boaCheck(
+      checks,
+      `${scenario} keeps the target in the damage text`,
+      content.includes(targetActor.name),
+      content
+    );
+  }
+
+  boaCheck(
+    checks,
+    `${scenario} adds ${effectName} to the same damage card`,
+    content.includes(effectName),
+    content
+  );
+
+  for (const {
+    label,
+    predicate,
+  } of effectChecks) {
+    boaCheck(
+      checks,
+      `${scenario} ${label}`,
+      predicate(content),
+      content
+    );
+  }
 }
 
 const serpent = boaFindWorldActor(
@@ -167,9 +285,6 @@ const serpent = boaFindWorldActor(
 );
 const target = boaFindWorldActor(
   "actors.common-animals.crocolisk"
-);
-const gorilla = boaFindWorldActor(
-  "actors.common-animals.gorilla"
 );
 
 boaCheck(
@@ -184,12 +299,6 @@ boaCheck(
   Boolean(target),
   "actors.common-animals.crocolisk"
 );
-boaCheck(
-  checks,
-  "Gorilla control Actor is imported",
-  Boolean(gorilla),
-  "actors.common-animals.gorilla"
-);
 
 const bite = itemByTypeAndName(
   serpent,
@@ -200,11 +309,6 @@ const constriction = itemByTypeAndName(
   serpent,
   "weapon",
   "Constriction"
-);
-const ordinaryAttack = itemByTypeAndName(
-  gorilla,
-  "weapon",
-  "Fist"
 );
 
 boaCheck(
@@ -221,18 +325,17 @@ boaCheck(
 );
 boaCheck(
   checks,
-  "An attack without attack effects is available",
-  Boolean(ordinaryAttack),
-  "Gorilla Fist"
+  "Dragonbane rollDamage data model is registered",
+  Boolean(rollDamageModelClass()),
+  "CONFIG.ChatMessage.dataModels.rollDamage"
 );
 
 if (
   !serpent ||
   !target ||
-  !gorilla ||
   !bite ||
   !constriction ||
-  !ordinaryAttack
+  !rollDamageModelClass()
 ) {
   return boaFinish(
     testKey,
@@ -242,202 +345,147 @@ if (
   );
 }
 
-const targetBefore = actorState(target);
-
 try {
-  const poisonRun = await callAdapter(
-    processAttackResult,
-    {
-      successful: true,
-      attackerActor: serpent,
-      weaponItem: bite,
-      targets: [target],
-    }
-  );
+  const targetedPoison =
+    await createRollDamageMessage({
+      actor: serpent,
+      weapon: bite,
+      targetActor: target,
+      formula: "11",
+    });
 
-  boaCheck(
-    checks,
-    "Successful Bite creates exactly one ChatMessage",
-    poisonRun.createdMessages.length === 1,
-    (
-      `Created: ${poisonRun.createdMessages.length}; ` +
-      `Returned: ${
-        Array.isArray(poisonRun.result)
-          ? poisonRun.result.length
-          : boaDiagnosticValue(poisonRun.result)
-      }`
-    )
-  );
+  checkSingleEnrichedMessage({
+    scenario: "Targeted Bite",
+    run: targetedPoison,
+    actor: serpent,
+    weapon: bite,
+    targetActor: target,
+    effectName: "Lethal Poison",
+    effectChecks: [
+      {
+        label:
+          "identifies attacker and target in the poison text",
+        predicate: content =>
+          content.includes(
+            `${serpent.name} exposes ${target.name}`
+          ),
+      },
+      {
+        label:
+          "includes poison potency 15",
+        predicate: content =>
+          content.includes("potency of 15"),
+      },
+      {
+        label:
+          "links Dragonbane's lethal poison rule",
+        predicate:
+          containsPoisonRuleLink,
+      },
+      {
+        label:
+          "explains ingested exposure",
+        predicate: content =>
+          content.includes(
+            "as if the poison had been ingested"
+          ),
+      },
+    ],
+  });
 
-  const poisonContent = messageContent(
-    poisonRun.createdMessages[0]
-  );
+  const untargetedPoison =
+    await createRollDamageMessage({
+      actor: serpent,
+      weapon: bite,
+      targetActor: null,
+      formula: "4",
+    });
 
-  boaCheck(
-    checks,
-    "Bite message identifies Lethal Poison",
-    poisonContent.includes("Lethal Poison"),
-    poisonContent
-  );
-  boaCheck(
-    checks,
-    "Bite message identifies attacker and target",
-    (
-      poisonContent.includes(serpent.name) &&
-      poisonContent.includes(target.name)
-    ),
-    poisonContent
-  );
-  boaCheck(
-    checks,
-    "Bite message includes potency 15",
-    poisonContent.includes("potency of 15"),
-    poisonContent
-  );
-  boaCheck(
-    checks,
-    "Bite message links Dragonbane's poison rule",
-    containsPoisonRuleLink(poisonContent),
-    poisonContent
-  );
-  boaCheck(
-    checks,
-    "Bite message explains ingested exposure",
-    poisonContent.includes(
-      "as if the poison had been ingested"
-    ),
-    poisonContent
-  );
+  checkSingleEnrichedMessage({
+    scenario: "Untargeted Bite",
+    run: untargetedPoison,
+    actor: serpent,
+    weapon: bite,
+    targetActor: null,
+    effectName: "Lethal Poison",
+    effectChecks: [
+      {
+        label:
+          "uses the target placeholder",
+        predicate: content =>
+          content.includes(
+            `${serpent.name} exposes the target`
+          ),
+      },
+      {
+        label:
+          "includes poison potency 15",
+        predicate: content =>
+          content.includes("potency of 15"),
+      },
+      {
+        label:
+          "links Dragonbane's lethal poison rule",
+        predicate:
+          containsPoisonRuleLink,
+      },
+    ],
+  });
 
-  const constrainRun = await callAdapter(
-    processAttackResult,
-    {
-      successful: true,
-      attackerActor: serpent,
-      weaponItem: constriction,
-      targets: [target],
-    }
-  );
+  const targetedConstrain =
+    await createRollDamageMessage({
+      actor: serpent,
+      weapon: constriction,
+      targetActor: target,
+      formula: "6",
+    });
 
-  boaCheck(
-    checks,
-    "Successful Constriction creates exactly one ChatMessage",
-    constrainRun.createdMessages.length === 1,
-    (
-      `Created: ${constrainRun.createdMessages.length}; ` +
-      `Returned: ${
-        Array.isArray(constrainRun.result)
-          ? constrainRun.result.length
-          : boaDiagnosticValue(constrainRun.result)
-      }`
-    )
-  );
-
-  const constrainContent = messageContent(
-    constrainRun.createdMessages[0]
-  );
-
-  boaCheck(
-    checks,
-    "Constriction message identifies Constrain",
-    constrainContent.includes("Constrain"),
-    constrainContent
-  );
-  boaCheck(
-    checks,
-    "Constriction message identifies attacker and target",
-    (
-      constrainContent.includes(serpent.name) &&
-      constrainContent.includes(target.name)
-    ),
-    constrainContent
-  );
-  boaCheck(
-    checks,
-    "Constriction message explains the escape roll",
-    constrainContent.includes(
-      "open opposed STR roll against 12"
-    ),
-    constrainContent
-  );
-  boaCheck(
-    checks,
-    "Constriction message preserves parry",
-    constrainContent.includes(
-      "can still parry"
-    ),
-    constrainContent
-  );
-  boaCheck(
-    checks,
-    "Constriction message prevents evade",
-    constrainContent.includes(
-      "cannot evade"
-    ),
-    constrainContent
-  );
-
-  const failedRun = await callAdapter(
-    processAttackResult,
-    {
-      successful: false,
-      attackerActor: serpent,
-      weaponItem: bite,
-      targets: [target],
-    }
-  );
-
-  boaCheckEqual(
-    checks,
-    "Failed attacks create no ChatMessages",
-    failedRun.createdMessages.length,
-    0
-  );
-
-  const untargetedRun = await callAdapter(
-    processAttackResult,
-    {
-      successful: true,
-      attackerActor: serpent,
-      weaponItem: bite,
-      targets: [],
-    }
-  );
-
-  boaCheckEqual(
-    checks,
-    "Attacks without targets create no ChatMessages",
-    untargetedRun.createdMessages.length,
-    0
-  );
-
-  const ordinaryRun = await callAdapter(
-    processAttackResult,
-    {
-      successful: true,
-      attackerActor: gorilla,
-      weaponItem: ordinaryAttack,
-      targets: [target],
-    }
-  );
-
-  boaCheckEqual(
-    checks,
-    "Attacks without attackEffects create no ChatMessages",
-    ordinaryRun.createdMessages.length,
-    0
-  );
-
-  boaCheckEqual(
-    checks,
-    "Attack messages do not change target HP, effects, or statuses",
-    actorState(target),
-    targetBefore
-  );
+  checkSingleEnrichedMessage({
+    scenario: "Targeted Constriction",
+    run: targetedConstrain,
+    actor: serpent,
+    weapon: constriction,
+    targetActor: target,
+    effectName: "Constrain",
+    effectChecks: [
+      {
+        label:
+          "identifies attacker and target in the constrain text",
+        predicate: content =>
+          content.includes(
+            `${serpent.name} constrains ${target.name}`
+          ),
+      },
+      {
+        label:
+          "explains the escape roll",
+        predicate: content =>
+          content.includes(
+            "open opposed STR roll against 12"
+          ),
+      },
+      {
+        label:
+          "preserves parry",
+        predicate: content =>
+          content.includes(
+            "can still parry"
+          ),
+      },
+      {
+        label:
+          "prevents evade",
+        predicate: content =>
+          content.includes(
+            "cannot evade"
+          ),
+      },
+    ],
+  });
 } catch (error) {
   boaCheck(
     checks,
-    "Common Animal attack-message scenarios complete",
+    "Dragonbane rollDamage scenarios complete",
     false,
     error.stack ?? error.message
   );
@@ -447,7 +495,7 @@ try {
 
     boaCheck(
       checks,
-      "Temporary attack-message ChatMessages were removed",
+      "Temporary rollDamage ChatMessages were removed",
       createdMessageIds.every(
         id => !game.messages.get(id)
       ),
@@ -456,7 +504,7 @@ try {
   } catch (error) {
     boaCheck(
       checks,
-      "Temporary attack-message ChatMessages were removed",
+      "Temporary rollDamage ChatMessages were removed",
       false,
       error.stack ?? error.message
     );
@@ -464,13 +512,16 @@ try {
 }
 
 notes.push(
-  "The Macro invokes the normalized Bane of Azeroth " +
-  "attack-result API with controlled success values; " +
-  "it does not depend on random attack rolls."
+  "The Macro creates real Dragonbane rollDamage " +
+  "ChatMessages through the registered system data model."
 );
 notes.push(
-  "No poison damage, condition, Active Effect, " +
-  "or constrained state is expected."
+  "The expected implementation enriches the same damage " +
+  "card and must not create a separate Gamemaster message."
+);
+notes.push(
+  "No poison damage, condition, Active Effect, constrained " +
+  "state, target update, or movement automation is expected."
 );
 
 return boaFinish(
