@@ -13,6 +13,13 @@ from typing import Any, Sequence
 MODULE_ID = "bane-of-azeroth"
 GENERATOR_NAME = "tools/generate-hunter-companions.py"
 ROOT_CONTENT_KEY = "actors.folder.bane-of-azeroth"
+COMMON_ANIMALS_CONTENT_KEY = "actors.folder.common-animals"
+LETHAL_POISON_UUID = (
+    "JournalEntry.SbbSMsuvWeo3HaID."
+    "JournalEntryPage.6WPxPxUjh4W80RNy#poison"
+)
+LEGACY_COMPANIONS_FOLDER_ID = "2dkrC4gndsTQ383p"
+LEGACY_COMPANIONS_FOLDER_NAME = "Companions"
 ID_PATTERN = re.compile(r"^[A-Za-z0-9]{16}$")
 
 
@@ -234,19 +241,41 @@ def build_weapon_skill(
     }
 
 
-def attack_description(attack: dict[str, Any]) -> str:
-    paragraphs: list[str] = []
+def attack_effects(attack: dict[str, Any]) -> list[dict[str, Any]]:
+    effects: list[dict[str, Any]] = []
+
     if attack.get("lethalPoison") is not None:
-        paragraphs.append(
-            "<p><strong>Lethal poison:</strong> "
-            f"Potency {attack['lethalPoison']}.</p>"
+        effects.append(
+            {
+                "type": "lethalPoison",
+                "potency": attack["lethalPoison"],
+                "ruleUuid": LETHAL_POISON_UUID,
+            }
         )
+
     if attack.get("constrain") is not None:
-        paragraphs.append(
-            "<p><strong>Constrain:</strong> "
-            f"Strength {attack['constrain']}.</p>"
+        effects.append(
+            {
+                "type": "constrain",
+                "strength": attack["constrain"],
+            }
         )
-    return "".join(paragraphs)
+
+    return effects
+
+
+def attack_flags(
+    *,
+    attack: dict[str, Any],
+    content_key: str,
+) -> dict[str, Any]:
+    flags = generated_flags(content_key)
+    effects = attack_effects(attack)
+
+    if effects:
+        flags[MODULE_ID]["attackEffects"] = effects
+
+    return flags
 
 
 def build_weapon(
@@ -278,14 +307,17 @@ def build_weapon(
             "mainHand": False,
             "offHand": False,
             "gmDescription": "",
-            "itemDescription": attack_description(attack),
+            "itemDescription": "",
             "storage": False,
         },
         "img": "icons/svg/item-bag.svg",
         "effects": [],
         "folder": None,
         "sort": sort,
-        "flags": generated_flags(f"{content_key}.weapon"),
+        "flags": attack_flags(
+            attack=attack,
+            content_key=f"{content_key}.weapon",
+        ),
         "_stats": base_stats(),
         "_id": attack["weaponId"],
         "ownership": {"default": 0},
@@ -366,12 +398,50 @@ def build_armor(
     }
 
 
-def movement_traits(movement: dict[str, int]) -> str:
+def animal_traits(companion: dict[str, Any]) -> str:
     paragraphs: list[str] = []
+    animal_name = companion["name"].lower()
+    movement = companion["movement"]
+
     if "fly" in movement:
-        paragraphs.append(f"<p><strong>Fly:</strong> {movement['fly']}</p>")
+        paragraphs.append(
+            "<p><strong>Fly:</strong> "
+            f"The {animal_name} moves freely through the air. "
+            "While flying, it has a movement rate of "
+            f"{movement['fly']}.</p>"
+        )
+
     if "swim" in movement:
-        paragraphs.append(f"<p><strong>Swim:</strong> {movement['swim']}</p>")
+        paragraphs.append(
+            "<p><strong>Swim:</strong> "
+            f"The {animal_name} moves without penalties while swimming "
+            "and automatically succeeds on SWIMMING rolls. "
+            "While swimming, it has a movement rate of "
+            f"{movement['swim']}.</p>"
+        )
+
+    for attack in companion["attacks"]:
+        if attack.get("lethalPoison") is not None:
+            paragraphs.append(
+                "<p><strong>Lethal Poison:</strong> "
+                f"If the {animal_name} hits a creature with its "
+                f"{attack['name']} attack, the creature is exposed to "
+                f"@UUID[{LETHAL_POISON_UUID}]{{lethal poison}} with a "
+                f"potency of {attack['lethalPoison']}, as if the poison "
+                "had been ingested.</p>"
+            )
+
+        if attack.get("constrain") is not None:
+            paragraphs.append(
+                "<p><strong>Constrain:</strong> "
+                f"If the {animal_name} hits a creature with its "
+                f"{attack['name']} attack, the creature is unable to move "
+                "or take actions other than trying to escape with an open "
+                f"opposed STR roll against {attack['constrain']}. "
+                "The creature can still parry while constrained, but "
+                "cannot evade.</p>"
+            )
+
     return "".join(paragraphs)
 
 
@@ -383,7 +453,7 @@ def build_actor(
     sort: int,
 ) -> dict[str, Any]:
     key = companion["key"]
-    content_key = f"actors.hunter-companions.{key}"
+    content_key = f"actors.common-animals.{key}"
     image = companion.get("image", defaults["image"])
     token_image = companion.get("tokenImage", image)
     items: list[dict[str, Any]] = []
@@ -450,7 +520,7 @@ def build_actor(
                 "agl": {"base": "none", "value": "none"},
                 "str": {"base": "none", "value": "none"},
             },
-            "traits": movement_traits(companion["movement"]),
+            "traits": animal_traits(companion),
             "currency": {"gc": None, "sc": None, "cc": None},
             "encumbrance": {"value": 0},
             "kin": "",
@@ -537,7 +607,6 @@ def validate_content(
     dict[str, Any],
     dict[str, Any],
     dict[str, Any],
-    dict[str, Any],
     list[dict[str, Any]],
 ]:
     if content.get("schemaVersion") != 1:
@@ -553,13 +622,25 @@ def validate_content(
     if not isinstance(folders, dict):
         raise GenerationError("hunter-companions.json folders must be an object.")
 
+    if set(folders) != {"root", "commonAnimals"}:
+        raise GenerationError(
+            "hunter-companions.json folders must contain exactly "
+            "root and commonAnimals."
+        )
+
     root = validate_folder(folders.get("root"), "folders.root")
-    companions_folder = validate_folder(
-        folders.get("companions"), "folders.companions"
+    common_animals_folder = validate_folder(
+        folders.get("commonAnimals"), "folders.commonAnimals"
     )
-    hunter_folder = validate_folder(
-        folders.get("hunterCompanions"), "folders.hunterCompanions"
-    )
+
+    if common_animals_folder["key"] != "common-animals":
+        raise GenerationError(
+            "folders.commonAnimals.key must be 'common-animals'."
+        )
+    if common_animals_folder["name"] != "Common Animals":
+        raise GenerationError(
+            "folders.commonAnimals.name must be 'Common Animals'."
+        )
 
     defaults = content.get("defaults")
     if not isinstance(defaults, dict):
@@ -585,8 +666,7 @@ def validate_content(
 
     ids: set[str] = {
         root["id"],
-        companions_folder["id"],
-        hunter_folder["id"],
+        common_animals_folder["id"],
     }
     keys: set[str] = set()
     names: set[str] = set()
@@ -748,7 +828,7 @@ def validate_content(
         )
         validated.append(normalized)
 
-    return root, companions_folder, hunter_folder, defaults, validated
+    return root, common_animals_folder, defaults, validated
 
 
 def find_single_file(root: Path, filename: str) -> Path:
@@ -815,28 +895,77 @@ def update_adventure_paths(
     return unmanaged[:insert_at] + list(generated_paths) + unmanaged[insert_at:]
 
 
+def collect_generated_json(root: Path) -> list[Path]:
+    if not root.exists():
+        return []
+    if not root.is_dir():
+        raise GenerationError(f"Expected a directory: {root}")
+
+    generated: list[Path] = []
+
+    for path in sorted(root.rglob("*")):
+        if path.is_dir():
+            continue
+        if path.suffix != ".json":
+            raise GenerationError(
+                f"Refusing to remove unexpected non-JSON file: {path}"
+            )
+
+        document = load_json(path)
+        flags = document.get("flags", {}).get(MODULE_ID, {})
+        if flags.get("generatedBy") != GENERATOR_NAME:
+            raise GenerationError(
+                "Refusing to remove a legacy-path document not owned by "
+                f"the Hunter generator: {path}"
+            )
+
+        generated.append(path)
+
+    return generated
+
+
 def validate_id_collisions(
     actor_root: Path,
     generated_ids: set[str],
-    expected_paths: set[Path],
+    allowed_paths: set[Path],
 ) -> None:
     if not actor_root.is_dir():
         return
+
     for path in actor_root.rglob("*.json"):
         data = load_json(path)
         existing_id = data.get("_id")
+
         if existing_id not in generated_ids:
             continue
-        if path.resolve() in expected_paths:
+        if path.resolve() in allowed_paths:
             continue
-        raise GenerationError(f"Generated Foundry ID {existing_id} collides with {path}.")
+
+        raise GenerationError(
+            f"Generated Foundry ID {existing_id} collides with {path}."
+        )
+
+
+def remove_empty_tree(root: Path) -> None:
+    if not root.exists():
+        return
+
+    for directory in sorted(
+        (path for path in root.rglob("*") if path.is_dir()),
+        key=lambda path: len(path.parts),
+        reverse=True,
+    ):
+        directory.rmdir()
+
+    root.rmdir()
 
 
 def main() -> int:
     args = parse_args()
+
     try:
         content = load_json(args.content)
-        root, companions_folder, hunter_folder, defaults, companions = validate_content(
+        root, common_animals_folder, defaults, companions = validate_content(
             content
         )
 
@@ -847,129 +976,180 @@ def main() -> int:
         root_folder_path = find_root_folder(actor_root, root)
         root_dir = root_folder_path.parent
 
-        companions_dir = root_dir / folder_dirname(
-            companions_folder["name"], companions_folder["id"]
+        common_animals_dir = root_dir / folder_dirname(
+            common_animals_folder["name"],
+            common_animals_folder["id"],
         )
-        hunter_dir = companions_dir / folder_dirname(
-            hunter_folder["name"], hunter_folder["id"]
+        legacy_companions_dir = root_dir / folder_dirname(
+            LEGACY_COMPANIONS_FOLDER_NAME,
+            LEGACY_COMPANIONS_FOLDER_ID,
         )
+        legacy_paths = collect_generated_json(legacy_companions_dir)
 
-        companions_document = build_folder(
-            name=companions_folder["name"],
-            folder_id=companions_folder["id"],
+        common_animals_document = build_folder(
+            name=common_animals_folder["name"],
+            folder_id=common_animals_folder["id"],
             parent_id=root["id"],
-            color=companions_folder["color"],
-            sorting=companions_folder["sorting"],
-            sort=companions_folder["sort"],
-            content_key="actors.folder.companions",
-        )
-        hunter_document = build_folder(
-            name=hunter_folder["name"],
-            folder_id=hunter_folder["id"],
-            parent_id=companions_folder["id"],
-            color=hunter_folder["color"],
-            sorting=hunter_folder["sorting"],
-            sort=hunter_folder["sort"],
-            content_key="actors.folder.hunter-companions",
+            color=common_animals_folder["color"],
+            sorting=common_animals_folder["sorting"],
+            sort=common_animals_folder["sort"],
+            content_key=COMMON_ANIMALS_CONTENT_KEY,
         )
 
         generated_documents: list[tuple[Path, dict[str, Any]]] = []
         generated_actor_paths: list[str] = []
         generated_ids: set[str] = {
-            companions_folder["id"],
-            hunter_folder["id"],
+            common_animals_folder["id"],
         }
 
         for index, companion in enumerate(companions):
             actor = build_actor(
                 companion=companion,
                 defaults=defaults,
-                folder_id=hunter_folder["id"],
+                folder_id=common_animals_folder["id"],
                 sort=(index + 1) * 100000,
             )
-            actor_path = hunter_dir / document_filename(actor["name"], actor["_id"])
+            actor_path = common_animals_dir / document_filename(
+                actor["name"],
+                actor["_id"],
+            )
             generated_documents.append((actor_path, actor))
-            generated_actor_paths.append(actor_path.relative_to(adventure_dir).as_posix())
+            generated_actor_paths.append(
+                actor_path.relative_to(adventure_dir).as_posix()
+            )
             generated_ids.add(actor["_id"])
+
             if companion["armorId"] is not None:
                 generated_ids.add(companion["armorId"])
+
             for attack in companion["attacks"]:
                 generated_ids.add(attack["skillId"])
                 generated_ids.add(attack["weaponId"])
+
             for skill in companion["skills"]:
                 generated_ids.add(skill["id"])
 
-        companions_folder_path = companions_dir / "_Folder.json"
-        hunter_folder_path = hunter_dir / "_Folder.json"
+        common_animals_folder_path = common_animals_dir / "_Folder.json"
         generated_folder_paths = [
-            companions_folder_path.relative_to(adventure_dir).as_posix(),
-            hunter_folder_path.relative_to(adventure_dir).as_posix(),
+            common_animals_folder_path.relative_to(adventure_dir).as_posix(),
         ]
         expected_files: list[tuple[Path, dict[str, Any]]] = [
-            (companions_folder_path, companions_document),
-            (hunter_folder_path, hunter_document),
+            (common_animals_folder_path, common_animals_document),
             *generated_documents,
         ]
-        expected_paths = {path.resolve() for path, _ in expected_files}
-        validate_id_collisions(actor_root, generated_ids, expected_paths)
+        expected_paths = {
+            path.resolve()
+            for path, _ in expected_files
+        }
+        allowed_paths = expected_paths | {
+            path.resolve()
+            for path in legacy_paths
+        }
 
-        hunter_prefix = hunter_dir.relative_to(adventure_dir).as_posix() + "/"
-        exact_folder_paths = set(generated_folder_paths)
+        validate_id_collisions(
+            actor_root,
+            generated_ids,
+            allowed_paths,
+        )
+
+        common_animals_prefix = (
+            common_animals_dir.relative_to(adventure_dir).as_posix() + "/"
+        )
+        legacy_companions_prefix = (
+            legacy_companions_dir.relative_to(adventure_dir).as_posix() + "/"
+        )
+        managed_prefixes = (
+            common_animals_prefix,
+            legacy_companions_prefix,
+        )
+
         expected_adventure = dict(adventure)
         expected_adventure["actors"] = update_adventure_paths(
             adventure.get("actors", []),
             field_name="actors",
             generated_paths=generated_actor_paths,
-            managed_prefixes=(hunter_prefix,),
+            managed_prefixes=managed_prefixes,
         )
         expected_adventure["folders"] = update_adventure_paths(
             adventure.get("folders", []),
             field_name="folders",
             generated_paths=generated_folder_paths,
-            exact_managed_paths=exact_folder_paths,
-            managed_prefixes=(hunter_prefix,),
+            managed_prefixes=managed_prefixes,
         )
 
-        stale_paths: list[Path] = []
-        if hunter_dir.is_dir():
-            stale_paths = sorted(
-                path
-                for path in hunter_dir.glob("*.json")
-                if path.resolve() not in expected_paths
+        stale_paths = list(legacy_paths)
+
+        if common_animals_dir.is_dir():
+            stale_paths.extend(
+                sorted(
+                    path
+                    for path in common_animals_dir.glob("*.json")
+                    if path.resolve() not in expected_paths
+                )
             )
 
         problems: list[str] = []
+
         if args.check:
             for stale in stale_paths:
                 problems.append(f"Stale generated document: {stale}")
+
             for path, expected in expected_files:
                 if not compare_json(path, expected):
-                    problems.append(f"Out-of-date generated document: {path}")
+                    problems.append(
+                        f"Out-of-date generated document: {path}"
+                    )
+
             if not compare_json(adventure_file, expected_adventure):
-                problems.append(f"Out-of-date Adventure manifest: {adventure_file}")
+                problems.append(
+                    f"Out-of-date Adventure manifest: {adventure_file}"
+                )
+
             if problems:
                 print(
-                    "Generated Hunter companion content is not up to date:",
+                    "Generated common-animal content is not up to date:",
                     file=sys.stderr,
                 )
                 for problem in problems:
                     print(f"- {problem}", file=sys.stderr)
                 return 1
-            print(f"Hunter companion content is up to date: {len(companions)} actors.")
+
+            print(
+                "Common-animal content is up to date: "
+                f"{len(companions)} actors."
+            )
             return 0
 
-        hunter_dir.mkdir(parents=True, exist_ok=True)
+        common_animals_dir.mkdir(parents=True, exist_ok=True)
+
         for stale in stale_paths:
             stale.unlink()
+
+        if legacy_companions_dir.exists():
+            remove_empty_tree(legacy_companions_dir)
+
         for path, data in expected_files:
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(dump_json(data), encoding="utf-8")
-        adventure_file.write_text(dump_json(expected_adventure), encoding="utf-8")
-        print(f"Generated {len(companions)} Hunter companion actors.")
+            path.write_text(
+                dump_json(data),
+                encoding="utf-8",
+            )
+
+        adventure_file.write_text(
+            dump_json(expected_adventure),
+            encoding="utf-8",
+        )
+
+        print(
+            f"Generated {len(companions)} common-animal actors."
+        )
         print(f"Updated {adventure_file}")
         return 0
     except GenerationError as exc:
-        print(f"generate-hunter-companions.py: {exc}", file=sys.stderr)
+        print(
+            f"generate-hunter-companions.py: {exc}",
+            file=sys.stderr,
+        )
         return 1
 
 

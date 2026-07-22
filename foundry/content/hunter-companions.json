@@ -23,26 +23,18 @@
       "sort": 0,
       "sorting": "a"
     },
-    "companions": {
-      "key": "companions",
+    "commonAnimals": {
+      "key": "common-animals",
       "id": "2dkrC4gndsTQ383p",
-      "name": "Companions",
+      "name": "Common Animals",
       "color": null,
       "sort": 200000,
-      "sorting": "a"
-    },
-    "hunterCompanions": {
-      "key": "hunter-companions",
-      "id": "fhRR85jaNT9rPFhJ",
-      "name": "Hunter Companions",
-      "color": null,
-      "sort": 100000,
       "sorting": "a"
     }
   },
   "defaults": {
     "image": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
-    "descriptionHtml": "<p>A loyal Hunter companion.</p>",
+    "descriptionHtml": "",
     "tokenWidth": 1,
     "tokenHeight": 1,
     "tokenDisposition": 0

@@ -18,6 +18,9 @@ import {
 const MODULE_ID = "bane-of-azeroth";
 const GENERATOR_NAME =
   "tools/generate-hunter-companions.py";
+const LETHAL_POISON_UUID =
+  "JournalEntry.SbbSMsuvWeo3HaID." +
+  "JournalEntryPage.6WPxPxUjh4W80RNy#poison";
 
 const CONTENT_SOURCE = resolve(
   "foundry",
@@ -599,14 +602,14 @@ function moduleFlags(document) {
   return document?.flags?.[MODULE_ID] ?? {};
 }
 
-function hunterActorEntries() {
+function commonAnimalActorEntries() {
   return readDocuments(ACTOR_ROOT).filter(
     ({ document }) => (
       document.type === "npc" &&
       String(
         moduleFlags(document).contentKey ?? ""
       ).startsWith(
-        "actors.hunter-companions."
+        "actors.common-animals."
       )
     )
   );
@@ -673,6 +676,78 @@ function normalizeCompanion(companion) {
   };
 }
 
+function expectedAttackEffects(attack) {
+  const effects = [];
+
+  if (attack.lethalPoison != null) {
+    effects.push({
+      type: "lethalPoison",
+      potency: attack.lethalPoison,
+      ruleUuid: LETHAL_POISON_UUID,
+    });
+  }
+
+  if (attack.constrain != null) {
+    effects.push({
+      type: "constrain",
+      strength: attack.constrain,
+    });
+  }
+
+  return effects;
+}
+
+function expectedTraits(companion) {
+  const paragraphs = [];
+  const animalName = companion.name.toLowerCase();
+
+  if (companion.movement.fly != null) {
+    paragraphs.push(
+      "<p><strong>Fly:</strong> " +
+      `The ${animalName} moves freely through the air. ` +
+      "While flying, it has a movement rate of " +
+      `${companion.movement.fly}.</p>`
+    );
+  }
+
+  if (companion.movement.swim != null) {
+    paragraphs.push(
+      "<p><strong>Swim:</strong> " +
+      `The ${animalName} moves without penalties while swimming ` +
+      "and automatically succeeds on SWIMMING rolls. " +
+      "While swimming, it has a movement rate of " +
+      `${companion.movement.swim}.</p>`
+    );
+  }
+
+  for (const attack of companion.attacks) {
+    if (attack.lethalPoison != null) {
+      paragraphs.push(
+        "<p><strong>Lethal Poison:</strong> " +
+        `If the ${animalName} hits a creature with its ` +
+        `${attack.name} attack, the creature is exposed to ` +
+        `@UUID[${LETHAL_POISON_UUID}]{lethal poison} with a ` +
+        `potency of ${attack.lethalPoison}, as if the poison ` +
+        "had been ingested.</p>"
+      );
+    }
+
+    if (attack.constrain != null) {
+      paragraphs.push(
+        "<p><strong>Constrain:</strong> " +
+        `If the ${animalName} hits a creature with its ` +
+        `${attack.name} attack, the creature is unable to move ` +
+        "or take actions other than trying to escape with an open " +
+        `opposed STR roll against ${attack.constrain}. ` +
+        "The creature can still parry while constrained, but " +
+        "cannot evade.</p>"
+      );
+    }
+  }
+
+  return paragraphs.join("");
+}
+
 function expectFoundryId(value) {
   expect(value).toMatch(ID_PATTERN);
 }
@@ -728,11 +803,13 @@ function findItem(
 function expectCoreNpcShell(
   actor,
   expected,
-  hunterFolderId
+  commonAnimalsFolderId
 ) {
   expect(actor.type).toBe("npc");
   expect(actor.name).toBe(expected.name);
-  expect(actor.folder).toBe(hunterFolderId);
+  expect(actor.folder).toBe(commonAnimalsFolderId);
+
+  expect(actor.system.description).toBe("");
 
   expect(actor.system.movement).toEqual({
     base: expected.movement.base,
@@ -804,6 +881,15 @@ describe("Hunter companion source contract", () => {
     expect(source.expectedCount).toBe(
       EXPECTED_IMPLEMENTED_COMPANIONS.length
     );
+    expect(Object.keys(source.folders)).toEqual([
+      "root",
+      "commonAnimals",
+    ]);
+    expect(source.folders.commonAnimals).toMatchObject({
+      key: "common-animals",
+      name: "Common Animals",
+    });
+    expect(source.defaults.descriptionHtml).toBe("");
     expect(implementedKeys).toEqual(
       IMPLEMENTED_COMPANION_KEYS
     );
@@ -859,49 +945,46 @@ describe("Hunter companion source contract", () => {
   });
 });
 
-describe("Generated Hunter companion Actors", () => {
-  test("uses the Bane of Azeroth > Companions > Hunter Companions hierarchy", () => {
+describe("Generated common-animal Actors", () => {
+  test("uses the Bane of Azeroth > Common Animals hierarchy", () => {
     const root = folderByContentKey(
       "actors.folder.bane-of-azeroth"
     );
-    const companions = folderByContentKey(
+    const commonAnimals = folderByContentKey(
+      "actors.folder.common-animals"
+    );
+    const oldCompanions = folderByContentKey(
       "actors.folder.companions"
     );
-    const hunter = folderByContentKey(
+    const oldHunter = folderByContentKey(
       "actors.folder.hunter-companions"
     );
 
     expect(root).toBeDefined();
-    expect(companions).toBeDefined();
-    expect(hunter).toBeDefined();
+    expect(commonAnimals).toBeDefined();
+    expect(oldCompanions).toBeUndefined();
+    expect(oldHunter).toBeUndefined();
 
     expect(root.document.name).toBe(
       "Bane of Azeroth"
     );
     expect(root.document.folder).toBeNull();
 
-    expect(companions.document.name).toBe(
-      "Companions"
+    expect(commonAnimals.document.name).toBe(
+      "Common Animals"
     );
-    expect(companions.document.folder).toBe(
+    expect(commonAnimals.document.folder).toBe(
       root.document._id
-    );
-
-    expect(hunter.document.name).toBe(
-      "Hunter Companions"
-    );
-    expect(hunter.document.folder).toBe(
-      companions.document._id
     );
   });
 
   test("generates the exact roster as plain core-style NPCs", () => {
-    const actors = hunterActorEntries();
-    const hunterFolder = folderByContentKey(
-      "actors.folder.hunter-companions"
+    const actors = commonAnimalActorEntries();
+    const commonAnimalsFolder = folderByContentKey(
+      "actors.folder.common-animals"
     );
 
-    expect(hunterFolder).toBeDefined();
+    expect(commonAnimalsFolder).toBeDefined();
     expect(
       actors.map(
         ({ document }) => document.name
@@ -932,7 +1015,7 @@ describe("Generated Hunter companion Actors", () => {
       expectCoreNpcShell(
         actor,
         expected,
-        hunterFolder.document._id
+        commonAnimalsFolder.document._id
       );
       expect(
         moduleFlags(actor).generatedBy
@@ -940,13 +1023,13 @@ describe("Generated Hunter companion Actors", () => {
       expect(
         moduleFlags(actor).contentKey
       ).toBe(
-        `actors.hunter-companions.${expected.key}`
+        `actors.common-animals.${expected.key}`
       );
     }
   });
 
-  test("generates attacks, skills, armor, and alternate movement without automation", () => {
-    const actors = hunterActorEntries();
+  test("generates attacks, skills, armor, readable traits, and automation-ready flags", () => {
+    const actors = commonAnimalActorEntries();
 
     expect(actors).toHaveLength(
       EXPECTED_IMPLEMENTED_COMPANIONS.length
@@ -1008,29 +1091,14 @@ describe("Generated Hunter companion Actors", () => {
           );
         }
 
-        const description = String(
-          weapon.system.itemDescription ?? ""
+        expect(
+          weapon.system.itemDescription
+        ).toBe("");
+        expect(
+          moduleFlags(weapon).attackEffects ?? []
+        ).toEqual(
+          expectedAttackEffects(attack)
         );
-
-        if (attack.lethalPoison != null) {
-          expect(description).toMatch(
-            new RegExp(
-              `lethal[\\s\\S]{0,40}` +
-              `${attack.lethalPoison}`,
-              "i"
-            )
-          );
-        }
-
-        if (attack.constrain != null) {
-          expect(description).toMatch(
-            new RegExp(
-              `constrain[\\s\\S]{0,40}` +
-              `${attack.constrain}`,
-              "i"
-            )
-          );
-        }
       }
 
       for (const expectedSkill of (
@@ -1069,29 +1137,9 @@ describe("Generated Hunter companion Actors", () => {
         ).toBe(true);
       }
 
-      const traits = String(
-        actor.system.traits ?? ""
+      expect(actor.system.traits).toBe(
+        expectedTraits(expected)
       );
-
-      for (const movementType of [
-        "fly",
-        "swim",
-      ]) {
-        const value =
-          expected.movement[movementType];
-
-        if (value == null) {
-          continue;
-        }
-
-        expect(traits).toMatch(
-          new RegExp(
-            `${movementType}` +
-            `[\\s\\S]{0,40}${value}`,
-            "i"
-          )
-        );
-      }
 
       const flagText = JSON.stringify({
         actor: actor.flags ?? {},
@@ -1112,16 +1160,13 @@ describe("Generated Hunter companion Actors", () => {
     const adventure = requireJson(
       ADVENTURE_SOURCE
     );
-    const actors = hunterActorEntries();
+    const actors = commonAnimalActorEntries();
     const requiredFolders = [
       folderByContentKey(
         "actors.folder.bane-of-azeroth"
       ),
       folderByContentKey(
-        "actors.folder.companions"
-      ),
-      folderByContentKey(
-        "actors.folder.hunter-companions"
+        "actors.folder.common-animals"
       ),
     ];
 

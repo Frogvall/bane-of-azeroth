@@ -1558,7 +1558,7 @@ Hunters on Azeroth tend to find companions in a multitude of places. The Compani
 **Constrain**: Getting hit by an attack with the constrain keyword makes you unable to move or take actions other than to try to escape (an open STR opposed roll against the number following the constrain keyword). The target can still parry while constrained, but not evade.<br/>
 **Fly**: The animal moves freely through the air. The number that follows is the movement rate while flying.<br/>
 **Lethal Poison**: Getting hit by an attack with this keyword applies lethal poison to the target. The number that follows is the potency. Follow the poison rules as if the poison had been ingested.<br/>
-**Swim**: The animal moves without penalties when swimming. The number that follows is the movement rate while swimming.
+**Swim**: The animal moves without penalties when swimming and automatically succeed on SWIMMING rolls. The number that follows is the movement rate while swimming.
 }}
 
 \page

@@ -1,7 +1,7 @@
 {
   "type": "Actor",
   "folder": "BoAActors7pQ2mX9",
-  "name": "Companions",
+  "name": "Common Animals",
   "color": null,
   "sorting": "a",
   "_id": "2dkrC4gndsTQ383p",
@@ -10,7 +10,7 @@
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",
-      "contentKey": "actors.folder.companions"
+      "contentKey": "actors.folder.common-animals"
     }
   },
   "_stats": {

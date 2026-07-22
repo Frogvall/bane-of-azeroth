@@ -1,19 +1,19 @@
 {
-  "folder": "fhRR85jaNT9rPFhJ",
-  "name": "Large Serpent",
+  "folder": "2dkrC4gndsTQ383p",
+  "name": "Crocolisk",
   "type": "npc",
-  "_id": "um17JUy9CcBXlloq",
+  "_id": "NH7xTDsdAaPgm0Xv",
   "img": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
   "system": {
-    "description": "<p>A loyal Hunter companion.</p>",
+    "description": "",
     "movement": {
-      "base": 10,
-      "value": 10
+      "base": 6,
+      "value": 6
     },
     "hitPoints": {
-      "value": 8,
-      "max": 8,
-      "base": 8
+      "value": 15,
+      "max": 15,
+      "base": 15
     },
     "willPoints": {
       "value": 0,
@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "",
+    "traits": "<p><strong>Swim:</strong> The crocolisk moves without penalties while swimming and automatically succeeds on SWIMMING rolls. While swimming, it has a movement rate of 12.</p>",
     "currency": {
       "gc": null,
       "sc": null,
@@ -45,7 +45,7 @@
     "motivation": ""
   },
   "prototypeToken": {
-    "name": "Large Serpent",
+    "name": "Crocolisk",
     "displayName": 0,
     "actorLink": false,
     "texture": {
@@ -157,7 +157,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.hunter-companions.large-serpent.attack.bite.skill"
+          "contentKey": "actors.common-animals.crocolisk.attack.bite.skill"
         }
       },
       "_stats": {
@@ -171,7 +171,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "PCcAfLOA62Glsgzo",
+      "_id": "0wpr2vStAhV8a5Es",
       "ownership": {
         "default": 0
       }
@@ -193,7 +193,7 @@
         },
         "str": null,
         "range": "2",
-        "damage": "D6",
+        "damage": "2D8",
         "durability": null,
         "skill": {
           "name": "Bite",
@@ -204,7 +204,7 @@
         "mainHand": false,
         "offHand": false,
         "gmDescription": "",
-        "itemDescription": "<p><strong>Lethal poison:</strong> Potency 15.</p>",
+        "itemDescription": "",
         "storage": false
       },
       "img": "icons/svg/item-bag.svg",
@@ -214,7 +214,7 @@
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.hunter-companions.large-serpent.attack.bite.weapon"
+          "contentKey": "actors.common-animals.crocolisk.attack.bite.weapon"
         }
       },
       "_stats": {
@@ -228,103 +228,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "BXVm6tQuny3rD39C",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "folder": null,
-      "name": "Constriction",
-      "type": "skill",
-      "img": "icons/svg/item-bag.svg",
-      "system": {
-        "skillType": "weapon",
-        "attribute": "str",
-        "value": 10,
-        "advance": 0,
-        "hideTrained": true,
-        "gmDescription": "",
-        "itemDescription": "",
-        "taught": false
-      },
-      "effects": [],
-      "sort": 300000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.hunter-companions.large-serpent.attack.constriction.skill"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "jz4xk7Xftewict8u",
-      "ownership": {
-        "default": 0
-      }
-    },
-    {
-      "type": "weapon",
-      "name": "Constriction",
-      "system": {
-        "weight": null,
-        "quantity": 1,
-        "cost": "–",
-        "supply": "common",
-        "worn": true,
-        "memento": false,
-        "boons": "",
-        "banes": "",
-        "grip": {
-          "value": "none"
-        },
-        "str": null,
-        "range": "2",
-        "damage": "D6",
-        "durability": null,
-        "skill": {
-          "name": "Constriction",
-          "value": 0
-        },
-        "features": [],
-        "broken": false,
-        "mainHand": false,
-        "offHand": false,
-        "gmDescription": "",
-        "itemDescription": "<p><strong>Constrain:</strong> Strength 12.</p>",
-        "storage": false
-      },
-      "img": "icons/svg/item-bag.svg",
-      "effects": [],
-      "folder": null,
-      "sort": 400000,
-      "flags": {
-        "bane-of-azeroth": {
-          "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.hunter-companions.large-serpent.attack.constriction.weapon"
-        }
-      },
-      "_stats": {
-        "coreVersion": "14.365",
-        "systemId": "dragonbane",
-        "systemVersion": "4.0.1",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_id": "K9VpeZGmCu9Z1oqR",
+      "_id": "jWskIChpUZbzhtc6",
       "ownership": {
         "default": 0
       }
@@ -337,7 +241,7 @@
       "system": {
         "skillType": "core",
         "attribute": "int",
-        "value": 12,
+        "value": 10,
         "advance": 0,
         "hideTrained": false,
         "gmDescription": "",
@@ -345,11 +249,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 500000,
+      "sort": 300000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.hunter-companions.large-serpent.skill.awareness"
+          "contentKey": "actors.common-animals.crocolisk.skill.awareness"
         }
       },
       "_stats": {
@@ -363,7 +267,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "LbtNPCXuYQ0Nc3ZN",
+      "_id": "bdLNy3SsumAfGzOO",
       "ownership": {
         "default": 0
       }
@@ -376,7 +280,7 @@
       "system": {
         "skillType": "core",
         "attribute": "agl",
-        "value": 16,
+        "value": 6,
         "advance": 0,
         "hideTrained": false,
         "gmDescription": "",
@@ -384,11 +288,11 @@
         "taught": false
       },
       "effects": [],
-      "sort": 600000,
+      "sort": 400000,
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-hunter-companions.py",
-          "contentKey": "actors.hunter-companions.large-serpent.skill.evade"
+          "contentKey": "actors.common-animals.crocolisk.skill.evade"
         }
       },
       "_stats": {
@@ -402,18 +306,62 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_id": "AuM4EESlBWwCMsIE",
+      "_id": "oda0MGJP83ai8xRX",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "type": "armor",
+      "name": "Natural Armor",
+      "system": {
+        "weight": 0,
+        "quantity": 1,
+        "cost": "–",
+        "supply": "common",
+        "worn": true,
+        "memento": false,
+        "boons": "",
+        "banes": "",
+        "rating": 1,
+        "bonuses": [],
+        "gmDescription": "",
+        "itemDescription": "<p>Natural armor.</p>",
+        "storage": false
+      },
+      "img": "modules/dragonbane-coreset/assets/icons/gear/armor.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 500000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.common-animals.crocolisk.armor"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "tSSfleAd9ytQIKQt",
       "ownership": {
         "default": 0
       }
     }
   ],
   "effects": [],
-  "sort": 300000,
+  "sort": 100000,
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",
-      "contentKey": "actors.hunter-companions.large-serpent"
+      "contentKey": "actors.common-animals.crocolisk"
     }
   },
   "_stats": {
