@@ -39,6 +39,7 @@ const orderedKeys = [
   "smoke",
   "generated-content",
   "common-animals",
+  "common-animal-attack-messages",
   "spell-grants",
   "elemental-totems",
   "adventure-ownership",
