@@ -361,7 +361,10 @@
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",
-      "contentKey": "actors.common-animals.crocolisk"
+      "contentKey": "actors.common-animals.crocolisk",
+      "movementRates": {
+        "swim": 12
+      }
     }
   },
   "_stats": {

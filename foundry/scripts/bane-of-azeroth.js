@@ -48,11 +48,18 @@ import {
   onCommonAnimalRollDamageChatMessage,
   processCommonAnimalAttackResult,
 } from "./common-animal-attack-effects.js";
+import {
+  onUpdateCommonAnimalMovementToken,
+} from "./common-animal-movement.js";
 
 Hooks.once("init", () => {
   if (game.system.id !== "dragonbane") return;
   Hooks.on("drawToken", drawElementalTotemAura);
   Hooks.on("updateToken", onUpdateElementalTotemAura);
+  Hooks.on(
+    "updateToken",
+    onUpdateCommonAnimalMovementToken
+  );
   Hooks.on("deleteToken", onDeleteElementalTotemAura);
   Hooks.on(
     "preUpdateToken",

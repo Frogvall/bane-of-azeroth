@@ -148,6 +148,21 @@ def generated_flags(content_key: str) -> dict[str, Any]:
     }
 
 
+def generated_actor_flags(
+    content_key: str,
+    movement_rates: dict[str, int],
+) -> dict[str, Any]:
+    flags = generated_flags(content_key)
+    alternate_rates = {
+        key: value
+        for key, value in movement_rates.items()
+        if key != "base"
+    }
+    if alternate_rates:
+        flags[MODULE_ID]["movementRates"] = alternate_rates
+    return flags
+
+
 def build_folder(
     *,
     name: str,
@@ -577,7 +592,10 @@ def build_actor(
         "items": items,
         "effects": [],
         "sort": sort,
-        "flags": generated_flags(content_key),
+        "flags": generated_actor_flags(
+            content_key,
+            companion["movement"],
+        ),
         "_stats": base_stats(),
         "ownership": {"default": 0},
     }

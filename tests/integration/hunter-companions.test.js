@@ -1025,9 +1025,19 @@ describe("Generated common-animal Actors", () => {
       ).toBe(
         `actors.common-animals.${expected.key}`
       );
+      const {
+        base: _baseMovement,
+        ...alternateMovementRates
+      } = expected.movement;
       expect(
         moduleFlags(actor).movementRates
-      ).toEqual(expected.movement);
+      ).toEqual(
+        Object.keys(
+          alternateMovementRates
+        ).length > 0
+          ? alternateMovementRates
+          : undefined
+      );
     }
   });
 

@@ -124,38 +124,34 @@ if (
 
 boaCheckEqual(
   checks,
-  "Dragonhawk has machine-readable movement rates",
+  "Dragonhawk has machine-readable alternate movement rates",
   boaGetFlag(
     dragonhawk,
     "movementRates"
   ),
   {
-    base: 2,
     fly: 14,
   }
 );
 boaCheckEqual(
   checks,
-  "Crocolisk has machine-readable movement rates",
+  "Crocolisk has machine-readable alternate movement rates",
   boaGetFlag(
     crocolisk,
     "movementRates"
   ),
   {
-    base: 6,
     swim: 12,
   }
 );
 boaCheckEqual(
   checks,
-  "Gorilla has only its base movement rate",
+  "Gorilla has no alternate movement metadata",
   boaGetFlag(
     gorilla,
     "movementRates"
   ),
-  {
-    base: 8,
-  }
+  undefined
 );
 
 function tokenDataFor(

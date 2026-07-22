@@ -20,15 +20,16 @@ const onUpdateMovementToken =
 function makeToken({
   actorLink = false,
   movementRates = {
-    base: 2,
     fly: 14,
   },
-  movementValue = 2,
+  baseMovement = 2,
+  movementValue = baseMovement,
 } = {}) {
   const actor = {
     isToken: !actorLink,
     system: {
       movement: {
+        base: baseMovement,
         value: movementValue,
       },
     },
@@ -60,10 +61,31 @@ function makeToken({
       }
     ),
   };
+  const baseActor = {
+    system: {
+      movement: {
+        base: baseMovement,
+        value: baseMovement,
+      },
+    },
+    getFlag: vi.fn(
+      (moduleId, key) => {
+        if (
+          moduleId === MODULE_ID &&
+          key === "movementRates"
+        ) {
+          return movementRates;
+        }
+
+        return undefined;
+      }
+    ),
+  };
 
   return {
     actorLink,
     actor,
+    baseActor,
     movementAction: "walk",
   };
 }
@@ -86,11 +108,11 @@ describe.skipIf(
   typeof onUpdateMovementToken !== "function"
 )("Common Animal movement integration", () => {
   describe("resolveCommonAnimalMovementRate", () => {
-    test("uses base movement for the default action", () => {
+    test("uses the Actor base movement for the default action", () => {
       expect(
         resolveMovementRate({
+          baseMovement: 2,
           movementRates: {
-            base: 2,
             fly: 14,
           },
           movementAction: "walk",
@@ -102,8 +124,8 @@ describe.skipIf(
     test.each([
       {
         label: "Dragonhawk fly",
+        baseMovement: 2,
         movementRates: {
-          base: 2,
           fly: 14,
         },
         movementAction: "fly",
@@ -111,20 +133,22 @@ describe.skipIf(
       },
       {
         label: "Crocolisk swim",
+        baseMovement: 6,
         movementRates: {
-          base: 6,
           swim: 12,
         },
         movementAction: "swim",
         expected: 12,
       },
     ])("uses the alternate rate for $label", ({
+      baseMovement,
       movementRates,
       movementAction,
       expected,
     }) => {
       expect(
         resolveMovementRate({
+          baseMovement,
           movementRates,
           movementAction,
           defaultAction: "walk",
@@ -132,11 +156,11 @@ describe.skipIf(
       ).toBe(expected);
     });
 
-    test("falls back to base movement for an unsupported action", () => {
+    test("falls back to Actor base movement for an unsupported action", () => {
       expect(
         resolveMovementRate({
+          baseMovement: 6,
           movementRates: {
-            base: 6,
             swim: 12,
           },
           movementAction: "fly",
@@ -147,28 +171,26 @@ describe.skipIf(
 
     test.each([
       {
-        label: "missing metadata",
-        movementRates: null,
+        label: "missing base movement",
+        baseMovement: null,
       },
       {
-        label: "missing base rate",
-        movementRates: {
-          fly: 14,
-        },
+        label: "non-numeric base movement",
+        baseMovement: "fast",
       },
       {
-        label: "non-numeric base rate",
-        movementRates: {
-          base: "fast",
-          fly: 14,
-        },
+        label: "negative base movement",
+        baseMovement: -1,
       },
     ])("returns null for $label", ({
-      movementRates,
+      baseMovement,
     }) => {
       expect(
         resolveMovementRate({
-          movementRates,
+          baseMovement,
+          movementRates: {
+            fly: 14,
+          },
           movementAction: "fly",
           defaultAction: "walk",
         })
@@ -230,9 +252,9 @@ describe.skipIf(
         },
       },
       {
-        label: "Actor without movement metadata",
+        label: "Actor without alternate movement metadata",
         tokenOptions: {
-          movementRates: undefined,
+          movementRates: null,
         },
       },
     ])("does not update a $label", async ({

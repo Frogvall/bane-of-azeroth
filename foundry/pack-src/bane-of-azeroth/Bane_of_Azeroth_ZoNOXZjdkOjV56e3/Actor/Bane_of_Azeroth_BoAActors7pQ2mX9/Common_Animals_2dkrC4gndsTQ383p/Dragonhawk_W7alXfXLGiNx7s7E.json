@@ -413,7 +413,10 @@
   "flags": {
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-hunter-companions.py",
-      "contentKey": "actors.common-animals.dragonhawk"
+      "contentKey": "actors.common-animals.dragonhawk",
+      "movementRates": {
+        "fly": 14
+      }
     }
   },
   "_stats": {
