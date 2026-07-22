@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "<p><strong>Fly:</strong> The dragonhawk moves freely through the air. While flying, it has a movement rate of 14.</p>",
+    "traits": "<p><strong>Fly:</strong> The dragonhawk moves freely through the air. While flying, it has a movement rate of 14. Its movement rate on the ground is 2.</p>",
     "currency": {
       "gc": null,
       "sc": null,

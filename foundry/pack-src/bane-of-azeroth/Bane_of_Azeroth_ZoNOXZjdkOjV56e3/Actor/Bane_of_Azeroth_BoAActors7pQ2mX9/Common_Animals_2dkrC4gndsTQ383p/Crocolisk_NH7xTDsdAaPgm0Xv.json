@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "<p><strong>Swim:</strong> The crocolisk moves without penalties while swimming and automatically succeeds on SWIMMING rolls. While swimming, it has a movement rate of 12.</p>",
+    "traits": "<p><strong>Swim:</strong> The crocolisk moves without penalties while swimming and automatically succeeds on SWIMMING rolls. While swimming, it has a movement rate of 12. Its movement rate on land is 6.</p>",
     "currency": {
       "gc": null,
       "sc": null,

@@ -423,7 +423,9 @@ def animal_traits(companion: dict[str, Any]) -> str:
             "<p><strong>Fly:</strong> "
             f"The {animal_name} moves freely through the air. "
             "While flying, it has a movement rate of "
-            f"{movement['fly']}.</p>"
+            f"{movement['fly']}. "
+            "Its movement rate on the ground is "
+            f"{movement['base']}.</p>"
         )
 
     if "swim" in movement:
@@ -432,7 +434,9 @@ def animal_traits(companion: dict[str, Any]) -> str:
             f"The {animal_name} moves without penalties while swimming "
             "and automatically succeeds on SWIMMING rolls. "
             "While swimming, it has a movement rate of "
-            f"{movement['swim']}.</p>"
+            f"{movement['swim']}. "
+            "Its movement rate on land is "
+            f"{movement['base']}.</p>"
         )
 
     for attack in companion["attacks"]:

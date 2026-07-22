@@ -706,7 +706,9 @@ function expectedTraits(companion) {
       "<p><strong>Fly:</strong> " +
       `The ${animalName} moves freely through the air. ` +
       "While flying, it has a movement rate of " +
-      `${companion.movement.fly}.</p>`
+      `${companion.movement.fly}. ` +
+      "Its movement rate on the ground is " +
+      `${companion.movement.base}.</p>`
     );
   }
 
@@ -716,7 +718,9 @@ function expectedTraits(companion) {
       `The ${animalName} moves without penalties while swimming ` +
       "and automatically succeeds on SWIMMING rolls. " +
       "While swimming, it has a movement rate of " +
-      `${companion.movement.swim}.</p>`
+      `${companion.movement.swim}. ` +
+      "Its movement rate on land is " +
+      `${companion.movement.base}.</p>`
     );
   }
 
