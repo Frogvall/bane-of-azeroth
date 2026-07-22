@@ -46,9 +46,21 @@ describe("Foundry hook registration", () => {
     Hooks.on.mockClear();
     init();
 
-    expect(
-      Hooks.on.mock.calls.map(([name]) => name)
-    ).toEqual([
+    const registeredHooks =
+      Hooks.on.mock.calls;
+    const registeredHookNames =
+      registeredHooks.map(([name]) => name);
+    const createChatMessageCallbacks =
+      registeredHooks
+        .filter(
+          ([name]) =>
+            name === "createChatMessage"
+        )
+        .map(([, callback]) => callback);
+
+    expect([
+      ...new Set(registeredHookNames),
+    ]).toEqual([
       "drawToken",
       "updateToken",
       "deleteToken",
@@ -62,6 +74,14 @@ describe("Foundry hook registration", () => {
       "renderDoDActorBaseSheet",
       "preUpdateItem",
     ]);
+    expect(
+      createChatMessageCallbacks
+    ).toHaveLength(2);
+    expect(
+      new Set(
+        createChatMessageCallbacks
+      ).size
+    ).toBe(2);
     expect(game.settings.register).toHaveBeenCalledOnce();
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
@@ -69,6 +89,31 @@ describe("Foundry hook registration", () => {
       freehanded: "BOA.weaponFeatureTypes.freehanded",
       returning: "BOA.weaponFeatureTypes.returning",
       scattershot: "BOA.weaponFeatureTypes.scattershot",
+    });
+  });
+
+  test("exposes the Common Animal attack-result adapter through the module API", async () => {
+    const module = {
+      id: "bane-of-azeroth",
+      api: {
+        existingApi: true,
+      },
+    };
+    game.modules = new Map([
+      [module.id, module],
+    ]);
+
+    await importFreshModule(
+      "common-animal-api"
+    );
+    const init = getOnceCallback("init");
+
+    init();
+
+    expect(module.api).toMatchObject({
+      existingApi: true,
+      processCommonAnimalAttackResult:
+        expect.any(Function),
     });
   });
 
