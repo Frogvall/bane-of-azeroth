@@ -46,6 +46,15 @@ describe("Foundry hook registration", () => {
     Hooks.on.mockClear();
     init();
 
+    const attackEffects =
+      await import(
+        "../../foundry/scripts/common-animal-attack-effects.js"
+      );
+    const {
+      onCommonAnimalRollDamageChatMessage,
+      onCommonAnimalWeaponTestChatMessage,
+    } = attackEffects;
+
     const registeredHooks =
       Hooks.on.mock.calls;
     const registeredHookNames =
@@ -82,6 +91,25 @@ describe("Foundry hook registration", () => {
         createChatMessageCallbacks
       ).size
     ).toBe(2);
+    expect(
+      onCommonAnimalRollDamageChatMessage
+    ).toEqual(expect.any(Function));
+    expect(
+      createChatMessageCallbacks
+    ).toContain(
+      onCommonAnimalRollDamageChatMessage
+    );
+
+    if (
+      typeof onCommonAnimalWeaponTestChatMessage ===
+      "function"
+    ) {
+      expect(
+        createChatMessageCallbacks
+      ).not.toContain(
+        onCommonAnimalWeaponTestChatMessage
+      );
+    }
     expect(game.settings.register).toHaveBeenCalledOnce();
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
