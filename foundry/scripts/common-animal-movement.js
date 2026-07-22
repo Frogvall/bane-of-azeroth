@@ -94,8 +94,9 @@ function baseMovementForToken(token) {
 /**
  * Synchronize one unlinked Token's synthetic Actor with its selected action.
  *
- * Updating a synthetic Actor stores the override in that Token's ActorDelta;
- * the base world Actor is not modified. Actors without alternate movement
+ * Updating the synthetic Actor's base movement stores the override in that
+ * Token's ActorDelta. Dragonbane then derives movement.value from that base.
+ * The base world Actor is not modified. Actors without alternate movement
  * metadata are left entirely to Dragonbane.
  */
 export async function synchronizeCommonAnimalTokenMovement({
@@ -143,16 +144,17 @@ export async function synchronizeCommonAnimalTokenMovement({
     return false;
   }
 
-  const currentRate = Number(
-    actor.system?.movement?.value
-  );
+  const currentBase =
+    finiteMovementRate(
+      actor.system?.movement?.base
+    );
 
-  if (currentRate === movementRate) {
+  if (currentBase === movementRate) {
     return false;
   }
 
   await actor.update({
-    "system.movement.value":
+    "system.movement.base":
       movementRate,
   });
 

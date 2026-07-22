@@ -23,13 +23,16 @@ function makeToken({
     fly: 14,
   },
   baseMovement = 2,
-  movementValue = baseMovement,
+  actorMovementBase =
+    baseMovement,
+  movementValue =
+    actorMovementBase,
 } = {}) {
   const actor = {
     isToken: !actorLink,
     system: {
       movement: {
-        base: baseMovement,
+        base: actorMovementBase,
         value: movementValue,
       },
     },
@@ -47,14 +50,16 @@ function makeToken({
     ),
     update: vi.fn(
       async changes => {
-        const value =
+        const base =
           changes[
-            "system.movement.value"
+            "system.movement.base"
           ];
 
-        if (value != null) {
+        if (base != null) {
+          actor.system.movement.base =
+            base;
           actor.system.movement.value =
-            value;
+            base;
         }
 
         return actor;
@@ -219,16 +224,53 @@ describe.skipIf(
       expect(
         token.actor.update
       ).toHaveBeenCalledWith({
-        "system.movement.value": 14,
+        "system.movement.base": 14,
       });
+      expect(
+        token.actor.system.movement.base
+      ).toBe(14);
       expect(
         token.actor.system.movement.value
       ).toBe(14);
+      expect(
+        token.baseActor.system
+          .movement.base
+      ).toBe(2);
+    });
+
+    test("restores an unlinked synthetic Actor to the world Actor base rate", async () => {
+      const token = makeToken({
+        actorMovementBase: 14,
+      });
+
+      const changed =
+        await synchronizeMovement({
+          token,
+          movementAction: "walk",
+          defaultAction: "walk",
+        });
+
+      expect(changed).toBe(true);
+      expect(
+        token.actor.update
+      ).toHaveBeenCalledWith({
+        "system.movement.base": 2,
+      });
+      expect(
+        token.actor.system.movement.base
+      ).toBe(2);
+      expect(
+        token.actor.system.movement.value
+      ).toBe(2);
+      expect(
+        token.baseActor.system
+          .movement.base
+      ).toBe(2);
     });
 
     test("does not update an Actor already using the selected rate", async () => {
       const token = makeToken({
-        movementValue: 14,
+        actorMovementBase: 14,
       });
 
       const changed =
