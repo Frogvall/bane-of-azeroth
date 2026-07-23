@@ -42,7 +42,7 @@ This game supplement was created under Fria Ligan AB's [Dragonbane Third Party S
 
 This game supplement is neither affiliated with, sponsored, or endorsed by Fria Ligan AB or Blizzard Entertainment, Inc.
 
-### Artwork
+### ARTWORK:
 
 Except for separately credited background textures and other design assets, the illustrations in this book were created using generative AI. Across the book, these illustrations draw visual inspiration from<br/>original works by the artists and studios listed below.
 
