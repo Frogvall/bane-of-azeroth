@@ -44,7 +44,7 @@ This game supplement is neither affiliated with, sponsored, or endorsed by Fria 
 
 ### Art
 
-All art has been created by generative AI. Art is inspired by:<br/>
+All art has been created with generative AI, inspired by original art from the following artists or studios:<br/>
 [Alex Horley](https://www.alexhorleyart.com/),
 [Andrew Clark](https://www.artstation.com/atcillustration),
 [BOSi Art Studios](https://www.artstation.com/bosi-art-studios),
