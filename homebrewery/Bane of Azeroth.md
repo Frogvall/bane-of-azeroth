@@ -27,7 +27,7 @@ Auvreannia
 
 ### VERSION:
 
-v0.9
+v1.0
 
 ### CREDITS:
 
@@ -44,9 +44,31 @@ This game supplement is neither affiliated with, sponsored, or endorsed by Fria 
 
 ### Art
 
-\*List of original artists.\*
-
-Generative AI has been used to align look and feel for the art.
+All art has been created by generative AI. Art is inspired by:<br/>
+[Alex Horley](https://www.alexhorleyart.com/),
+[Andrew Clark](https://www.artstation.com/atcillustration),
+[BOSi Art Studios](https://www.artstation.com/bosi-art-studios),
+[Chris Rahn](https://www.rahnart.com),
+[Christopher Hayes](https://www.artstation.com/craze),
+[Daren Bader](https://www.artstation.com/darenbader),
+[Dave Rapoza](https://www.deviantart.com/daverapoza),
+[Dmitry Prozorov](https://www.artstation.com/tamplierpainter),
+[Efrem Palacios](https://www.artstation.com/epalacios),
+[Eva Widermann](https://www.artstation.com/evawidermann),
+[Glenn Rane](https://www.artstation.com/glennrane),
+[Grace Liu](https://www.artstation.com/graceliu),
+[Jaemin Kim](https://www.artstation.com/jaem),
+[James Ryman](https://www.deviantart.com/jamesryman),
+[Laurel D Austin](https://www.artstation.com/tully),
+[Plainandplain](https://www.deviantart.com/plainandplain),
+[Samwise Didier](https://www.artstation.com/thepandaking),
+[Sandara](https://www.deviantart.com/sandara),
+[Slawomir Maniak](https://www.artstation.com/maniaks),
+[Steve Prescott](https://www.steveprescott.com),
+[Tim Shevtsov](https://www.artstation.com/timur_shevtsov),
+[Vitto Hood](https://www.artstation.com/vitto_hood),
+[Wei Wang](https://www.artstation.com/weiwangart),
+[Zoltan Boros](https://boros-szikszai.com/landing_2/boros)
 
 :
 
@@ -1536,14 +1558,14 @@ You instantly turn into your moonkin form. For the duration you can change betwe
 Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals is presented below. If an animal has more than one attack listed, the player choose which one to use when commanding their companion. What animals that are around in an area is up to the GM.
 
 {{wide
-| <div style="width:74px">Animal</div>       | Movement      | <div style="width:44px">HP</div> | <div style="width:300px">Attack</div>  | <div style="width:125px">Skills</div>     |
+| <div style="width:74px">Animal</div>       | Movement      | <div style="width:44px">HP</div> | <div style="width:277px">Attack</div>  | <div style="width:150px">Skills</div>     |
 |:-------------|:-------------:|:--------------:|:--------|:-----------|
 | Crocolisk    | 6<br/>Swim 12 | 15<br/>Armor 1 | Bite (skill level 12, damage 2D8) | Awareness 10, Evade 6 |
 | Dragonhawk   | 2<br/>Fly 14  | 8              | Beak (skill level 10, D10)<br/>Talons (skill level 12, damage 2D4) | Awareness 14, Evade 12 |
 | Giant Bat    | 2<br/>Fly 8   | 10             | Bite (skill level 10, damage D10)<br/>Sonic Wave (skill level 10, damage D6, range 10m) | Awareness 16, Evade 12 |
 | Giant Owl    | 2<br/>Fly 14  | 8              | Beak (skill level 10, D10)<br/>Talons (skill level 12, damage 2D4) | Awareness 16, Evade 10 |
-| Giant Spider | 8             | 10             | Bite (skill level 10, damage D4, lethal poison 12)<br/>Web (skill level 10, no damage, range 6m, constrain 10) | Awareness 12, Evade 12, Stealth 12 |
-| Gorilla      | 8             | 16             | Bite (skill level 12, damage 2D6)<br/>Fist (skill level 14, damage 2D4)    | Acrobatics 15, Awareness 10, Evade 14           |
+| Giant Spider | 8             | 10             | Bite (skill level 10, damage D4, lethal poison 12)<br/>Web Spray (skill level 12, no damage, constrain 10) | Acrobatics 16, Awareness 12, Evade 12, Stealth 12 |
+| Gorilla      | 8             | 16             | Bite (skill level 12, damage 2D6)<br/>Fist (skill level 14, damage 2D4)    | Acrobatics 14, Awareness 10, Evade 14           |
 | Large Cat    | 16            | 12             | Bite (skill level 12, damage 2D6)<br/>Claws (skill level 14, damage 2D4) | Awareness 12, Evade 12, Stealth 14 |
 | Large Serpent | 10            | 8              | Bite (skill level 12, damage D6, lethal poison 15)<br/>Constriction (skill level 10, damage D6, constrain 12) | Awareness 12, Evade 16 |
 | Raptor       | 16            | 10            | Bite (skill level 12, damage 2D6)<br/>Claws (skill level 12, damage 2D4) | Awareness 14, Evade 14 |
