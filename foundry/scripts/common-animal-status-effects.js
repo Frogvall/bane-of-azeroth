@@ -34,6 +34,16 @@ function targetDocumentUuid(target) {
   ).trim();
 }
 
+function sourceDocumentUuid(source) {
+  const actor = normalizeTargetActor(source);
+  return String(
+    actor?.baseActor?.uuid ??
+      actor?.uuid ??
+      ""
+  ).trim();
+}
+
+
 function configuredStatusIds() {
   return new Set(
     Array.from(CONFIG.statusEffects ?? [])
@@ -89,7 +99,10 @@ export function statusIdsForCommonAnimalAttackEffects(
 
 export async function applyCommonAnimalStatusIdsLocally(
   target,
-  statusIds
+  statusIds,
+  {
+    sourceUuid = "",
+  } = {}
 ) {
   const actor = normalizeTargetActor(target);
   if (!actor || typeof actor.toggleStatusEffect !== "function") {
@@ -100,15 +113,31 @@ export async function applyCommonAnimalStatusIdsLocally(
 
   const supported = normalizeAllowedStatusIds(statusIds);
   const configured = configuredStatusIds();
+  const origin = String(sourceUuid ?? "").trim();
   for (const statusId of supported) {
     if (!configured.has(statusId)) {
       throw new Error(
         `Dragonbane status ${statusId} is not registered.`
       );
     }
-    await actor.toggleStatusEffect(statusId, {
-      active: true,
-    });
+
+    const toggledEffect = await actor.toggleStatusEffect(
+      statusId,
+      {
+        active: true,
+      }
+    );
+    if (
+      origin &&
+      toggledEffect &&
+      typeof toggledEffect === "object" &&
+      typeof toggledEffect.update === "function" &&
+      toggledEffect.origin !== origin
+    ) {
+      await toggledEffect.update({
+        origin,
+      });
+    }
   }
   return supported;
 }
@@ -161,7 +190,10 @@ async function handleCommonAnimalStatusRequest(payload) {
 
     const statusIds = await applyCommonAnimalStatusIdsLocally(
       actor,
-      payload.statusIds
+      payload.statusIds,
+      {
+        sourceUuid: payload.sourceUuid,
+      }
     );
     game.socket.emit(COMMON_ANIMAL_STATUS_SOCKET, {
       type: "commonAnimalStatusResult",
@@ -210,16 +242,26 @@ export function registerCommonAnimalStatusSocket() {
 
 export async function requestCommonAnimalStatusApplication(
   target,
-  statusIds
+  statusIds,
+  {
+    sourceUuid = "",
+  } = {}
 ) {
   const actor = normalizeTargetActor(target);
   const supported = normalizeAllowedStatusIds(statusIds);
+  const normalizedSourceUuid = String(sourceUuid ?? "").trim();
   if (!actor || supported.length === 0) {
     return [];
   }
 
   if (canUpdateTargetActor(actor)) {
-    return applyCommonAnimalStatusIdsLocally(actor, supported);
+    return applyCommonAnimalStatusIdsLocally(
+      actor,
+      supported,
+      {
+        sourceUuid: normalizedSourceUuid,
+      }
+    );
   }
 
   const activeGM = getPrimaryActiveGMUser();
@@ -256,6 +298,7 @@ export async function requestCommonAnimalStatusApplication(
       requesterUserId: game.user.id,
       gmUserId: activeGM.id,
       targetUuid,
+      sourceUuid: normalizedSourceUuid,
       statusIds: supported,
     });
   });
@@ -264,12 +307,14 @@ export async function requestCommonAnimalStatusApplication(
 export async function applyCommonAnimalAttackStatuses({
   effects = [],
   targets = [],
+  sourceActor = null,
 } = {}) {
   const statusIds = statusIdsForCommonAnimalAttackEffects(effects);
   if (statusIds.length === 0 || !Array.isArray(targets)) {
     return [];
   }
 
+  const sourceUuid = sourceDocumentUuid(sourceActor);
   const results = [];
   const seen = new Set();
   for (const target of targets) {
@@ -284,7 +329,10 @@ export async function applyCommonAnimalAttackStatuses({
       const appliedStatusIds =
         await requestCommonAnimalStatusApplication(
           actor,
-          statusIds
+          statusIds,
+          {
+            sourceUuid,
+          }
         );
       results.push({
         targetUuid: reference,

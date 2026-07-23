@@ -629,6 +629,7 @@ export async function onCommonAnimalRollDamageChatMessage(
     await applyAttackStatuses({
       effects,
       targets: [targetActor],
+      sourceActor: context.actor,
     });
   }
 

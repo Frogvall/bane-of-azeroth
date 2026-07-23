@@ -526,6 +526,7 @@ describe("Common Animal effect-only Restrained status", () => {
         },
       ],
       targets: [context.targetActor],
+      sourceActor: context.actor,
     });
   });
 

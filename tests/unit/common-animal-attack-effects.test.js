@@ -253,6 +253,7 @@ describe("Common Animal rollDamage Restrained status", () => {
     expect(applyAttackStatuses).toHaveBeenCalledWith({
       effects: [RESTRAIN_EFFECT],
       targets: [targetActor],
+      sourceActor: context.actor,
     });
   });
 });

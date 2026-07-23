@@ -148,6 +148,33 @@ async function checkRestrainedStatus(
   );
 }
 
+function actorStatusEffect(actor, statusId) {
+  return boaCollectionValues(actor?.effects)
+    .find(effect => effect?.statuses?.has?.(statusId));
+}
+
+function preferredSourceActorUuid(actor) {
+  return actor?.baseActor?.uuid ?? actor?.uuid ?? null;
+}
+
+function checkRestrainedSource(
+  label,
+  targetActor,
+  sourceActor
+) {
+  const effect = actorStatusEffect(
+    targetActor,
+    RESTRAIN_STATUS_ID
+  );
+  boaCheckEqual(
+    checks,
+    label,
+    effect?.origin ?? null,
+    preferredSourceActorUuid(sourceActor)
+  );
+}
+
+
 
 function rollDamageModelClass() {
   return (
@@ -795,6 +822,11 @@ try {
     target,
     true
   );
+  checkRestrainedSource(
+    "Targeted Constriction records Large Serpent as the Restrained source",
+    target,
+    serpent
+  );
   await setActorStatus(
     target,
     RESTRAIN_STATUS_ID,
@@ -827,6 +859,11 @@ try {
       "Targeted Web Spray applies the Restrained status",
       target,
       true
+    );
+    checkRestrainedSource(
+      "Targeted Web Spray records Giant Spider as the Restrained source",
+      target,
+      spider
     );
     await setActorStatus(
       target,
