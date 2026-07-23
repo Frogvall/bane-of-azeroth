@@ -2,6 +2,8 @@ import {
   describe,
   expect,
   test,
+  beforeEach,
+  vi,
 } from "vitest";
 
 import * as attackEffects from "../../foundry/scripts/common-animal-attack-effects.js";
@@ -35,8 +37,8 @@ const POISON_EFFECT = {
     attackEffects.LETHAL_POISON_RULE_UUID,
 };
 
-const CONSTRAIN_EFFECT = {
-  type: "constrain",
+const RESTRAIN_EFFECT = {
+  type: "restrain",
   strength: 12,
 };
 
@@ -98,19 +100,19 @@ describe.skipIf(
     );
   });
 
-  test("builds targeted constrain text", () => {
+  test("builds targeted restrain text", () => {
     const text = buildEffectText({
-      effect: CONSTRAIN_EFFECT,
+      effect: RESTRAIN_EFFECT,
       attackerName: ATTACKER,
       targetName: TARGET,
     });
 
     expect(text).toBe(
-      `${ATTACKER} constrains ${TARGET}. ` +
+      `${ATTACKER} restrains ${TARGET}. ` +
       `${TARGET} is unable to move or take actions ` +
       "other than trying to escape with an open " +
       "opposed STR roll against 12. " +
-      `${TARGET} can still parry while constrained, ` +
+      `${TARGET} can still parry while restrained, ` +
       "but cannot evade."
     );
   });
@@ -155,7 +157,7 @@ describe.skipIf(
           {
             type: "unknown",
           },
-          CONSTRAIN_EFFECT,
+          RESTRAIN_EFFECT,
         ],
         attackerName: ATTACKER,
         targetName: TARGET,
@@ -165,7 +167,7 @@ describe.skipIf(
         content: once,
         effects: [
           POISON_EFFECT,
-          CONSTRAIN_EFFECT,
+          RESTRAIN_EFFECT,
         ],
         attackerName: ATTACKER,
         targetName: TARGET,
@@ -174,14 +176,14 @@ describe.skipIf(
     expect(
       once.indexOf("exposes Test")
     ).toBeLessThan(
-      once.indexOf("constrains Test")
+      once.indexOf("restrains Test")
     );
     expect(twice).toBe(once);
     expect(
       twice.match(/exposes Test/g)
     ).toHaveLength(1);
     expect(
-      twice.match(/constrains Test/g)
+      twice.match(/restrains Test/g)
     ).toHaveLength(1);
   });
 
@@ -198,5 +200,59 @@ describe.skipIf(
         targetName: TARGET,
       })
     ).toBe(DAMAGE_CONTENT);
+  });
+});
+
+describe("Common Animal rollDamage Restrained status", () => {
+  beforeEach(() => {
+    game.user.id = "originating-user";
+  });
+
+  test("applies Restrained from a targeted Constriction damage card", async () => {
+    const targetActor = {
+      name: TARGET,
+      uuid: "Actor.target",
+    };
+    const weapon = {
+      getFlag(moduleId, key) {
+        if (
+          moduleId === "bane-of-azeroth" &&
+          key === "attackEffects"
+        ) {
+          return [RESTRAIN_EFFECT];
+        }
+        return undefined;
+      },
+    };
+    const context = {
+      actor: { name: ATTACKER },
+      targetActor,
+      weapon,
+    };
+    const message = {
+      type: "rollDamage",
+      content: DAMAGE_CONTENT,
+      system: {
+        toContext: vi.fn(() => context),
+      },
+      update: vi.fn(async changes => {
+        Object.assign(message, changes);
+        return message;
+      }),
+    };
+    const applyAttackStatuses = vi.fn(async () => []);
+
+    await attackEffects.onCommonAnimalRollDamageChatMessage(
+      message,
+      {},
+      "originating-user",
+      { applyAttackStatuses }
+    );
+
+    expect(applyAttackStatuses).toHaveBeenCalledOnce();
+    expect(applyAttackStatuses).toHaveBeenCalledWith({
+      effects: [RESTRAIN_EFFECT],
+      targets: [targetActor],
+    });
   });
 });

@@ -228,7 +228,7 @@ const expectedAnimals = [
         range: "2",
         effects: [
           {
-            type: "constrain",
+            type: "restrain",
             strength: 12,
           },
         ],
@@ -249,9 +249,9 @@ const expectedAnimals = [
       `@UUID[${poisonRuleUuid}]{lethal poison}`,
       "potency of 15",
       "as if the poison had been ingested",
-      "Constrain:",
+      "Restrain:",
       "open opposed STR roll against 12",
-      "can still parry while constrained",
+      "can still parry while restrained",
       "cannot evade",
     ],
   },
@@ -286,7 +286,7 @@ const expectedAnimals = [
         effectOnly: true,
         effects: [
           {
-            type: "constrain",
+            type: "restrain",
             strength: 10,
           },
         ],
@@ -315,9 +315,9 @@ const expectedAnimals = [
       `@UUID[${poisonRuleUuid}]{lethal poison}`,
       "potency of 12",
       "as if the poison had been ingested",
-      "Constrain:",
+      "Restrain:",
       "open opposed STR roll against 10",
-      "can still parry while constrained",
+      "can still parry while restrained",
       "cannot evade",
     ],
   },

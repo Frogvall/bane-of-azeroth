@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "<p><strong>Lethal Poison:</strong> If the giant spider hits a creature with its Bite attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency of 12, as if the poison had been ingested.</p><p><strong>Constrain:</strong> If the giant spider hits a creature with its Web Spray attack, the creature is unable to move or take actions other than trying to escape with an open opposed STR roll against 10. The creature can still parry while constrained, but cannot evade.</p>",
+    "traits": "<p><strong>Lethal Poison:</strong> If the giant spider hits a creature with its Bite attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency of 12, as if the poison had been ingested.</p><p><strong>Restrain:</strong> If the giant spider hits a creature with its Web Spray attack, the creature is unable to move or take actions other than trying to escape with an open opposed STR roll against 10. The creature can still parry while restrained, but cannot evade.</p>",
     "currency": {
       "gc": null,
       "sc": null,
@@ -320,7 +320,7 @@
           "contentKey": "actors.common-animals.giant-spider.attack.web-spray.weapon",
           "attackEffects": [
             {
-              "type": "constrain",
+              "type": "restrain",
               "strength": 10
             }
           ],

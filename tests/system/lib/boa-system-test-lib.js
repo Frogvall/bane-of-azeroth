@@ -988,12 +988,12 @@ function boaBuildManualChecklistHtml() {
 
   <ul>
   <li>[ ] Giant Spider lists <strong>Web Spray 12</strong> in the compact Weapons row without empty damage parentheses.</li>
-  <li>[ ] A normal successful Web Spray attack immediately adds the Constrain 10 text to the same attack card and shows no Roll Damage button.</li>
-  <li>[ ] A failed Web Spray attack adds no Constrain text.</li>
-  <li>[ ] A demon result adds no Constrain text and uses Dragonbane's melee mishap flow.</li>
-  <li>[ ] A dragon result immediately adds Constrain 10 and still shows the Critical Hit button.</li>
+  <li>[ ] A normal successful Web Spray attack immediately adds the Restrain 10 text to the same attack card and shows no Roll Damage button.</li>
+  <li>[ ] A failed Web Spray attack adds no Restrain text.</li>
+  <li>[ ] A demon result adds no Restrain text and uses Dragonbane's melee mishap flow.</li>
+  <li>[ ] A dragon result immediately adds Restrain 10 and still shows the Critical Hit button.</li>
   <li>[ ] Opening Critical Hit for Web Spray offers Extra Attack but not Double Weapon Damage.</li>
-  <li>[ ] After confirming Extra Attack, the same attack card still contains exactly one copy of the Constrain 10 text.</li>
+  <li>[ ] After confirming Extra Attack, the same attack card still contains exactly one copy of the Restrain 10 text.</li>
   </ul>
 
 <h2>Compatibility and presentation</h2>

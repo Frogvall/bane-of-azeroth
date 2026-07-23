@@ -268,11 +268,11 @@ def attack_effects(attack: dict[str, Any]) -> list[dict[str, Any]]:
             }
         )
 
-    if attack.get("constrain") is not None:
+    if attack.get("restrain") is not None:
         effects.append(
             {
-                "type": "constrain",
-                "strength": attack["constrain"],
+                "type": "restrain",
+                "strength": attack["restrain"],
             }
         )
 
@@ -452,14 +452,14 @@ def animal_traits(companion: dict[str, Any]) -> str:
                 "had been ingested.</p>"
             )
 
-        if attack.get("constrain") is not None:
+        if attack.get("restrain") is not None:
             paragraphs.append(
-                "<p><strong>Constrain:</strong> "
+                "<p><strong>Restrain:</strong> "
                 f"If the {animal_name} hits a creature with its "
                 f"{attack['name']} attack, the creature is unable to move "
                 "or take actions other than trying to escape with an open "
-                f"opposed STR roll against {attack['constrain']}. "
-                "The creature can still parry while constrained, but "
+                f"opposed STR roll against {attack['restrain']}. "
+                "The creature can still parry while restrained, but "
                 "cannot evade.</p>"
             )
 
@@ -776,7 +776,7 @@ def validate_content(
                     attack["damage"],
                     f"companion {key!r} attack {attack_name!r}.damage",
                 )
-            for field in ("lethalPoison", "constrain"):
+            for field in ("lethalPoison", "restrain"):
                 value = require_optional_integer(
                     raw_attack.get(field),
                     f"companion {key!r} attack {attack_name!r}.{field}",

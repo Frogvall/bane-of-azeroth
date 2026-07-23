@@ -30,7 +30,7 @@
         "value": "none"
       }
     },
-    "traits": "<p><strong>Lethal Poison:</strong> If the large serpent hits a creature with its Bite attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency of 15, as if the poison had been ingested.</p><p><strong>Constrain:</strong> If the large serpent hits a creature with its Constriction attack, the creature is unable to move or take actions other than trying to escape with an open opposed STR roll against 12. The creature can still parry while constrained, but cannot evade.</p>",
+    "traits": "<p><strong>Lethal Poison:</strong> If the large serpent hits a creature with its Bite attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency of 15, as if the poison had been ingested.</p><p><strong>Restrain:</strong> If the large serpent hits a creature with its Constriction attack, the creature is unable to move or take actions other than trying to escape with an open opposed STR roll against 12. The creature can still parry while restrained, but cannot evade.</p>",
     "currency": {
       "gc": null,
       "sc": null,
@@ -320,7 +320,7 @@
           "contentKey": "actors.common-animals.large-serpent.attack.constriction.weapon",
           "attackEffects": [
             {
-              "type": "constrain",
+              "type": "restrain",
               "strength": 12
             }
           ]

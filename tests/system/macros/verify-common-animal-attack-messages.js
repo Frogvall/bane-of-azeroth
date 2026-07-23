@@ -1,6 +1,8 @@
 const checks = [];
 const notes = [];
 const createdMessageIds = [];
+const RESTRAIN_STATUS_ID = "restrain";
+let targetInitiallyRestrained = false;
 
 const testKey =
   "common-animal-attack-messages";
@@ -100,6 +102,52 @@ async function waitFor(
 
   return predicate();
 }
+
+function hasActorStatus(actor, statusId) {
+  return actor?.statuses?.has(statusId) === true;
+}
+
+async function setActorStatus(
+  actor,
+  statusId,
+  active
+) {
+  if (!actor) {
+    throw new Error("The status-test target is missing.");
+  }
+  await actor.toggleStatusEffect(statusId, { active });
+  const reached = await waitFor(
+    () => hasActorStatus(actor, statusId) === active
+  );
+  if (!reached) {
+    throw new Error(
+      `Status ${statusId} did not reach active=${active}.`
+    );
+  }
+}
+
+async function checkRestrainedStatus(
+  label,
+  actor,
+  expected
+) {
+  const reached = await waitFor(
+    () =>
+      hasActorStatus(actor, RESTRAIN_STATUS_ID) ===
+      expected
+  );
+  const actual = hasActorStatus(
+    actor,
+    RESTRAIN_STATUS_ID
+  );
+  boaCheckEqual(
+    checks,
+    label,
+    reached ? actual : !expected,
+    expected
+  );
+}
+
 
 function rollDamageModelClass() {
   return (
@@ -236,7 +284,7 @@ async function createWeaponTestMessage({
     if (success && !isDemon) {
       return normalizedText(
         messageContent(current)
-      ).includes("constrains");
+      ).includes("restrains");
     }
     return true;
   });
@@ -309,18 +357,18 @@ function checkEffectOnlyWeaponTest({
   );
 
   const effectLead = targetActor
-    ? `${actor.name} constrains ${targetActor.name}`
-    : `${actor.name} constrains the target`;
+    ? `${actor.name} restrains ${targetActor.name}`
+    : `${actor.name} restrains the target`;
   if (expectsEffect) {
     boaCheck(
       checks,
-      `${scenario} appends Constrain to the same attack card`,
+      `${scenario} appends Restrain to the same attack card`,
       content.includes(effectLead),
       content
     );
     boaCheck(
       checks,
-      `${scenario} includes Constrain strength 10`,
+      `${scenario} includes Restrain strength 10`,
       content.includes(
         "open opposed STR roll against 10"
       ),
@@ -335,8 +383,8 @@ function checkEffectOnlyWeaponTest({
   } else {
     boaCheck(
       checks,
-      `${scenario} does not apply Constrain`,
-      !content.includes(`${actor.name} constrains`),
+      `${scenario} does not apply Restrain`,
+      !content.includes(`${actor.name} restrains`),
       content
     );
   }
@@ -597,7 +645,16 @@ if (
   );
 }
 
+targetInitiallyRestrained = hasActorStatus(
+  target,
+  RESTRAIN_STATUS_ID
+);
 try {
+  await setActorStatus(
+    target,
+    RESTRAIN_STATUS_ID,
+    false
+  );
   const targetedPoison =
     await createRollDamageMessage({
       actor: serpent,
@@ -682,7 +739,7 @@ try {
     ],
   });
 
-  const targetedConstrain =
+  const targetedRestrain =
     await createRollDamageMessage({
       actor: serpent,
       weapon: constriction,
@@ -692,17 +749,17 @@ try {
 
   checkSingleEnrichedMessage({
     scenario: "Targeted Constriction",
-    run: targetedConstrain,
+    run: targetedRestrain,
     actor: serpent,
     weapon: constriction,
     targetActor: target,
     effectChecks: [
       {
         label:
-          "identifies attacker and target in the constrain text",
+          "identifies attacker and target in the restrain text",
         predicate: content =>
           content.includes(
-            `${serpent.name} constrains ${target.name}`
+            `${serpent.name} restrains ${target.name}`
           ),
       },
       {
@@ -733,6 +790,17 @@ try {
   });
 
 
+  await checkRestrainedStatus(
+    "Targeted Constriction applies the Restrained status",
+    target,
+    true
+  );
+  await setActorStatus(
+    target,
+    RESTRAIN_STATUS_ID,
+    false
+  );
+
   if (
     spider &&
     webSpray &&
@@ -755,6 +823,17 @@ try {
       expectsEffect: true,
     });
 
+    await checkRestrainedStatus(
+      "Targeted Web Spray applies the Restrained status",
+      target,
+      true
+    );
+    await setActorStatus(
+      target,
+      RESTRAIN_STATUS_ID,
+      false
+    );
+
     const untargetedWebSpray =
       await createWeaponTestMessage({
         actor: spider,
@@ -771,6 +850,12 @@ try {
       targetActor: null,
       expectsEffect: true,
     });
+
+    await checkRestrainedStatus(
+      "Untargeted Web Spray does not apply Restrained",
+      target,
+      false
+    );
 
     const failedWebSpray =
       await createWeaponTestMessage({
@@ -789,6 +874,12 @@ try {
       expectsEffect: false,
     });
 
+    await checkRestrainedStatus(
+      "Failed Web Spray does not apply Restrained",
+      target,
+      false
+    );
+
     const demonWebSpray =
       await createWeaponTestMessage({
         actor: spider,
@@ -806,6 +897,12 @@ try {
       targetActor: target,
       expectsEffect: false,
     });
+
+    await checkRestrainedStatus(
+      "Demon Web Spray does not apply Restrained",
+      target,
+      false
+    );
 
     const dragonWebSpray =
       await createWeaponTestMessage({
@@ -834,6 +931,11 @@ try {
         messageContent(dragonWebSpray.message)
       )
     );
+    await checkRestrainedStatus(
+      "Dragon Web Spray applies the Restrained status",
+      target,
+      true
+    );
   } else {
     boaCheck(
       checks,
@@ -850,6 +952,27 @@ try {
     error.stack ?? error.message
   );
 } finally {
+  try {
+    await setActorStatus(
+      target,
+      RESTRAIN_STATUS_ID,
+      targetInitiallyRestrained
+    );
+    boaCheckEqual(
+      checks,
+      "Crocolisk Restrained status was restored",
+      hasActorStatus(target, RESTRAIN_STATUS_ID),
+      targetInitiallyRestrained
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Crocolisk Restrained status was restored",
+      false,
+      error.stack ?? error.message
+    );
+  }
+
   try {
     await deleteCreatedMessages();
 
@@ -880,8 +1003,12 @@ notes.push(
   "card and must not create a separate Gamemaster message."
 );
 notes.push(
-  "No poison damage, condition, Active Effect, constrained " +
-  "state, target update, or movement automation is expected."
+  "Targeted Restrain effects apply Dragonbane's built-in " +
+  "Restrained status; untargeted and unsuccessful attacks do not."
+);
+notes.push(
+  "The macro restores the Crocolisk target's original " +
+  "Restrained status after all scenarios."
 );
 
 notes.push(

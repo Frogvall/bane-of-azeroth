@@ -195,7 +195,7 @@ describe.skipIf(
           name: "Constriction",
           effects: [
             {
-              type: "constrain",
+              type: "restrain",
               strength: 12,
             },
           ],
@@ -214,7 +214,7 @@ describe.skipIf(
     );
 
     expect(message.content).toContain(
-      "Large Serpent constrains Test"
+      "Large Serpent restrains Test"
     );
     expect(message.content).toContain(
       "open opposed STR roll against 12"

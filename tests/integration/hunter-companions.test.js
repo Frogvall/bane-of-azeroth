@@ -205,7 +205,7 @@ const EXPECTED_COMPANIONS = [
         skillLevel: 10,
         damage: "D6",
         range: 2,
-        constrain: 12,
+        restrain: 12,
       },
     ],
     skills: [
@@ -240,7 +240,7 @@ const EXPECTED_COMPANIONS = [
         skillLevel: 12,
         damage: null,
         range: 2,
-        constrain: 10,
+        restrain: 10,
       },
     ],
     skills: [
@@ -748,7 +748,7 @@ function normalizeAttack(attack) {
 
   for (const field of [
     "lethalPoison",
-    "constrain",
+    "restrain",
   ]) {
     if (
       Object.prototype.hasOwnProperty.call(
@@ -793,10 +793,10 @@ function expectedAttackEffects(attack) {
     });
   }
 
-  if (attack.constrain != null) {
+  if (attack.restrain != null) {
     effects.push({
-      type: "constrain",
-      strength: attack.constrain,
+      type: "restrain",
+      strength: attack.restrain,
     });
   }
 
@@ -842,14 +842,14 @@ function expectedTraits(companion) {
       );
     }
 
-    if (attack.constrain != null) {
+    if (attack.restrain != null) {
       paragraphs.push(
-        "<p><strong>Constrain:</strong> " +
+        "<p><strong>Restrain:</strong> " +
         `If the ${animalName} hits a creature with its ` +
         `${attack.name} attack, the creature is unable to move ` +
         "or take actions other than trying to escape with an open " +
-        `opposed STR roll against ${attack.constrain}. ` +
-        "The creature can still parry while constrained, but " +
+        `opposed STR roll against ${attack.restrain}. ` +
+        "The creature can still parry while restrained, but " +
         "cannot evade.</p>"
       );
     }

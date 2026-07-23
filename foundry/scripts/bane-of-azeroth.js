@@ -1,4 +1,7 @@
 import {
+  registerCommonAnimalStatusSocket,
+} from "./common-animal-status-effects.js";
+import {
   MODULE_ID,
   WEAPON_FEATURES,
 } from "./core/constants.js";
@@ -135,6 +138,7 @@ Hooks.once("ready", async () => {
 
 
   registerElementalTotemSocket();
+  registerCommonAnimalStatusSocket();
 
   try {
     await loadSpellGrantDefinitions();

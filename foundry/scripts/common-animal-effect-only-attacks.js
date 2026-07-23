@@ -2,6 +2,9 @@ import {
   appendCommonAnimalAttackEffectsToDamageContent,
 } from "./common-animal-attack-effects.js";
 
+import {
+  applyCommonAnimalAttackStatuses,
+} from "./common-animal-status-effects.js";
 const MODULE_ID = "bane-of-azeroth";
 
 function displayName(document) {
@@ -209,12 +212,48 @@ async function enrichEffectOnlyWeaponTestMessage(
 export async function onCreateCommonAnimalEffectOnlyWeaponTestMessage(
   message,
   _options,
-  userId
+  userId,
+  {
+    applyAttackStatuses =
+      applyCommonAnimalAttackStatuses,
+  } = {}
 ) {
-  return enrichEffectOnlyWeaponTestMessage(
+  const enriched = await enrichEffectOnlyWeaponTestMessage(
     message,
     userId
   );
+
+  if (userId && userId !== game.user.id) {
+    return enriched;
+  }
+  if (message?.type !== "weaponTest") {
+    return enriched;
+  }
+
+  const context = weaponTestContext(message);
+  if (
+    !context ||
+    context.success !== true ||
+    !isCommonAnimalEffectOnlyWeapon(context.weapon) ||
+    !context.targetActor
+  ) {
+    return enriched;
+  }
+
+  const targetReference =
+    context.targetActor?.token?.document?.uuid ??
+    context.targetActor?.token?.uuid ??
+    context.targetActor?.uuid ??
+    null;
+  if (!targetReference) {
+    return enriched;
+  }
+
+  await applyAttackStatuses({
+    effects: attackEffects(context.weapon),
+    targets: [context.targetActor],
+  });
+  return enriched;
 }
 
 /**
@@ -225,7 +264,8 @@ export async function onUpdateCommonAnimalEffectOnlyWeaponTestMessage(
   message,
   _changes,
   _options,
-  userId
+  userId,
+  _dependencies = {}
 ) {
   return enrichEffectOnlyWeaponTestMessage(
     message,

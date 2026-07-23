@@ -23,7 +23,7 @@ function makeWeapon({
   damage = "",
   effects = [
     {
-      type: "constrain",
+      type: "restrain",
       strength: 10,
     },
   ],
@@ -190,7 +190,7 @@ describe("Common Animal effect-only weaponTest messages", () => {
       message.update
     ).toHaveBeenCalledOnce();
     expect(message.content).toContain(
-      "Giant Spider constrains Test"
+      "Giant Spider restrains Test"
     );
     expect(message.content).toContain(
       "open opposed STR roll against 10"
@@ -311,7 +311,7 @@ describe("Common Animal effect-only weaponTest messages", () => {
       "Critical Hit: Extra Attack"
     );
     expect(message.content).toContain(
-      "Giant Spider constrains Test"
+      "Giant Spider restrains Test"
     );
   });
 
@@ -337,7 +337,7 @@ describe("Common Animal effect-only weaponTest messages", () => {
     ).toHaveBeenCalledOnce();
     expect(
       message.content.match(
-        /Giant Spider constrains Test/g
+        /Giant Spider restrains Test/g
       )
     ).toHaveLength(1);
   });
@@ -493,5 +493,69 @@ describe("Common Animal effect-only NPC sheet inline markup regression", () => {
     expect(textNode.textContent).toBe(
       "Web Spray 12"
     );
+  });
+});
+
+describe("Common Animal effect-only Restrained status", () => {
+  test("applies Restrained only during creation of a targeted successful card", async () => {
+    const message = makeMessage();
+    const context = message.system.toContext();
+    context.targetActor.uuid = "Actor.target";
+    const applyAttackStatuses = vi.fn(async () => []);
+
+    await onCreateCommonAnimalEffectOnlyWeaponTestMessage(
+      message,
+      {},
+      "originating-user",
+      { applyAttackStatuses }
+    );
+    await onUpdateCommonAnimalEffectOnlyWeaponTestMessage(
+      message,
+      { content: message.content },
+      {},
+      "originating-user",
+      { applyAttackStatuses }
+    );
+
+    expect(applyAttackStatuses).toHaveBeenCalledOnce();
+    expect(applyAttackStatuses).toHaveBeenCalledWith({
+      effects: [
+        {
+          type: "restrain",
+          strength: 10,
+        },
+      ],
+      targets: [context.targetActor],
+    });
+  });
+
+  test.each([
+    {
+      label: "an untargeted attack",
+      message: makeMessage(),
+      prepare(context) {
+        context.targetActor = null;
+      },
+    },
+    {
+      label: "a failed attack",
+      message: makeMessage({ success: false }),
+      prepare(context) {
+        context.targetActor.uuid = "Actor.target";
+      },
+    },
+  ])("does not apply Restrained for $label", async ({ message, prepare }) => {
+    const context = message.system.toContext();
+    prepare(context);
+    const applyAttackStatuses = vi.fn(async () => []);
+
+    await onCreateCommonAnimalEffectOnlyWeaponTestMessage(
+      message,
+      {},
+      "originating-user",
+      { applyAttackStatuses }
+    );
+
+    expect(applyAttackStatuses).not.toHaveBeenCalled();
   });
 });

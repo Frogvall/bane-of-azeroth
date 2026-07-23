@@ -226,7 +226,7 @@
           "skillLevel": 10,
           "damage": "D6",
           "range": 2,
-          "constrain": 12
+          "restrain": 12
         }
       ],
       "skills": [
@@ -271,7 +271,7 @@
           "skillLevel": 12,
           "damage": null,
           "range": 2,
-          "constrain": 10
+          "restrain": 10
         }
       ],
       "skills": [

@@ -1,3 +1,6 @@
+import {
+  applyCommonAnimalAttackStatuses,
+} from "./common-animal-status-effects.js";
 export const LETHAL_POISON_RULE_UUID =
   "JournalEntry.SbbSMsuvWeo3HaID." +
   "JournalEntryPage.6WPxPxUjh4W80RNy#poison";
@@ -61,7 +64,7 @@ function buildLethalPoisonMessage({
   };
 }
 
-function buildConstrainMessage({
+function buildRestrainMessage({
   effect,
   attackerName,
   targetName,
@@ -82,17 +85,17 @@ function buildConstrainMessage({
   );
 
   return {
-    effectType: "constrain",
+    effectType: "restrain",
     attackerName,
     targetName,
     content:
-      "<p><strong>Constrain:</strong> " +
-      `${safeAttacker} constrains ${safeTarget}. ` +
+      "<p><strong>Restrain:</strong> " +
+      `${safeAttacker} restrains ${safeTarget}. ` +
       `${safeTarget} is unable to move or take ` +
       "actions other than trying to escape with an " +
       `open opposed STR roll against ${strength}. ` +
       `${safeTarget} can still parry while ` +
-      "constrained, but cannot evade.</p>",
+      "restrained, but cannot evade.</p>",
   };
 }
 
@@ -119,8 +122,8 @@ export function buildCommonAnimalAttackEffectMessage({
     });
   }
 
-  if (effect.type === "constrain") {
-    return buildConstrainMessage({
+  if (effect.type === "restrain") {
+    return buildRestrainMessage({
       effect,
       attackerName,
       targetName,
@@ -415,7 +418,7 @@ export function buildCommonAnimalAttackEffectText({
     );
   }
 
-  if (effect.type === "constrain") {
+  if (effect.type === "restrain") {
     const strength = finiteNumber(
       effect.strength
     );
@@ -429,12 +432,12 @@ export function buildCommonAnimalAttackEffectText({
       : "The target";
 
     return (
-      `${safeAttacker} constrains ${safeTarget}. ` +
+      `${safeAttacker} restrains ${safeTarget}. ` +
       `${sentenceTarget} is unable to move or take ` +
       "actions other than trying to escape with an " +
       `open opposed STR roll against ${strength}. ` +
       `${sentenceTarget} can still parry while ` +
-      "constrained, but cannot evade."
+      "restrained, but cannot evade."
     );
   }
 
@@ -576,58 +579,58 @@ function rollDamageContext(message) {
 export async function onCommonAnimalRollDamageChatMessage(
   message,
   _options,
-  userId
+  userId,
+  {
+    applyAttackStatuses =
+      applyCommonAnimalAttackStatuses,
+  } = {}
 ) {
   if (userId !== game.user.id) {
     return message;
   }
-
   if (message?.type !== "rollDamage") {
     return message;
   }
 
-  const context =
-    rollDamageContext(message);
-
+  const context = rollDamageContext(message);
   if (!context) {
     return message;
   }
 
-  const effects =
-    context.weapon?.getFlag?.(
-      MODULE_ID,
-      "attackEffects"
-    );
-
-  if (
-    !Array.isArray(effects) ||
-    effects.length === 0
-  ) {
+  const effects = context.weapon?.getFlag?.(
+    MODULE_ID,
+    "attackEffects"
+  );
+  if (!Array.isArray(effects) || effects.length === 0) {
     return message;
   }
 
-  const content =
-    appendCommonAnimalAttackEffectsToDamageContent({
-      content:
-        String(message.content ?? ""),
-      effects,
-      attackerName:
-        displayName(context.actor),
-      targetName:
-        context.targetActor
-          ? displayName(
-              context.targetActor
-            )
-          : null,
-    });
-
-  if (content === message.content) {
-    return message;
-  }
-
-  await message.update({
-    content,
+  const content = appendCommonAnimalAttackEffectsToDamageContent({
+    content: String(message.content ?? ""),
+    effects,
+    attackerName: displayName(context.actor),
+    targetName: context.targetActor
+      ? displayName(context.targetActor)
+      : null,
   });
+  if (content !== message.content) {
+    await message.update({
+      content,
+    });
+  }
+
+  const targetActor = context.targetActor ?? null;
+  const targetReference =
+    targetActor?.token?.document?.uuid ??
+    targetActor?.token?.uuid ??
+    targetActor?.uuid ??
+    null;
+  if (targetActor && targetReference) {
+    await applyAttackStatuses({
+      effects,
+      targets: [targetActor],
+    });
+  }
 
   return message;
 }
