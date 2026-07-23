@@ -1567,10 +1567,10 @@ Hunters on Azeroth tend to find companions in a multitude of places. The Compani
 | Dragonhawk   | 2<br/>Fly 14  | 8              | Beak (skill level 10, D10)<br/>Talons (skill level 12, damage 2D4) | Awareness 14, Evade 12 |
 | Giant Bat    | 2<br/>Fly 8   | 10             | Bite (skill level 10, damage D10)<br/>Sonic Wave (skill level 10, damage D6, range 10m) | Awareness 16, Evade 12 |
 | Giant Owl    | 2<br/>Fly 14  | 8              | Beak (skill level 10, D10)<br/>Talons (skill level 12, damage 2D4) | Awareness 16, Evade 10 |
-| Giant Spider | 8             | 10             | Bite (skill level 10, damage D4, lethal poison 12)<br/>Web Spray (skill level 12, no damage, constrain 10) | Acrobatics 16, Awareness 12, Evade 12, Stealth 12 |
+| Giant Spider | 8             | 10             | Bite (skill level 10, damage D4, lethal poison 12)<br/>Web Spray (skill level 12, no damage, restrain 10) | Acrobatics 16, Awareness 12, Evade 12, Stealth 12 |
 | Gorilla      | 8             | 16             | Bite (skill level 12, damage 2D6)<br/>Fist (skill level 14, damage 2D4)    | Acrobatics 14, Awareness 10, Evade 14           |
 | Large Cat    | 16            | 12             | Bite (skill level 12, damage 2D6)<br/>Claws (skill level 14, damage 2D4) | Awareness 12, Evade 12, Stealth 14 |
-| Large Serpent | 10            | 8              | Bite (skill level 12, damage D6, lethal poison 15)<br/>Constriction (skill level 10, damage D6, constrain 12) | Awareness 12, Evade 16 |
+| Large Serpent | 10            | 8              | Bite (skill level 12, damage D6, lethal poison 15)<br/>Constriction (skill level 10, damage D6, restrain 12) | Awareness 12, Evade 16 |
 | Raptor       | 16            | 10            | Bite (skill level 12, damage 2D6)<br/>Claws (skill level 12, damage 2D4) | Awareness 14, Evade 14 |
 | Ravager      | 10            | 14<br/>Armor 2 | Bite (skill level 10, damage 2D4) | Awareness 10, Evade 14 |
 | Scorpid      | 8             | 12<br/>Armor 2 | Claws (skill level 12, damage D10)<br/>Tail (skill level 12, damage D6, lethal poison 12) | Awareness 8, Evade 8 |
@@ -1580,9 +1580,9 @@ Hunters on Azeroth tend to find companions in a multitude of places. The Compani
 }}
 
 {{wide
-**Constrain**: A creature getting hit by an attack with the constrain keyword makes it unable to move or take actions other than to try to escape (an open STR opposed roll against the number following the constrain keyword). The creature can still parry while constrained, but not evade.<br/>
 **Fly**: The animal moves freely through the air. The number that follows is the movement rate while flying.<br/>
 **Lethal Poison**: A creature getting hit by an attack with this keyword is exposed to lethal poison as if the poison had been ingested. The number that follows is the potency.<br/>
+**Restrain**: A creature getting hit by an attack with the restrain keyword makes it unable to move or take actions other than to try to escape (an open STR opposed roll against the number following the restrain keyword). The creature can still parry while restrained, but not evade.<br/>
 **Swim**: The animal moves without penalties when swimming and automatically succeed on SWIMMING rolls. The number that follows is the movement rate while swimming.
 }}
 
