@@ -42,9 +42,12 @@ This game supplement was created under Fria Ligan AB's [Dragonbane Third Party S
 
 This game supplement is neither affiliated with, sponsored, or endorsed by Fria Ligan AB or Blizzard Entertainment, Inc.
 
-### Art
+### Artwork
 
-All art has been created with generative AI, inspired by original art from the following artists or studios:<br/>
+Except for separately credited background textures and other design assets, the illustrations in this book were created using generative AI. Across the book, these illustrations draw visual inspiration from<br/>original works by the artists and studios listed below.
+
+These artists and studios are credited as visual influences only. They did not contribute to, authorize, sponsor, or endorse this project.<br/>No affiliation with them is claimed or implied.
+
 [Alex Horley](https://www.alexhorleyart.com/),
 [Andrew Clark](https://www.artstation.com/atcillustration),
 [BOSi Art Studios](https://www.artstation.com/bosi-art-studios),
