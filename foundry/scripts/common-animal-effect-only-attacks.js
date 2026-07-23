@@ -233,45 +233,81 @@ export async function onUpdateCommonAnimalEffectOnlyWeaponTestMessage(
   );
 }
 
+function descendantTextNodes(root) {
+  const nodes = [];
+
+  function visit(node) {
+    for (const child of Array.from(node?.childNodes ?? [])) {
+      if (child?.nodeType === 3) {
+        nodes.push(child);
+        continue;
+      }
+      visit(child);
+    }
+  }
+
+  visit(root);
+  return nodes;
+}
+
+function removeTrailingEmptyDamageParentheses(textNode) {
+  if (textNode?.nodeType !== 3) {
+    return false;
+  }
+
+  const before = String(textNode.textContent ?? "");
+  const after = before.replace(
+    /\s*\(\s*\)\s*$/,
+    ""
+  );
+  if (after === before) {
+    return false;
+  }
+
+  textNode.textContent = after;
+  return true;
+}
+
 /**
  * Remove Dragonbane's empty damage parentheses from one rendered weapon link.
+ *
+ * Dragonbane 4 renders the damage formula inside the weapon anchor. Keep the
+ * adjacent-text fallback for compatibility with older sheet markup.
  */
 export function removeEmptyDamageParenthesesAfterWeaponElement(
   element
 ) {
+  const textNodes = descendantTextNodes(element);
+  for (let index = textNodes.length - 1; index >= 0; index -= 1) {
+    if (removeTrailingEmptyDamageParentheses(textNodes[index])) {
+      return true;
+    }
+  }
+
   let sibling =
     element?.nextSibling ??
     null;
-
   while (sibling) {
     if (sibling.nodeType === 3) {
-      const before =
-        String(
-          sibling.textContent ?? ""
-        );
+      const before = String(sibling.textContent ?? "");
       const after = before.replace(
-        /^\s*\(\s*\)/,
+        /^\s*\(\s*\)\s*/,
         ""
       );
-
       if (after !== before) {
         sibling.textContent = after;
         return true;
       }
-
       if (before.trim()) {
         return false;
       }
-
       sibling =
         sibling.nextSibling ??
         null;
       continue;
     }
-
     return false;
   }
-
   return false;
 }
 

@@ -12,7 +12,7 @@ if (!game.user.isGM) {
     checks,
     "Attack-message verification is run by a game master",
     false,
-    "The test creates and deletes temporary rollDamage ChatMessages."
+    "The test creates and deletes temporary attack ChatMessages."
   );
 
   return boaFinish(
@@ -109,6 +109,239 @@ function rollDamageModelClass() {
     null
   );
 }
+
+function weaponTestModelClass() {
+  return (
+    CONFIG.ChatMessage
+      ?.dataModels
+      ?.weaponTest ??
+    null
+  );
+}
+
+function effectOnlySkillContext(actor, weapon) {
+  const skillName =
+    weapon?.system?.skill?.name ??
+    weapon?.name ??
+    "Effect-only attack";
+  return (
+    itemByTypeAndName(
+      actor,
+      "skill",
+      skillName
+    ) ??
+    {
+      name: skillName,
+      system: {
+        value: Number(
+          weapon?.system?.skill?.value ??
+          0
+        ),
+      },
+    }
+  );
+}
+
+function countOccurrences(value, needle) {
+  if (!needle) {
+    return 0;
+  }
+  return String(value ?? "")
+    .split(needle)
+    .length - 1;
+}
+
+function hasRollDamageAction(content) {
+  return (
+    /data-action=["']rollWeaponDamage["']/i.test(
+      String(content ?? "")
+    ) ||
+    normalizedText(content).includes(
+      "Roll Damage"
+    )
+  );
+}
+
+function hasCriticalAction(content) {
+  return (
+    /data-action=["']critical["']/i.test(
+      String(content ?? "")
+    ) ||
+    String(content ?? "").includes(
+      "critical-roll"
+    )
+  );
+}
+
+async function createWeaponTestMessage({
+  actor,
+  weapon,
+  targetActor = null,
+  result,
+  success,
+  isDragon = false,
+  isDemon = false,
+}) {
+  const Model = weaponTestModelClass();
+  if (!Model) {
+    throw new Error(
+      "Dragonbane's weaponTest ChatMessage " +
+      "data model is not registered."
+    );
+  }
+
+  const roll =
+    await new Roll(String(result)).evaluate();
+  const skill =
+    effectOnlySkillContext(actor, weapon);
+  const model = Model.fromContext({
+    actor,
+    weapon,
+    skill,
+    action: "normal",
+    damageType: "DoD.damageTypes.none",
+    extraDamage: "",
+    extraDragons: 0,
+    isDamaging: true,
+    targetActor,
+    criticalEffect: "",
+    isRanged: false,
+    banes: 0,
+    boons: 0,
+    canPush: false,
+    isDemon,
+    isDragon,
+    result,
+    success,
+    target: Number(
+      skill?.system?.value ??
+      weapon?.system?.skill?.value ??
+      0
+    ),
+  });
+  const messageData =
+    await model.createMessageData(roll);
+  const beforeIds = liveMessageIds();
+  const message =
+    await ChatMessage.create(messageData);
+
+  await waitFor(() => {
+    const current = game.messages.get(message.id);
+    if (!current) {
+      return false;
+    }
+    if (current.system?.isDamaging !== false) {
+      return false;
+    }
+    if (success && !isDemon) {
+      return normalizedText(
+        messageContent(current)
+      ).includes("constrains");
+    }
+    return true;
+  });
+  await new Promise(resolve =>
+    setTimeout(resolve, 50)
+  );
+
+  const created = messagesCreatedSince(beforeIds);
+  recordMessages(created);
+  return {
+    message:
+      game.messages.get(message.id) ??
+      message,
+    created,
+    originalContent:
+      String(messageData.content ?? ""),
+    roll,
+  };
+}
+
+function checkEffectOnlyWeaponTest({
+  scenario,
+  run,
+  actor,
+  weapon,
+  targetActor,
+  expectsEffect,
+}) {
+  boaCheckEqual(
+    checks,
+    `${scenario} creates only the Dragonbane weaponTest ChatMessage`,
+    run.created.length,
+    1
+  );
+  boaCheckEqual(
+    checks,
+    `${scenario} keeps the original ChatMessage document`,
+    run.created[0]?.id ?? null,
+    run.message.id
+  );
+  boaCheckEqual(
+    checks,
+    `${scenario} keeps the weaponTest message type`,
+    run.message.type,
+    "weaponTest"
+  );
+  boaCheckEqual(
+    checks,
+    `${scenario} is classified as non-damaging`,
+    run.message.system?.isDamaging,
+    false
+  );
+  boaCheckEqual(
+    checks,
+    `${scenario} remains a melee attack`,
+    run.message.system?.isRanged,
+    false
+  );
+
+  const content = normalizedText(
+    messageContent(run.message)
+  );
+  boaCheck(
+    checks,
+    `${scenario} has no Roll Damage action`,
+    !hasRollDamageAction(
+      messageContent(run.message)
+    ),
+    content
+  );
+
+  const effectLead = targetActor
+    ? `${actor.name} constrains ${targetActor.name}`
+    : `${actor.name} constrains the target`;
+  if (expectsEffect) {
+    boaCheck(
+      checks,
+      `${scenario} appends Constrain to the same attack card`,
+      content.includes(effectLead),
+      content
+    );
+    boaCheck(
+      checks,
+      `${scenario} includes Constrain strength 10`,
+      content.includes(
+        "open opposed STR roll against 10"
+      ),
+      content
+    );
+    boaCheckEqual(
+      checks,
+      `${scenario} appends the effect exactly once`,
+      countOccurrences(content, effectLead),
+      1
+    );
+  } else {
+    boaCheck(
+      checks,
+      `${scenario} does not apply Constrain`,
+      !content.includes(`${actor.name} constrains`),
+      content
+    );
+  }
+}
+
 
 async function createRollDamageMessage({
   actor,
@@ -271,6 +504,33 @@ function checkSingleEnrichedMessage({
     );
   }
 }
+
+const spider = boaFindWorldActor(
+  "actors.common-animals.giant-spider"
+);
+boaCheck(
+  checks,
+  "Giant Spider is imported",
+  Boolean(spider),
+  "actors.common-animals.giant-spider"
+);
+const webSpray = itemByTypeAndName(
+  spider,
+  "weapon",
+  "Web Spray"
+);
+boaCheck(
+  checks,
+  "Giant Spider Web Spray weapon is available",
+  Boolean(webSpray),
+  "Web Spray"
+);
+boaCheck(
+  checks,
+  "Dragonbane weaponTest data model is registered",
+  Boolean(weaponTestModelClass()),
+  "CONFIG.ChatMessage.dataModels.weaponTest"
+);
 
 const serpent = boaFindWorldActor(
   "actors.common-animals.large-serpent"
@@ -471,10 +731,121 @@ try {
       },
     ],
   });
+
+
+  if (
+    spider &&
+    webSpray &&
+    weaponTestModelClass()
+  ) {
+    const targetedWebSpray =
+      await createWeaponTestMessage({
+        actor: spider,
+        weapon: webSpray,
+        targetActor: target,
+        result: 10,
+        success: true,
+      });
+    checkEffectOnlyWeaponTest({
+      scenario: "Targeted Web Spray",
+      run: targetedWebSpray,
+      actor: spider,
+      weapon: webSpray,
+      targetActor: target,
+      expectsEffect: true,
+    });
+
+    const untargetedWebSpray =
+      await createWeaponTestMessage({
+        actor: spider,
+        weapon: webSpray,
+        targetActor: null,
+        result: 10,
+        success: true,
+      });
+    checkEffectOnlyWeaponTest({
+      scenario: "Untargeted Web Spray",
+      run: untargetedWebSpray,
+      actor: spider,
+      weapon: webSpray,
+      targetActor: null,
+      expectsEffect: true,
+    });
+
+    const failedWebSpray =
+      await createWeaponTestMessage({
+        actor: spider,
+        weapon: webSpray,
+        targetActor: target,
+        result: 13,
+        success: false,
+      });
+    checkEffectOnlyWeaponTest({
+      scenario: "Failed Web Spray",
+      run: failedWebSpray,
+      actor: spider,
+      weapon: webSpray,
+      targetActor: target,
+      expectsEffect: false,
+    });
+
+    const demonWebSpray =
+      await createWeaponTestMessage({
+        actor: spider,
+        weapon: webSpray,
+        targetActor: target,
+        result: 20,
+        success: false,
+        isDemon: true,
+      });
+    checkEffectOnlyWeaponTest({
+      scenario: "Demon Web Spray",
+      run: demonWebSpray,
+      actor: spider,
+      weapon: webSpray,
+      targetActor: target,
+      expectsEffect: false,
+    });
+
+    const dragonWebSpray =
+      await createWeaponTestMessage({
+        actor: spider,
+        weapon: webSpray,
+        targetActor: target,
+        result: 1,
+        success: true,
+        isDragon: true,
+      });
+    checkEffectOnlyWeaponTest({
+      scenario: "Dragon Web Spray",
+      run: dragonWebSpray,
+      actor: spider,
+      weapon: webSpray,
+      targetActor: target,
+      expectsEffect: true,
+    });
+    boaCheck(
+      checks,
+      "Dragon Web Spray keeps the Critical Hit action",
+      hasCriticalAction(
+        messageContent(dragonWebSpray.message)
+      ),
+      normalizedText(
+        messageContent(dragonWebSpray.message)
+      )
+    );
+  } else {
+    boaCheck(
+      checks,
+      "Web Spray weaponTest scenarios have their prerequisites",
+      false,
+      "Giant Spider, Web Spray, or weaponTest data model is missing."
+    );
+  }
 } catch (error) {
   boaCheck(
     checks,
-    "Dragonbane rollDamage scenarios complete",
+    "Dragonbane attack-message scenarios complete",
     false,
     error.stack ?? error.message
   );
@@ -484,7 +855,7 @@ try {
 
     boaCheck(
       checks,
-      "Temporary rollDamage ChatMessages were removed",
+      "Temporary attack ChatMessages were removed",
       createdMessageIds.every(
         id => !game.messages.get(id)
       ),
@@ -493,7 +864,7 @@ try {
   } catch (error) {
     boaCheck(
       checks,
-      "Temporary rollDamage ChatMessages were removed",
+      "Temporary attack ChatMessages were removed",
       false,
       error.stack ?? error.message
     );
@@ -513,6 +884,14 @@ notes.push(
   "state, target update, or movement automation is expected."
 );
 
+notes.push(
+  "Web Spray scenarios create real Dragonbane weaponTest " +
+  "ChatMessages and verify their non-damaging classification."
+);
+notes.push(
+  "Critical Hit dialog choices and Extra Attack card rebuilding " +
+  "remain explicit manual Foundry checks."
+);
 return boaFinish(
   testKey,
   testName,

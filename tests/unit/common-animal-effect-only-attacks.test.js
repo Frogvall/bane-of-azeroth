@@ -419,3 +419,79 @@ describe("Common Animal effect-only NPC sheet presentation", () => {
     ).toBe("");
   });
 });
+
+describe("Common Animal effect-only NPC sheet inline markup regression", () => {
+  test("removes Dragonbane's inline empty damage parentheses", () => {
+    const textNode = {
+      nodeType: 3,
+      textContent: "Web Spray 12 ()",
+      childNodes: [],
+      nextSibling: null,
+    };
+    const link = {
+      childNodes: [textNode],
+      nextSibling: null,
+    };
+
+    expect(
+      removeEmptyDamageParenthesesAfterWeaponElement(link)
+    ).toBe(true);
+    expect(textNode.textContent).toBe(
+      "Web Spray 12"
+    );
+    expect(
+      removeEmptyDamageParenthesesAfterWeaponElement(link)
+    ).toBe(false);
+  });
+
+  test("leaves Dragonbane's inline real damage formula untouched", () => {
+    const textNode = {
+      nodeType: 3,
+      textContent: "Bite 10 (D4)",
+      childNodes: [],
+      nextSibling: null,
+    };
+    const link = {
+      childNodes: [textNode],
+      nextSibling: null,
+    };
+
+    expect(
+      removeEmptyDamageParenthesesAfterWeaponElement(link)
+    ).toBe(false);
+    expect(textNode.textContent).toBe(
+      "Bite 10 (D4)"
+    );
+  });
+
+  test("cleans Dragonbane's inline Web Spray summary during sheet rendering", () => {
+    const textNode = {
+      nodeType: 3,
+      textContent: "Web Spray 12 ()",
+      childNodes: [],
+      nextSibling: null,
+    };
+    const link = {
+      childNodes: [textNode],
+      nextSibling: null,
+      matches: vi.fn(selector => selector === "a"),
+    };
+    const root = {
+      querySelectorAll: vi.fn(() => [link]),
+    };
+    const actor = {
+      type: "npc",
+      items: [makeWeapon()],
+    };
+
+    expect(
+      onRenderCommonAnimalEffectOnlyActorSheet(
+        { actor },
+        root
+      )
+    ).toBe(1);
+    expect(textNode.textContent).toBe(
+      "Web Spray 12"
+    );
+  });
+});
