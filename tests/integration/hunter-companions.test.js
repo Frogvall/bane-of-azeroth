@@ -236,14 +236,18 @@ const EXPECTED_COMPANIONS = [
         lethalPoison: 12,
       },
       {
-        name: "Web",
-        skillLevel: 10,
+        name: "Web Spray",
+        skillLevel: 12,
         damage: null,
-        range: 6,
+        range: 2,
         constrain: 10,
       },
     ],
     skills: [
+      {
+        name: "Acrobatics",
+        value: 16,
+      },
       {
         name: "Awareness",
         value: 12,
@@ -283,7 +287,7 @@ const EXPECTED_COMPANIONS = [
     skills: [
       {
         name: "Acrobatics",
-        value: 15,
+        value: 14,
       },
       {
         name: "Awareness",
@@ -1280,6 +1284,18 @@ describe("Generated common-animal Actors", () => {
           moduleFlags(weapon).attackEffects ?? []
         ).toEqual(
           expectedAttackEffects(attack)
+        );
+        expect(
+          moduleFlags(weapon).effectOnly
+        ).toBe(
+          (
+            attack.damage == null &&
+            expectedAttackEffects(
+              attack
+            ).length > 0
+          )
+            ? true
+            : undefined
         );
       }
 

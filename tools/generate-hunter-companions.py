@@ -290,6 +290,8 @@ def attack_flags(
     if effects:
         flags[MODULE_ID]["attackEffects"] = effects
 
+    if attack["damage"] is None and effects:
+        flags[MODULE_ID]["effectOnly"] = True
     return flags
 
 

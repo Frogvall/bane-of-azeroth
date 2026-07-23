@@ -49,6 +49,12 @@ import {
   processCommonAnimalAttackResult,
 } from "./common-animal-attack-effects.js";
 import {
+  onCreateCommonAnimalEffectOnlyWeaponTestMessage,
+  onPreCreateCommonAnimalEffectOnlyWeaponTestMessage,
+  onRenderCommonAnimalEffectOnlyActorSheet,
+  onUpdateCommonAnimalEffectOnlyWeaponTestMessage,
+} from "./common-animal-effect-only-attacks.js";
+import {
   onUpdateCommonAnimalMovementToken,
 } from "./common-animal-movement.js";
 
@@ -82,13 +88,29 @@ Hooks.once("init", () => {
   Hooks.on("createItem", onCreateItem);
   Hooks.on("updateItem", onUpdateItem);
   Hooks.on("deleteItem", onDeleteItem);
+  Hooks.on(
+    "preCreateChatMessage",
+    onPreCreateCommonAnimalEffectOnlyWeaponTestMessage
+  );
   Hooks.on("createChatMessage", onCreateElementalTotemChatMessage);
+  Hooks.on(
+    "createChatMessage",
+    onCreateCommonAnimalEffectOnlyWeaponTestMessage
+  );
   Hooks.on(
     "createChatMessage",
     onCommonAnimalRollDamageChatMessage
   );
   Hooks.on("updateChatMessage", onUpdateElementalTotemChatMessage);
+  Hooks.on(
+    "updateChatMessage",
+    onUpdateCommonAnimalEffectOnlyWeaponTestMessage
+  );
   Hooks.on("renderDoDActorBaseSheet", lockAutoGrantedSpellPreparation);
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderCommonAnimalEffectOnlyActorSheet
+  );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;

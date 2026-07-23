@@ -265,16 +265,21 @@
           "lethalPoison": 12
         },
         {
-          "name": "Web",
+          "name": "Web Spray",
           "skillId": "3b0217ac13b7e5fd",
           "weaponId": "7f3911408969d5d6",
-          "skillLevel": 10,
+          "skillLevel": 12,
           "damage": null,
-          "range": 6,
+          "range": 2,
           "constrain": 10
         }
       ],
       "skills": [
+        {
+          "id": "3bb092620d369980",
+          "name": "Acrobatics",
+          "value": 16
+        },
         {
           "id": "37e39a66aa5213ec",
           "name": "Awareness",
@@ -326,7 +331,7 @@
         {
           "id": "Al8cPe3MQlc03KcD",
           "name": "Acrobatics",
-          "value": 15
+          "value": 14
         },
         {
           "id": "0VPuFSVF2CE8j892",

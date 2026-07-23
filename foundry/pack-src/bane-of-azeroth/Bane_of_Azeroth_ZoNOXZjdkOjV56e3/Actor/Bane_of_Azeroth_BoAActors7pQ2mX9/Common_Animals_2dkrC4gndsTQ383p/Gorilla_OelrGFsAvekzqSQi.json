@@ -337,7 +337,7 @@
       "system": {
         "skillType": "core",
         "attribute": "agl",
-        "value": 15,
+        "value": 14,
         "advance": 0,
         "hideTrained": false,
         "gmDescription": "",

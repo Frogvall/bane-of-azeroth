@@ -279,10 +279,11 @@ const expectedAnimals = [
         ],
       },
       {
-        name: "Web",
-        skillLevel: 10,
+        name: "Web Spray",
+        skillLevel: 12,
         damage: "",
-        range: "6",
+        range: "2",
+        effectOnly: true,
         effects: [
           {
             type: "constrain",
@@ -292,6 +293,10 @@ const expectedAnimals = [
       },
     ],
     skills: [
+      {
+        name: "Acrobatics",
+        value: 16,
+      },
       {
         name: "Awareness",
         value: 12,
@@ -346,7 +351,7 @@ const expectedAnimals = [
     skills: [
       {
         name: "Acrobatics",
-        value: 15,
+        value: 14,
       },
       {
         name: "Awareness",
@@ -869,6 +874,15 @@ for (const expected of expectedAnimals) {
       `${expected.name} ${expectedAttack.name} effect metadata is correct`,
       attackEffects(weapon),
       expectedAttack.effects
+    );
+    boaCheckEqual(
+      checks,
+      `${expected.name} ${expectedAttack.name} effect-only metadata is correct`,
+      boaGetFlag(
+        weapon,
+        "effectOnly"
+      ),
+      expectedAttack.effectOnly
     );
 
     if (expectedAttack.damage === "") {
