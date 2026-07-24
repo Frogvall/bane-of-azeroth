@@ -5,7 +5,9 @@ import { getModuleFlag } from "./core/documents.js";
 
 const CONTROL_SCHEMA_VERSION = 1;
 const ATTACK_SCHEMA_VERSION = 1;
-const MANUAL_ONLY = "manual-only";
+const MANUAL_SELECTION_MODE = "manual";
+const SYSTEM_ATTACK_DIALOG_TEMPLATE =
+  "systems/dragonbane/templates/partials/monster-attack-dialog.hbs";
 const ATTACK_ACTION_SELECTOR = '[data-action="monsterAttack"]';
 const attachedAttackButtons = new WeakSet();
 const pendingActors = new Set();
@@ -50,9 +52,18 @@ function resultSortValue(result) {
   return Number.isFinite(value) ? value : Number.MAX_SAFE_INTEGER;
 }
 
+function rawAttackNameFromDescription(description) {
+  const match = String(description ?? "").match(
+    /<(b|strong)>(.*?)<\/\1>/i,
+  );
+  return String(match?.[2] ?? "").replace(/[.:]\s*$/, "").trim();
+}
+
 function resultLabel(result) {
   const name = String(result?.name ?? "").trim();
   if (name) return name;
+  const descriptionName = rawAttackNameFromDescription(result?.description);
+  if (descriptionName) return descriptionName;
   const metadata = getMonsterAttackMetadata(result);
   if (metadata?.key) return metadata.key;
   return String(resultSortValue(result));
@@ -68,6 +79,14 @@ async function attackDescriptionHtml(result) {
 function notifyMissingAttackTable(actor) {
   ui.notifications.warn(
     format("BOA.dialog.monsterAttackMissingTable", {
+      actor: actor?.name ?? "",
+    }),
+  );
+}
+
+function notifyMissingFallbackAttack(actor) {
+  ui.notifications.warn(
+    format("BOA.dialog.monsterAttackMissingFallback", {
       actor: actor?.name ?? "",
     }),
   );
@@ -99,13 +118,30 @@ function notifyInsufficientWillPoints(character, amount) {
   );
 }
 
+function normalizeAttackSelection(selection) {
+  if (!selection || typeof selection !== "object") return null;
+  if (selection.mode !== MANUAL_SELECTION_MODE) return null;
+  if (
+    typeof selection.fallbackAttackKey !== "string" ||
+    !selection.fallbackAttackKey
+  ) {
+    return null;
+  }
+  return selection;
+}
+
 export function getMonsterControl(actor) {
   const control = getModuleFlag(actor, "monsterControl");
   if (!control || typeof control !== "object") return null;
   if (control.schemaVersion !== CONTROL_SCHEMA_VERSION) return null;
   if (typeof control.key !== "string" || !control.key) return null;
-  if (typeof control.attackSelection !== "string") return null;
+  if (!normalizeAttackSelection(control.attackSelection)) return null;
   return control;
+}
+
+export function getMonsterAttackSelection(actor) {
+  const control = getMonsterControl(actor);
+  return normalizeAttackSelection(control?.attackSelection);
 }
 
 export function getMonsterAttackMetadata(tableResult) {
@@ -117,7 +153,7 @@ export function getMonsterAttackMetadata(tableResult) {
 }
 
 export function isManualOnlyMonster(actor) {
-  return getMonsterControl(actor)?.attackSelection === MANUAL_ONLY;
+  return getMonsterAttackSelection(actor)?.mode === MANUAL_SELECTION_MODE;
 }
 
 export function getOrderedMonsterAttacks(table) {
@@ -126,51 +162,124 @@ export function getOrderedMonsterAttacks(table) {
     .sort((left, right) => resultSortValue(left) - resultSortValue(right));
 }
 
+export function getFallbackMonsterAttack(actor, table) {
+  const fallbackAttackKey = getMonsterAttackSelection(
+    actor,
+  )?.fallbackAttackKey;
+  if (!fallbackAttackKey) return null;
+  return getOrderedMonsterAttacks(table).find(
+    result => getMonsterAttackMetadata(result)?.key === fallbackAttackKey,
+  ) ?? null;
+}
+
+export function shouldUseFallbackMonsterAttack(
+  event,
+  settings = game.settings,
+) {
+  let skipDialog = Boolean(event?.shiftKey || event?.ctrlKey);
+  if (!settings.get("dragonbane", "monsterAttackDialogIsDefault")) {
+    skipDialog = !skipDialog;
+  }
+  return skipDialog;
+}
+
+async function prepareMonsterAttackDialogData(table) {
+  const attacks = [];
+  for (const result of getOrderedMonsterAttacks(table)) {
+    let name = String(result?.name ?? "").trim();
+    let description = await attackDescriptionHtml(result);
+    if (!name) {
+      const match = description.match(/<(b|strong)>(.*?)<\/\1>(.*)/is);
+      if (match) {
+        name = match[2];
+        description = match[3];
+      } else {
+        name = resultLabel(result);
+      }
+    }
+    attacks.push({
+      name,
+      description,
+      index: resultSortValue(result),
+      tableResult: result,
+    });
+  }
+  return attacks;
+}
+
+export function configureMonsterAttackDialog(
+  dialog,
+  attacks,
+  fallbackIndex,
+) {
+  const root = dialog?.element;
+  const selectEl = root?.querySelector?.(
+    "select[name='selectMonsterAttack']",
+  );
+  const descEl = root?.querySelector?.(".monster-attack-description");
+  if (!selectEl || !descEl) return;
+
+  for (const option of Array.from(selectEl.options ?? [])) {
+    if (Number(option.value) === 0) option.remove();
+  }
+
+  const updateDescription = () => {
+    const selectedIndex = Number(selectEl.value);
+    const attack = attacks.find(item => item.index === selectedIndex);
+    descEl.innerHTML = `<p>${attack?.description ?? ""}</p>`;
+  };
+
+  selectEl.value = String(fallbackIndex);
+  selectEl.addEventListener("change", updateDescription);
+  updateDescription();
+}
+
 export async function promptMonsterAttackSelection(
   actor,
   table,
-  { dialogV2 = foundry.applications.api.DialogV2 } = {},
+  {
+    dialogV2 = foundry.applications.api.DialogV2,
+    utility = DoD_Utility,
+  } = {},
 ) {
-  const attacks = getOrderedMonsterAttacks(table);
+  const attacks = await prepareMonsterAttackDialogData(table);
   if (attacks.length === 0) return null;
 
-  const buttons = attacks.map((result, index) => ({
-    action: `attack-${result.id ?? result._id}`,
-    label: resultLabel(result),
-    default: index === 0,
-    callback: () => result.id ?? result._id,
-  }));
-  buttons.push({
-    action: "cancel",
-    label: game.i18n.localize("BOA.dialog.monsterAttackCancel"),
-    callback: () => null,
-  });
-
-  const descriptions = await Promise.all(
-    attacks.map(async result => (
-      `<section class="boa-monster-attack-option">` +
-      `<h3>${escapeHtml(resultLabel(result))}</h3>` +
-      `<div>${await attackDescriptionHtml(result)}</div>` +
-      `</section>`
-    )),
+  const fallback = getFallbackMonsterAttack(actor, table);
+  if (!fallback) {
+    notifyMissingFallbackAttack(actor);
+    return null;
+  }
+  const fallbackIndex = resultSortValue(fallback);
+  const content = await utility.renderTemplate(
+    SYSTEM_ATTACK_DIALOG_TEMPLATE,
+    { attacks },
   );
-  const selectedId = await dialogV2.wait({
+
+  const selected = await dialogV2.wait({
     window: {
-      title: game.i18n.localize("BOA.dialog.monsterAttackTitle"),
+      title: game.i18n.localize("DoD.ui.dialog.monsterAttackTitle"),
     },
-    content: (
-      `<p>${escapeHtml(format(
-        "BOA.dialog.monsterAttackChoose",
-        { actor: actor?.name ?? "" },
-      ))}</p>` + descriptions.join("")
-    ),
-    buttons,
+    content,
+    buttons: [{
+      action: "ok",
+      label: game.i18n.localize("Confirm"),
+      default: true,
+      callback: (_event, button) => (
+        button.form.elements.selectMonsterAttack.value
+      ),
+    }],
+    render: (_event, dialog) => {
+      configureMonsterAttackDialog(dialog, attacks, fallbackIndex);
+    },
     rejectClose: false,
     modal: true,
   });
 
-  if (!selectedId) return null;
-  return attacks.find(result => (result.id ?? result._id) === selectedId) ?? null;
+  if (selected === null || selected === undefined) return null;
+  const selectedIndex = Number(selected);
+  return attacks.find(attack => attack.index === selectedIndex)?.tableResult
+    ?? fallback;
 }
 
 export async function promptMonsterAttackResourceCost(
@@ -335,9 +444,11 @@ export async function performControlledMonsterAttack(
 
 export async function handleControlledMonsterAttackClick(
   actor,
+  event,
   {
     dialogV2 = foundry.applications.api.DialogV2,
     fromUuidSyncFn = globalThis.fromUuidSync,
+    settings = game.settings,
     user = game.user,
     utility = DoD_Utility,
   } = {},
@@ -356,12 +467,21 @@ export async function handleControlledMonsterAttackClick(
       return null;
     }
 
-    const tableResult = await promptMonsterAttackSelection(
-      actor,
-      table,
-      { dialogV2 },
-    );
-    if (!tableResult) return null;
+    let tableResult;
+    if (shouldUseFallbackMonsterAttack(event, settings)) {
+      tableResult = getFallbackMonsterAttack(actor, table);
+      if (!tableResult) {
+        notifyMissingFallbackAttack(actor);
+        return null;
+      }
+    } else {
+      tableResult = await promptMonsterAttackSelection(
+        actor,
+        table,
+        { dialogV2, utility },
+      );
+      if (!tableResult) return null;
+    }
 
     return performControlledMonsterAttack(
       { actor, table, tableResult, user },
@@ -397,7 +517,7 @@ export function onRenderControlledMonsterSheet(app, html) {
         event.stopPropagation();
         event.stopImmediatePropagation();
         event.currentTarget?.blur?.();
-        void handleControlledMonsterAttackClick(actor).catch(error => {
+        void handleControlledMonsterAttackClick(actor, event).catch(error => {
           console.error(
             `${MODULE_ID} | Controlled monster attack failed.`,
             error,

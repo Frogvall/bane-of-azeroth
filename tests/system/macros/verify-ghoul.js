@@ -227,9 +227,15 @@ if (boaCheck(
 const monsterControl = boaGetFlag(ghoul, "monsterControl");
 boaCheckEqual(
   checks,
-  "Ghoul attack selection is manual-only",
-  monsterControl?.attackSelection ?? null,
-  "manual-only",
+  "Ghoul attack selection uses the manual policy",
+  monsterControl?.attackSelection?.mode ?? null,
+  "manual",
+);
+boaCheckEqual(
+  checks,
+  "Ghoul random-attack fallback is Claws",
+  monsterControl?.attackSelection?.fallbackAttackKey ?? null,
+  "claws",
 );
 boaCheckEqual(
   checks,
@@ -268,10 +274,11 @@ notes.push(
   "monster attack table, and the metadata used by its attack controls.",
 );
 notes.push(
-  "Manual player verification: the Ghoul attack dialog offers Claws, " +
-  "Infectious Bite, and Cancel without Random; Infectious Bite Yes " +
-  "spends 2 WP from the assigned character, No attacks unpaid, and " +
-  "Cancel, Escape, or closing the dialog prevents the attack.",
+  "Manual player verification: Dragonbane\'s native monster attack " +
+  "dialog offers Claws and Infectious Bite without Random; shortcuts " +
+  "that normally roll randomly execute Claws instead. Infectious Bite " +
+  "Yes spends 2 WP from the assigned character, No attacks unpaid, " +
+  "and Escape or closing either dialog prevents the attack.",
 );
 return boaFinish(
   "ghoul",

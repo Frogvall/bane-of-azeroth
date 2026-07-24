@@ -141,7 +141,10 @@
       "monsterControl": {
         "schemaVersion": 1,
         "key": "ghoul",
-        "attackSelection": "manual-only"
+        "attackSelection": {
+          "mode": "manual",
+          "fallbackAttackKey": "claws"
+        }
       }
     }
   },

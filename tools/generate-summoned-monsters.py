@@ -325,7 +325,7 @@ def build_table_result(
         },
         "_stats": base_stats(),
         "description": result["description"],
-        "name": result["name"],
+        "name": "",
     }
 
 
@@ -387,16 +387,29 @@ def validate_monster_control(value: Any, context: str) -> dict[str, Any]:
     if value.get("schemaVersion") != 1:
         raise GenerationError(f"{context}.schemaVersion must be 1.")
     require_key(value.get("key"), f"{context}.key")
-    selection = require_string(
-        value.get("attackSelection"),
-        f"{context}.attackSelection",
+    selection = value.get("attackSelection")
+    if not isinstance(selection, dict):
+        raise GenerationError(f"{context}.attackSelection must be an object.")
+    mode = require_string(
+        selection.get("mode"),
+        f"{context}.attackSelection.mode",
     )
-    if selection not in {"manual-only", "system-default"}:
+    if mode not in {"manual", "system-default"}:
         raise GenerationError(
-            f"{context}.attackSelection must be manual-only or system-default."
+            f"{context}.attackSelection.mode must be manual or system-default."
+        )
+    fallback = selection.get("fallbackAttackKey")
+    if mode == "manual":
+        require_key(
+            fallback,
+            f"{context}.attackSelection.fallbackAttackKey",
+        )
+    elif fallback is not None:
+        require_key(
+            fallback,
+            f"{context}.attackSelection.fallbackAttackKey",
         )
     return value
-
 
 def validate_monster_attack(value: Any, context: str) -> dict[str, Any]:
     if not isinstance(value, dict):

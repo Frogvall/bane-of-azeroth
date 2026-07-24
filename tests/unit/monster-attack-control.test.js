@@ -1,14 +1,19 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import {
+  configureMonsterAttackDialog,
+  getFallbackMonsterAttack,
   getMonsterAttackMetadata,
+  getMonsterAttackSelection,
   getMonsterControl,
   getOrderedMonsterAttacks,
+  handleControlledMonsterAttackClick,
   isManualOnlyMonster,
   onRenderControlledMonsterSheet,
   performControlledMonsterAttack,
   promptMonsterAttackResourceCost,
   promptMonsterAttackSelection,
+  shouldUseFallbackMonsterAttack,
 } from "../../foundry/scripts/monster-attack-control.js";
 
 const MODULE_ID = "bane-of-azeroth";
@@ -22,7 +27,7 @@ function flaggedDocument(moduleFlags, extra = {}) {
   };
 }
 
-function attackResult({ id, name, key, resourceCost, range }) {
+function attackResult({ id, name = "", description, key, resourceCost, range }) {
   return flaggedDocument(
     {
       monsterAttack: {
@@ -31,7 +36,7 @@ function attackResult({ id, name, key, resourceCost, range }) {
         ...(resourceCost ? { resourceCost } : {}),
       },
     },
-    { id, name, range },
+    { id, name, description, range },
   );
 }
 
@@ -41,7 +46,10 @@ function ghoulActor(extra = {}) {
       monsterControl: {
         schemaVersion: 1,
         key: "ghoul",
-        attackSelection: "manual-only",
+        attackSelection: {
+          mode: "manual",
+          fallbackAttackKey: "claws",
+        },
       },
     },
     {
@@ -58,14 +66,14 @@ function ghoulActor(extra = {}) {
 
 const claws = () => attackResult({
   id: "claws",
-  name: "Claws",
+  description: "<b>Claws.</b> Hits automatically and inflicts D6.",
   key: "claws",
   range: [1, 1],
 });
 
 const bite = () => attackResult({
   id: "bite",
-  name: "Infectious Bite",
+  description: "<b>Infectious Bite.</b> Hits automatically and inflicts 2D6.",
   key: "infectious-bite",
   range: [2, 2],
   resourceCost: {
@@ -89,9 +97,22 @@ function assignedCharacter({ wp = 5, isOwner = true } = {}) {
   return actor;
 }
 
+function settingsWithDialogDefault(value) {
+  return {
+    get: vi.fn((namespace, key) => {
+      expect(namespace).toBe("dragonbane");
+      expect(key).toBe("monsterAttackDialogIsDefault");
+      return value;
+    }),
+  };
+}
+
 beforeEach(() => {
   ui.notifications.warn.mockReset();
   ui.notifications.error.mockReset();
+  CONFIG.DoD ??= {};
+  CONFIG.DoD.TextEditor ??= {};
+  CONFIG.DoD.TextEditor.enrichHTML = vi.fn(async value => value);
 });
 
 describe("monster attack metadata", () => {
@@ -101,7 +122,10 @@ describe("monster attack metadata", () => {
     expect(getMonsterControl(actor)).toMatchObject({
       schemaVersion: 1,
       key: "ghoul",
-      attackSelection: "manual-only",
+    });
+    expect(getMonsterAttackSelection(actor)).toEqual({
+      mode: "manual",
+      fallbackAttackKey: "claws",
     });
     expect(getMonsterAttackMetadata(result)).toMatchObject({
       schemaVersion: 1,
@@ -111,54 +135,176 @@ describe("monster attack metadata", () => {
     expect(isManualOnlyMonster(actor)).toBe(true);
   });
 
+  test("rejects non-object attack-selection metadata", () => {
+    const actor = flaggedDocument({
+      monsterControl: {
+        schemaVersion: 1,
+        key: "ghoul",
+        attackSelection: "manual",
+      },
+    });
+    expect(getMonsterControl(actor)).toBeNull();
+    expect(getMonsterAttackSelection(actor)).toBeNull();
+    expect(isManualOnlyMonster(actor)).toBe(false);
+  });
+
   test("rejects unsupported metadata versions", () => {
     const actor = flaggedDocument({
       monsterControl: {
         schemaVersion: 2,
         key: "ghoul",
-        attackSelection: "manual-only",
+        attackSelection: {
+          mode: "manual",
+          fallbackAttackKey: "claws",
+        },
       },
     });
     expect(getMonsterControl(actor)).toBeNull();
     expect(isManualOnlyMonster(actor)).toBe(false);
   });
 
-  test("orders only flagged attacks by table range", () => {
+  test("orders only flagged attacks and resolves the configured fallback", () => {
     const unflagged = { id: "other", range: [1, 1] };
     const table = { results: [bite(), unflagged, claws()] };
     expect(getOrderedMonsterAttacks(table).map(result => result.id)).toEqual([
       "claws",
       "bite",
     ]);
+    expect(getFallbackMonsterAttack(ghoulActor(), table)?.id).toBe("claws");
   });
 });
 
-describe("manual-only attack selection", () => {
-  test("offers only named attacks and Cancel, never Random", async () => {
-    const dialogV2 = { wait: vi.fn(async config => {
-      expect(config.buttons.map(button => button.label)).toEqual([
-        "Claws",
-        "Infectious Bite",
-        "BOA.dialog.monsterAttackCancel",
-      ]);
-      expect(config.buttons.map(button => button.label)).not.toContain("Random");
-      return "bite";
-    }) };
+describe("native Dragonbane attack selection", () => {
+  test("uses Dragonbane's template, removes Random, and defaults to Claws", async () => {
+    const randomOption = { value: "0", remove: vi.fn() };
+    const clawsOption = { value: "1", remove: vi.fn() };
+    let changeListener;
+    const selectEl = {
+      value: "0",
+      options: [randomOption, clawsOption, { value: "2", remove: vi.fn() }],
+      addEventListener: vi.fn((name, listener) => {
+        expect(name).toBe("change");
+        changeListener = listener;
+      }),
+    };
+    const description = { innerHTML: "" };
+    const dialog = {
+      element: {
+        querySelector: vi.fn(selector => (
+          selector.startsWith("select") ? selectEl : description
+        )),
+      },
+    };
+    const utility = {
+      renderTemplate: vi.fn(async (template, data) => {
+        expect(template).toBe(
+          "systems/dragonbane/templates/partials/monster-attack-dialog.hbs",
+        );
+        expect(data.attacks.map(attack => attack.name)).toEqual([
+          "Claws.",
+          "Infectious Bite.",
+        ]);
+        expect(data.attacks[0].description.trim()).toBe(
+          "Hits automatically and inflicts D6.",
+        );
+        return "<form class='DoD dialog'>native-template</form>";
+      }),
+    };
+    const dialogV2 = {
+      wait: vi.fn(async config => {
+        expect(config.window.title).toBe(
+          "DoD.ui.dialog.monsterAttackTitle",
+        );
+        expect(config.content).toContain("native-template");
+        expect(config.buttons).toHaveLength(1);
+        expect(config.buttons[0].label).toBe("Confirm");
+        config.render({}, dialog);
+        expect(randomOption.remove).toHaveBeenCalledOnce();
+        expect(selectEl.value).toBe("1");
+        expect(description.innerHTML).toContain("inflicts D6");
+        selectEl.value = "2";
+        changeListener();
+        expect(description.innerHTML).toContain("inflicts 2D6");
+        return config.buttons[0].callback(null, {
+          form: { elements: { selectMonsterAttack: { value: "2" } } },
+        });
+      }),
+    };
+
     const selected = await promptMonsterAttackSelection(
       ghoulActor(),
       { results: [claws(), bite()] },
-      { dialogV2 },
+      { dialogV2, utility },
     );
     expect(selected.id).toBe("bite");
   });
 
-  test("closing or cancelling the selection returns no attack", async () => {
+  test("a Random or invalid confirmation defensively resolves to Claws", async () => {
+    const utility = { renderTemplate: vi.fn(async () => "native") };
+    const dialogV2 = { wait: vi.fn(async () => "0") };
+    const selected = await promptMonsterAttackSelection(
+      ghoulActor(),
+      { results: [claws(), bite()] },
+      { dialogV2, utility },
+    );
+    expect(selected.id).toBe("claws");
+  });
+
+  test("closing the native dialog cancels the attack", async () => {
+    const utility = { renderTemplate: vi.fn(async () => "native") };
     const dialogV2 = { wait: vi.fn(async () => null) };
     await expect(promptMonsterAttackSelection(
       ghoulActor(),
       { results: [claws(), bite()] },
-      { dialogV2 },
+      { dialogV2, utility },
     )).resolves.toBeNull();
+  });
+
+  test("normal random-attack shortcuts are mapped to the fallback", () => {
+    const defaultDialog = settingsWithDialogDefault(true);
+    expect(shouldUseFallbackMonsterAttack(
+      { shiftKey: true, ctrlKey: false },
+      defaultDialog,
+    )).toBe(true);
+    expect(shouldUseFallbackMonsterAttack(
+      { shiftKey: false, ctrlKey: false },
+      defaultDialog,
+    )).toBe(false);
+
+    const defaultRandom = settingsWithDialogDefault(false);
+    expect(shouldUseFallbackMonsterAttack(
+      { shiftKey: false, ctrlKey: false },
+      defaultRandom,
+    )).toBe(true);
+    expect(shouldUseFallbackMonsterAttack(
+      { shiftKey: true, ctrlKey: false },
+      defaultRandom,
+    )).toBe(false);
+  });
+
+  test("a bypassed attack calls Dragonbane with Claws, never a random draw", async () => {
+    const table = { results: [claws(), bite()] };
+    const utility = {
+      monsterAttack: vi.fn(async () => "attack-card"),
+      renderTemplate: vi.fn(),
+    };
+    await handleControlledMonsterAttackClick(
+      ghoulActor(),
+      { shiftKey: true, ctrlKey: false },
+      {
+        dialogV2: { wait: vi.fn() },
+        fromUuidSyncFn: vi.fn(() => table),
+        settings: settingsWithDialogDefault(true),
+        user: { isGM: true },
+        utility,
+      },
+    );
+    expect(utility.renderTemplate).not.toHaveBeenCalled();
+    expect(utility.monsterAttack).toHaveBeenCalledWith(
+      expect.anything(),
+      table,
+      expect.objectContaining({ id: "claws" }),
+    );
   });
 });
 
@@ -310,7 +456,7 @@ describe("assigned-character WP payment", () => {
 });
 
 describe("monster sheet integration", () => {
-  test("attaches a capture listener only to owned manual-only monsters", () => {
+  test("attaches a capture listener only to owned manual monsters", () => {
     const button = { addEventListener: vi.fn() };
     const html = { querySelectorAll: vi.fn(() => [button]) };
     onRenderControlledMonsterSheet({ actor: ghoulActor() }, html);

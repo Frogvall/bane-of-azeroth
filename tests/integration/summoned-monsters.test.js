@@ -368,7 +368,10 @@ describe("Generated Ghoul monster attack control metadata", () => {
     expect(ghoul.monsterControl).toEqual({
       schemaVersion: 1,
       key: "ghoul",
-      attackSelection: "manual-only",
+      attackSelection: {
+        mode: "manual",
+        fallbackAttackKey: "claws",
+      },
     });
     expect(ghoul.attackTable.results).toMatchObject([
       {
@@ -401,21 +404,24 @@ describe("Generated Ghoul monster attack control metadata", () => {
     expect(moduleFlags(actorEntry.document).monsterControl).toEqual({
       schemaVersion: 1,
       key: "ghoul",
-      attackSelection: "manual-only",
+      attackSelection: {
+        mode: "manual",
+        fallbackAttackKey: "claws",
+      },
     });
     expect(tableEntry.document.results.map(result => ({
       name: result.name,
       metadata: result.flags?.[MODULE_ID]?.monsterAttack,
     }))).toEqual([
       {
-        name: "Claws",
+        name: "",
         metadata: {
           schemaVersion: 1,
           key: "claws",
         },
       },
       {
-        name: "Infectious Bite",
+        name: "",
         metadata: {
           schemaVersion: 1,
           key: "infectious-bite",
