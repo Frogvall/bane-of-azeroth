@@ -8,6 +8,39 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.9.0] - 2026-07-24
+
+### Added
+
+- Added the complete roster of fourteen Common Animals to the `Bane of Azeroth/Common Animals` Actor folder.
+- Added structured Common Animal source data, deterministic Foundry identifiers, and reproducible generation of Actor, Item, folder, and Adventure source documents.
+- Added dedicated Common Animal portraits and token artwork.
+- Added alternate movement support for flying and swimming animals while preserving each world Actor's base movement.
+- Added Common Animal attack-effect handling for lethal poison and Restrain effects.
+- Added automatic application of Dragonbane's built-in **Restrained** condition to a targeted creature hit by Large Serpent's Constriction or Giant Spider's Web Spray.
+
+### Changed
+
+- Implemented Giant Spider's Web Spray as a melee, effect-only attack with no damage roll.
+- Renamed the Foundry-side Constrain effect terminology to **Restrain** and its resulting condition to **Restrained**.
+- Kept effect text in the originating attack card without creating a separate ChatMessage.
+- Preserved Dragonbane's Demon mishap and Dragon critical-hit flows for effect-only attacks.
+- Displayed the attacking Common Animal as the source of an automatically applied Restrained effect.
+
+### Fixed
+
+- Removed empty damage parentheses from effect-only attacks on Dragonbane NPC sheets.
+- Prevented Restrain text from appearing on failed or Demon attack results.
+- Prevented duplicated effect text when Dragonbane updates a critical-hit attack card.
+- Prevented repeated status application and preserved the source of an already active Restrained effect.
+- Corrected Common Animal source and generated data for Giant Spider's Web Spray and Gorilla's Acrobatics value.
+
+### Testing
+
+- Added unit and integration coverage for Common Animal generation, movement rates, attack effects, effect-only attacks, status application, game-master delegation, source attribution, sheet rendering, and hook registration.
+- Expanded prerelease Developer Tests to verify all fourteen Common Animals, real attack-message behavior, targeted and untargeted Web Spray, failure and Demon results, Dragon critical-hit preservation, Restrained status application, and effect source attribution.
+- Verified the complete automated test suite and Foundry Developer Test suite after the Common Animal changes.
+
 ## [0.8.0] - 2026-07-21
 
 ### Added

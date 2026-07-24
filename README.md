@@ -4,9 +4,9 @@
 
 The project aims to combine the fast, dangerous, and skill-based rules of Dragonbane with heroic fantasy adventures set in Azeroth.
 
-> **Current status:** Early development / playtesting
-> **Current Homebrewery document version:** 0.9
-> **Current Foundry module version:** 0.1.2
+> **Current status:** Active development / prerelease testing
+> **Current Homebrewery document version:** 1.0
+> **Current Foundry module version:** 0.9.0
 
 ## Project goals
 
@@ -35,11 +35,13 @@ bane-of-azeroth/
 │   └── images/
 ├── foundry/
 │   ├── module.json
+│   ├── content/
 │   ├── scripts/
+│   ├── pack-src/
 │   ├── lang/
-│   ├── packs/
-│   ├── TESTING.md
 │   └── CHANGELOG.md
+├── tests/
+├── tools/
 └── README.md
 ```
 
@@ -49,57 +51,45 @@ The `homebrewery` directory contains the Homebrewery source for the Bane of Azer
 
 ### Foundry
 
-The `foundry` directory contains the Foundry VTT module, including scripts, localization, compendium data, testing documentation, and module metadata.
+The `foundry` directory contains the Foundry VTT module, including structured content, runtime scripts, localization, unpacked Adventure source, and module metadata.
+
+The generated `foundry/packs/` directory is build output and is not maintained as source.
 
 ## Foundry VTT module
 
-The Foundry module is currently under active development.
+The Foundry module is under active development and distributes the current book content through a single Adventure compendium.
 
-It adds support for Bane of Azeroth content and mechanics that cannot be represented through standard Dragonbane documents alone.
+Implemented content and automation include:
 
-Currently implemented custom weapon features include:
+- Playable kin and kin abilities
+- Heroic Class Abilities and linked spell grants
+- Bane of Azeroth spells and equipment
+- Custom weapon features such as Ammunition, Armor Piercing, Freehanded, Returning, and Scattershot
+- Elemental Totem actors, placement, replacement, ownership, movement protection, and aura rendering
+- Fourteen Common Animal actors with dedicated portraits, token artwork, attacks, skills, armor, and alternate movement rates
+- Common Animal attack effects for lethal poison, Constriction, and Web Spray
+- Automatic application of Dragonbane's **Restrained** condition when a successful Restrain effect has a target
 
-- Ammunition
-- Armor Piercing
-- Freehanded
-- Returning
-- Scattershot
-
-### Armor Piercing
-
-Eligible ranged weapons can use **Find Weak Spot**, applying one bane to the attack and ignoring armor on a successful hit.
-
-The implementation preserves Dragonbane's normal ranged attack behavior, including ranged mishaps.
-
-### Scattershot
-
-Scattershot weapons:
-
-- Ignore the normal point-blank bane
-- Retain the long-range bane
-- Deal half damage beyond their normal range, rounded up
-- Preserve critical hits, damage types, maximum-range restrictions, and ranged mishaps
+Generated content uses stable Foundry document identifiers and is checked against its structured source during development and packaging.
 
 ## Compatibility
 
-The current version has been developed and tested with:
+The current version has been developed and verified with:
 
 | Component | Version |
 |---|---:|
-| Foundry Virtual Tabletop | 14.364 |
+| Foundry Virtual Tabletop | 14.365 |
 | Dragonbane system | 4.0.1 |
 | Dragonbane Core Set | 2.2 |
 | YZE Combat | 1.7.0 |
 
-Compatibility with other versions has not yet been verified.
-
-Detailed test results are available in [`foundry/TESTING.md`](Foundry/TESTING.md).
+The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.0.1. Compatibility with other versions has not yet been verified.
 
 ## Installation
 
-There is currently no stable public release.
+There is currently no stable public release. Development builds are distributed as rolling branch prereleases and may change without notice.
 
-During development, the contents of the `foundry` directory can be installed manually in:
+For a manual development installation, place the packaged module contents in:
 
 ```text
 Data/modules/bane-of-azeroth/
@@ -117,21 +107,67 @@ bane-of-azeroth/
 
 Restart Foundry VTT after installing or updating the module.
 
-## Development status
+## Development and testing
 
-Bane of Azeroth is incomplete and should currently be considered an alpha project.
+The Foundry module uses four complementary verification layers:
 
-Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
+- Unit tests for isolated runtime and generator behavior
+- Integration tests for generated content, hook registration, Adventure contracts, and packaging
+- Foundry system tests executed through prerelease-only Developer Test macros
+- Manual verification recorded in generated Foundry Journal reports
 
-The current development priorities are:
+The tests and reports are the authoritative record of verified behavior. This README documents only how to run them.
 
-- Establishing the core rules framework
-- Implementing kin and kin abilities
-- Implementing classes and heroic abilities
-- Adding weapons and equipment
-- Expanding Foundry automation
-- Building the Adventure compendium
-- Testing compatibility with future Dragonbane system releases
+### Automated tests
+
+Run the complete automated test suite from the repository root:
+
+```bash
+docker run --rm \
+  --user "$(id -u):$(id -g)" \
+  -e HOME=/tmp/home \
+  -v "$PWD:/workspace" \
+  -v boa-node-modules:/workspace/node_modules \
+  -w /workspace \
+  node:22-bookworm-slim \
+  sh -lc 'npm ci && npm run test:coverage'
+```
+
+### Generated content
+
+Every generator that supports `--check` must succeed before release. The complete generator set is also exercised by the automated and packaging workflows.
+
+For the current Common Animal and Developer Test sources:
+
+```bash
+python3 tools/generate-hunter-companions.py --check
+python3 tools/generate-system-test-macros.py --check
+```
+
+### Foundry system tests
+
+Developer Test macros are included in prerelease packages only.
+
+In a Foundry test world:
+
+1. Import or reimport the Bane of Azeroth Adventure.
+2. Open the **Bane of Azeroth – Developer Tests** compendium.
+3. Run **BOA DEV – Run All System Tests** as a game master.
+4. Review the generated Journal report.
+5. Complete and record the remaining manual checks in that report.
+
+### Release verification
+
+A release candidate is ready only when:
+
+- the automated test suite passes;
+- generated content is synchronized;
+- all Foundry system tests pass;
+- the manual verification report has no unresolved failures;
+- Adventure import and reimport have been verified in a clean test world; and
+- package validation succeeds.
+
+Bane of Azeroth remains an alpha project. Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
 
 ## Contributing
 
