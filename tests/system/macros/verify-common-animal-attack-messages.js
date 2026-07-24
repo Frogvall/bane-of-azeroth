@@ -157,20 +157,43 @@ function preferredSourceActorUuid(actor) {
   return actor?.baseActor?.uuid ?? actor?.uuid ?? null;
 }
 
-function checkRestrainedSource(
+async function checkRestrainedSource(
   label,
   targetActor,
   sourceActor
 ) {
-  const effect = actorStatusEffect(
-    targetActor,
-    RESTRAIN_STATUS_ID
+  const expected = preferredSourceActorUuid(sourceActor);
+  if (!expected) {
+    boaCheck(
+      checks,
+      label,
+      false,
+      "Source actor has no resolvable UUID."
+    );
+    return;
+  }
+
+  // Foundry creates the status first and the module then performs a second
+  // Active Effect update to record its origin. Hook promises are not awaited
+  // by the system-test message creation flow, so wait for the complete state.
+  await waitFor(
+    () =>
+      actorStatusEffect(
+        targetActor,
+        RESTRAIN_STATUS_ID
+      )?.origin === expected
   );
+
+  const actual =
+    actorStatusEffect(
+      targetActor,
+      RESTRAIN_STATUS_ID
+    )?.origin ?? null;
   boaCheckEqual(
     checks,
     label,
-    effect?.origin ?? null,
-    preferredSourceActorUuid(sourceActor)
+    actual,
+    expected
   );
 }
 
@@ -822,7 +845,7 @@ try {
     target,
     true
   );
-  checkRestrainedSource(
+  await checkRestrainedSource(
     "Targeted Constriction records Large Serpent as the Restrained source",
     target,
     serpent
@@ -860,7 +883,7 @@ try {
       target,
       true
     );
-    checkRestrainedSource(
+    await checkRestrainedSource(
       "Targeted Web Spray records Giant Spider as the Restrained source",
       target,
       spider
