@@ -132,6 +132,8 @@ describe("Summoned monster source contract", () => {
       name: "Ghoul",
       category: "undead",
       summonType: "ghoul",
+      image: "modules/bane-of-azeroth/assets/actors/undead/ghoul.webp",
+      tokenImage: "modules/bane-of-azeroth/assets/tokens/undead/ghoul-token.webp",
       movement: 8,
       hitPoints: 10,
       armor: 0,
@@ -148,6 +150,30 @@ describe("Summoned monster source contract", () => {
       expect(id).toMatch(ID_PATTERN);
     }
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  test("ships Ghoul portrait and token artwork", () => {
+    const portrait = resolve(
+      "foundry",
+      "assets",
+      "actors",
+      "undead",
+      "ghoul.webp",
+    );
+    const token = resolve(
+      "foundry",
+      "assets",
+      "tokens",
+      "undead",
+      "ghoul-token.webp",
+    );
+
+    expect(existsSync(portrait)).toBe(true);
+    expect(existsSync(token)).toBe(true);
+    expect(statSync(portrait).isFile()).toBe(true);
+    expect(statSync(token).isFile()).toBe(true);
+    expect(statSync(portrait).size).toBeGreaterThan(0);
+    expect(statSync(token).size).toBeGreaterThan(0);
   });
 
   test("has a generator checked by GitHub Actions", () => {
@@ -212,7 +238,7 @@ describe("Generated Ghoul content", () => {
       folder: source.actorFolders.undead.id,
       name: "Ghoul",
       type: "monster",
-      img: "icons/svg/mystery-man.svg",
+      img: "modules/bane-of-azeroth/assets/actors/undead/ghoul.webp",
       system: {
         description: "",
         movement: { base: 8, value: 8 },
@@ -224,6 +250,9 @@ describe("Generated Ghoul content", () => {
         previousMonsterAttack: "",
       },
       prototypeToken: {
+        texture: {
+          src: "modules/bane-of-azeroth/assets/tokens/undead/ghoul-token.webp",
+        },
         actorLink: false,
         disposition: 1,
         lockRotation: true,

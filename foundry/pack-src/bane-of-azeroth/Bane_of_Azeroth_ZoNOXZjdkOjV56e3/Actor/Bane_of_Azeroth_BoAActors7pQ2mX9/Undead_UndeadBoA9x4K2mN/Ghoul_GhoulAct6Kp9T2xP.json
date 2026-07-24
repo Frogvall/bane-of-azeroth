@@ -3,7 +3,7 @@
   "name": "Ghoul",
   "type": "monster",
   "_id": "GhoulAct6Kp9T2xP",
-  "img": "icons/svg/mystery-man.svg",
+  "img": "modules/bane-of-azeroth/assets/actors/undead/ghoul.webp",
   "system": {
     "description": "",
     "movement": {
@@ -38,7 +38,7 @@
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "icons/svg/mystery-man.svg",
+      "src": "modules/bane-of-azeroth/assets/tokens/undead/ghoul-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",
