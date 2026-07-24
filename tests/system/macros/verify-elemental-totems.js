@@ -500,11 +500,7 @@ try {
         ]
       );
 
-    const [
-      oldRemoteToken,
-      currentRemoteToken,
-      otherCasterToken,
-    ] = await cleanupScene.createEmbeddedDocuments(
+    const cleanupTokens = await cleanupScene.createEmbeddedDocuments(
       "Token",
       [
         makeCleanupTokenData({
@@ -527,6 +523,30 @@ try {
         }),
       ]
     );
+      const oldRemoteToken = cleanupTokens.find(token => (
+        boaGetFlag(token, "casterActorUuid") === casterActorUuid &&
+        boaGetFlag(token, "castId") === oldCastId
+      )) ?? null;
+      const currentRemoteToken = cleanupTokens.find(token => (
+        boaGetFlag(token, "casterActorUuid") === casterActorUuid &&
+        boaGetFlag(token, "castId") === castId
+      )) ?? null;
+      const otherCasterToken = cleanupTokens.find(token => (
+        boaGetFlag(token, "casterActorUuid") === otherCasterActorUuid
+      )) ?? null;
+
+      if (!oldRemoteToken || !currentRemoteToken || !otherCasterToken) {
+        throw new Error(
+          "Cross-scene cleanup fixtures were resolved by flags: " +
+          JSON.stringify(
+            cleanupTokens.map(token => ({
+              id: token.id,
+              casterActorUuid: boaGetFlag(token, "casterActorUuid"),
+              castId: boaGetFlag(token, "castId"),
+            })),
+          ),
+        );
+      }
 
     const cleanupFailures =
       await deletePreviousElementalTotems(

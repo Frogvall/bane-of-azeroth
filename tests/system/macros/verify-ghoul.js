@@ -269,6 +269,207 @@ if (attackTable) {
   );
 }
 
+if (attackTable) {
+  let paymentActor = null;
+  let paymentMessage = null;
+  try {
+    const {
+      performControlledMonsterAttack,
+    } = await import(
+      "/modules/bane-of-azeroth/scripts/monster-attack-control.js"
+    );
+    const biteResult = boaCollectionValues(attackTable.results)
+      .find(result => (
+        boaGetFlag(result, "monsterAttack")?.key === "infectious-bite"
+      ));
+    if (!biteResult) {
+      throw new Error("The Infectious Bite table result was not found.");
+    }
+
+    paymentActor = await Actor.create(
+      {
+        name: `[BOA TEST] Ghoul WP Payer ${foundry.utils.randomID(6)}`,
+        type: "npc",
+        system: {
+          attributes: {
+            wil: {
+              base: 10,
+              value: 10,
+            },
+          },
+          willPoints: {
+            base: 10,
+            max: 10,
+            value: 5,
+          },
+        },
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            [BOA_TEST_FIXTURE_FLAG]: true,
+          },
+        },
+      },
+      { renderSheet: false },
+    );
+    if (!paymentActor) {
+      throw new Error("The temporary WP payer Actor could not be created.");
+    }
+    await paymentActor.update({
+      "system.willPoints.value": 5,
+    });
+
+    const existingMessageIds = new Set(
+      boaCollectionValues(game.messages).map(message => message.id),
+    );
+    const outcome = await performControlledMonsterAttack(
+      {
+        actor: ghoul,
+        table: attackTable,
+        tableResult: biteResult,
+        user: {
+          id: game.user.id,
+          isGM: false,
+          character: paymentActor,
+        },
+      },
+      {
+        dialogV2: {
+          wait: async () => "pay",
+        },
+        utility: {
+          monsterAttack: async () => "BOA system-test attack",
+        },
+      },
+    );
+
+    paymentMessage = boaCollectionValues(game.messages).find(message => (
+      !existingMessageIds.has(message.id) &&
+      boaGetFlag(message, "monsterAttackResourcePayment")?.payerActorUuid ===
+        paymentActor.uuid
+    )) ?? null;
+    const paymentFlag = paymentMessage
+      ? boaGetFlag(paymentMessage, "monsterAttackResourcePayment")
+      : null;
+    const paymentContent = String(paymentMessage?.content ?? "");
+
+    boaCheckEqual(
+      checks,
+      "Infectious Bite payment completed the controlled attack",
+      {
+        status: outcome?.status ?? null,
+        paid: outcome?.paid ?? null,
+      },
+      {
+        status: "attacked",
+        paid: true,
+      },
+    );
+    boaCheckEqual(
+      checks,
+      "Infectious Bite spent 2 WP from the assigned character",
+      Number(paymentActor.system.willPoints.value),
+      3,
+    );
+    boaCheck(
+      checks,
+      "Infectious Bite created a WP payment chat message",
+      Boolean(paymentMessage),
+      paymentMessage?.uuid ?? "No payment message was created.",
+    );
+    boaCheckEqual(
+      checks,
+      "WP payment chat records the attack and payer",
+      paymentFlag
+        ? {
+            schemaVersion: paymentFlag.schemaVersion,
+            attackKey: paymentFlag.attackKey,
+            resource: paymentFlag.resource,
+            amount: paymentFlag.amount,
+            payerActorUuid: paymentFlag.payerActorUuid,
+            sourceActorUuid: paymentFlag.sourceActorUuid,
+          }
+        : null,
+      {
+        schemaVersion: 1,
+        attackKey: "infectious-bite",
+        resource: "willPoints",
+        amount: 2,
+        payerActorUuid: paymentActor.uuid,
+        sourceActorUuid: ghoul.uuid,
+      },
+    );
+    boaCheck(
+      checks,
+      "WP payment chat uses Dragonbane's expandable ability styling",
+      paymentContent.includes('class="ability-use"') &&
+        paymentContent.includes("damage-details") &&
+        paymentContent.includes("fa-arrow-right"),
+      paymentContent,
+    );
+    boaCheck(
+      checks,
+      "WP payment chat names the payer, attack, and WP change",
+      paymentContent.includes(paymentActor.name) &&
+        paymentContent.includes("Infectious Bite") &&
+        /<b>.*:<\/b>\s*5\s*<i class="fa-solid fa-arrow-right"><\/i>\s*3<br>/s
+          .test(paymentContent),
+      paymentContent,
+    );
+    boaCheckEqual(
+      checks,
+      "WP payment chat speaker is the assigned character",
+      paymentMessage?.speaker?.actor ?? null,
+      paymentActor.id,
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Infectious Bite WP payment and chat system test completed",
+      false,
+      error.stack ?? error.message,
+    );
+  } finally {
+    if (paymentMessage) {
+      try {
+        const messageId = paymentMessage.id;
+        await paymentMessage.delete();
+        boaCheck(
+          checks,
+          "Temporary Ghoul WP payment chat message was deleted",
+          !game.messages.has(messageId),
+          messageId,
+        );
+      } catch (error) {
+        boaCheck(
+          checks,
+          "Temporary Ghoul WP payment chat message was deleted",
+          false,
+          error.stack ?? error.message,
+        );
+      }
+    }
+    if (paymentActor) {
+      try {
+        const actorId = paymentActor.id;
+        await paymentActor.delete();
+        boaCheck(
+          checks,
+          "Temporary Ghoul WP payer Actor was deleted",
+          !game.actors.has(actorId),
+          actorId,
+        );
+      } catch (error) {
+        boaCheck(
+          checks,
+          "Temporary Ghoul WP payer Actor was deleted",
+          false,
+          error.stack ?? error.message,
+        );
+      }
+    }
+  }
+}
+
 notes.push(
   "This verifies the imported Ghoul Actor, its native Dragonbane " +
   "monster attack table, and the metadata used by its attack controls.",
@@ -277,8 +478,9 @@ notes.push(
   "Manual player verification: Dragonbane\'s native monster attack " +
   "dialog offers Claws and Infectious Bite without Random; shortcuts " +
   "that normally roll randomly execute Claws instead. Infectious Bite " +
-  "Yes spends 2 WP from the assigned character, No attacks unpaid, " +
-  "and Escape or closing either dialog prevents the attack.",
+  "Yes spends 2 WP from the assigned character and posts an " +
+  "expandable payment card, No attacks unpaid, and Escape or " +
+  "closing either dialog prevents the attack.",
 );
 return boaFinish(
   "ghoul",

@@ -42,7 +42,8 @@
       "monsterAttackInsufficientWp": "{character} does not have the {amount} WP required for automatic payment.",
       "monsterAttackPaymentFailed": "WP could not be spent from {character}; the attack was cancelled.",
       "monsterAttackFailed": "The monster attack could not be completed.",
-      "monsterAttackMissingFallback": "The configured fallback monster attack was not found for {actor}."
+      "monsterAttackMissingFallback": "The configured fallback monster attack was not found for {actor}.",
+      "monsterAttackPaymentMessageFailed": "The WP payment message could not be created for {character}. The WP were refunded and the attack was cancelled."
     },
     "spellAutomation": {
       "alwaysPreparedTooltip": "Granted by a Heroic Class Ability and always prepared."
@@ -58,6 +59,9 @@
       "armorPiercingTooltip": "Armor Piercing",
       "scattershot": "Scattershot",
       "scattershotTooltip": "Scattershot"
+    },
+    "chat": {
+      "monsterAttackWpSpent": "{actor} spends {amount} WP to use <strong>{attack}</strong>."
     }
   }
 }

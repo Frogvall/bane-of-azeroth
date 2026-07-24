@@ -343,6 +343,108 @@ function validResourceCost(metadata) {
   return cost;
 }
 
+export function buildMonsterAttackWpChatContent({
+  attackName,
+  character,
+  amount,
+  oldWillPoints,
+  newWillPoints,
+}) {
+  const actorName = escapeHtml(character?.name ?? "");
+  const escapedAttackName = escapeHtml(attackName);
+  const summary = format("BOA.chat.monsterAttackWpSpent", {
+    actor: actorName,
+    amount,
+    attack: escapedAttackName,
+  });
+  const willPointsLabel = escapeHtml(
+    game.i18n.localize("DoD.ui.character-sheet.wp"),
+  );
+  const actorUuid = escapeHtml(character?.uuid ?? character?.id ?? "");
+
+  return `
+<div>
+  <p class="ability-use">${summary}</p>
+</div>
+<div
+  class="damage-details permission-observer"
+  data-actor-id="${actorUuid}"
+>
+  <i class="fa-solid fa-circle-info"></i>
+  <div
+    class="expandable"
+    style="text-align: left; margin-left: 0.5em"
+  >
+    <b>${willPointsLabel}:</b>
+    ${oldWillPoints}
+    <i class="fa-solid fa-arrow-right"></i>
+    ${newWillPoints}<br>
+  </div>
+</div>
+`;
+}
+
+export async function createMonsterAttackWpChatMessage(
+  {
+    attackName,
+    attackKey,
+    actor,
+    character,
+    amount,
+    oldWillPoints,
+    newWillPoints,
+  },
+  {
+    chatMessageClass = globalThis.ChatMessage,
+    user = game.user,
+  } = {},
+) {
+  if (
+    typeof chatMessageClass?.create !== "function" ||
+    typeof chatMessageClass?.getSpeaker !== "function"
+  ) {
+    throw new Error("ChatMessage API is unavailable.");
+  }
+
+  const content = buildMonsterAttackWpChatContent({
+    attackName,
+    character,
+    amount,
+    oldWillPoints,
+    newWillPoints,
+  });
+
+  return chatMessageClass.create({
+    user: user?.id ?? game.user?.id,
+    speaker: chatMessageClass.getSpeaker({ actor: character }),
+    content,
+    flags: {
+      [MODULE_ID]: {
+        monsterAttackResourcePayment: {
+          schemaVersion: 1,
+          attackKey,
+          resource: "willPoints",
+          amount,
+          payerActorUuid: character?.uuid ?? null,
+          sourceActorUuid: actor?.uuid ?? null,
+        },
+      },
+    },
+  });
+}
+
+async function deleteMonsterAttackWpChatMessage(message) {
+  if (typeof message?.delete !== "function") return;
+  try {
+    await message.delete();
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to remove a rolled-back monster attack WP message.`,
+      error,
+    );
+  }
+}
+
 async function refundWillPoints(character, value) {
   try {
     await character.update({
@@ -364,6 +466,7 @@ export async function performControlledMonsterAttack(
     user = game.user,
   },
   {
+    chatMessageClass = globalThis.ChatMessage,
     dialogV2 = foundry.applications.api.DialogV2,
     utility = DoD_Utility,
   } = {},
@@ -373,6 +476,7 @@ export async function performControlledMonsterAttack(
   const resourceCost = validResourceCost(metadata);
   let paidCharacter = null;
   let originalWillPoints = null;
+  let paymentMessage = null;
 
   if (!user?.isGM && resourceCost) {
     const character = user.character ?? null;
@@ -403,19 +507,43 @@ export async function performControlledMonsterAttack(
           notifyInsufficientWillPoints(character, resourceCost.amount);
           return { status: "cancelled", paid: false, result: null };
         }
+
+        const newWillPoints = originalWillPoints - resourceCost.amount;
+        let willPointsWereSpent = false;
         try {
           await character.update({
-            "system.willPoints.value":
-              originalWillPoints - resourceCost.amount,
+            "system.willPoints.value": newWillPoints,
           });
+          willPointsWereSpent = true;
+          paymentMessage = await createMonsterAttackWpChatMessage(
+            {
+              attackName,
+              attackKey: metadata.key,
+              actor,
+              character,
+              amount: resourceCost.amount,
+              oldWillPoints: originalWillPoints,
+              newWillPoints,
+            },
+            {
+              chatMessageClass,
+              user,
+            },
+          );
         } catch (error) {
+          if (willPointsWereSpent) {
+            await refundWillPoints(character, originalWillPoints);
+          }
+          const localizationKey = willPointsWereSpent
+            ? "BOA.dialog.monsterAttackPaymentMessageFailed"
+            : "BOA.dialog.monsterAttackPaymentFailed";
           ui.notifications.error(
-            format("BOA.dialog.monsterAttackPaymentFailed", {
+            format(localizationKey, {
               character: character?.name ?? "",
             }),
           );
           console.error(
-            `${MODULE_ID} | Failed to spend WP for ${attackName}.`,
+            `${MODULE_ID} | Failed to record WP for ${attackName}.`,
             error,
           );
           return { status: "cancelled", paid: false, result: null };
@@ -435,6 +563,9 @@ export async function performControlledMonsterAttack(
       result,
     };
   } catch (error) {
+    if (paymentMessage) {
+      await deleteMonsterAttackWpChatMessage(paymentMessage);
+    }
     if (paidCharacter && originalWillPoints !== null) {
       await refundWillPoints(paidCharacter, originalWillPoints);
     }

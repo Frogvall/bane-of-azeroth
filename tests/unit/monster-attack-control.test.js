@@ -87,6 +87,8 @@ const bite = () => attackResult({
 
 function assignedCharacter({ wp = 5, isOwner = true } = {}) {
   const actor = {
+    id: "death-knight",
+    uuid: "Actor.death-knight",
     name: "Death Knight",
     isOwner,
     system: { willPoints: { value: wp } },
@@ -107,12 +109,28 @@ function settingsWithDialogDefault(value) {
   };
 }
 
+let createdPaymentMessage = null;
+
 beforeEach(() => {
   ui.notifications.warn.mockReset();
   ui.notifications.error.mockReset();
   CONFIG.DoD ??= {};
   CONFIG.DoD.TextEditor ??= {};
   CONFIG.DoD.TextEditor.enrichHTML = vi.fn(async value => value);
+  createdPaymentMessage = {
+    id: "monster-attack-wp-message",
+    delete: vi.fn(async () => {}),
+  };
+  globalThis.ChatMessage = {
+    getSpeaker: vi.fn(({ actor }) => ({
+      actor: actor.id,
+      alias: actor.name,
+    })),
+    create: vi.fn(async data => {
+      Object.assign(createdPaymentMessage, data);
+      return createdPaymentMessage;
+    }),
+  };
 });
 
 describe("monster attack metadata", () => {
@@ -309,7 +327,7 @@ describe("native Dragonbane attack selection", () => {
 });
 
 describe("assigned-character WP payment", () => {
-  test("Yes spends 2 WP and performs Infectious Bite", async () => {
+  test("Yes spends 2 WP, reports it in chat, and performs Infectious Bite", async () => {
     const payer = assignedCharacter({ wp: 5 });
     const utility = { monsterAttack: vi.fn(async () => "attack-card") };
     const dialogV2 = { wait: vi.fn(async () => "pay") };
@@ -318,18 +336,47 @@ describe("assigned-character WP payment", () => {
         actor: ghoulActor(),
         table: {},
         tableResult: bite(),
-        user: { isGM: false, character: payer },
+        user: {
+          id: "player-user",
+          isGM: false,
+          character: payer,
+        },
       },
       { dialogV2, utility },
     );
+
     expect(payer.update).toHaveBeenCalledWith({
       "system.willPoints.value": 3,
     });
+    expect(globalThis.ChatMessage.getSpeaker).toHaveBeenCalledWith({ actor: payer });
+    expect(globalThis.ChatMessage.create).toHaveBeenCalledOnce();
+
+    const messageData = globalThis.ChatMessage.create.mock.calls[0][0];
+    expect(messageData.user).toBe("player-user");
+    expect(messageData.speaker).toEqual({
+      actor: "death-knight",
+      alias: "Death Knight",
+    });
+    expect(messageData.content).toContain('class="ability-use"');
+    expect(messageData.content).toMatch(
+      /<b>.*:<\/b>\s*5\s*<i class="fa-solid fa-arrow-right"><\/i>\s*3<br>/s,
+    );
+    expect(
+      messageData.flags[MODULE_ID].monsterAttackResourcePayment,
+    ).toEqual({
+      schemaVersion: 1,
+      attackKey: "infectious-bite",
+      resource: "willPoints",
+      amount: 2,
+      payerActorUuid: "Actor.death-knight",
+      sourceActorUuid: "Actor.ghoul-actor",
+    });
+
     expect(utility.monsterAttack).toHaveBeenCalledOnce();
     expect(result).toMatchObject({ status: "attacked", paid: true });
   });
 
-  test("No performs the attack without spending WP", async () => {
+  test("No performs the attack without spending WP or posting payment chat", async () => {
     const payer = assignedCharacter({ wp: 5 });
     const utility = { monsterAttack: vi.fn(async () => "attack-card") };
     const dialogV2 = { wait: vi.fn(async () => "unpaid") };
@@ -343,11 +390,12 @@ describe("assigned-character WP payment", () => {
       { dialogV2, utility },
     );
     expect(payer.update).not.toHaveBeenCalled();
+    expect(globalThis.ChatMessage.create).not.toHaveBeenCalled();
     expect(utility.monsterAttack).toHaveBeenCalledOnce();
     expect(result).toMatchObject({ status: "attacked", paid: false });
   });
 
-  test("Cancel stops the attack", async () => {
+  test("Cancel stops the attack without spending WP or posting chat", async () => {
     const payer = assignedCharacter({ wp: 5 });
     const utility = { monsterAttack: vi.fn() };
     const dialogV2 = { wait: vi.fn(async () => null) };
@@ -361,6 +409,7 @@ describe("assigned-character WP payment", () => {
       { dialogV2, utility },
     );
     expect(payer.update).not.toHaveBeenCalled();
+    expect(globalThis.ChatMessage.create).not.toHaveBeenCalled();
     expect(utility.monsterAttack).not.toHaveBeenCalled();
     expect(result).toMatchObject({ status: "cancelled", paid: false });
   });
@@ -383,7 +432,7 @@ describe("assigned-character WP payment", () => {
     );
   });
 
-  test("a GM performs Infectious Bite without a WP prompt", async () => {
+  test("a GM performs Infectious Bite without a WP prompt or payment chat", async () => {
     const utility = { monsterAttack: vi.fn(async () => "attack-card") };
     const dialogV2 = { wait: vi.fn() };
     await performControlledMonsterAttack(
@@ -396,10 +445,11 @@ describe("assigned-character WP payment", () => {
       { dialogV2, utility },
     );
     expect(dialogV2.wait).not.toHaveBeenCalled();
+    expect(globalThis.ChatMessage.create).not.toHaveBeenCalled();
     expect(utility.monsterAttack).toHaveBeenCalledOnce();
   });
 
-  test("Claws never prompts for WP", async () => {
+  test("Claws never prompts for WP or posts payment chat", async () => {
     const payer = assignedCharacter({ wp: 5 });
     const utility = { monsterAttack: vi.fn(async () => "attack-card") };
     const dialogV2 = { wait: vi.fn() };
@@ -414,10 +464,11 @@ describe("assigned-character WP payment", () => {
     );
     expect(dialogV2.wait).not.toHaveBeenCalled();
     expect(payer.update).not.toHaveBeenCalled();
+    expect(globalThis.ChatMessage.create).not.toHaveBeenCalled();
     expect(utility.monsterAttack).toHaveBeenCalledOnce();
   });
 
-  test("a missing assigned character warns and continues unpaid", async () => {
+  test("a missing assigned character warns and continues without payment chat", async () => {
     const utility = { monsterAttack: vi.fn(async () => "attack-card") };
     await performControlledMonsterAttack(
       {
@@ -429,23 +480,64 @@ describe("assigned-character WP payment", () => {
       { dialogV2: { wait: vi.fn() }, utility },
     );
     expect(ui.notifications.warn).toHaveBeenCalledOnce();
+    expect(globalThis.ChatMessage.create).not.toHaveBeenCalled();
     expect(utility.monsterAttack).toHaveBeenCalledOnce();
   });
 
-  test("refunds WP if Dragonbane's attack call throws", async () => {
+  test("a payment-chat failure refunds WP and cancels the attack", async () => {
     const payer = assignedCharacter({ wp: 5 });
-    const utility = { monsterAttack: vi.fn(async () => {
-      throw new Error("boom");
-    }) };
-    await expect(performControlledMonsterAttack(
+    const utility = { monsterAttack: vi.fn(async () => "attack-card") };
+    globalThis.ChatMessage.create.mockRejectedValueOnce(new Error("chat failed"));
+
+    const result = await performControlledMonsterAttack(
       {
         actor: ghoulActor(),
         table: {},
         tableResult: bite(),
         user: { isGM: false, character: payer },
       },
-      { dialogV2: { wait: vi.fn(async () => "pay") }, utility },
-    )).rejects.toThrow("boom");
+      {
+        dialogV2: { wait: vi.fn(async () => "pay") },
+        utility,
+      },
+    );
+
+    expect(payer.update).toHaveBeenNthCalledWith(1, {
+      "system.willPoints.value": 3,
+    });
+    expect(payer.update).toHaveBeenNthCalledWith(2, {
+      "system.willPoints.value": 5,
+    });
+    expect(utility.monsterAttack).not.toHaveBeenCalled();
+    expect(ui.notifications.error).toHaveBeenCalledOnce();
+    expect(result).toMatchObject({ status: "cancelled", paid: false });
+  });
+
+  test("removes payment chat and refunds WP if Dragonbane's attack call throws", async () => {
+    const payer = assignedCharacter({ wp: 5 });
+    const utility = {
+      monsterAttack: vi.fn(async () => {
+        throw new Error("boom");
+      }),
+    };
+
+    await expect(
+      performControlledMonsterAttack(
+        {
+          actor: ghoulActor(),
+          table: {},
+          tableResult: bite(),
+          user: { isGM: false, character: payer },
+        },
+        {
+          dialogV2: { wait: vi.fn(async () => "pay") },
+          utility,
+        },
+      ),
+    ).rejects.toThrow("boom");
+
+    expect(globalThis.ChatMessage.create).toHaveBeenCalledOnce();
+    expect(createdPaymentMessage.delete).toHaveBeenCalledOnce();
     expect(payer.update).toHaveBeenNthCalledWith(1, {
       "system.willPoints.value": 3,
     });
