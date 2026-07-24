@@ -355,3 +355,144 @@ export async function applyCommonAnimalAttackStatuses({
   }
   return results;
 }
+
+function renderedRoot(html) {
+  return html?.querySelectorAll
+    ? html
+    : html?.[0]?.querySelectorAll
+      ? html[0]
+      : null;
+}
+
+function actorEffects(actor) {
+  if (!actor?.effects) {
+    return [];
+  }
+  return Array.from(actor.effects);
+}
+
+function effectHasStatus(effect, statusId) {
+  return (
+    effect?.statuses?.has?.(statusId) === true ||
+    Array.from(effect?.statuses ?? []).includes(statusId)
+  );
+}
+
+function actorUuid(actor) {
+  return String(
+    actor?.baseActor?.uuid ??
+      actor?.uuid ??
+      ""
+  ).trim();
+}
+
+function actorFromSourceUuid(sourceUuid) {
+  if (!sourceUuid) {
+    return null;
+  }
+
+  try {
+    const document = globalThis.fromUuidSync?.(sourceUuid);
+    const actor = normalizeTargetActor(document);
+    if (actor) {
+      return actor;
+    }
+  } catch (error) {
+    console.warn(
+      `${MODULE_ID} | Could not resolve Restrained source ${sourceUuid}.`,
+      error
+    );
+  }
+
+  const match = /^Actor\.([^.]+)$/.exec(sourceUuid);
+  return match
+    ? normalizeTargetActor(game.actors?.get?.(match[1]))
+    : null;
+}
+
+export function commonAnimalRestrainedSourceName(
+  effect,
+  targetActor
+) {
+  if (
+    !effectHasStatus(
+      effect,
+      COMMON_ANIMAL_RESTRAIN_STATUS_ID
+    )
+  ) {
+    return null;
+  }
+
+  const sourceUuid = String(effect?.origin ?? "").trim();
+  if (!sourceUuid || sourceUuid === actorUuid(targetActor)) {
+    return null;
+  }
+
+  const sourceActor = actorFromSourceUuid(sourceUuid);
+  const sourceName = String(sourceActor?.name ?? "").trim();
+  return sourceName || null;
+}
+
+/**
+ * Dragonbane 4 renders effect.parent.name in the Source column. A status
+ * Active Effect is embedded in its target Actor, so that value always names
+ * the target. Replace the displayed value for module-applied Restrained
+ * effects whose origin points at the attacking Common Animal.
+ */
+export function onRenderCommonAnimalRestrainedSource(
+  app,
+  html
+) {
+  const actor = app?.actor ?? app?.document ?? null;
+  const root = renderedRoot(html);
+  if (!actor || !root) {
+    return 0;
+  }
+
+  const effectsByUuid = new Map(
+    actorEffects(actor)
+      .filter(effect => effect?.uuid)
+      .map(effect => [String(effect.uuid), effect])
+  );
+  let updated = 0;
+
+  for (const row of root.querySelectorAll(
+    "tr.effect[data-effect-uuid]"
+  )) {
+    const effectUuid = String(
+      row?.dataset?.effectUuid ?? ""
+    );
+    const effect = effectsByUuid.get(effectUuid);
+    const sourceName = commonAnimalRestrainedSourceName(
+      effect,
+      actor
+    );
+    if (!sourceName) {
+      continue;
+    }
+
+    const textCells = Array.from(
+      row.querySelectorAll?.("td.text-data") ?? []
+    );
+    const sourceCell = textCells[1] ?? null;
+    if (!sourceCell) {
+      continue;
+    }
+
+    const sourceText = sourceCell.ownerDocument?.createElement
+      ? sourceCell.ownerDocument.createElement("span")
+      : { textContent: "" };
+    sourceText.textContent = sourceName;
+    sourceText.className = "boa-common-animal-status-source";
+
+    if (typeof sourceCell.replaceChildren === "function") {
+      sourceCell.replaceChildren(sourceText);
+    } else {
+      sourceCell.textContent = sourceName;
+    }
+    updated += 1;
+  }
+
+  return updated;
+}
+

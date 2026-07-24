@@ -252,7 +252,7 @@ export async function onCreateCommonAnimalEffectOnlyWeaponTestMessage(
   await applyAttackStatuses({
     effects: attackEffects(context.weapon),
     targets: [context.targetActor],
-    sourceActor: context.actor,
+    sourceActor: context.weapon?.parent ?? context.actor,
   });
   return enriched;
 }

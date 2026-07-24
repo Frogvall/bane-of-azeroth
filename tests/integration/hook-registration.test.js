@@ -68,7 +68,13 @@ describe("Foundry hook registration", () => {
       onCreateCommonAnimalEffectOnlyWeaponTestMessage,
     } = effectOnlyAttacks;
 
-    const registeredHooks =
+        const statusEffects = await import(
+      "../../foundry/scripts/common-animal-status-effects.js"
+    );
+    const {
+      onRenderCommonAnimalRestrainedSource,
+    } = statusEffects;
+const registeredHooks =
       Hooks.on.mock.calls;
     const registeredHookNames =
       registeredHooks.map(([name]) => name);
@@ -87,7 +93,12 @@ describe("Foundry hook registration", () => {
         )
         .map(([, callback]) => callback);
 
-    expect([
+        const renderActorSheetCallbacks = registeredHooks
+      .filter(
+        ([name]) => name === "renderDoDActorBaseSheet"
+      )
+      .map(([, callback]) => callback);
+expect([
       ...new Set(registeredHookNames),
     ]).toEqual([
       "drawToken",
@@ -152,7 +163,12 @@ describe("Foundry hook registration", () => {
         onCommonAnimalWeaponTestChatMessage
       );
     }
-    expect(game.settings.register).toHaveBeenCalledOnce();
+        expect(renderActorSheetCallbacks).toHaveLength(3);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(3);
+    expect(renderActorSheetCallbacks).toContain(
+      onRenderCommonAnimalRestrainedSource
+    );
+expect(game.settings.register).toHaveBeenCalledOnce();
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

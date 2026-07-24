@@ -1,5 +1,6 @@
 import {
   registerCommonAnimalStatusSocket,
+  onRenderCommonAnimalRestrainedSource,
 } from "./common-animal-status-effects.js";
 import {
   MODULE_ID,
@@ -113,6 +114,10 @@ Hooks.once("init", () => {
   Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderCommonAnimalEffectOnlyActorSheet
+  );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderCommonAnimalRestrainedSource
   );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
