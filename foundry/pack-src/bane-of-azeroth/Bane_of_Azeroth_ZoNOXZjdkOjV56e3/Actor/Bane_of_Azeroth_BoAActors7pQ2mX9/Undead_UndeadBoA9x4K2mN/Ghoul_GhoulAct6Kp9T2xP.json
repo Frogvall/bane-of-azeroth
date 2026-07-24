@@ -137,7 +137,12 @@
     "bane-of-azeroth": {
       "generatedBy": "tools/generate-summoned-monsters.py",
       "contentKey": "actors.summoned-monsters.ghoul",
-      "summonType": "ghoul"
+      "summonType": "ghoul",
+      "monsterControl": {
+        "schemaVersion": 1,
+        "key": "ghoul",
+        "attackSelection": "manual-only"
+      }
     }
   },
   "_stats": {

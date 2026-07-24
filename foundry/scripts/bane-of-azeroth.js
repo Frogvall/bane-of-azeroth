@@ -1,3 +1,4 @@
+import { onRenderControlledMonsterSheet } from "./monster-attack-control.js";
 import {
   registerCommonAnimalStatusSocket,
   onRenderCommonAnimalRestrainedSource,
@@ -118,6 +119,10 @@ Hooks.once("init", () => {
   Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderCommonAnimalRestrainedSource
+  );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderControlledMonsterSheet,
   );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 

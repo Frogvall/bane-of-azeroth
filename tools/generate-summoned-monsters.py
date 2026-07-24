@@ -217,6 +217,7 @@ def build_actor(
     content_key = f"actors.summoned-monsters.{monster['key']}"
     actor_flags = generated_flags(content_key)
     actor_flags[MODULE_ID]["summonType"] = monster["summonType"]
+    actor_flags[MODULE_ID]["monsterControl"] = monster["monsterControl"]
     token_flags = {
         MODULE_ID: {
             "summonType": monster["summonType"],
@@ -317,10 +318,14 @@ def build_table_result(
         "drawn": False,
         "_id": result["id"],
         "img": "systems/dragonbane/art/icons/monster-attack.webp",
-        "flags": {},
+        "flags": {
+            MODULE_ID: {
+                "monsterAttack": result["monsterAttack"],
+            },
+        },
         "_stats": base_stats(),
         "description": result["description"],
-        "name": "",
+        "name": result["name"],
     }
 
 
@@ -373,6 +378,56 @@ def validate_folder(
     require_integer(folder.get("sort"), f"{context}.sort")
     return folder
 
+
+
+
+def validate_monster_control(value: Any, context: str) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise GenerationError(f"{context} must be an object.")
+    if value.get("schemaVersion") != 1:
+        raise GenerationError(f"{context}.schemaVersion must be 1.")
+    require_key(value.get("key"), f"{context}.key")
+    selection = require_string(
+        value.get("attackSelection"),
+        f"{context}.attackSelection",
+    )
+    if selection not in {"manual-only", "system-default"}:
+        raise GenerationError(
+            f"{context}.attackSelection must be manual-only or system-default."
+        )
+    return value
+
+
+def validate_monster_attack(value: Any, context: str) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise GenerationError(f"{context} must be an object.")
+    if value.get("schemaVersion") != 1:
+        raise GenerationError(f"{context}.schemaVersion must be 1.")
+    require_key(value.get("key"), f"{context}.key")
+    resource_cost = value.get("resourceCost")
+    if resource_cost is None:
+        return value
+    if not isinstance(resource_cost, dict):
+        raise GenerationError(f"{context}.resourceCost must be an object.")
+    if resource_cost.get("resource") != "willPoints":
+        raise GenerationError(
+            f"{context}.resourceCost.resource must be willPoints."
+        )
+    require_integer(
+        resource_cost.get("amount"),
+        f"{context}.resourceCost.amount",
+        minimum=1,
+    )
+    if resource_cost.get("payer") != "assigned-character":
+        raise GenerationError(
+            f"{context}.resourceCost.payer must be assigned-character."
+        )
+    for field in ("prompt", "allowUnpaid"):
+        if not isinstance(resource_cost.get(field), bool):
+            raise GenerationError(
+                f"{context}.resourceCost.{field} must be a boolean."
+            )
+    return value
 
 def validate_content(
     content: dict[str, Any],
@@ -455,6 +510,10 @@ def validate_content(
                 f"{category!r}."
             )
         require_string(monster.get("summonType"), f"monster {key!r}.summonType")
+        monster["monsterControl"] = validate_monster_control(
+            monster.get("monsterControl"),
+            f"monster {key!r}.monsterControl",
+        )
         require_string(monster.get("image"), f"monster {key!r}.image")
         require_string(monster.get("tokenImage"), f"monster {key!r}.tokenImage")
         require_string(
@@ -534,6 +593,14 @@ def validate_content(
             require_string(
                 result.get("description"),
                 f"monster {key!r} result {result_index}.description",
+            )
+            result["name"] = require_string(
+                result.get("name"),
+                f"monster {key!r} result {result_index}.name",
+            )
+            result["monsterAttack"] = validate_monster_attack(
+                result.get("monsterAttack"),
+                f"monster {key!r} result {result_index}.monsterAttack",
             )
             if result_id in ids:
                 raise GenerationError(f"Duplicate Foundry ID: {result_id}")

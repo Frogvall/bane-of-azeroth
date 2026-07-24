@@ -30,7 +30,20 @@
         "tokensCreated": "Created {count} Elemental Totem token(s).",
         "cleanupWarning": "The new totems were created, but old totems could not be removed from: {scenes}.",
         "placementError": "The Elemental Totem tokens could not be created. See the console for details."
-      }
+      },
+      "monsterAttackTitle": "Choose Monster Attack",
+      "monsterAttackChoose": "Choose an attack for {actor}. Random attacks are disabled for this creature.",
+      "monsterAttackWpTitle": "Spend Willpower",
+      "monsterAttackWpContent": "Spend {amount} WP from {character} to use {attack}? Current WP: {current}.",
+      "monsterAttackYes": "Yes",
+      "monsterAttackNo": "No",
+      "monsterAttackCancel": "Cancel",
+      "monsterAttackMissingTable": "No monster attack table was found for {actor}.",
+      "monsterAttackMissingCharacter": "No character is assigned to your user. {attack} will continue without automatic WP payment.",
+      "monsterAttackUnownedCharacter": "You do not own the assigned character {character}. {attack} will continue without automatic WP payment.",
+      "monsterAttackInsufficientWp": "{character} does not have the {amount} WP required for automatic payment.",
+      "monsterAttackPaymentFailed": "WP could not be spent from {character}; the attack was cancelled.",
+      "monsterAttackFailed": "The monster attack could not be completed."
     },
     "spellAutomation": {
       "alwaysPreparedTooltip": "Granted by a Heroic Class Ability and always prepared."

@@ -74,6 +74,10 @@ describe("Foundry hook registration", () => {
     const {
       onRenderCommonAnimalRestrainedSource,
     } = statusEffects;
+    const monsterAttackControl = await import(
+      "../../foundry/scripts/monster-attack-control.js"
+    );
+    const { onRenderControlledMonsterSheet } = monsterAttackControl;
 const registeredHooks =
       Hooks.on.mock.calls;
     const registeredHookNames =
@@ -163,10 +167,13 @@ expect([
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(3);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(3);
+        expect(renderActorSheetCallbacks).toHaveLength(4);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(4);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
+    );
+    expect(renderActorSheetCallbacks).toContain(
+      onRenderControlledMonsterSheet,
     );
 expect(game.settings.register).toHaveBeenCalledOnce();
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({

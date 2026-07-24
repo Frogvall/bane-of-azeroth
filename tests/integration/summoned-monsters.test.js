@@ -360,3 +360,75 @@ describe("Generated Ghoul content", () => {
     }
   });
 });
+
+describe("Generated Ghoul monster attack control metadata", () => {
+  test("declares manual-only attack selection and versioned attack policies", () => {
+    const source = requireJson(CONTENT_SOURCE);
+    const ghoul = source.monsters.find(monster => monster.key === "ghoul");
+    expect(ghoul.monsterControl).toEqual({
+      schemaVersion: 1,
+      key: "ghoul",
+      attackSelection: "manual-only",
+    });
+    expect(ghoul.attackTable.results).toMatchObject([
+      {
+        name: "Claws",
+        monsterAttack: {
+          schemaVersion: 1,
+          key: "claws",
+        },
+      },
+      {
+        name: "Infectious Bite",
+        monsterAttack: {
+          schemaVersion: 1,
+          key: "infectious-bite",
+          resourceCost: {
+            resource: "willPoints",
+            amount: 2,
+            payer: "assigned-character",
+            prompt: true,
+            allowUnpaid: true,
+          },
+        },
+      },
+    ]);
+  });
+
+  test("generates the policies as Foundry flags", () => {
+    const actorEntry = entryByContentKey("actors.summoned-monsters.ghoul");
+    const tableEntry = entryByContentKey("tables.monster-attacks.ghoul");
+    expect(moduleFlags(actorEntry.document).monsterControl).toEqual({
+      schemaVersion: 1,
+      key: "ghoul",
+      attackSelection: "manual-only",
+    });
+    expect(tableEntry.document.results.map(result => ({
+      name: result.name,
+      metadata: result.flags?.[MODULE_ID]?.monsterAttack,
+    }))).toEqual([
+      {
+        name: "Claws",
+        metadata: {
+          schemaVersion: 1,
+          key: "claws",
+        },
+      },
+      {
+        name: "Infectious Bite",
+        metadata: {
+          schemaVersion: 1,
+          key: "infectious-bite",
+          resourceCost: {
+            resource: "willPoints",
+            amount: 2,
+            payer: "assigned-character",
+            prompt: true,
+            allowUnpaid: true,
+          },
+        },
+      },
+    ]);
+  });
+});
+

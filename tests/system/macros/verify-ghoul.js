@@ -223,12 +223,56 @@ if (boaCheck(
   );
 }
 
-notes.push(
-  "This verifies the imported Ghoul Actor and its native Dragonbane " +
-  "monster attack table. Summoning, WP payment, initiative, replacement, " +
-  "and cleanup automation are intentionally outside this first content test.",
-);
 
+const monsterControl = boaGetFlag(ghoul, "monsterControl");
+boaCheckEqual(
+  checks,
+  "Ghoul attack selection is manual-only",
+  monsterControl?.attackSelection ?? null,
+  "manual-only",
+);
+boaCheckEqual(
+  checks,
+  "Ghoul monster-control schema is version 1",
+  monsterControl?.schemaVersion ?? null,
+  1,
+);
+if (attackTable) {
+  const controlledResults = boaCollectionValues(attackTable.results)
+    .sort((left, right) => left.range[0] - right.range[0]);
+  const clawsPolicy = boaGetFlag(controlledResults[0], "monsterAttack");
+  const bitePolicy = boaGetFlag(controlledResults[1], "monsterAttack");
+  boaCheckEqual(checks, "Claws has a stable attack key", clawsPolicy?.key ?? null, "claws");
+  boaCheckEqual(
+    checks,
+    "Infectious Bite has a stable attack key",
+    bitePolicy?.key ?? null,
+    "infectious-bite",
+  );
+  boaCheckEqual(
+    checks,
+    "Infectious Bite costs 2 assigned-character WP",
+    bitePolicy?.resourceCost?.amount ?? null,
+    2,
+  );
+  boaCheckEqual(
+    checks,
+    "Infectious Bite permits an unpaid attack",
+    bitePolicy?.resourceCost?.allowUnpaid ?? null,
+    true,
+  );
+}
+
+notes.push(
+  "This verifies the imported Ghoul Actor, its native Dragonbane " +
+  "monster attack table, and the metadata used by its attack controls.",
+);
+notes.push(
+  "Manual player verification: the Ghoul attack dialog offers Claws, " +
+  "Infectious Bite, and Cancel without Random; Infectious Bite Yes " +
+  "spends 2 WP from the assigned character, No attacks unpaid, and " +
+  "Cancel, Escape, or closing the dialog prevents the attack.",
+);
 return boaFinish(
   "ghoul",
   "BOA DEV – Verify Ghoul",

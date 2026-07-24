@@ -68,7 +68,12 @@
               1
             ],
             "weight": 1,
-            "description": "<b>Claws.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] slashing damage."
+            "description": "<b>Claws.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] slashing damage.",
+            "name": "Claws",
+            "monsterAttack": {
+              "schemaVersion": 1,
+              "key": "claws"
+            }
           },
           {
             "id": "GhoulBite7pQ2mX9",
@@ -77,9 +82,26 @@
               2
             ],
             "weight": 1,
-            "description": "<b>Infectious Bite.</b> Hits automatically in melee combat (can be dodged, but not parried) and inflicts [[/damage 2D6]] piercing damage. The target has a bane on its next attack or spell roll. Costs 2 WP, paid by the Death Knight."
+            "description": "<b>Infectious Bite.</b> Hits automatically in melee combat (can be dodged, but not parried) and inflicts [[/damage 2D6]] piercing damage. The target has a bane on its next attack or spell roll. Costs 2 WP, paid by the Death Knight.",
+            "name": "Infectious Bite",
+            "monsterAttack": {
+              "schemaVersion": 1,
+              "key": "infectious-bite",
+              "resourceCost": {
+                "resource": "willPoints",
+                "amount": 2,
+                "payer": "assigned-character",
+                "prompt": true,
+                "allowUnpaid": true
+              }
+            }
           }
         ]
+      },
+      "monsterControl": {
+        "schemaVersion": 1,
+        "key": "ghoul",
+        "attackSelection": "manual-only"
       }
     }
   ]
