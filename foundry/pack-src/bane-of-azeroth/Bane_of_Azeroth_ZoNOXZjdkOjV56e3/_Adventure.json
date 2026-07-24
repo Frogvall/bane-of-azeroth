@@ -22,7 +22,8 @@
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Scorpid_0755558cf1561101.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Tallstrider_adfc46dd0aa95902.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Turtle_9ff4f73ac72b45c4.json",
-    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Wind_Serpent_be5c82639dabe7c1.json"
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Wind_Serpent_be5c82639dabe7c1.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Undead_UndeadBoA9x4K2mN/Ghoul_GhoulAct6Kp9T2xP.json"
   ],
   "combats": [],
   "items": [
@@ -132,7 +133,9 @@
   ],
   "journal": [],
   "scenes": [],
-  "tables": [],
+  "tables": [
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/Monster_Attacks_Ghoul_GhoulAtk4mN7Qx2P.json"
+  ],
   "macros": [],
   "cards": [],
   "playlists": [],
@@ -165,7 +168,10 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/_Folder.json",
-    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/_Folder.json"
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/_Folder.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Undead_UndeadBoA9x4K2mN/_Folder.json",
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/_Folder.json",
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/_Folder.json"
   ],
   "_id": "ZoNOXZjdkOjV56e3",
   "folder": null,

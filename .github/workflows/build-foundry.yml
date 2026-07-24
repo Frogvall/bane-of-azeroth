@@ -233,6 +233,7 @@ jobs:
           python3 tools/generate-spells.py --check
           python3 tools/generate-elemental-totems.py --check
           python3 tools/generate-hunter-companions.py --check
+          python3 tools/generate-summoned-monsters.py --check
 
       - name: Build Foundry package
         run: |

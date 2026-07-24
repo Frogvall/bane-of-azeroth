@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Active development / prerelease testing
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 0.9.0
+> **Current Foundry module version:** 0.9.1
 
 ## Project goals
 
@@ -141,6 +141,7 @@ For the current Common Animal and Developer Test sources:
 
 ```bash
 python3 tools/generate-hunter-companions.py --check
+python3 tools/generate-summoned-monsters.py --check
 python3 tools/generate-system-test-macros.py --check
 ```
 

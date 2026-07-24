@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "expectedCount": 1,
+  "actorRoot": {
+    "key": "bane-of-azeroth",
+    "id": "BoAActors7pQ2mX9",
+    "name": "Bane of Azeroth",
+    "color": "#0000ff",
+    "sorting": "a",
+    "sort": 0
+  },
+  "actorFolders": {
+    "undead": {
+      "key": "undead",
+      "id": "UndeadBoA9x4K2mN",
+      "name": "Undead",
+      "color": null,
+      "sorting": "a",
+      "sort": 300000
+    }
+  },
+  "tableFolders": {
+    "root": {
+      "key": "bane-of-azeroth",
+      "id": "BoATables7pQ2mX9",
+      "name": "Bane of Azeroth",
+      "color": "#0000ff",
+      "sorting": "a",
+      "sort": 0
+    },
+    "monsterAttacks": {
+      "key": "monster-attacks",
+      "id": "MonstAtk8vN3Qx2P",
+      "name": "Monster Attacks",
+      "color": null,
+      "sorting": "a",
+      "sort": 100000
+    }
+  },
+  "monsters": [
+    {
+      "key": "ghoul",
+      "id": "GhoulAct6Kp9T2xP",
+      "name": "Ghoul",
+      "category": "undead",
+      "summonType": "ghoul",
+      "image": "icons/svg/mystery-man.svg",
+      "tokenImage": "icons/svg/mystery-man.svg",
+      "descriptionHtml": "",
+      "movement": 8,
+      "hitPoints": 10,
+      "armor": 0,
+      "ferocity": 1,
+      "size": "normal",
+      "tokenWidth": 1,
+      "tokenHeight": 1,
+      "tokenDisposition": 1,
+      "traitsHtml": "<p><strong>Cannot Heal</strong>: The ghoul cannot heal HP.</p><p><strong>Resistance</strong>: All piercing damage is halved (rounded up).</p><p><strong>Immunity</strong>: Ghouls are immune to fear and PERSUASION.</p><p><strong>Vulnerable Neck</strong>: Rolling a dragon when attacking a ghoul immediately severs its head and drops it dead to the ground.</p>",
+      "attackTable": {
+        "id": "GhoulAtk4mN7Qx2P",
+        "name": "Monster Attacks – Ghoul",
+        "formula": "1d2",
+        "results": [
+          {
+            "id": "GhoulClaw8vN3Qx2",
+            "range": [
+              1,
+              1
+            ],
+            "weight": 1,
+            "description": "<b>Claws.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] slashing damage."
+          },
+          {
+            "id": "GhoulBite7pQ2mX9",
+            "range": [
+              2,
+              2
+            ],
+            "weight": 1,
+            "description": "<b>Infectious Bite.</b> Hits automatically in melee combat (can be dodged, but not parried) and inflicts [[/damage 2D6]] piercing damage. The target has a bane on its next attack or spell roll. Costs 2 WP, paid by the Death Knight."
+          }
+        ]
+      }
+    }
+  ]
+}

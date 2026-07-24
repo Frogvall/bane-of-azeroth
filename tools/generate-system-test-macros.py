@@ -97,14 +97,23 @@ MACROS = [
         "suiteMember": True,
         "img": "icons/svg/wing.svg",
     },
-    {
+        {
+        "key": "ghoul",
+        "id": "BoaDevGhoul00001",
+        "name": "BOA DEV – Verify Ghoul",
+        "file": "verify-ghoul.js",
+        "order": 10,
+        "suiteMember": True,
+        "img": "icons/svg/bones.svg",
+    },
+{
         "key": "cleanup",
         "id": "BoaDevCleanup001",
         "name": "BOA DEV – Cleanup Test Data",
         "file": "cleanup-test-data.js",
-        "order": 10,
+        "order": 11,
         "suiteMember": False,
-        "img": "icons/svg/bones.svg",
+        "img": "icons/svg/biohazard.svg",
     },
 ]
 
