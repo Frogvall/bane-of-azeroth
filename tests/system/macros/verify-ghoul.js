@@ -68,7 +68,7 @@ boaCheckEqual(
 boaCheckEqual(
   checks,
   "Actor Bane of Azeroth folder is blue",
-  actorRoot?.color ?? null,
+  boaColorHex(actorRoot?.color ?? null),
   "#0000ff",
 );
 
@@ -145,7 +145,7 @@ if (boaCheck(
   boaCheckEqual(
     checks,
     "Roll Table Bane of Azeroth folder is blue",
-    tableRoot?.color ?? null,
+    boaColorHex(tableRoot?.color ?? null),
     "#0000ff",
   );
 

@@ -58,6 +58,11 @@ function boaCheck(
   return Boolean(condition);
 }
 
+function boaColorHex(value) {
+  if (value === undefined || value === null) return null;
+  return String(value?.css ?? value).trim().toLowerCase();
+}
+
 function boaDiagnosticValue(value) {
   if (value === undefined) return "undefined";
   if (value === null) return "null";
