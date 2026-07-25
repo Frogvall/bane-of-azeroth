@@ -8,6 +8,37 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.9.1] - 2026-07-24
+
+### Added
+
+- Added the Ghoul as a native Dragonbane monster Actor under `Bane of Azeroth/Undead`, with dedicated portrait and token artwork.
+- Added a blue `Bane of Azeroth` Roll Tables folder with a flat `Monster Attacks` subfolder.
+- Added the `Monster Attacks – Ghoul` RollTable with Claws and Infectious Bite.
+- Added structured summoned-monster source data and `tools/generate-summoned-monsters.py`.
+- Added versioned monster-control and monster-attack metadata for controlled attack selection and resource costs.
+- Added optional automatic payment of Infectious Bite's 2 WP cost from the player's assigned character.
+- Added a Dragonbane-style chat card showing the assigned character's WP expenditure.
+
+### Changed
+
+- Ghoul attacks use Dragonbane's native monster-attack dialog.
+- The Ghoul dialog offers Claws and Infectious Bite without a Random option.
+- Shortcuts and settings that normally trigger a random monster attack use Claws for the Ghoul instead.
+- Infectious Bite offers Yes, No, and Cancel: Yes spends 2 WP, No attacks without automatic payment, and Cancel stops the attack.
+- Failed attack execution restores automatically spent WP and removes its temporary payment message.
+
+### Testing
+
+- Added unit coverage for Ghoul attack metadata, native dialog behavior, Claws fallback, WP choices, payment chat messages, failure rollback, and sheet integration.
+- Added integration coverage for generated Ghoul content, artwork, folders, RollTable data, Adventure references, generator synchronization, and Developer Test registration.
+- Added `BOA DEV – Verify Ghoul` checks for the imported Actor, attack table, control metadata, real WP expenditure, payment-chat metadata, speaker data, and cleanup.
+- Added Ghoul verification to `BOA DEV – Run All System Tests`.
+
+### Notes
+
+- Ghoul placement, ownership assignment, combat initiative, replacement, and removal remain game-master-managed workflows.
+
 ## [0.9.0] - 2026-07-24
 
 ### Added

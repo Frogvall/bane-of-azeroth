@@ -41,6 +41,7 @@ const orderedKeys = [
   "common-animals",
   "common-animal-attack-messages",
   "common-animal-movement",
+  "ghoul",
   "spell-grants",
   "elemental-totems",
   "adventure-ownership",
