@@ -1,0 +1,164 @@
+{
+  "folder": "ZIY5EouNXixTTKSe",
+  "name": "Felhunter",
+  "type": "monster",
+  "_id": "syJzyyJogXrRtT8q",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "description": "",
+    "movement": {
+      "base": 14,
+      "value": 14
+    },
+    "hitPoints": {
+      "value": 10,
+      "max": 10,
+      "base": 10
+    },
+    "armor": 2,
+    "ferocity": {
+      "base": 1,
+      "value": 1
+    },
+    "size": "normal",
+    "traits": "<p><strong>Magic Resistance</strong>: Felhunters are resistant to magic and are considered to be constantly under the effect of the MAGIC SHIELD spell at power level 1, without spending a reaction.</p>",
+    "attackTable": "RollTable.Y6MEcCH35zRiBNUw",
+    "currency": {
+      "gc": null,
+      "sc": null,
+      "cc": null
+    },
+    "encumbrance": {
+      "value": 0
+    },
+    "previousMonsterAttack": ""
+  },
+  "prototypeToken": {
+    "name": "Felhunter",
+    "displayName": 0,
+    "actorLink": false,
+    "texture": {
+      "src": "icons/svg/mystery-man.svg",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "alphaThreshold": 0.75
+    },
+    "width": 1,
+    "height": 1,
+    "lockRotation": true,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": 1,
+    "displayBars": 20,
+    "bar1": {
+      "attribute": "hitPoints"
+    },
+    "bar2": {
+      "attribute": "willPoints"
+    },
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "negative": false,
+      "priority": 0
+    },
+    "sight": {
+      "enabled": false,
+      "range": 0,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": {},
+    "flags": {
+      "bane-of-azeroth": {
+        "summonType": "warlock-demon",
+        "sourceActorContentKey": "actors.summoned-monsters.felhunter"
+      }
+    },
+    "randomImg": false,
+    "appendNumber": false,
+    "prependAdjective": false,
+    "depth": 1,
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null
+  },
+  "items": [],
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-summoned-monsters.py",
+      "contentKey": "actors.summoned-monsters.felhunter",
+      "summonType": "warlock-demon",
+      "monsterControl": {
+        "schemaVersion": 1,
+        "key": "felhunter",
+        "attackSelection": {
+          "mode": "system-default"
+        }
+      }
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -23,7 +23,11 @@
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Tallstrider_adfc46dd0aa95902.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Turtle_9ff4f73ac72b45c4.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Wind_Serpent_be5c82639dabe7c1.json",
-    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Undead_UndeadBoA9x4K2mN/Ghoul_GhoulAct6Kp9T2xP.json"
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Undead_UndeadBoA9x4K2mN/Ghoul_GhoulAct6Kp9T2xP.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Demons_ZIY5EouNXixTTKSe/Felhunter_syJzyyJogXrRtT8q.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Demons_ZIY5EouNXixTTKSe/Imp_Qi1FF2P06TdSMzMK.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Demons_ZIY5EouNXixTTKSe/Sayaad_864KRsH0wP5fqVFi.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Demons_ZIY5EouNXixTTKSe/Voidwalker_sarzEcMOkSvjbci2.json"
   ],
   "combats": [],
   "items": [
@@ -134,7 +138,11 @@
   "journal": [],
   "scenes": [],
   "tables": [
-    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/Monster_Attacks_Ghoul_GhoulAtk4mN7Qx2P.json"
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/Monster_Attacks_Ghoul_GhoulAtk4mN7Qx2P.json",
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/Monster_Attacks_Felhunter_Y6MEcCH35zRiBNUw.json",
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/Monster_Attacks_Imp_jCvoh99OvzeHfaFv.json",
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/Monster_Attacks_Sayaad_3ZfDwi2LubfhYg8O.json",
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/Monster_Attacks_Voidwalker_xzXFOx5qZnY3FTT4.json"
   ],
   "macros": [],
   "cards": [],
@@ -170,6 +178,7 @@
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Undead_UndeadBoA9x4K2mN/_Folder.json",
+    "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Demons_ZIY5EouNXixTTKSe/_Folder.json",
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/_Folder.json",
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/_Folder.json"
   ],

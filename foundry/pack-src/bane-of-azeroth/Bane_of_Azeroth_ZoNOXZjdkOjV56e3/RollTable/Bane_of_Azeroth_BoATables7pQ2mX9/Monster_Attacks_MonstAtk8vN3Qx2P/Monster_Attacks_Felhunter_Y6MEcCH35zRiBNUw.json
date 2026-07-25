@@ -1,0 +1,65 @@
+{
+  "name": "Monster Attacks – Felhunter",
+  "img": "systems/dragonbane/art/icons/monster-attack.webp",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "Lkge9vdJHEB5CDFM",
+      "img": "systems/dragonbane/art/icons/monster-attack.webp",
+      "flags": {
+        "bane-of-azeroth": {
+          "monsterAttack": {
+            "schemaVersion": 1,
+            "key": "mana-bite"
+          }
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "description": "<b>Mana Bite.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D10]] slashing damage. The next damage-dealing spell cast at the target gets a boon. The effect lasts until the warlock's turn in the next round.",
+      "name": ""
+    }
+  ],
+  "formula": "1",
+  "replacement": true,
+  "displayRoll": false,
+  "folder": "MonstAtk8vN3Qx2P",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-summoned-monsters.py",
+      "contentKey": "tables.monster-attacks.felhunter"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "Y6MEcCH35zRiBNUw"
+}

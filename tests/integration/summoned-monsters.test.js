@@ -105,10 +105,10 @@ function collectIds(source) {
 }
 
 describe("Summoned monster source contract", () => {
-  test("defines the initial Ghoul content with deterministic IDs", () => {
+  test("defines Ghoul and Warlock demon content with deterministic IDs", () => {
     const source = requireJson(CONTENT_SOURCE);
     expect(source.schemaVersion).toBe(1);
-    expect(source.expectedCount).toBe(1);
+    expect(source.expectedCount).toBe(5);
     expect(source.actorRoot).toMatchObject({
       id: "BoAActors7pQ2mX9",
       name: "Bane of Azeroth",
@@ -126,7 +126,7 @@ describe("Summoned monster source contract", () => {
       name: "Monster Attacks",
       color: null,
     });
-    expect(source.monsters).toHaveLength(1);
+    expect(source.monsters).toHaveLength(5);
     expect(source.monsters[0]).toMatchObject({
       key: "ghoul",
       name: "Ghoul",
