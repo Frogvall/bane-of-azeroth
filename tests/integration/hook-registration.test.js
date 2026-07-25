@@ -186,28 +186,42 @@ expect(game.settings.register).toHaveBeenCalledOnce();
   });
 
   test("exposes the Common Animal attack-result adapter through the module API", async () => {
-    const module = {
-      id: "bane-of-azeroth",
-      api: {
-        existingApi: true,
-      },
-    };
-    game.modules = new Map([
-      [module.id, module],
-    ]);
+    // BOA expected module-init log capture
+    const consoleLog = vi
+      .spyOn(console, "log")
+      .mockImplementation(() => {});
 
-    await importFreshModule(
-      "common-animal-api"
-    );
-    const init = getOnceCallback("init");
+    try {
+        const module = {
+          id: "bane-of-azeroth",
+          api: {
+            existingApi: true,
+          },
+        };
+        game.modules = new Map([
+          [module.id, module],
+        ]);
 
-    init();
+        await importFreshModule(
+          "common-animal-api"
+        );
+        const init = getOnceCallback("init");
 
-    expect(module.api).toMatchObject({
-      existingApi: true,
-      processCommonAnimalAttackResult:
-        expect.any(Function),
-    });
+        init();
+
+        expect(module.api).toMatchObject({
+          existingApi: true,
+          processCommonAnimalAttackResult:
+            expect.any(Function),
+        });
+      
+
+      expect(consoleLog).toHaveBeenCalledWith(
+        "bane-of-azeroth | Registered custom weapon features, Armor Piercing, and Scattershot.",
+      );
+    } finally {
+      consoleLog.mockRestore();
+    }
   });
 
   test("does not activate runtime hooks for another game system", async () => {
