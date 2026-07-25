@@ -487,30 +487,42 @@ describe("assigned-character WP payment", () => {
   test("a payment-chat failure refunds WP and cancels the attack", async () => {
     const payer = assignedCharacter({ wp: 5 });
     const utility = { monsterAttack: vi.fn(async () => "attack-card") };
-    globalThis.ChatMessage.create.mockRejectedValueOnce(new Error("chat failed"));
+    const chatError = new Error("chat failed");
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    globalThis.ChatMessage.create.mockRejectedValueOnce(chatError);
 
-    const result = await performControlledMonsterAttack(
-      {
-        actor: ghoulActor(),
-        table: {},
-        tableResult: bite(),
-        user: { isGM: false, character: payer },
-      },
-      {
-        dialogV2: { wait: vi.fn(async () => "pay") },
-        utility,
-      },
-    );
+    try {
+      const result = await performControlledMonsterAttack(
+        {
+          actor: ghoulActor(),
+          table: {},
+          tableResult: bite(),
+          user: { isGM: false, character: payer },
+        },
+        {
+          dialogV2: { wait: vi.fn(async () => "pay") },
+          utility,
+        },
+      );
 
-    expect(payer.update).toHaveBeenNthCalledWith(1, {
-      "system.willPoints.value": 3,
-    });
-    expect(payer.update).toHaveBeenNthCalledWith(2, {
-      "system.willPoints.value": 5,
-    });
-    expect(utility.monsterAttack).not.toHaveBeenCalled();
-    expect(ui.notifications.error).toHaveBeenCalledOnce();
-    expect(result).toMatchObject({ status: "cancelled", paid: false });
+      expect(payer.update).toHaveBeenNthCalledWith(1, {
+        "system.willPoints.value": 3,
+      });
+      expect(payer.update).toHaveBeenNthCalledWith(2, {
+        "system.willPoints.value": 5,
+      });
+      expect(utility.monsterAttack).not.toHaveBeenCalled();
+      expect(ui.notifications.error).toHaveBeenCalledOnce();
+      expect(consoleError).toHaveBeenCalledWith(
+        "bane-of-azeroth | Failed to record WP for Infectious Bite.",
+        chatError,
+      );
+      expect(result).toMatchObject({ status: "cancelled", paid: false });
+    } finally {
+      consoleError.mockRestore();
+    }
   });
 
   test("removes payment chat and refunds WP if Dragonbane's attack call throws", async () => {
