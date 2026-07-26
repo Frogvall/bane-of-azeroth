@@ -3,7 +3,7 @@
   "name": "Voidwalker",
   "type": "monster",
   "_id": "sarzEcMOkSvjbci2",
-  "img": "icons/svg/mystery-man.svg",
+  "img": "modules/bane-of-azeroth/assets/actors/demons/voidwalker.webp",
   "system": {
     "description": "",
     "movement": {
@@ -38,7 +38,7 @@
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "icons/svg/mystery-man.svg",
+      "src": "modules/bane-of-azeroth/assets/tokens/demons/voidwalker-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",

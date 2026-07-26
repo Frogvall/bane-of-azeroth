@@ -2,6 +2,7 @@ import {
   existsSync,
   readFileSync,
   readdirSync,
+  statSync,
 } from "node:fs";
 import {
   dirname,
@@ -34,6 +35,8 @@ const ID_PATTERN = /^[A-Za-z0-9]{16}$/;
 const EXPECTED = Object.freeze({
   felhunter: {
     name: "Felhunter",
+    image: "modules/bane-of-azeroth/assets/actors/demons/felhunter.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/demons/felhunter-token.webp",
     movement: 14,
     hitPoints: 10,
     armor: 2,
@@ -49,6 +52,8 @@ const EXPECTED = Object.freeze({
   },
   imp: {
     name: "Imp",
+    image: "modules/bane-of-azeroth/assets/actors/demons/imp.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/demons/imp-token.webp",
     movement: 10,
     hitPoints: 6,
     armor: 0,
@@ -63,6 +68,8 @@ const EXPECTED = Object.freeze({
   },
   sayaad: {
     name: "Sayaad",
+    image: "modules/bane-of-azeroth/assets/actors/demons/sayaad.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/demons/sayaad-token.webp",
     movement: 10,
     hitPoints: 10,
     armor: 1,
@@ -77,6 +84,8 @@ const EXPECTED = Object.freeze({
   },
   voidwalker: {
     name: "Voidwalker",
+    image: "modules/bane-of-azeroth/assets/actors/demons/voidwalker.webp",
+    tokenImage: "modules/bane-of-azeroth/assets/tokens/demons/voidwalker-token.webp",
     movement: 8,
     hitPoints: 16,
     armor: 6,
@@ -188,8 +197,8 @@ describe("Warlock demon source contract", () => {
         name: expected.name,
         category: "demons",
         summonType: "warlock-demon",
-        image: "icons/svg/mystery-man.svg",
-        tokenImage: "icons/svg/mystery-man.svg",
+        image: expected.image,
+        tokenImage: expected.tokenImage,
         movement: expected.movement,
         hitPoints: expected.hitPoints,
         armor: expected.armor,
@@ -237,6 +246,37 @@ describe("Warlock demon source contract", () => {
   );
 });
 
+
+describe("Warlock demon artwork", () => {
+  test.each(Object.entries(EXPECTED))(
+    "ships portrait and token artwork for %s",
+    (key, expected) => {
+      for (const modulePath of [
+        expected.image,
+        expected.tokenImage,
+      ]) {
+        expect(modulePath).toMatch(
+          new RegExp(
+            `^modules/${MODULE_ID}/assets/`
+            + "(actors|tokens)/demons/"
+            + "[a-z-]+\\.webp$",
+          ),
+        );
+
+        const prefix = `modules/${MODULE_ID}/`;
+        expect(modulePath.startsWith(prefix)).toBe(true);
+
+        const localPath = resolve(
+          "foundry",
+          modulePath.slice(prefix.length),
+        );
+        expect(existsSync(localPath)).toBe(true);
+        expect(statSync(localPath).size).toBeGreaterThan(0);
+      }
+    },
+  );
+});
+
 describe("Generated Warlock demon content", () => {
   test("creates the Demons Actor folder", () => {
     const source = requireJson(CONTENT_SOURCE);
@@ -271,7 +311,7 @@ describe("Generated Warlock demon content", () => {
         folder: source.actorFolders.demons.id,
         name: expected.name,
         type: "monster",
-        img: "icons/svg/mystery-man.svg",
+        img: expected.image,
         system: {
           description: "",
           movement: {
@@ -299,7 +339,7 @@ describe("Generated Warlock demon content", () => {
           width: 1,
           height: 1,
           texture: {
-            src: "icons/svg/mystery-man.svg",
+            src: expected.tokenImage,
           },
           bar1: {
             attribute: "hitPoints",

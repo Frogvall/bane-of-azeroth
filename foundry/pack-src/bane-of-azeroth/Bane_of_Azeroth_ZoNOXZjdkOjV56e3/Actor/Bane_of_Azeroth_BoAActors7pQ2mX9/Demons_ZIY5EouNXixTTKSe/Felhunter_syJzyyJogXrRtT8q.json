@@ -3,7 +3,7 @@
   "name": "Felhunter",
   "type": "monster",
   "_id": "syJzyyJogXrRtT8q",
-  "img": "icons/svg/mystery-man.svg",
+  "img": "modules/bane-of-azeroth/assets/actors/demons/felhunter.webp",
   "system": {
     "description": "",
     "movement": {
@@ -38,7 +38,7 @@
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "icons/svg/mystery-man.svg",
+      "src": "modules/bane-of-azeroth/assets/tokens/demons/felhunter-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",

@@ -3,7 +3,7 @@
   "name": "Sayaad",
   "type": "monster",
   "_id": "864KRsH0wP5fqVFi",
-  "img": "icons/svg/mystery-man.svg",
+  "img": "modules/bane-of-azeroth/assets/actors/demons/sayaad.webp",
   "system": {
     "description": "",
     "movement": {
@@ -38,7 +38,7 @@
     "displayName": 0,
     "actorLink": false,
     "texture": {
-      "src": "icons/svg/mystery-man.svg",
+      "src": "modules/bane-of-azeroth/assets/tokens/demons/sayaad-token.webp",
       "scaleX": 1,
       "scaleY": 1,
       "tint": "#ffffff",

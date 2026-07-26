@@ -1657,7 +1657,7 @@ If the warlock takes damage within 10 meters from the voidwalker, the damage is 
 }}
 
 {{wide
-![warlock demons](https://i.imgur.com/tXrjqfR.png) {height:400px,mix-blend-mode:multiply,margin-left:1cm,margin-top:-1.5cm}
+![warlock demons](https://i.imgur.com/kvmPi0I.png) {height:350px,mix-blend-mode:multiply,margin-left:1.4cm,margin-top:-1.0cm}
 }}
 
 \page
