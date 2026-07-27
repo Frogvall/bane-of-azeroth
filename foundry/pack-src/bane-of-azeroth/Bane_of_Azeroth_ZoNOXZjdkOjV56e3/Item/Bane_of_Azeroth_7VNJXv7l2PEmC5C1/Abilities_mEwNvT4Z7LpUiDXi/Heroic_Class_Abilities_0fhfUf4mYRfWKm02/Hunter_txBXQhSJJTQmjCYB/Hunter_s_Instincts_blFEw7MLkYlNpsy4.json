@@ -8,7 +8,7 @@
     "itemDescription": "<p>Your companion follows you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically. As an action, you can spend 1 WP to see through the companion's eyes and hear what it hears for one minute, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2.</p>",
     "gmDescription": "",
     "abilityType": "",
-    "requirement": "Companion Heroic Power",
+    "requirement": "Companion Heroic Ability",
     "wp": "",
     "boons": "",
     "secondaryAttribute": "none",

@@ -24,7 +24,7 @@
           "name": "Draconic Wings (flying)",
           "wp": "3",
           "description": [
-            "By spending 3 willpower, you can move freely through the air during your turn."
+            "By spending 3 willpower, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you."
           ]
         },
         {
@@ -337,7 +337,7 @@
           "name": "Luck",
           "wp": "3",
           "description": [
-            "You re-roll one D20 roll and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice."
+            "You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice."
           ]
         }
       ]
