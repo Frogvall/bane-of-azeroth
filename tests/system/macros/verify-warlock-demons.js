@@ -417,14 +417,240 @@ if (imp && impTable && firebolt) {
   );
 }
 
+
+const originalDemonAutomationSetting =
+  game.settings.get(
+    BOA_TEST_MODULE_ID,
+    "demonAutomation",
+  );
+const automationMessageIds = [];
+let disabledPlacementCalls = 0;
+let disabledCreationCalls = 0;
+let enabledPlacementCalls = 0;
+let enabledCreationCalls = 0;
+
+try {
+  const {
+    executeWarlockDemonPlan,
+  } = await import(
+    "/modules/bane-of-azeroth/scripts/warlock-demons.js"
+  );
+  const automationPlan = {
+    sourceMessageId:
+      "BoaWarlockDemonAutomationMessage",
+    actorUuid: "Actor.BoaWarlock",
+    abilityUuid:
+      "Actor.BoaWarlock.Item.Demonologist",
+    sceneId: "BoaWarlockScene",
+    casterTokenId: "BoaWarlockToken",
+    demonKey: "imp",
+    placementRange: 10,
+    duration: "shift",
+  };
+
+  await game.settings.set(
+    BOA_TEST_MODULE_ID,
+    "demonAutomation",
+    false,
+  );
+  boaCheckEqual(
+    checks,
+    "Warlock demon automation was disabled",
+    game.settings.get(
+      BOA_TEST_MODULE_ID,
+      "demonAutomation",
+    ),
+    false,
+  );
+
+  const messagesBefore = new Set(
+    boaCollectionValues(game.messages)
+      .map(message => message.id),
+  );
+  const disabledOutcome =
+    await executeWarlockDemonPlan(
+      automationPlan,
+      {
+        chatMessageClass: ChatMessage,
+        collectPositionFn: async () => {
+          disabledPlacementCalls += 1;
+          return { x: 100, y: 100 };
+        },
+        i18n: game.i18n,
+        messages: game.messages,
+        notifications: {
+          info: () => {},
+          warn: () => {},
+        },
+        requestCreationFn: async () => {
+          disabledCreationCalls += 1;
+          return {
+            createdTokenId: "unexpected",
+            failedCleanupScenes: [],
+          };
+        },
+        settings: game.settings,
+      },
+    );
+
+  const disabledMessages =
+    boaCollectionValues(game.messages)
+      .filter(message =>
+        !messagesBefore.has(message.id)
+      );
+  automationMessageIds.push(
+    ...disabledMessages
+      .map(message => message.id)
+      .filter(Boolean),
+  );
+  const manualMessage =
+    disabledMessages.find(message =>
+      boaGetFlag(
+        message,
+        "warlockDemonManualPlacement",
+      )?.demonKey === "imp"
+    ) ?? null;
+
+  boaCheckEqual(
+    checks,
+    "Disabled demon automation skipped placement and creation",
+    {
+      status:
+        disabledOutcome?.status ?? null,
+      placementCalls:
+        disabledPlacementCalls,
+      creationCalls:
+        disabledCreationCalls,
+    },
+    {
+      status: "manual",
+      placementCalls: 0,
+      creationCalls: 0,
+    },
+  );
+  boaCheck(
+    checks,
+    "Disabled demon automation posted manual instructions",
+    Boolean(manualMessage),
+    automationMessageIds.join(", "),
+  );
+
+  await game.settings.set(
+    BOA_TEST_MODULE_ID,
+    "demonAutomation",
+    true,
+  );
+  const enabledOutcome =
+    await executeWarlockDemonPlan(
+      automationPlan,
+      {
+        collectPositionFn: async () => {
+          enabledPlacementCalls += 1;
+          return { x: 100, y: 100 };
+        },
+        i18n: game.i18n,
+        notifications: {
+          info: () => {},
+          warn: () => {},
+        },
+        requestCreationFn: async () => {
+          enabledCreationCalls += 1;
+          return {
+            createdTokenId:
+              "BoaSyntheticDemonToken",
+            failedCleanupScenes: [],
+          };
+        },
+        settings: game.settings,
+      },
+    );
+
+  boaCheckEqual(
+    checks,
+    "Enabled demon automation reached placement and creation",
+    {
+      status:
+        enabledOutcome?.status ?? null,
+      placementCalls:
+        enabledPlacementCalls,
+      creationCalls:
+        enabledCreationCalls,
+    },
+    {
+      status: "created",
+      placementCalls: 1,
+      creationCalls: 1,
+    },
+  );
+} catch (error) {
+  boaCheck(
+    checks,
+    "Warlock demon automation setting workflow completed",
+    false,
+    error.stack ?? error.message,
+  );
+} finally {
+  try {
+    const liveIds =
+      automationMessageIds.filter(
+        id => game.messages.get(id),
+      );
+    if (liveIds.length > 0) {
+      await ChatMessage.deleteDocuments(
+        liveIds,
+      );
+    }
+    boaCheck(
+      checks,
+      "Temporary manual Warlock demon message was deleted",
+      automationMessageIds.every(
+        id => !game.messages.get(id),
+      ),
+      automationMessageIds.join(", "),
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Temporary manual Warlock demon message was deleted",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+
+  try {
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      "demonAutomation",
+      originalDemonAutomationSetting,
+    );
+    boaCheckEqual(
+      checks,
+      "Warlock demon automation setting was restored",
+      game.settings.get(
+        BOA_TEST_MODULE_ID,
+        "demonAutomation",
+      ),
+      originalDemonAutomationSetting,
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Warlock demon automation setting was restored",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+}
+
 notes.push(
   "The runtime checks inject a harmless attack executor. They verify " +
   "shortcut behavior, real WP payment, ChatMessage metadata, and cleanup " +
   "without rolling a real Dragonbane attack.",
 );
 notes.push(
-  "Demon placement, replacement, ownership, initiative, duration, and " +
-  "demon-specific effects are outside this system test.",
+  "Placement, setting branches, replacement helpers, ownership, "
+  + "shift duration, and cleanup are automated. A real pointer-driven "
+  + "Demonologist summon remains an interactive verification.",
 );
 
 return boaFinish(testKey, testName, checks, notes);

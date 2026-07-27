@@ -78,6 +78,13 @@ describe("Foundry hook registration", () => {
       "../../foundry/scripts/monster-attack-control.js"
     );
     const { onRenderControlledMonsterSheet } = monsterAttackControl;
+    const warlockDemons = await import(
+      "../../foundry/scripts/warlock-demons.js"
+    );
+    const {
+      onCreateWarlockDemonChatMessage,
+      onUpdateWarlockDemonCaster,
+    } = warlockDemons;
 const registeredHooks =
       Hooks.on.mock.calls;
     const registeredHookNames =
@@ -87,6 +94,13 @@ const registeredHooks =
         .filter(
           ([name]) =>
             name === "createChatMessage"
+        )
+        .map(([, callback]) => callback);
+    const updateActorCallbacks =
+      registeredHooks
+        .filter(
+          ([name]) =>
+            name === "updateActor"
         )
         .map(([, callback]) => callback);
     const updateTokenCallbacks =
@@ -113,6 +127,7 @@ expect([
       "createItem",
       "updateItem",
       "deleteItem",
+      "updateActor",
       "preCreateChatMessage",
       "createChatMessage",
       "updateChatMessage",
@@ -150,6 +165,15 @@ expect([
       createChatMessageCallbacks
     ).toContain(
       onCommonAnimalRollDamageChatMessage
+    );
+    expect(
+      createChatMessageCallbacks
+    ).toContain(
+      onCreateWarlockDemonChatMessage
+    );
+    expect(updateActorCallbacks).toHaveLength(1);
+    expect(updateActorCallbacks).toContain(
+      onUpdateWarlockDemonCaster
     );
     expect(
       createChatMessageCallbacks

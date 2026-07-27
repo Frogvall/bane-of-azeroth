@@ -72,6 +72,7 @@ export function getTokenPlacementCandidate(
     originToken,
     previewToken,
     maxDistance,
+    validateCandidate,
     canvasInstance = globalThis.canvas,
     PointClass = globalThis.PIXI?.Point,
   },
@@ -101,14 +102,42 @@ export function getTokenPlacementCandidate(
     { canvasInstance },
   );
 
-  return {
+  const candidate = {
     x: snapped.x,
     y: snapped.y,
     width: size.width,
     height: size.height,
     distance,
     valid: insideScene && distance <= maxDistance,
+    invalidReason:
+      insideScene && distance <= maxDistance
+        ? null
+        : "range",
   };
+  const validationResult =
+    candidate.valid
+      ? validateCandidate?.(candidate)
+      : null;
+
+  if (validationResult === false) {
+    candidate.valid = false;
+  } else if (
+    validationResult
+    && typeof validationResult === "object"
+  ) {
+    candidate.valid =
+      candidate.valid
+      && validationResult.valid !== false;
+    candidate.invalidReason =
+      validationResult.invalidReason
+      ?? (
+        candidate.valid
+          ? null
+          : candidate.invalidReason
+      );
+  }
+
+  return candidate;
 }
 
 export function drawTokenPlacementPreview(
@@ -139,6 +168,7 @@ export function chooseTokenPosition({
   previewToken,
   maxDistance,
   validColor,
+  validateCandidate,
   onPrompt,
   onInvalid,
   canvasInstance = globalThis.canvas,
@@ -187,6 +217,7 @@ export function chooseTokenPosition({
         originToken,
         previewToken,
         maxDistance,
+        validateCandidate,
         canvasInstance,
         PointClass,
       });

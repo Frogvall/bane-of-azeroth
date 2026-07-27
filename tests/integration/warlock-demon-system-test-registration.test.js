@@ -69,6 +69,12 @@ describe("Warlock demon system-test registration", () => {
       "WP payment chat speaker is the assigned character",
       "Temporary Warlock demon WP payment chat message was deleted",
       "Temporary Warlock demon WP payer Actor was deleted",
+      "demonAutomation",
+      "Warlock demon automation was disabled",
+      "Disabled demon automation skipped placement and creation",
+      "Enabled demon automation reached placement and creation",
+      "warlockDemonManualPlacement",
+      "Warlock demon automation setting was restored",
     ]) {
       expect(macro).toContain(marker);
     }

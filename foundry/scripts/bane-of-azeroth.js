@@ -47,6 +47,11 @@ import {
   protectElementalTotemMovement,
 } from "./elemental-totems.js";
 import {
+  onCreateWarlockDemonChatMessage,
+  onUpdateWarlockDemonCaster,
+  registerWarlockDemonSocket,
+} from "./warlock-demons.js";
+import {
   isPrimaryActiveGM,
 } from "./core/users.js";
 import {
@@ -98,10 +103,18 @@ Hooks.once("init", () => {
   Hooks.on("updateItem", onUpdateItem);
   Hooks.on("deleteItem", onDeleteItem);
   Hooks.on(
+    "updateActor",
+    onUpdateWarlockDemonCaster,
+  );
+  Hooks.on(
     "preCreateChatMessage",
     onPreCreateCommonAnimalEffectOnlyWeaponTestMessage
   );
   Hooks.on("createChatMessage", onCreateElementalTotemChatMessage);
+  Hooks.on(
+    "createChatMessage",
+    onCreateWarlockDemonChatMessage,
+  );
   Hooks.on(
     "createChatMessage",
     onCreateCommonAnimalEffectOnlyWeaponTestMessage
@@ -152,6 +165,7 @@ Hooks.once("ready", async () => {
 
 
   registerElementalTotemSocket();
+  registerWarlockDemonSocket();
   registerCommonAnimalStatusSocket();
 
   try {

@@ -52,7 +52,24 @@
       "monsterCommandUseAction": "Use Action",
       "monsterCommandSpendWp": "Spend {amount} WP",
       "monsterCommandMissingAttack": "No configured command attack was found for {actor}.",
-      "monsterCommandCannotPay": "Automatic WP payment requires an assigned character you own."
+      "monsterCommandCannotPay": "Automatic WP payment requires an assigned character you own.",
+      "warlockDemon": {
+        "chooseTitle": "Summon Warlock Demon",
+        "demonType": "Demon",
+        "chooseHint": "Choose the demon to summon. Your previous Warlock demon disappears after the new summon is created.",
+        "continue": "Continue",
+        "placementPrompt": "Place {name} in an empty space within {range} meters.",
+        "placementOutOfRange": "That position is {distance} meters away. The maximum range is {range} meters.",
+        "placementOccupied": "That space is occupied. Choose an empty space.",
+        "placementCancelled": "Warlock demon placement cancelled.",
+        "tokenCreated": "{name} was summoned.",
+        "cleanupWarning": "The new demon was summoned, but previous demons could not be removed from: {scenes}.",
+        "manualTitle": "Demonologist",
+        "manualDemon": "Demon: {demon}",
+        "manualDuration": "Duration: {duration}",
+        "manualAutomationDisabled": "Placement and lifecycle automation is disabled. Place and manage the selected demon manually. A previous demon is not removed automatically.",
+        "manualNotification": "Warlock demon automation is disabled. Manual instructions were posted to chat."
+      }
     },
     "spellAutomation": {
       "alwaysPreparedTooltip": "Granted by a Heroic Class Ability and always prepared."
