@@ -1,0 +1,48 @@
+<form autocomplete="off">
+  <div class="form-group">
+    <label>
+      {{localize
+        "BOA.settings.automation.elementalTotemName"
+      }}
+    </label>
+    <div class="form-fields">
+      <input
+        type="checkbox"
+        name="elementalTotemAutomation"
+        {{checked elementalTotemAutomation}}
+      >
+    </div>
+    <p class="hint">
+      {{localize
+        "BOA.settings.automation.elementalTotemHint"
+      }}
+    </p>
+  </div>
+
+  <div class="form-group">
+    <label>
+      {{localize
+        "BOA.settings.automation.demonName"
+      }}
+    </label>
+    <div class="form-fields">
+      <input
+        type="checkbox"
+        name="demonAutomation"
+        {{checked demonAutomation}}
+      >
+    </div>
+    <p class="hint">
+      {{localize
+        "BOA.settings.automation.demonHint"
+      }}
+    </p>
+  </div>
+
+  <footer class="sheet-footer flexrow">
+    <button type="submit">
+      <i class="fas fa-save"></i>
+      {{localize "BOA.settings.automation.save"}}
+    </button>
+  </footer>
+</form>

@@ -67,6 +67,18 @@
     "chat": {
       "monsterAttackWpSpent": "{actor} spends {amount} WP to use <strong>{attack}</strong>.",
       "monsterCommandWpSpent": "{actor} spent {amount} WP to command {demon} to use {attack}."
+    },
+    "settings": {
+      "automation": {
+        "menuName": "Bane of Azeroth – Automation Settings",
+        "menuLabel": "Configure Automation",
+        "menuHint": "Choose which Bane of Azeroth placement and lifecycle workflows are automated in this world.",
+        "elementalTotemName": "Elemental Totem placement and lifecycle",
+        "elementalTotemHint": "Automate Elemental Totem selection, placement, replacement, ownership, and cleanup.",
+        "demonName": "Demon placement and lifecycle",
+        "demonHint": "Automate Warlock demon selection, placement, replacement, ownership, duration, and cleanup.",
+        "save": "Save Settings"
+      }
     }
   }
 }

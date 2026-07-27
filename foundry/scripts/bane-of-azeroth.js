@@ -63,8 +63,12 @@ import {
   onUpdateCommonAnimalMovementToken,
 } from "./common-animal-movement.js";
 
+import { registerAutomationSettings } from "./automation-settings.js";
 Hooks.once("init", () => {
+
   if (game.system.id !== "dragonbane") return;
+  registerAutomationSettings();
+
   Hooks.on("drawToken", drawElementalTotemAura);
   Hooks.on("updateToken", onUpdateElementalTotemAura);
   Hooks.on(
