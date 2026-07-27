@@ -109,11 +109,11 @@ export function getTokenPlacementCandidate(
     height: size.height,
     distance,
     valid: insideScene && distance <= maxDistance,
-    invalidReason:
-      insideScene && distance <= maxDistance
-        ? null
-        : "range",
   };
+
+  if (!candidate.valid) {
+    candidate.invalidReason = "range";
+  }
   const validationResult =
     candidate.valid
       ? validateCandidate?.(candidate)
@@ -128,13 +128,18 @@ export function getTokenPlacementCandidate(
     candidate.valid =
       candidate.valid
       && validationResult.valid !== false;
-    candidate.invalidReason =
-      validationResult.invalidReason
-      ?? (
-        candidate.valid
-          ? null
-          : candidate.invalidReason
-      );
+
+    if (
+      !candidate.valid
+      && validationResult.invalidReason
+    ) {
+      candidate.invalidReason =
+        validationResult.invalidReason;
+    }
+  }
+
+  if (candidate.valid) {
+    delete candidate.invalidReason;
   }
 
   return candidate;

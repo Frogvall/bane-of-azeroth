@@ -136,12 +136,12 @@ expect([
     ]);
     expect(
       createChatMessageCallbacks
-    ).toHaveLength(3);
+    ).toHaveLength(4);
     expect(
       new Set(
         createChatMessageCallbacks
       ).size
-    ).toBe(3);
+    ).toBe(4);
     expect(
       onUpdateCommonAnimalMovementToken
     ).toEqual(expect.any(Function));
