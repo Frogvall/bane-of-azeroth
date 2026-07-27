@@ -337,7 +337,8 @@ notes.push(
   "The player suite ran in a genuine Player User context.",
 );
 notes.push(
-  "Pointer-driven placement and a real successful Dragonbane spell-roll card remain interactive tests.",
+  "A real successful Elemental Totem spell roll and "
+  + "pointer-driven placement remain interactive tests.",
 );
 
 const completedAt = new Date();
@@ -391,6 +392,41 @@ const summary =
   `${testName}: ${result.passedCount} passed, `
   + `${result.failedCount} failed, `
   + `${result.skippedCount} skipped.`;
+
+const gmSummaryContent = `
+  <h2>BOA Player Tests Complete</h2>
+  <p>
+    <strong>
+      ${result.passed ? "PASS" : "NEEDS ATTENTION"}
+    </strong>
+  </p>
+  <p>
+    ${result.passedCount} passed,
+    ${result.failedCount} failed,
+    ${result.skippedCount} skipped.
+  </p>
+  <p>
+    Run <strong>BOA DEV – Cleanup Player Tests</strong>
+    as a game master. Cleanup disconnects the temporary
+    Player User, removes the test fixtures, and creates the
+    final Journal report.
+  </p>
+`;
+
+await ChatMessage.create({
+  content: gmSummaryContent,
+  whisper: gmIds,
+  flags: {
+    [BOA_TEST_MODULE_ID]: {
+      [fixtureFlag]: {
+        schemaVersion: 1,
+        sessionId: session.sessionId,
+        kind: "player-summary",
+      },
+      [sessionIdFlag]: session.sessionId,
+    },
+  },
+});
 
 if (result.passed) {
   ui.notifications.info(summary);

@@ -242,7 +242,8 @@ try {
 
 notes.push(
   "Pointer placement, visual aura inspection, " +
-  "and real player–GM socket behavior remain manual."
+  "and a real Elemental Totem cast through the " +
+  "player–GM socket remain manual."
 );
 
 if (report) {

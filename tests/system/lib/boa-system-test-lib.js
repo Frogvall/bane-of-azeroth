@@ -851,15 +851,10 @@ function boaBuildManualChecklistHtml() {
         Import or update the current Bane of Azeroth Adventure.
       </li>
       <li>
-        Place a character token with the
-        <strong>Elemental Totem</strong> spell in an active scene.
-      </li>
-      <li>
-        Ensure the character has enough Willpower Points
-        for repeated casts at power levels 1–3.
-      </li>
-      <li>
-        Keep a game master connected throughout player tests.
+        Run <strong>BOA DEV – Prepare Player Tests</strong>.
+        It creates the temporary Player User, assigned character,
+        required Heroic Abilities and spell, Willpower Points,
+        linked token, and isolated test scene needed below.
       </li>
       <li>
         Open the browser console before testing and leave it open.
@@ -920,14 +915,18 @@ function boaBuildManualChecklistHtml() {
   <h2>Player and game-master workflow</h2>
 
   <p>
-  Automated tests cover request authorization, ownership propagation,
-  Observer defaults, movement-hook logic, non-position updates, and
-  cross-scene cleanup. Use separate clients to verify Foundry's actual
-  sheet permissions, drag interaction, and socket workflow.
+  The real-player harness now verifies a genuine Player User, assigned
+  character ownership, required Heroic Abilities, automatic Elemental
+  Totem grant, owned-Actor updates, active-GM presence, and a
+  player-authored demon-command payment. Existing automated tests also
+  cover request authorization, ownership propagation, Observer defaults,
+  movement-hook logic, non-position updates, and cross-scene cleanup.
+  Only the remaining spell-roll, pointer, sheet, drag, and real Elemental
+  Totem socket interactions need manual verification.
   </p>
 
   <ul>
-  <li>[ ] An owning player can cast, select totems, and complete placement through the primary GM.</li>
+  <li>[ ] Using the prepared Player Test session, an owning player can make one real successful Elemental Totem cast, select totems, and complete pointer placement through the connected GM.</li>
   <li>[ ] The owning player can open and edit the summoned totem Actor sheet; an observing player can open but not edit it.</li>
   <li>[ ] The owning player cannot drag or reposition the totem, while the game master can.</li>
   <li>[ ] The complete player/GM flow creates no duplicate tokens or dialogs and produces no unexpected console errors.</li>

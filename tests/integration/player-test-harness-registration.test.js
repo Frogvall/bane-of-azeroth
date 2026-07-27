@@ -38,6 +38,12 @@ const CLEANUP = resolve(
   "macros",
   "cleanup-player-tests.js",
 );
+const LIBRARY = resolve(
+  "tests",
+  "system",
+  "lib",
+  "boa-system-test-lib.js",
+);
 
 function read(path) {
   return readFileSync(path, "utf-8");
@@ -147,9 +153,48 @@ describe("real-player test harness registration", () => {
       'stage: "player"',
       "result,",
       "whisper: recipients",
+      "BOA Player Tests Complete",
+      "NEEDS ATTENTION",
+      "BOA DEV – Cleanup Player Tests",
+      'kind: "player-summary"',
+      "whisper: gmIds",
     ]) {
       expect(source).toContain(marker);
     }
+  });
+
+  test("removes manual setup already handled by the player harness", () => {
+    const library = read(LIBRARY);
+    const runAll = read(RUN_ALL);
+    const player = read(PLAYER);
+
+    for (const removed of [
+      "Place a character token with the",
+      "Ensure the character has enough Willpower Points",
+      "Keep a game master connected throughout player tests",
+    ]) {
+      expect(library).not.toContain(removed);
+    }
+
+    for (const retained of [
+      "BOA DEV – Prepare Player Tests",
+      "The real-player harness now verifies",
+      "Using the prepared Player Test session",
+      "sheet, drag, and real Elemental",
+      "Totem socket interactions need manual verification",
+    ]) {
+      expect(library).toContain(retained);
+    }
+
+    expect(runAll).toContain(
+      "a real Elemental Totem cast through the ",
+    );
+    expect(runAll).toContain(
+      "player–GM socket remain manual.",
+    );
+    expect(player).toContain(
+      "A real successful Elemental Totem spell roll",
+    );
   });
 
   test("cleanup disconnects active fixtures before deleting them", () => {
