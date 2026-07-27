@@ -900,7 +900,7 @@ You harness the energy that surrounds and binds all matter. If an enemy and anot
 
 By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you have their movement rate halved, and if they end their turn within the aura, they must roll BUSHCRAFT to resist cold.
 
-### Summon Ghoul
+### Raise Ghoul
 - **Requirement:** Death Knight's Rebirth
 - **Willpower Points:** 3
 

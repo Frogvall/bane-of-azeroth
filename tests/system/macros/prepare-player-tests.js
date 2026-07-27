@@ -133,7 +133,7 @@ const requiredAbilities = [
   },
   {
     key: "heroic-class-ability.death-knight.summon-ghoul",
-    name: "Summon Ghoul",
+    name: "Raise Ghoul",
   },
   {
     key: "heroic-class-ability.warlock.demonologist",

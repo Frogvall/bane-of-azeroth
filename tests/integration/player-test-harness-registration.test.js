@@ -115,7 +115,7 @@ describe("real-player test harness registration", () => {
       "CONST.USER_ROLES.PLAYER",
       "password",
       "Shamanic Calling",
-      "Summon Ghoul",
+      "Raise Ghoul",
       "Demonologist",
       "spells.elemental-totem",
       "actors.summoned-monsters.imp",
