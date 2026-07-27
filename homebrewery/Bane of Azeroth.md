@@ -327,7 +327,7 @@ The dracthyr are an ancient race of humanoid dragonkin created by the black Drag
 
 - **Willpower Points:** Varies
 
-By spending 3 willpower, you can move freely through the air during your turn.
+By spending 3 willpower, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you.
 
 When falling, you can spend 1 willpower to slow your fall and land as light as a feather, no matter the height.
 }}
@@ -359,14 +359,14 @@ Driven from their home world of Argus, the honorable draenei fled the wrath of t
 | 6  | Tysha       |
 }}
 
-![draenei](https://i.imgur.com/KDyoPLW.jpeg) {height:450px,mix-blend-mode:multiply,margin-left:0cm,margin-top:0cm}
+![draenei](https://i.imgur.com/KDyoPLW.jpeg) {height:450px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-0.5cm}
 
 {{dragonbox
 ### Ability: Heroic Presence
 
 - **Willpower Points:** 3
 
-Activating this ability (an action in combat) gives all allies within 10 meters a boon to all rolls and heal the Scared condition. The boon lasts until your turn in the next round.
+Activating this ability (an action in combat) gives all allies within 10 meters a boon to all rolls and heals the Scared condition. The boon lasts until your turn in the next round.
 }}
 
 \page
@@ -796,7 +796,7 @@ Native to the desolate sands of Vol'dun, vulpera are known for their resourceful
 
 - **Willpower Points:** 3
 
-You re-roll one D20 roll and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice.
+You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice.
 }}
 
 ### Worgen
@@ -863,7 +863,7 @@ By activating this ability (a free action in combat) you change between your hum
 # Heroic Class Abilities
 {title="Chapter 2"}
 
-Traditionally, games being set on Azeroth is used to having classes. Classes isn't a concept in Dragonbane. In order to represent the traditional classes of Azeroth, this module comes with a set of heroic abilities. In addition to choosing a profession when creating your player character, also pick one heroic class ability from this chapter that you start out the game with. You must fulfill the prerequisites for the heroic power you choose. You are now part of the class you choose a heroic power from. When you gain heroic abilities during your game sessions, you can also pick heroic abilities from your class. You can only ever be part of one class, unless your GM says otherwise. In world of warcraft there are limits to what kin gets to pick what classes. In Bane of Azeroth there are no such limitations per default, but your GM might impose such if they so desire. For example, they might want to limit the Demon Hunter class to those of the Elf kin.
+Traditionally, games being set on Azeroth is used to having classes. Classes isn't a concept in Dragonbane. In order to represent the traditional classes of Azeroth, this module comes with a set of heroic abilities. In addition to choosing a profession when creating your player character, also pick one heroic class ability from this chapter that you start out the game with. You must fulfill the prerequisites for the heroic ability you choose. You are now part of the class you choose a heroic ability from. When you gain heroic abilities during your game sessions, you can also pick heroic abilities from your class. You can only ever be part of one class, unless your GM says otherwise. In world of warcraft there are limits to what kin gets to pick what classes. In Bane of Azeroth there are no such limitations per default, but your GM might impose such if they so desire. For example, they might want to limit the Demon Hunter class to those of the Elf kin.
 
 Note that the heroic ability gained through this chapter does make your character somewhat more powerful than a character created with the core rules of Dragonbane, but it's equal to handing out an extra heroic ability at the start of the game. If you combine characters created with Bane of Azeroth with those created without it in the same campaign, simply let the non-azeroth character start with one extra heroic ability to balance it out.
 
@@ -1047,7 +1047,7 @@ You can activate this ability on your turn to make the dash action a free action
 Hunters are Azeroth's masters of the wild. They are trackers and survivalists, archers and beast tamers, operating at the boundary between civilization and the untamed places of the world. What sets a hunter apart is the bond they form with their animal companions, a relationship built on trust, training, and something deeper that defies easy explanation. Whether they prefer to fight alongside their beasts, pick off enemies from a distance, or lay traps and engage in close-quarters combat, hunters are among the most self-sufficient fighters in all of Azeroth.
 
 ### Hunter's Instincts
-- **Requirement:** Companion Heroic Power
+- **Requirement:** Companion Heroic Ability
 - **Willpower Points:** --
 
 Your companion will follow you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically and as an action you can spend 1 WP to see through the companion's eyes and hear what it hears for one minute, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2.
@@ -1241,7 +1241,7 @@ Whenever you deal sneak attack damage to a target, the dice increase for damage 
 - **Requirement:** Roguish Cunning
 - **Willpower Points:** 3
 
-This heroic ability can only be used if you wield a one-handed weapon in one hand a a one-handed ranged weapon in your other hand. The STR requirement of the weapon in your off hand (you decide if it is right or left) increases by 3. You activate the ability on your turn in combat and can then perform an extra attack with your second weapon. The second attack is done with a bane. You decide in which order to use your two weapons. Finish the first attack, including damage, before rolling the second one.
+This heroic ability can only be used if you wield a one-handed weapon in one hand and a one-handed ranged weapon in your other hand. The STR requirement of the weapon in your off hand (you decide if it is right or left) increases by 3. You activate the ability on your turn in combat and can then perform an extra attack with your second weapon. The second attack is done with a bane. You decide in which order to use your two weapons. Finish the first attack, including damage, before rolling the second one.
 
 ### Envenom Weapons
 - **Requirement:** Roguish Cunning
