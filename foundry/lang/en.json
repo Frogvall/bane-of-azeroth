@@ -29,7 +29,12 @@
         "placementCancelled": "Elemental Totem placement cancelled.",
         "tokensCreated": "Created {count} Elemental Totem token(s).",
         "cleanupWarning": "The new totems were created, but old totems could not be removed from: {scenes}.",
-        "placementError": "The Elemental Totem tokens could not be created. See the console for details."
+        "placementError": "The Elemental Totem tokens could not be created. See the console for details.",
+        "manualTitle": "Elemental Totem",
+        "manualPowerLevel": "Power Level: {powerLevel}",
+        "manualTotems": "Totems: {totems}",
+        "manualAutomationDisabled": "Placement and lifecycle automation is disabled. Place and manage the selected totem manually.",
+        "manualNotification": "Elemental Totem automation is disabled. Manual placement instructions were posted to chat."
       },
       "monsterAttackWpTitle": "Spend Willpower",
       "monsterAttackWpContent": "Spend {amount} WP from {character} to use {attack}? Current WP: {current}.",
@@ -77,7 +82,6 @@
         "elementalTotemHint": "Automate selection, placement, replacement, ownership, and cleanup.",
         "demonName": "Warlock Demons",
         "demonHint": "Automate selection, placement, replacement, ownership, duration, and cleanup.",
-        "save": "Save Changes",
         "groupSummons": "Summons"
       }
     }

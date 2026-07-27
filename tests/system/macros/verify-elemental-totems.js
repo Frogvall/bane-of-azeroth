@@ -4,6 +4,7 @@ const notes = [];
 try {
   const {
     configureCreatedElementalTotem,
+    executeElementalTotemPlan,
     deletePreviousElementalTotems,
     drawElementalTotemAura,
     onDeleteElementalTotemAura,
@@ -684,6 +685,311 @@ try {
       "Aura deletion destroys the active graphics",
       secondAuraGraphics?.destroyed === true
     );
+
+
+    // BOA automation-setting workflow test.
+    const automationSettingKey =
+      "elementalTotemAutomation";
+    const originalAutomationSetting =
+      game.settings.get(
+        BOA_TEST_MODULE_ID,
+        automationSettingKey,
+      );
+    const automationMessageIds = [];
+    let disabledPlacementCalls = 0;
+    let disabledCreationCalls = 0;
+    let enabledPlacementCalls = 0;
+    let enabledCreationCalls = 0;
+
+    const selectedDefinition =
+      definitions.find(
+        definition => definition.key === "flametongue",
+      )
+      ?? definitions[0]
+      ?? null;
+
+    if (!selectedDefinition) {
+      boaCheck(
+        checks,
+        "Elemental Totem automation setting has a test definition",
+        false,
+        "No Elemental Totem definition was available.",
+      );
+    } else {
+      const automationPlan = {
+        sourceMessageId: "BoaAutomationSettingMessage",
+        actorUuid: casterActorUuid,
+        spellUuid:
+          "Actor.BoaTestCaster.Item.elemental-totem",
+        sceneId: fixtureScene.id,
+        casterTokenId: null,
+        powerLevel: 2,
+        criticalEffect: "",
+        totemTypes: [selectedDefinition.key],
+        reachUpgrades: 1,
+        durabilityUpgrades: 0,
+        auraRange: Number(defaults.auraRange) * 2,
+        hitPoints: Number(defaults.hitPoints),
+        armorRating: Number(defaults.armorRating),
+        placementRange: 6,
+      };
+
+      try {
+        await game.settings.set(
+          BOA_TEST_MODULE_ID,
+          automationSettingKey,
+          false,
+        );
+
+        boaCheckEqual(
+          checks,
+          "Elemental Totem automation was disabled",
+          game.settings.get(
+            BOA_TEST_MODULE_ID,
+            automationSettingKey,
+          ),
+          false,
+        );
+
+        const messagesBeforeDisabled = new Set(
+          boaCollectionValues(game.messages)
+            .map(message => message.id),
+        );
+
+        const disabledOutcome =
+          await executeElementalTotemPlan(
+            automationPlan,
+            {
+              ...content,
+              totems: definitions,
+            },
+            {
+              chatMessageClass: ChatMessage,
+              collectPositionsFn: async () => {
+                disabledPlacementCalls += 1;
+                return [
+                  {
+                    totemType: selectedDefinition.key,
+                    x: 100,
+                    y: 100,
+                  },
+                ];
+              },
+              i18n: game.i18n,
+              messages: game.messages,
+              notifications: {
+                info: () => {},
+                warn: () => {},
+              },
+              requestCreationFn: async () => {
+                disabledCreationCalls += 1;
+                return {
+                  createdTokenIds: ["unexpected-token"],
+                  failedCleanupScenes: [],
+                };
+              },
+              settings: game.settings,
+            },
+          );
+
+        const disabledMessages = boaCollectionValues(
+          game.messages,
+        ).filter(message => (
+          !messagesBeforeDisabled.has(message.id)
+        ));
+        automationMessageIds.push(
+          ...disabledMessages
+            .map(message => message.id)
+            .filter(Boolean),
+        );
+
+        const manualMessage =
+          disabledMessages.find(message => (
+            boaGetFlag(
+              message,
+              "elementalTotemManualPlacement",
+            )?.sourceMessageId
+            === automationPlan.sourceMessageId
+          ))
+          ?? null;
+        const manualFlag = manualMessage
+          ? boaGetFlag(
+            manualMessage,
+            "elementalTotemManualPlacement",
+          )
+          : null;
+        const manualContent = String(
+          manualMessage?.content ?? "",
+        ).replace(/\s+/g, " ");
+
+        boaCheckEqual(
+          checks,
+          "Disabled automation skipped placement and creation",
+          {
+            status: disabledOutcome?.status ?? null,
+            placementCalls: disabledPlacementCalls,
+            creationCalls: disabledCreationCalls,
+          },
+          {
+            status: "manual",
+            placementCalls: 0,
+            creationCalls: 0,
+          },
+        );
+        boaCheck(
+          checks,
+          "Disabled automation created manual instructions",
+          Boolean(manualMessage),
+          automationMessageIds.join(", "),
+        );
+        boaCheckEqual(
+          checks,
+          "Manual instructions preserve the selected plan",
+          manualFlag,
+          {
+            schemaVersion: 1,
+            actorUuid: casterActorUuid,
+            sourceMessageId:
+              automationPlan.sourceMessageId,
+            powerLevel: 2,
+            totemTypes: [selectedDefinition.key],
+            automationEnabled: false,
+          },
+        );
+        boaCheck(
+          checks,
+          "Manual instructions show the selected totem and power level",
+          (
+            manualContent.includes(selectedDefinition.name)
+            && manualContent.includes("2")
+            && manualContent.includes("automation is disabled")
+          ),
+          manualContent,
+        );
+
+        await game.settings.set(
+          BOA_TEST_MODULE_ID,
+          automationSettingKey,
+          true,
+        );
+
+        boaCheckEqual(
+          checks,
+          "Elemental Totem automation was enabled",
+          game.settings.get(
+            BOA_TEST_MODULE_ID,
+            automationSettingKey,
+          ),
+          true,
+        );
+
+        const enabledOutcome =
+          await executeElementalTotemPlan(
+            automationPlan,
+            {
+              ...content,
+              totems: definitions,
+            },
+            {
+              collectPositionsFn: async () => {
+                enabledPlacementCalls += 1;
+                return [
+                  {
+                    totemType: selectedDefinition.key,
+                    x: 100,
+                    y: 100,
+                  },
+                ];
+              },
+              i18n: game.i18n,
+              notifications: {
+                info: () => {},
+                warn: () => {},
+              },
+              requestCreationFn: async () => {
+                enabledCreationCalls += 1;
+                return {
+                  createdTokenIds: [
+                    "BoaSyntheticAutomationToken",
+                  ],
+                  failedCleanupScenes: [],
+                };
+              },
+              settings: game.settings,
+            },
+          );
+
+        boaCheckEqual(
+          checks,
+          "Enabled automation reached placement and creation",
+          {
+            status: enabledOutcome?.status ?? null,
+            placementCalls: enabledPlacementCalls,
+            creationCalls: enabledCreationCalls,
+          },
+          {
+            status: "created",
+            placementCalls: 1,
+            creationCalls: 1,
+          },
+        );
+      } catch (automationError) {
+        boaCheck(
+          checks,
+          "Elemental Totem automation setting workflow completed",
+          false,
+          automationError.stack ?? automationError.message,
+        );
+      } finally {
+        try {
+          const liveMessageIds = automationMessageIds.filter(
+            id => game.messages.get(id),
+          );
+          if (liveMessageIds.length > 0) {
+            await ChatMessage.deleteDocuments(liveMessageIds);
+          }
+          boaCheck(
+            checks,
+            "Temporary manual Elemental Totem chat message was deleted",
+            automationMessageIds.every(
+              id => !game.messages.get(id),
+            ),
+            automationMessageIds.join(", "),
+          );
+        } catch (messageCleanupError) {
+          boaCheck(
+            checks,
+            "Temporary manual Elemental Totem chat message was deleted",
+            false,
+            messageCleanupError.stack ?? messageCleanupError.message,
+          );
+        }
+
+        try {
+          await game.settings.set(
+            BOA_TEST_MODULE_ID,
+            automationSettingKey,
+            originalAutomationSetting,
+          );
+          boaCheckEqual(
+            checks,
+            "Elemental Totem automation setting was restored",
+            game.settings.get(
+              BOA_TEST_MODULE_ID,
+              automationSettingKey,
+            ),
+            originalAutomationSetting,
+          );
+        } catch (settingCleanupError) {
+          boaCheck(
+            checks,
+            "Elemental Totem automation setting was restored",
+            false,
+            settingCleanupError.stack ?? settingCleanupError.message,
+          );
+        }
+      }
+    }
 
     notes.push(
       `${createdTokens.length} temporary summoned ` +

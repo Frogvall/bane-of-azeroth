@@ -44,3 +44,8 @@ export {
 export {
   protectElementalTotemMovement,
 } from "./elemental-totems/token-controls.js";
+export {
+  buildManualElementalTotemMessageContent,
+  executeElementalTotemPlan,
+  postManualElementalTotemInstructions,
+} from "./elemental-totems/workflow.js";

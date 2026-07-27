@@ -12,13 +12,12 @@ import {
   buildElementalTotemPlan,
 } from "./planning.js";
 import {
-  collectElementalTotemPositions,
   getElementalTotemPlacementRange,
 } from "./placement.js";
-import {
-  requestElementalTotemCreation,
-} from "./socket.js";
 
+import {
+  executeElementalTotemPlan,
+} from "./workflow.js";
 const handledElementalTotemMessages = new Set();
 let elementalTotemDialogQueue = Promise.resolve();
 
@@ -340,42 +339,16 @@ async function runElementalTotemDialogFlow(message) {
   if (!confirmed) return;
 
 
-  const positions = await collectElementalTotemPositions(
-    plan,
-    definitions
-  );
-  if (!positions) {
-    ui.notifications.info(
-      game.i18n.localize(
-        "BOA.dialog.elementalTotem.placementCancelled"
-      )
-    );
-    return;
-  }
+  const outcome = await executeElementalTotemPlan(plan, definitions);
 
-  const result = await requestElementalTotemCreation(
-    plan,
-    positions
-  );
-
-  console.info(
-    `${MODULE_ID} | Elemental Totems created.`,
-    { plan, positions, result }
-  );
-
-  ui.notifications.info(
-    game.i18n.format(
-      "BOA.dialog.elementalTotem.tokensCreated",
-      { count: result.createdTokenIds.length }
-    )
-  );
-
-  if (result.failedCleanupScenes.length > 0) {
-    ui.notifications.warn(
-      game.i18n.format(
-        "BOA.dialog.elementalTotem.cleanupWarning",
-        { scenes: result.failedCleanupScenes.join(", ") }
-      )
+  if (outcome?.status === "created") {
+    console.info(
+      `${MODULE_ID} | Elemental Totems created.`,
+      {
+        plan,
+        positions: outcome.positions,
+        result: outcome.result,
+      },
     );
   }
 }
