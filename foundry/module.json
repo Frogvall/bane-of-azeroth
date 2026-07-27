@@ -19,7 +19,8 @@
     "scripts/bane-of-azeroth.js"
   ],
   "styles": [
-    "styles/bane-of-azeroth.css"
+    "styles/bane-of-azeroth.css",
+    "styles/automation-settings.css"
   ],
   "languages": [
     {

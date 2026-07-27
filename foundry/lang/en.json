@@ -70,14 +70,15 @@
     },
     "settings": {
       "automation": {
-        "menuName": "Bane of Azeroth – Automation Settings",
-        "menuLabel": "Configure Automation",
-        "menuHint": "Choose which Bane of Azeroth placement and lifecycle workflows are automated in this world.",
-        "elementalTotemName": "Elemental Totem placement and lifecycle",
-        "elementalTotemHint": "Automate Elemental Totem selection, placement, replacement, ownership, and cleanup.",
-        "demonName": "Demon placement and lifecycle",
-        "demonHint": "Automate Warlock demon selection, placement, replacement, ownership, duration, and cleanup.",
-        "save": "Save Settings"
+        "menuName": "Automation Settings",
+        "menuLabel": "Automation Settings",
+        "menuHint": "Configure placement and lifecycle automation for summoned creatures.",
+        "elementalTotemName": "Elemental Totems",
+        "elementalTotemHint": "Automate selection, placement, replacement, ownership, and cleanup.",
+        "demonName": "Warlock Demons",
+        "demonHint": "Automate selection, placement, replacement, ownership, duration, and cleanup.",
+        "save": "Save Changes",
+        "groupSummons": "Summons"
       }
     }
   }

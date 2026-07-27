@@ -58,6 +58,7 @@ export class AutomationSettingsForm
       ...(defaults.classes ?? []),
       "bane-of-azeroth",
       "automation-settings",
+    "theme-dark",
     ];
 
     return {
@@ -68,7 +69,7 @@ export class AutomationSettingsForm
         "modules/bane-of-azeroth/templates/"
         + "automation-settings.hbs",
       classes: [...new Set(classes)],
-      width: 560,
+      width: 520,
       height: "auto",
       closeOnSubmit: true,
     };

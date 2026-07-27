@@ -1,47 +1,60 @@
-<form autocomplete="off">
-  <div class="form-group">
-    <label>
-      {{localize
-        "BOA.settings.automation.elementalTotemName"
-      }}
-    </label>
-    <div class="form-fields">
+<form
+  class="boa-automation-settings-form standard-form"
+  autocomplete="off"
+>
+  <fieldset class="boa-automation-settings-group">
+    <legend>
+      {{localize "BOA.settings.automation.groupSummons"}}
+    </legend>
+
+    <div class="boa-automation-setting">
+      <div class="boa-automation-setting-copy">
+        <label for="boa-elemental-totem-automation">
+          {{localize
+            "BOA.settings.automation.elementalTotemName"
+          }}
+        </label>
+        <p class="hint">
+          {{localize
+            "BOA.settings.automation.elementalTotemHint"
+          }}
+        </p>
+      </div>
+
       <input
+        id="boa-elemental-totem-automation"
         type="checkbox"
         name="elementalTotemAutomation"
         {{checked elementalTotemAutomation}}
       >
     </div>
-    <p class="hint">
-      {{localize
-        "BOA.settings.automation.elementalTotemHint"
-      }}
-    </p>
-  </div>
 
-  <div class="form-group">
-    <label>
-      {{localize
-        "BOA.settings.automation.demonName"
-      }}
-    </label>
-    <div class="form-fields">
+    <div class="boa-automation-setting">
+      <div class="boa-automation-setting-copy">
+        <label for="boa-demon-automation">
+          {{localize
+            "BOA.settings.automation.demonName"
+          }}
+        </label>
+        <p class="hint">
+          {{localize
+            "BOA.settings.automation.demonHint"
+          }}
+        </p>
+      </div>
+
       <input
+        id="boa-demon-automation"
         type="checkbox"
         name="demonAutomation"
         {{checked demonAutomation}}
       >
     </div>
-    <p class="hint">
-      {{localize
-        "BOA.settings.automation.demonHint"
-      }}
-    </p>
-  </div>
+  </fieldset>
 
-  <footer class="sheet-footer flexrow">
+  <footer class="form-footer">
     <button type="submit">
-      <i class="fas fa-save"></i>
+      <i class="fas fa-save" aria-hidden="true"></i>
       {{localize "BOA.settings.automation.save"}}
     </button>
   </footer>
