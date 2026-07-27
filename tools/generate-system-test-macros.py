@@ -86,7 +86,7 @@ MACROS = [
         "file": "verify-common-animal-attack-messages.js",
         "order": 8,
         "suiteMember": True,
-        "img": "icons/svg/dice-target.svg",
+        "img": "icons/svg/combat.svg",
     },
     {
         "key": "common-animal-movement",
@@ -131,7 +131,7 @@ MACROS = [
         "file": "run-player-tests.js",
         "order": 13,
         "suiteMember": False,
-        "img": "icons/svg/d20-black.svg",
+        "img": "icons/svg/mystery-man.svg",
         "ownershipDefault": 3,
     },
     {
@@ -141,7 +141,7 @@ MACROS = [
         "file": "cleanup-player-tests.js",
         "order": 14,
         "suiteMember": False,
-        "img": "icons/svg/broom.svg",
+        "img": "icons/svg/biohazard.svg",
     },
 {
         "key": "cleanup",
