@@ -13,6 +13,8 @@ const sessionSchemaVersion = 1;
 const sessionFlag = "playerTestSession";
 const fixtureFlag = "playerTestFixture";
 const sessionIdFlag = "playerTestSessionId";
+const stageResultFlag = "playerTestStageResult";
+let credentialMessageData = null;
 
 if (!game.user.isGM) {
   boaCheck(
@@ -363,7 +365,7 @@ try {
   const gmIds = boaCollectionValues(game.users)
     .filter(candidate => candidate.isGM)
     .map(candidate => candidate.id);
-  const credentialMessage = await ChatMessage.create({
+  credentialMessageData = {
     content: `
       <h2>BOA Player Test Environment Ready</h2>
       <p><strong>User:</strong> ${boaHtmlEscape(user.name)}</p>
@@ -375,7 +377,7 @@ try {
       </p>
       <p>
         Keep a GM client connected while the player tests run.
-        Log the test player out before cleanup.
+        Cleanup will disconnect and remove the temporary Player User.
       </p>
     `,
     whisper: gmIds,
@@ -389,8 +391,7 @@ try {
         [sessionIdFlag]: sessionId,
       },
     },
-  });
-  if (credentialMessage) created.messages.push(credentialMessage);
+  };
 
   boaCheckEqual(
     checks,
@@ -451,7 +452,7 @@ try {
     "The password was shown only in the GM-whispered credentials message.",
   );
   notes.push(
-    "Run BOA DEV – Cleanup Player Tests after the player has logged out.",
+    "Run BOA DEV – Cleanup Player Tests when the player tests are complete.",
   );
 } catch (error) {
   boaCheck(
@@ -492,4 +493,47 @@ try {
   }
 }
 
-return boaFinish(testKey, testName, checks, notes);
+const prepareResult = boaBuildResult(
+  testKey,
+  testName,
+  checks,
+  notes,
+);
+const reportRecipients = boaCollectionValues(game.users)
+  .filter(candidate => candidate.isGM)
+  .map(candidate => candidate.id);
+
+await ChatMessage.create({
+  content: boaResultHtml(prepareResult),
+  whisper: reportRecipients,
+  flags: {
+    [BOA_TEST_MODULE_ID]: {
+      [fixtureFlag]: {
+        schemaVersion: sessionSchemaVersion,
+        sessionId,
+        kind: "prepare-report",
+      },
+      [sessionIdFlag]: sessionId,
+      [stageResultFlag]: {
+        schemaVersion: sessionSchemaVersion,
+        sessionId,
+        stage: "prepare",
+        result: prepareResult,
+      },
+    },
+  },
+});
+
+if (prepareResult.passed && credentialMessageData) {
+  await ChatMessage.create(credentialMessageData);
+}
+
+return boaFinish(
+  testKey,
+  testName,
+  checks,
+  notes,
+  {
+    createChatMessage: false,
+  },
+);

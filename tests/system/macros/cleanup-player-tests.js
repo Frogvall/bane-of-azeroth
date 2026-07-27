@@ -6,6 +6,7 @@ const sessionFlag = "playerTestSession";
 const fixtureFlag = "playerTestFixture";
 const sessionIdFlag = "playerTestSessionId";
 const reportFlag = "playerTestReport";
+const stageResultFlag = "playerTestStageResult";
 
 if (!game.user.isGM) {
   boaCheck(
@@ -30,6 +31,7 @@ function sessionIdOf(document) {
     ?? fixture(document)?.sessionId
     ?? session(document)?.sessionId
     ?? boaGetFlag(document, reportFlag)?.sessionId
+    ?? boaGetFlag(document, stageResultFlag)?.sessionId
     ?? null;
 }
 
@@ -38,17 +40,33 @@ const fixtureUsers = boaCollectionValues(game.users)
 const activeFixtureUsers = fixtureUsers
   .filter(user => user.active);
 
-if (activeFixtureUsers.length > 0) {
-  boaCheck(
-    checks,
-    "Generated Player Users are logged out",
-    false,
-    activeFixtureUsers.map(user => user.name).join(", "),
-  );
-  notes.push(
-    "Log the incognito player client out, then run cleanup again.",
-  );
-  return boaFinish(testKey, testName, checks, notes);
+for (const user of activeFixtureUsers) {
+  try {
+    await user.update({
+      role: CONST.USER_ROLES.NONE,
+    });
+    await boaWaitFor(
+      () => game.users.get(user.id)?.active === false,
+      {
+        timeout: 10000,
+        interval: 100,
+        description: "temporary Player User to disconnect",
+      },
+    );
+    boaCheck(
+      checks,
+      `Disconnected active Player User ${user.name}`,
+      true,
+      user.id,
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      `Disconnected active Player User ${user.name}`,
+      false,
+      error.stack ?? error.message,
+    );
+  }
 }
 
 const allSessionDocuments = [
@@ -71,6 +89,28 @@ const sessionIds = new Set(
     .map(document => sessionIdOf(document))
     .filter(Boolean),
 );
+
+const stageResultsBySession = new Map();
+for (const message of boaCollectionValues(game.messages)) {
+  const stageResult = boaGetFlag(
+    message,
+    stageResultFlag,
+  );
+  if (
+    !stageResult?.sessionId
+    || !sessionIds.has(stageResult.sessionId)
+    || !stageResult.stage
+    || !stageResult.result
+  ) {
+    continue;
+  }
+
+  const stages = stageResultsBySession.get(
+    stageResult.sessionId,
+  ) ?? new Map();
+  stages.set(stageResult.stage, stageResult.result);
+  stageResultsBySession.set(stageResult.sessionId, stages);
+}
 
 if (sessionIds.size === 0) {
   boaCheck(
@@ -193,4 +233,130 @@ notes.push(
   + `and ${messageIds.length} ChatMessage(s) were removed.`,
 );
 
-return boaFinish(testKey, testName, checks, notes);
+const cleanupResult = boaBuildResult(
+  testKey,
+  testName,
+  checks,
+  notes,
+);
+const results = [];
+
+function missingStageResult(key, name, description) {
+  return boaBuildResult(
+    key,
+    name,
+    [{
+      status: "FAIL",
+      description,
+      details:
+        "The expected structured stage result was not found.",
+    }],
+  );
+}
+
+for (const sessionId of sessionIds) {
+  const stages = stageResultsBySession.get(sessionId)
+    ?? new Map();
+  results.push(
+    stages.get("prepare")
+      ?? missingStageResult(
+        "prepare-player-tests",
+        "BOA DEV – Prepare Player Tests",
+        "Missing Prepare Player Tests result",
+      ),
+  );
+  results.push(
+    stages.get("player")
+      ?? missingStageResult(
+        "player-tests",
+        "BOA DEV – Run Player Tests",
+        "Missing Run Player Tests result",
+      ),
+  );
+}
+results.push(cleanupResult);
+
+const suiteResult = boaBuildResult(
+  "player-test-harness",
+  "BOA DEV – Player Test Harness",
+  results.map(result => ({
+    status: result.passed ? "PASS" : "FAIL",
+    description: result.name,
+    details:
+      `${result.passedCount ?? 0} passed, `
+      + `${result.failedCount ?? 0} failed, `
+      + `${result.skippedCount ?? 0} skipped`,
+  })),
+  [
+    "The report covers preparation, genuine Player execution, and cleanup.",
+  ],
+);
+const sessionStartedAt = sessions
+  .map(value => new Date(value.createdAt))
+  .filter(value => !Number.isNaN(value.getTime()))
+  .sort((left, right) => left - right)[0]
+  ?? new Date();
+const completedAt = new Date();
+let report = null;
+
+try {
+  const created = await boaCreateSystemTestReport({
+    suiteResult,
+    results,
+    startedAt: sessionStartedAt,
+    completedAt,
+  });
+  report = created.report;
+  boaCheck(
+    checks,
+    "Dated Journal player-test report was created",
+    Boolean(report?.id),
+    report?.uuid ?? "",
+  );
+  report?.sheet?.render(true);
+} catch (error) {
+  boaCheck(
+    checks,
+    "Dated Journal player-test report was created",
+    false,
+    error.stack ?? error.message,
+  );
+}
+
+const totals = boaSystemTestTotals(results);
+const reportLink = report
+  ? (
+      report.link
+      ?? `@UUID[${report.uuid}]{Open the complete player-test report}`
+    )
+  : "<em>The Journal report could not be created.</em>";
+const finalResult = boaBuildResult(
+  testKey,
+  testName,
+  checks,
+  notes,
+);
+const chatContent = `
+  <p>
+    <strong>
+      BOA player tests:
+      ${suiteResult.passed && finalResult.passed ? "PASS" : "FAIL"}
+    </strong>
+  </p>
+  <p>
+    ${totals.passed} passed,
+    ${totals.failed} failed,
+    ${totals.skipped} skipped.
+  </p>
+  <p>${reportLink}</p>
+`;
+
+return boaFinish(
+  testKey,
+  testName,
+  checks,
+  notes,
+  {
+    chatContent,
+  },
+);

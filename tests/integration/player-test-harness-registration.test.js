@@ -102,7 +102,7 @@ describe("real-player test harness registration", () => {
     }
   });
 
-  test("prep creates a Player, owned fixtures, abilities, password, and hotbar Macro", () => {
+  test("prep creates the Player fixtures and posts credentials after its report", () => {
     const source = read(PREP);
 
     for (const marker of [
@@ -116,15 +116,21 @@ describe("real-player test harness registration", () => {
       "playerMacroId",
       '"hotbar.1"',
       "scene.activate()",
-      "whisper: gmIds",
-      "playerTestSession",
-      "playerTestFixture",
+      "credentialMessageData",
+      "boaResultHtml(prepareResult)",
+      "ChatMessage.create(credentialMessageData)",
+      "createChatMessage: false",
+      "playerTestStageResult",
     ]) {
       expect(source).toContain(marker);
     }
+
+    expect(source).toMatch(
+      /content:\s*boaResultHtml\(prepareResult\)[\s\S]*?ChatMessage\.create\(credentialMessageData\)/,
+    );
   });
 
-  test("player Macro verifies real Player ownership and command payment", () => {
+  test("player Macro stores its complete structured stage result", () => {
     const source = read(PLAYER);
 
     for (const marker of [
@@ -137,18 +143,24 @@ describe("real-player test harness registration", () => {
       "monsterCommandResourcePayment",
       "player-authored WP message",
       "playerTestReport",
+      "playerTestStageResult",
+      'stage: "player"',
+      "result,",
       "whisper: recipients",
     ]) {
       expect(source).toContain(marker);
     }
   });
 
-  test("cleanup refuses active players and removes all session fixtures", () => {
+  test("cleanup disconnects active fixtures before deleting them", () => {
     const source = read(CLEANUP);
 
     for (const marker of [
       "activeFixtureUsers",
-      "Log the incognito player client out",
+      "CONST.USER_ROLES.NONE",
+      "boaWaitFor",
+      "temporary Player User to disconnect",
+      "Disconnected active Player User",
       "ChatMessage.deleteDocuments",
       "Macro.deleteDocuments",
       "Scene.deleteDocuments",
@@ -160,9 +172,31 @@ describe("real-player test harness registration", () => {
     ]) {
       expect(source).toContain(marker);
     }
+
+    expect(source).not.toContain(
+      "Log the incognito player client out",
+    );
   });
 
-  test("all three Macros use the same session schema and flags", () => {
+  test("cleanup creates the same Journal-style report as Run All", () => {
+    const source = read(CLEANUP);
+
+    for (const marker of [
+      "playerTestStageResult",
+      "Missing Prepare Player Tests result",
+      "Missing Run Player Tests result",
+      "boaCreateSystemTestReport",
+      "boaSystemTestTotals",
+      "BOA DEV – Player Test Harness",
+      "Dated Journal player-test report was created",
+      "Open the complete player-test report",
+      "report?.sheet?.render(true)",
+    ]) {
+      expect(source).toContain(marker);
+    }
+  });
+
+  test("all three Macros use the same session and stage-result flags", () => {
     for (const source of [
       read(PREP),
       read(PLAYER),
@@ -171,6 +205,7 @@ describe("real-player test harness registration", () => {
       expect(source).toContain('"playerTestSession"');
       expect(source).toContain('"playerTestFixture"');
       expect(source).toContain('"playerTestSessionId"');
+      expect(source).toContain('"playerTestStageResult"');
     }
   });
 });

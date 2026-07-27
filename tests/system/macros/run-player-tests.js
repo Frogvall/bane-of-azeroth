@@ -7,6 +7,7 @@ const sessionFlag = "playerTestSession";
 const fixtureFlag = "playerTestFixture";
 const sessionIdFlag = "playerTestSessionId";
 const reportFlag = "playerTestReport";
+const stageResultFlag = "playerTestStageResult";
 
 if (game.user.isGM) {
   boaCheck(
@@ -358,6 +359,18 @@ await ChatMessage.create({
   whisper: recipients,
   flags: {
     [BOA_TEST_MODULE_ID]: {
+      [fixtureFlag]: {
+        schemaVersion: 1,
+        sessionId: session.sessionId,
+        kind: "player-report",
+      },
+      [sessionIdFlag]: session.sessionId,
+      [stageResultFlag]: {
+        schemaVersion: 1,
+        sessionId: session.sessionId,
+        stage: "player",
+        result,
+      },
       [reportFlag]: {
         schemaVersion: 1,
         sessionId: session.sessionId,
@@ -370,7 +383,6 @@ await ChatMessage.create({
         startedAt: startedAt.toISOString(),
         completedAt: completedAt.toISOString(),
       },
-      [sessionIdFlag]: session.sessionId,
     },
   },
 });
