@@ -143,6 +143,12 @@
         "key": "sayaad",
         "attackSelection": {
           "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
         }
       }
     }

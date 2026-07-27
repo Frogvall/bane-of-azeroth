@@ -43,7 +43,11 @@
       "monsterAttackPaymentFailed": "WP could not be spent from {character}; the attack was cancelled.",
       "monsterAttackFailed": "The monster attack could not be completed.",
       "monsterAttackMissingFallback": "The configured fallback monster attack was not found for {actor}.",
-      "monsterAttackPaymentMessageFailed": "The WP payment message could not be created for {character}. The WP were refunded and the attack was cancelled."
+      "monsterAttackPaymentMessageFailed": "The WP payment message could not be created for {character}. The WP were refunded and the attack was cancelled.",
+      "monsterCommandUseAction": "Use Action",
+      "monsterCommandSpendWp": "Spend {amount} WP",
+      "monsterCommandMissingAttack": "No configured command attack was found for {actor}.",
+      "monsterCommandCannotPay": "Automatic WP payment requires an assigned character you own."
     },
     "spellAutomation": {
       "alwaysPreparedTooltip": "Granted by a Heroic Class Ability and always prepared."
@@ -61,7 +65,8 @@
       "scattershotTooltip": "Scattershot"
     },
     "chat": {
-      "monsterAttackWpSpent": "{actor} spends {amount} WP to use <strong>{attack}</strong>."
+      "monsterAttackWpSpent": "{actor} spends {amount} WP to use <strong>{attack}</strong>.",
+      "monsterCommandWpSpent": "{actor} spent {amount} WP to command {demon} to use {attack}."
     }
   }
 }

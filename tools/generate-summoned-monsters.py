@@ -387,17 +387,22 @@ def validate_monster_control(value: Any, context: str) -> dict[str, Any]:
     if value.get("schemaVersion") != 1:
         raise GenerationError(f"{context}.schemaVersion must be 1.")
     require_key(value.get("key"), f"{context}.key")
+
     selection = value.get("attackSelection")
     if not isinstance(selection, dict):
-        raise GenerationError(f"{context}.attackSelection must be an object.")
+        raise GenerationError(
+            f"{context}.attackSelection must be an object."
+        )
     mode = require_string(
         selection.get("mode"),
         f"{context}.attackSelection.mode",
     )
     if mode not in {"manual", "system-default"}:
         raise GenerationError(
-            f"{context}.attackSelection.mode must be manual or system-default."
+            f"{context}.attackSelection.mode must be "
+            "manual or system-default."
         )
+
     fallback = selection.get("fallbackAttackKey")
     if mode == "manual":
         require_key(
@@ -409,6 +414,31 @@ def validate_monster_control(value: Any, context: str) -> dict[str, Any]:
             fallback,
             f"{context}.attackSelection.fallbackAttackKey",
         )
+
+    command = value.get("command")
+    if command is not None:
+        if not isinstance(command, dict):
+            raise GenerationError(
+                f"{context}.command must be an object."
+            )
+        if command.get("resource") != "willPoints":
+            raise GenerationError(
+                f"{context}.command.resource must be willPoints."
+            )
+        require_integer(
+            command.get("amount"),
+            f"{context}.command.amount",
+            minimum=1,
+        )
+        if command.get("payer") != "assigned-character":
+            raise GenerationError(
+                f"{context}.command.payer must be assigned-character."
+            )
+        if command.get("freeActionWhenPaid") is not True:
+            raise GenerationError(
+                f"{context}.command.freeActionWhenPaid must be true."
+            )
+
     return value
 
 def validate_monster_attack(value: Any, context: str) -> dict[str, Any]:

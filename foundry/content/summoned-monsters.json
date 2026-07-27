@@ -159,6 +159,12 @@
         "key": "felhunter",
         "attackSelection": {
           "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
         }
       }
     },
@@ -206,6 +212,12 @@
         "key": "imp",
         "attackSelection": {
           "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
         }
       }
     },
@@ -253,6 +265,12 @@
         "key": "sayaad",
         "attackSelection": {
           "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
         }
       }
     },
@@ -300,6 +318,12 @@
         "key": "voidwalker",
         "attackSelection": {
           "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
         }
       }
     }

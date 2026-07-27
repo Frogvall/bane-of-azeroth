@@ -1,5 +1,7 @@
 import DoD_Utility from "/systems/dragonbane/modules/utility.js";
 
+import { onRenderMonsterCommandSheet } from "./monster-command-control.js";
+
 import { MODULE_ID } from "./core/constants.js";
 import { getModuleFlag } from "./core/documents.js";
 
@@ -632,6 +634,7 @@ function rootElement(html) {
 export function onRenderControlledMonsterSheet(app, html) {
   const actor = app?.actor;
   if (!actor?.isOwner || actor.type !== "monster") return;
+  if (onRenderMonsterCommandSheet(app, html)) return;
   if (!isManualOnlyMonster(actor)) return;
 
   const root = rootElement(html);
