@@ -63,8 +63,8 @@ describe("automation setting reads", () => {
   });
 });
 
-describe("automation settings form", () => {
-  test("reads both current world values", () => {
+describe("ApplicationV2 automation settings form", () => {
+  test("prepares schema, values, and the native footer button", async () => {
     globalThis.game = {
       settings: {
         get: vi.fn((_moduleId, key) => (
@@ -75,14 +75,25 @@ describe("automation settings form", () => {
     };
 
     const form = new AutomationSettingsForm();
+    const context = await form._prepareContext({});
 
-    expect(form.getData()).toEqual({
+    expect(context.schema).toBe(
+      AutomationSettingsForm.schema,
+    );
+    expect(context.source).toEqual({
       elementalTotemAutomation: true,
       demonAutomation: false,
     });
+    expect(context.buttons).toEqual([
+      {
+        type: "submit",
+        icon: "fa-solid fa-floppy-disk",
+        label: "SETTINGS.Save",
+      },
+    ]);
   });
 
-  test("saves both checkboxes", async () => {
+  test("saves both FormData values", async () => {
     const set = vi.fn(async () => {});
     globalThis.game = {
       settings: {
@@ -90,10 +101,16 @@ describe("automation settings form", () => {
       },
     };
 
-    const form = new AutomationSettingsForm();
-    await form._updateObject(null, {
-      elementalTotemAutomation: true,
-    });
+    await AutomationSettingsForm._onSubmit(
+      null,
+      null,
+      {
+        object: {
+          elementalTotemAutomation: true,
+          demonAutomation: false,
+        },
+      },
+    );
 
     expect(set).toHaveBeenCalledTimes(2);
     expect(set).toHaveBeenCalledWith(

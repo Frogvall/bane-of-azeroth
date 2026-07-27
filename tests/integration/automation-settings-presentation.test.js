@@ -1,4 +1,5 @@
 import {
+  existsSync,
   readFileSync,
 } from "node:fs";
 import {
@@ -50,45 +51,65 @@ describe("Automation Settings presentation", () => {
     expect(labels.groupSummons).toBe("Summons");
   });
 
-  test("uses a grouped standard form", () => {
-    const template = read(TEMPLATE);
+  test("uses Foundry ApplicationV2 like Dragonbane", () => {
+    const source = read(SETTINGS_JS);
 
-    expect(template).toContain(
-      'class="boa-automation-settings-form standard-form"',
+    expect(source).toContain(
+      "HandlebarsApplicationMixin(ApplicationV2)",
     );
-    expect(template).toContain(
-      'class="boa-automation-settings-group"',
+    expect(source).toContain(
+      "static DEFAULT_OPTIONS",
     );
-    expect(template).toContain("<fieldset");
-    expect(template).toContain("<legend>");
-    expect(template).toContain(
-      'name="elementalTotemAutomation"',
+    expect(source).toContain(
+      'tag: "form"',
     );
-    expect(template).toContain(
-      'name="demonAutomation"',
+    expect(source).toContain(
+      '"dragonbane-settings"',
     );
-    expect(template).toContain(
-      'class="form-footer"',
+    expect(source).toContain(
+      "static PARTS",
+    );
+    expect(source).toContain(
+      '"templates/generic/form-footer.hbs"',
+    );
+    expect(source).toContain(
+      "SchemaField",
+    );
+    expect(source).toContain(
+      "BooleanField",
+    );
+    expect(source).toContain(
+      "static async _onSubmit",
     );
   });
 
-  test("registers a dedicated dark-theme stylesheet", () => {
-    const manifest = JSON.parse(read(MANIFEST));
-    const css = read(STYLESHEET);
-    const settings = read(SETTINGS_JS);
+  test("lets formGroup render both native checkbox rows", () => {
+    const template = read(TEMPLATE);
 
-    expect(manifest.styles).toContain(
+    expect(template).toContain("<fieldset>");
+    expect(template).toContain("<legend>");
+    expect(
+      template.match(/\{\{formGroup/g),
+    ).toHaveLength(2);
+    expect(template).toContain(
+      "schema.fields.elementalTotemAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.demonAutomation",
+    );
+    expect(template).not.toContain("<form");
+    expect(template).not.toContain("<button");
+    expect(template).not.toContain(
+      "boa-automation-setting",
+    );
+  });
+
+  test("removes the imitation stylesheet", () => {
+    const manifest = JSON.parse(read(MANIFEST));
+
+    expect(manifest.styles ?? []).not.toContain(
       "styles/automation-settings.css",
     );
-    expect(settings).toContain('"theme-dark"');
-    expect(css).toContain(
-      ".window-app.bane-of-azeroth.automation-settings",
-    );
-    expect(css).toContain(
-      ".boa-automation-settings-group",
-    );
-    expect(css).toContain(
-      ".boa-automation-setting",
-    );
+    expect(existsSync(STYLESHEET)).toBe(false);
   });
 });

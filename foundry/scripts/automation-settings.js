@@ -5,8 +5,37 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   DEMONS: "demonAutomation",
 });
 
-const BaseFormApplication =
-  globalThis.FormApplication ?? class {};
+const {
+  ApplicationV2,
+  HandlebarsApplicationMixin,
+} = globalThis.foundry?.applications?.api ?? {};
+
+const BaseAutomationSettingsApplication =
+  ApplicationV2 && HandlebarsApplicationMixin
+    ? HandlebarsApplicationMixin(ApplicationV2)
+    : class {
+      async _prepareContext() {
+        return {};
+      }
+    };
+
+function booleanField(label, hint) {
+  const BooleanField =
+    globalThis.foundry?.data?.fields?.BooleanField;
+
+  return BooleanField
+    ? new BooleanField({ label, hint })
+    : { label, hint };
+}
+
+function schemaField(fields) {
+  const SchemaField =
+    globalThis.foundry?.data?.fields?.SchemaField;
+
+  return SchemaField
+    ? new SchemaField(fields)
+    : { fields };
+}
 
 function settingDefinition(name, hint) {
   return {
@@ -51,49 +80,93 @@ export function isDemonAutomationEnabled(
 }
 
 export class AutomationSettingsForm
-  extends BaseFormApplication {
-  static get defaultOptions() {
-    const defaults = super.defaultOptions ?? {};
-    const classes = [
-      ...(defaults.classes ?? []),
-      "bane-of-azeroth",
-      "automation-settings",
-    "theme-dark",
-    ];
-
-    return {
-      ...defaults,
-      id: "bane-of-azeroth-automation-settings",
+  extends BaseAutomationSettingsApplication {
+  static DEFAULT_OPTIONS = {
+    id: "bane-of-azeroth-automation-settings",
+    tag: "form",
+    window: {
       title: "BOA.settings.automation.menuName",
+      contentClasses: [
+        "dragonbane",
+        "standard-form",
+        "dragonbane-settings",
+        "automation-settings",
+        "bane-of-azeroth",
+      ],
+      resizable: true,
+      icon: "fa-solid fa-gears",
+    },
+    position: {
+      width: 480,
+    },
+    form: {
+      closeOnSubmit: true,
+      handler: this._onSubmit,
+    },
+  };
+
+  static PARTS = {
+    body: {
       template:
         "modules/bane-of-azeroth/templates/"
         + "automation-settings.hbs",
-      classes: [...new Set(classes)],
-      width: 520,
-      height: "auto",
-      closeOnSubmit: true,
-    };
+      scrollable: [""],
+      root: true,
+    },
+    footer: {
+      template: "templates/generic/form-footer.hbs",
+    },
+  };
+
+  static #schema = schemaField({
+    elementalTotemAutomation: booleanField(
+      "BOA.settings.automation.elementalTotemName",
+      "BOA.settings.automation.elementalTotemHint",
+    ),
+    demonAutomation: booleanField(
+      "BOA.settings.automation.demonName",
+      "BOA.settings.automation.demonHint",
+    ),
+  });
+
+  static get schema() {
+    return this.#schema;
   }
 
-  getData() {
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+
     return {
-      elementalTotemAutomation:
-        isElementalTotemAutomationEnabled(),
-      demonAutomation:
-        isDemonAutomationEnabled(),
+      ...context,
+      schema: this.constructor.schema,
+      source: {
+        elementalTotemAutomation:
+          isElementalTotemAutomationEnabled(),
+        demonAutomation:
+          isDemonAutomationEnabled(),
+      },
+      buttons: [
+        {
+          type: "submit",
+          icon: "fa-solid fa-floppy-disk",
+          label: "SETTINGS.Save",
+        },
+      ],
     };
   }
 
-  async _updateObject(_event, formData) {
+  static async _onSubmit(_event, _form, formData) {
     const settings = globalThis.game?.settings;
     if (!settings?.set) return;
+
+    const values = formData?.object ?? {};
 
     await Promise.all([
       settings.set(
         MODULE_ID,
         AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,
         Boolean(
-          formData[
+          values[
             AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS
           ],
         ),
@@ -102,7 +175,7 @@ export class AutomationSettingsForm
         MODULE_ID,
         AUTOMATION_SETTING_KEYS.DEMONS,
         Boolean(
-          formData[
+          values[
             AUTOMATION_SETTING_KEYS.DEMONS
           ],
         ),
@@ -141,7 +214,7 @@ export function registerAutomationSettings(
         name: "BOA.settings.automation.menuName",
         label: "BOA.settings.automation.menuLabel",
         hint: "BOA.settings.automation.menuHint",
-        icon: "fas fa-gears",
+        icon: "fa-solid fa-gears",
         type: AutomationSettingsForm,
         restricted: true,
       },
