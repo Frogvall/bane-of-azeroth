@@ -531,6 +531,166 @@ try {
   );
 }
 
+const sufferingModulePath =
+  "/modules/bane-of-azeroth/scripts/" +
+  "warlock-demons/suffering.js";
+
+try {
+  const {
+    findEligibleVoidwalkerForSuffering,
+    splitVoidwalkerSufferingDamage,
+  } = await import(sufferingModulePath);
+
+  boaCheckEqual(
+    checks,
+    "Suffering splits 5 final damage into 3 damage for each creature",
+    splitVoidwalkerSufferingDamage(5),
+    {
+      warlockDamage: 3,
+      voidwalkerDamage: 3,
+    },
+  );
+  boaCheckEqual(
+    checks,
+    "Suffering rounds each half up for the smallest positive damage",
+    splitVoidwalkerSufferingDamage(1),
+    {
+      warlockDamage: 1,
+      voidwalkerDamage: 1,
+    },
+  );
+
+  const sufferingCasterUuid =
+    "Actor.BoaSufferingCaster";
+  const sufferingCasterToken = {
+    id: "BoaSufferingCasterToken",
+    uuid:
+      "Scene.BoaSuffering.Token.BoaSufferingCasterToken",
+  };
+  const sufferingToken = (
+    id,
+    {
+      casterActorUuid = sufferingCasterUuid,
+      demonKey = "voidwalker",
+      duration = "shift",
+      summonType = "warlock-demon",
+    } = {},
+  ) => ({
+    id,
+    uuid: `Scene.BoaSuffering.Token.${id}`,
+    actor: {},
+    flags: {
+      [BOA_TEST_MODULE_ID]: {
+        casterActorUuid,
+        demonKey,
+        duration,
+        summonType,
+      },
+    },
+  });
+
+  const eligibleVoidwalker = sufferingToken(
+    "BoaEligibleVoidwalker",
+  );
+  const distantVoidwalker = sufferingToken(
+    "BoaDistantVoidwalker",
+  );
+  const otherCasterVoidwalker = sufferingToken(
+    "BoaOtherCasterVoidwalker",
+    {
+      casterActorUuid: "Actor.BoaOtherCaster",
+    },
+  );
+  const felhunter = sufferingToken(
+    "BoaSufferingFelhunter",
+    {
+      demonKey: "felhunter",
+    },
+  );
+  const manualVoidwalker = {
+    id: "BoaManualVoidwalker",
+    uuid:
+      "Scene.BoaSuffering.Token.BoaManualVoidwalker",
+    actor: {},
+    flags: {},
+  };
+  const sufferingDistances = new Map([
+    [eligibleVoidwalker.id, 10],
+    [distantVoidwalker.id, 12],
+    [otherCasterVoidwalker.id, 4],
+    [felhunter.id, 4],
+    [manualVoidwalker.id, 4],
+  ]);
+  const calculateDistanceFn = (
+    _casterToken,
+    candidate,
+  ) => sufferingDistances.get(candidate.id);
+
+  boaCheckEqual(
+    checks,
+    "Suffering selects a linked Voidwalker at no more than 10 meters",
+    findEligibleVoidwalkerForSuffering({
+      casterActorUuid: sufferingCasterUuid,
+      casterToken: sufferingCasterToken,
+      tokens: [
+        distantVoidwalker,
+        otherCasterVoidwalker,
+        felhunter,
+        manualVoidwalker,
+        eligibleVoidwalker,
+      ],
+      calculateDistanceFn,
+    })?.uuid ?? null,
+    eligibleVoidwalker.uuid,
+  );
+  boaCheckEqual(
+    checks,
+    "Suffering ignores distant, other-caster, wrong-demon, and manual Tokens",
+    {
+      distant: findEligibleVoidwalkerForSuffering({
+        casterActorUuid: sufferingCasterUuid,
+        casterToken: sufferingCasterToken,
+        tokens: [distantVoidwalker],
+        calculateDistanceFn,
+      })?.uuid ?? null,
+      otherCaster:
+        findEligibleVoidwalkerForSuffering({
+          casterActorUuid: sufferingCasterUuid,
+          casterToken: sufferingCasterToken,
+          tokens: [otherCasterVoidwalker],
+          calculateDistanceFn,
+        })?.uuid ?? null,
+      wrongDemon:
+        findEligibleVoidwalkerForSuffering({
+          casterActorUuid: sufferingCasterUuid,
+          casterToken: sufferingCasterToken,
+          tokens: [felhunter],
+          calculateDistanceFn,
+        })?.uuid ?? null,
+      manual:
+        findEligibleVoidwalkerForSuffering({
+          casterActorUuid: sufferingCasterUuid,
+          casterToken: sufferingCasterToken,
+          tokens: [manualVoidwalker],
+          calculateDistanceFn,
+        })?.uuid ?? null,
+    },
+    {
+      distant: null,
+      otherCaster: null,
+      wrongDemon: null,
+      manual: null,
+    },
+  );
+} catch (error) {
+  boaCheck(
+    checks,
+    "Voidwalker Suffering runtime checks complete",
+    false,
+    error.stack ?? error.message,
+  );
+}
+
 const imp = actors.get("imp") ?? null;
 const impTable = tables.get("imp") ?? null;
 const firebolt = attacks.get("imp") ?? null;

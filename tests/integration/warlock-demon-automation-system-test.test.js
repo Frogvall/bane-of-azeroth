@@ -118,4 +118,22 @@ describe("Warlock demon automation system-test coverage", () => {
     }
   });
 
+
+  test("Foundry Macro defines the red Voidwalker Suffering contract", () => {
+    const macro = read(MACRO);
+
+    for (const marker of [
+      "warlock-demons/suffering.js",
+      "findEligibleVoidwalkerForSuffering",
+      "splitVoidwalkerSufferingDamage",
+      "Suffering splits 5 final damage into 3 damage for each creature",
+      "Suffering rounds each half up for the smallest positive damage",
+      "Suffering selects a linked Voidwalker at no more than 10 meters",
+      "Suffering ignores distant, other-caster, wrong-demon, and manual Tokens",
+      "Voidwalker Suffering runtime checks complete",
+    ]) {
+      expect(macro).toContain(marker);
+    }
+  });
+
 });

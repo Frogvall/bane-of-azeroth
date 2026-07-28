@@ -91,6 +91,8 @@ async function runRestMethod(
 const actor = game.user.character;
 const shiftActor =
   game.actors.get(session.shiftActorId) ?? null;
+const sufferingActor =
+  game.actors.get(session.sufferingActorId) ?? null;
 const scene = game.scenes.get(session.sceneId);
 const lifecycleScene =
   game.scenes.get(session.lifecycleSceneId);
@@ -102,6 +104,10 @@ const impTargetToken =
   scene?.tokens.get(session.impTargetTokenId) ?? null;
 const sayaadTargetToken =
   scene?.tokens.get(session.sayaadTargetTokenId) ?? null;
+const sufferingActorToken =
+  scene?.tokens.get(session.sufferingActorTokenId) ?? null;
+const sufferingVoidwalkerToken =
+  scene?.tokens.get(session.sufferingVoidwalkerTokenId) ?? null;
 const activeGMs = boaCollectionValues(game.users)
   .filter(user => user.active && user.isGM);
 
@@ -161,6 +167,9 @@ boaCheck(
     && sessionIdOf(sayaad) === session.sessionId
     && sessionIdOf(impTargetToken) === session.sessionId
     && sessionIdOf(sayaadTargetToken) === session.sessionId
+    && sessionIdOf(sufferingActor) === session.sessionId
+    && sessionIdOf(sufferingActorToken) === session.sessionId
+    && sessionIdOf(sufferingVoidwalkerToken) === session.sessionId
   ),
   session.sessionId,
 );
@@ -512,6 +521,106 @@ if (actor && imp) {
     "Prepared player and Imp fixtures are available",
     false,
     `${actor?.id ?? "no actor"} / ${imp?.id ?? "no imp"}`,
+  );
+}
+
+if (
+  sufferingActor
+  && sufferingActorToken
+  && sufferingVoidwalkerToken
+) {
+  const originalCasterHp = Number(
+    sufferingActor.system?.hitPoints?.value ?? 0,
+  );
+  const originalVoidwalkerHp = Number(
+    sufferingVoidwalkerToken.actor?.system
+      ?.hitPoints?.value ?? 0,
+  );
+  const finalDamage = 5;
+  const expectedSharedDamage = 3;
+
+  try {
+    if (typeof sufferingActor.applyDamage !== "function") {
+      throw new Error(
+        "The Suffering caster has no applyDamage() method.",
+      );
+    }
+    if (originalCasterHp < finalDamage) {
+      throw new Error(
+        `The Suffering caster has only ${originalCasterHp} HP.`,
+      );
+    }
+    if (originalVoidwalkerHp < expectedSharedDamage) {
+      throw new Error(
+        `The Voidwalker has only ${originalVoidwalkerHp} HP.`,
+      );
+    }
+
+    await sufferingActor.applyDamage(finalDamage);
+    await boaWaitFor(
+      () => (
+        Number(
+          sufferingActor.system?.hitPoints?.value,
+        ) === originalCasterHp - expectedSharedDamage
+        && Number(
+          sufferingVoidwalkerToken.actor?.system
+            ?.hitPoints?.value,
+        ) === originalVoidwalkerHp - expectedSharedDamage
+      ),
+      {
+        timeout: 5000,
+        interval: 100,
+        description:
+          "Voidwalker Suffering damage sharing through the active GM",
+      },
+    );
+
+    boaCheckEqual(
+      checks,
+      "Real Player Suffering splits 5 final damage into 3 HP loss for caster and Voidwalker",
+      {
+        casterHpLoss:
+          originalCasterHp
+          - Number(
+            sufferingActor.system?.hitPoints?.value,
+          ),
+        voidwalkerHpLoss:
+          originalVoidwalkerHp
+          - Number(
+            sufferingVoidwalkerToken.actor?.system
+              ?.hitPoints?.value,
+          ),
+        voidwalkerArmor:
+          Number(
+            sufferingVoidwalkerToken.actor?.system
+              ?.armor ?? 0,
+          ),
+      },
+      {
+        casterHpLoss: 3,
+        voidwalkerHpLoss: 3,
+        voidwalkerArmor: 6,
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player Voidwalker Suffering completed",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+} else {
+  boaCheck(
+    checks,
+    "Prepared Suffering caster and Voidwalker Tokens are available",
+    false,
+    {
+      actor: sufferingActor?.id ?? null,
+      casterToken: sufferingActorToken?.id ?? null,
+      voidwalkerToken:
+        sufferingVoidwalkerToken?.id ?? null,
+    },
   );
 }
 

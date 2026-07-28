@@ -199,6 +199,9 @@ const impTemplate = boaFindWorldActor(
 const sayaadTemplate = boaFindWorldActor(
   "actors.summoned-monsters.sayaad",
 );
+const voidwalkerTemplate = boaFindWorldActor(
+  "actors.summoned-monsters.voidwalker",
+);
 const cleansingTotemTemplate =
   boaFindWorldActor(
     "actors.elemental-totems.cleansing",
@@ -216,6 +219,10 @@ const requiredActorTemplates = [
   {
     key: "actors.summoned-monsters.sayaad",
     actor: sayaadTemplate,
+  },
+  {
+    key: "actors.summoned-monsters.voidwalker",
+    actor: voidwalkerTemplate,
   },
   {
     key: "actors.elemental-totems.cleansing",
@@ -319,6 +326,29 @@ try {
     );
   }
   created.actors.push(shiftActor);
+
+  const sufferingActor = await Actor.create(
+    markFixture({
+      name: `[BOA TEST] Suffering Character ${suffix}`,
+      type: "character",
+      ownership: {
+        default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE,
+        [user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+      },
+    }, sessionId, "suffering-character"),
+    { renderSheet: false },
+  );
+  if (!sufferingActor) {
+    throw new Error(
+      "The temporary Suffering Actor could not be created.",
+    );
+  }
+  created.actors.push(sufferingActor);
+  await sufferingActor.update({
+    "system.hitPoints.base": 20,
+    "system.hitPoints.max": 20,
+    "system.hitPoints.value": 20,
+  });
 
   await actor.createEmbeddedDocuments(
     "Item",
@@ -542,6 +572,36 @@ try {
       duration: "stretch",
     },
   );
+  const sufferingActorToken = await createFixtureToken(
+    sufferingActor,
+    scene,
+    {
+      x: 400,
+      y: 800,
+      actorLink: true,
+      disposition: CONST.TOKEN_DISPOSITIONS?.FRIENDLY ?? 1,
+    },
+    sessionId,
+    "suffering-caster-token",
+  );
+  const sufferingVoidwalkerToken = await createFixtureToken(
+    voidwalkerTemplate,
+    scene,
+    {
+      x: 700,
+      y: 800,
+      actorLink: false,
+      disposition: CONST.TOKEN_DISPOSITIONS?.FRIENDLY ?? 1,
+    },
+    sessionId,
+    "suffering-voidwalker-token",
+    {
+      summonType: "warlock-demon",
+      casterActorUuid: sufferingActor.uuid,
+      demonKey: "voidwalker",
+      duration: "shift",
+    },
+  );
 
   const playerMacro = await Macro.create(
     markFixture({
@@ -579,6 +639,8 @@ try {
     actorUuid: actor.uuid,
     shiftActorId: shiftActor.id,
     shiftActorUuid: shiftActor.uuid,
+    sufferingActorId: sufferingActor.id,
+    sufferingActorUuid: sufferingActor.uuid,
     sceneId: scene.id,
     lifecycleSceneId: lifecycleScene.id,
     tokenId: token.id,
@@ -591,6 +653,8 @@ try {
     shiftTotemTokenId: shiftTotemToken.id,
     shiftDemonTokenId: shiftDemonToken.id,
     otherCasterTotemTokenId: otherCasterTotemToken.id,
+    sufferingActorTokenId: sufferingActorToken.id,
+    sufferingVoidwalkerTokenId: sufferingVoidwalkerToken.id,
     playerMacroId: playerMacro.id,
     previousActiveSceneId,
     originalAutomationSetting,
@@ -614,6 +678,9 @@ try {
     [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
   });
   await shiftActor.update({
+    [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
+  });
+  await sufferingActor.update({
     [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
   });
 
@@ -704,11 +771,16 @@ try {
         user,
         CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
       )
+      && sufferingActor.testUserPermission(
+        user,
+        CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+      )
     ),
     {
       shiftActor: shiftActor.ownership,
       imp: imp.ownership,
       sayaad: sayaad.ownership,
+      sufferingActor: sufferingActor.ownership,
     },
   );
   boaCheckEqual(
@@ -730,12 +802,17 @@ try {
       controls: [
         otherCasterTotemToken.id,
       ].filter(Boolean).length,
+      sufferingFixtures: [
+        sufferingActorToken.id,
+        sufferingVoidwalkerToken.id,
+      ].filter(Boolean).length,
     },
     {
       defenseTargets: 2,
       stretchFixtures: 2,
       shiftFixtures: 2,
       controls: 1,
+      sufferingFixtures: 2,
     },
   );
   boaCheck(

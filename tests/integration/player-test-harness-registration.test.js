@@ -298,4 +298,40 @@ describe("real-player test harness registration", () => {
       expect(source).toContain('"playerTestStageResult"');
     }
   });
+
+  test("prep creates the real-player Voidwalker Suffering fixtures", () => {
+    const source = read(PREP);
+
+    for (const marker of [
+      "actors.summoned-monsters.voidwalker",
+      '"suffering-character"',
+      '"suffering-caster-token"',
+      '"suffering-voidwalker-token"',
+      "sufferingActorId",
+      "sufferingActorUuid",
+      "sufferingActorTokenId",
+      "sufferingVoidwalkerTokenId",
+      'demonKey: "voidwalker"',
+      'duration: "shift"',
+    ]) {
+      expect(source).toContain(marker);
+    }
+  });
+
+  test("player Macro defines the red real-player Suffering scenario", () => {
+    const source = read(PLAYER);
+
+    for (const marker of [
+      "sufferingActor.applyDamage(finalDamage)",
+      "Voidwalker Suffering damage sharing through the active GM",
+      "Real Player Suffering splits 5 final damage into 3 HP loss for caster and Voidwalker",
+      "Real-player Voidwalker Suffering completed",
+      "casterHpLoss: 3",
+      "voidwalkerHpLoss: 3",
+      "voidwalkerArmor: 6",
+    ]) {
+      expect(source).toContain(marker);
+    }
+  });
+
 });
