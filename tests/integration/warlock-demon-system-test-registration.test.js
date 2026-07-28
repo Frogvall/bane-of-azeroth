@@ -97,4 +97,21 @@ describe("Warlock demon system-test registration", () => {
     }
   });
 
+
+  test("includes shared summon lifecycle verification in the Warlock Macro", () => {
+    const macro = read(VERIFY);
+
+    for (const marker of [
+      "deleteSummonsExpiredByRest",
+      "isSummonExpiredByRest",
+      "isSummonRestLifecyclePatched",
+      "Shared summon duration rules distinguish Stretch and Shift",
+      "Dragonbane Stretch and Shift methods use the shared summon lifecycle",
+      "Stretch cleanup selects only the caster's duration-tagged Totems",
+      "Shift cleanup selects the caster's Totems and Warlock demon",
+    ]) {
+      expect(macro).toContain(marker);
+    }
+  });
+
 });

@@ -103,6 +103,9 @@
         "demonHint": "Automate selection, placement, replacement, ownership, duration, and cleanup.",
         "groupSummons": "Summons"
       }
+    },
+    "notifications": {
+      "summonCleanupFailed": "The rest completed, but one or more summoned tokens could not be removed. Ask a GM to remove them manually."
     }
   }
 }

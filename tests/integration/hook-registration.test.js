@@ -83,8 +83,7 @@ describe("Foundry hook registration", () => {
     );
     const {
       onCreateWarlockDemonChatMessage,
-      onUpdateWarlockDemonCaster,
-    } = warlockDemons;
+} = warlockDemons;
 const registeredHooks =
       Hooks.on.mock.calls;
     const registeredHookNames =
@@ -96,14 +95,7 @@ const registeredHooks =
             name === "createChatMessage"
         )
         .map(([, callback]) => callback);
-    const updateActorCallbacks =
-      registeredHooks
-        .filter(
-          ([name]) =>
-            name === "updateActor"
-        )
-        .map(([, callback]) => callback);
-    const updateTokenCallbacks =
+const updateTokenCallbacks =
       registeredHooks
         .filter(
           ([name]) =>
@@ -127,7 +119,6 @@ expect([
       "createItem",
       "updateItem",
       "deleteItem",
-      "updateActor",
       "preCreateChatMessage",
       "createChatMessage",
       "updateChatMessage",
@@ -171,11 +162,7 @@ expect([
     ).toContain(
       onCreateWarlockDemonChatMessage
     );
-    expect(updateActorCallbacks).toHaveLength(1);
-    expect(updateActorCallbacks).toContain(
-      onUpdateWarlockDemonCaster
-    );
-    expect(
+expect(
       createChatMessageCallbacks
     ).toContain(
       onCreateCommonAnimalEffectOnlyWeaponTestMessage

@@ -320,6 +320,217 @@ if (
   );
 }
 
+const summonLifecycleModulePath =
+  "/modules/bane-of-azeroth/scripts/core/" +
+  "summon-duration-lifecycle.js";
+
+try {
+  const {
+    deleteSummonsExpiredByRest,
+    isSummonExpiredByRest,
+    isSummonRestLifecyclePatched,
+  } = await import(
+    summonLifecycleModulePath
+  );
+
+  boaCheckEqual(
+    checks,
+    "Shared summon duration rules distinguish Stretch and Shift",
+    {
+      stretchTotem:
+        isSummonExpiredByRest(
+          "stretch",
+          "stretch",
+        ),
+      stretchDemon:
+        isSummonExpiredByRest(
+          "shift",
+          "stretch",
+        ),
+      shiftTotem:
+        isSummonExpiredByRest(
+          "stretch",
+          "shift",
+        ),
+      shiftDemon:
+        isSummonExpiredByRest(
+          "shift",
+          "shift",
+        ),
+    },
+    {
+      stretchTotem: true,
+      stretchDemon: false,
+      shiftTotem: true,
+      shiftDemon: true,
+    },
+  );
+
+  boaCheck(
+    checks,
+    "Dragonbane Stretch and Shift methods use the shared summon lifecycle",
+    isSummonRestLifecyclePatched(
+      CONFIG.Actor?.documentClass,
+    ),
+    CONFIG.Actor?.documentClass?.name ?? "",
+  );
+
+  const lifecycleToken = (
+    id,
+    summonType,
+    duration,
+    casterActorUuid =
+      "Actor.BoaLifecycleCaster"
+  ) => ({
+    id,
+    flags: {
+      [BOA_TEST_MODULE_ID]: {
+        casterActorUuid,
+        duration,
+        summonType,
+      },
+    },
+  });
+
+  const stretchDeleted = [];
+  const stretchResult =
+    await deleteSummonsExpiredByRest(
+      "Actor.BoaLifecycleCaster",
+      "stretch",
+      {
+        scenes: [
+          {
+            id: "BoaLifecycleStretch",
+            name:
+              "BOA Lifecycle Stretch Fixture",
+            tokens: [
+              lifecycleToken(
+                "stretch-totem",
+                "elementalTotem",
+                "stretch",
+              ),
+              lifecycleToken(
+                "stretch-demon",
+                "warlock-demon",
+                "shift",
+              ),
+              lifecycleToken(
+                "stretch-other",
+                "elementalTotem",
+                "stretch",
+                "Actor.OtherCaster",
+              ),
+              lifecycleToken(
+                "stretch-no-duration",
+                "elementalTotem",
+                undefined,
+              ),
+            ],
+            deleteEmbeddedDocuments:
+              async (documentType, ids) => {
+                stretchDeleted.push({
+                  documentType,
+                  ids,
+                });
+              },
+          },
+        ],
+      },
+    );
+
+  boaCheckEqual(
+    checks,
+    "Stretch cleanup selects only the caster's duration-tagged Totems",
+    {
+      deleted: stretchDeleted,
+      result: stretchResult,
+    },
+    {
+      deleted: [
+        {
+          documentType: "Token",
+          ids: ["stretch-totem"],
+        },
+      ],
+      result: {
+        deletedCount: 1,
+        failedScenes: [],
+      },
+    },
+  );
+
+  const shiftDeleted = [];
+  const shiftResult =
+    await deleteSummonsExpiredByRest(
+      "Actor.BoaLifecycleCaster",
+      "shift",
+      {
+        scenes: [
+          {
+            id: "BoaLifecycleShift",
+            name:
+              "BOA Lifecycle Shift Fixture",
+            tokens: [
+              lifecycleToken(
+                "shift-totem",
+                "elementalTotem",
+                "stretch",
+              ),
+              lifecycleToken(
+                "shift-demon",
+                "warlock-demon",
+                "shift",
+              ),
+              lifecycleToken(
+                "shift-invalid",
+                "warlock-demon",
+                "stretch",
+              ),
+            ],
+            deleteEmbeddedDocuments:
+              async (documentType, ids) => {
+                shiftDeleted.push({
+                  documentType,
+                  ids,
+                });
+              },
+          },
+        ],
+      },
+    );
+
+  boaCheckEqual(
+    checks,
+    "Shift cleanup selects the caster's Totems and Warlock demon",
+    {
+      deleted: shiftDeleted,
+      result: shiftResult,
+    },
+    {
+      deleted: [
+        {
+          documentType: "Token",
+          ids: [
+            "shift-totem",
+            "shift-demon",
+          ],
+        },
+      ],
+      result: {
+        deletedCount: 2,
+        failedScenes: [],
+      },
+    },
+  );
+} catch (error) {
+  boaCheck(
+    checks,
+    "Shared summon duration lifecycle checks complete",
+    false,
+    error.stack ?? error.message,
+  );
+}
+
 const imp = actors.get("imp") ?? null;
 const impTable = tables.get("imp") ?? null;
 const firebolt = attacks.get("imp") ?? null;

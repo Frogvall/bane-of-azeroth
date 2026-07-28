@@ -1,3 +1,7 @@
+import {
+  SUMMON_DURATION_SHIFT,
+} from "../core/summon-duration-lifecycle.js";
+
 export const DEMONOLOGIST_CONTENT_KEY =
   "heroic-class-ability.warlock.demonologist";
 
@@ -6,7 +10,7 @@ export const WARLOCK_DEMON_SUMMON_TYPE =
 
 export const WARLOCK_DEMON_PLACEMENT_RANGE = 10;
 
-export const WARLOCK_DEMON_DURATION = "shift";
+export const WARLOCK_DEMON_DURATION = SUMMON_DURATION_SHIFT;
 
 export const WARLOCK_DEMON_DEFINITIONS = Object.freeze([
   {

@@ -1,4 +1,7 @@
 import { MODULE_ID } from "../core/constants.js";
+import {
+  SUMMON_DURATION_STRETCH,
+} from "../core/summon-duration-lifecycle.js";
 import { getContentKey } from "../core/documents.js";
 import {
   ELEMENTAL_TOTEM_CONTENT_KEY,
@@ -305,6 +308,11 @@ export async function executeElementalTotemCreation(
       data,
       `flags.${MODULE_ID}.summonType`,
       "elementalTotem"
+    );
+    foundry.utils.setProperty(
+      data,
+      `flags.${MODULE_ID}.duration`,
+      SUMMON_DURATION_STRETCH
     );
     foundry.utils.setProperty(
       data,

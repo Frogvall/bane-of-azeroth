@@ -32,17 +32,19 @@ function read(path) {
 }
 
 describe("Warlock demon automation system-test coverage", () => {
-  test("registers dialog, socket, and lifecycle hooks", () => {
+  test("registers dialog, sockets, and shared rest lifecycle", () => {
     const main = read(MAIN);
 
-    expect(main).toContain(
+    for (const marker of [
       "onCreateWarlockDemonChatMessage",
-    );
-    expect(main).toContain(
-      "onUpdateWarlockDemonCaster",
-    );
-    expect(main).toContain(
       "registerWarlockDemonSocket",
+      "registerSummonDurationLifecycleSocket",
+      "patchSummonRestLifecycle",
+    ]) {
+      expect(main).toContain(marker);
+    }
+    expect(main).not.toContain(
+      "onUpdateWarlockDemonCaster",
     );
   });
 
@@ -94,6 +96,23 @@ describe("Warlock demon automation system-test coverage", () => {
       "Other Warlock demons do not add advisory defense banes",
       "Warlock demon defense bane is inserted exactly once",
       "Dragonbane no-banes-and-boons mode suppresses the defense bane",
+    ]) {
+      expect(macro).toContain(marker);
+    }
+  });
+
+
+  test("Foundry Macro verifies the shared Stretch and Shift lifecycle", () => {
+    const macro = read(MACRO);
+
+    for (const marker of [
+      "deleteSummonsExpiredByRest",
+      "isSummonExpiredByRest",
+      "isSummonRestLifecyclePatched",
+      "Shared summon duration rules distinguish Stretch and Shift",
+      "Dragonbane Stretch and Shift methods use the shared summon lifecycle",
+      "Stretch cleanup selects only the caster's duration-tagged Totems",
+      "Shift cleanup selects the caster's Totems and Warlock demon",
     ]) {
       expect(macro).toContain(marker);
     }

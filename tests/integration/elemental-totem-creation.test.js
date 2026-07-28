@@ -401,6 +401,7 @@ describe("executeElementalTotemCreation", () => {
       flags: {
         "bane-of-azeroth": {
           summonType: "elementalTotem",
+          duration: "stretch",
           casterActorUuid: "Actor.caster",
           sourceSpell: "spells.elemental-totem",
           sourceMessageId: "message-1",

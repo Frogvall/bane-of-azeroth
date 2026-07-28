@@ -9,7 +9,6 @@ import {
   deletePreviousWarlockDemons,
   deleteWarlockDemonsForCaster,
   getWarlockDemonOwnerUserIds,
-  isWarlockDemonShiftRestUpdate,
 } from "../../foundry/scripts/warlock-demons.js";
 
 function collection(values) {
@@ -156,39 +155,4 @@ describe("Warlock demon summoning lifecycle", () => {
     });
   });
 
-  test("recognizes the Dragonbane shift-rest reset", () => {
-    const getProperty = (
-      object,
-      path,
-    ) => path
-      .split(".")
-      .reduce(
-        (value, key) =>
-          value?.[key],
-        object,
-      );
-
-    expect(
-      isWarlockDemonShiftRestUpdate(
-        {
-          system: {
-            canRestRound: true,
-            canRestStretch: true,
-          },
-        },
-        { getProperty },
-      ),
-    ).toBe(true);
-
-    expect(
-      isWarlockDemonShiftRestUpdate(
-        {
-          system: {
-            canRestRound: true,
-          },
-        },
-        { getProperty },
-      ),
-    ).toBe(false);
-  });
 });

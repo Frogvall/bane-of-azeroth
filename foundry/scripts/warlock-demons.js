@@ -50,11 +50,6 @@ export {
 } from "./warlock-demons/dialogs.js";
 
 export {
-  isWarlockDemonShiftRestUpdate,
-  onUpdateWarlockDemonCaster,
-} from "./warlock-demons/lifecycle.js";
-
-export {
   applyWarlockDemonDefenseBane,
   getWarlockDemonDefenseBane,
 } from "./warlock-demons/defenses.js";

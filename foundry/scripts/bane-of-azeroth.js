@@ -48,12 +48,15 @@ import {
 } from "./elemental-totems.js";
 import {
   onCreateWarlockDemonChatMessage,
-  onUpdateWarlockDemonCaster,
-  registerWarlockDemonSocket,
+registerWarlockDemonSocket,
 } from "./warlock-demons.js";
 import {
   isPrimaryActiveGM,
 } from "./core/users.js";
+import {
+  patchSummonRestLifecycle,
+  registerSummonDurationLifecycleSocket,
+} from "./core/summon-duration-lifecycle.js";
 import {
   onCommonAnimalRollDamageChatMessage,
   processCommonAnimalAttackResult,
@@ -102,11 +105,7 @@ Hooks.once("init", () => {
   Hooks.on("createItem", onCreateItem);
   Hooks.on("updateItem", onUpdateItem);
   Hooks.on("deleteItem", onDeleteItem);
-  Hooks.on(
-    "updateActor",
-    onUpdateWarlockDemonCaster,
-  );
-  Hooks.on(
+Hooks.on(
     "preCreateChatMessage",
     onPreCreateCommonAnimalEffectOnlyWeaponTestMessage
   );
@@ -164,6 +163,8 @@ Hooks.once("ready", async () => {
   if (game.system.id !== "dragonbane") return;
 
 
+  registerSummonDurationLifecycleSocket();
+  patchSummonRestLifecycle();
   registerElementalTotemSocket();
   registerWarlockDemonSocket();
   registerCommonAnimalStatusSocket();
