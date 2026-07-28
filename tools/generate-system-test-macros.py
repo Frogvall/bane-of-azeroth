@@ -7,6 +7,7 @@ import argparse
 import json
 import re
 import shutil
+import tempfile
 from pathlib import Path
 
 
@@ -178,9 +179,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-directory",
         type=Path,
-        required=True,
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help=(
+            "Validate Macro generation in a "
+            "temporary directory without writing repo files."
+        ),
+    )
+    args = parser.parse_args()
+    if not args.check and args.output_directory is None:
+        parser.error(
+            "--output-directory is required unless --check is used"
+        )
+    return args
 
 
 def safe_filename(name: str, document_id: str) -> str:
@@ -204,6 +217,14 @@ def base_stats() -> dict[str, object]:
 
 def main() -> int:
     args = parse_args()
+    temporary_output = None
+    if args.check:
+        temporary_output = tempfile.TemporaryDirectory(
+            prefix="boa-system-test-macros-check-"
+        )
+        args.output_directory = Path(
+            temporary_output.name
+        )
 
     if not args.library.is_file():
         raise SystemExit(
@@ -282,10 +303,16 @@ def main() -> int:
             encoding="utf-8",
         )
 
-    print(
-        f"Generated {len(MACROS)} developer-test Macros in "
-        f"{args.output_directory}."
-    )
+    if args.check:
+        print(
+            f"Checked {len(MACROS)} developer-test Macros."
+        )
+        temporary_output.cleanup()
+    else:
+        print(
+            f"Generated {len(MACROS)} developer-test Macros in "
+            f"{args.output_directory}."
+        )
     return 0
 
 

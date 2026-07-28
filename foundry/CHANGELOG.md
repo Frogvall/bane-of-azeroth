@@ -8,6 +8,35 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 No unreleased changes recorded yet.
 
+## [0.9.2] - 2026-07-28
+
+### Added
+
+- Added the Imp, Sayaad, Felhunter, and Voidwalker as generated Warlock summoned monsters.
+- Added Demonologist selection and automated token placement within 10 meters.
+- Added validated Player-to-primary-GM socket handling for demon creation.
+- Added synthetic demon Actor ownership: owners of the caster receive Owner permission while other players receive Observer permission.
+- Added automatic replacement of the caster's previous Warlock demon.
+- Added world settings that independently enable or disable Elemental Totem and Warlock demon automation.
+- Added Imp **Phase Shift** and Sayaad **Seductive** as preselected, removable attack banes.
+- Added Voidwalker **Suffering**, sharing final HP damage equally with both halves rounded up.
+- Added Dragonbane-native localized damage cards for transferred Voidwalker damage and corrected Suffering details on the caster's damage card.
+- Added shared Stretch- and Shift-rest summon cleanup across scenes.
+
+### Changed
+
+- Removed the custom monster attack menu from summoned monsters and kept Dragonbane's ordinary action flow.
+- Kept manual Demonologist instructions available when demon automation is disabled.
+- Preserved lifecycle behavior for already-created automatic summons after their automation setting is disabled.
+- Presented Suffering chat messages in deterministic order: caster HP loss, Suffering explanation, Voidwalker damage card, and corrected caster damage card.
+
+### Testing
+
+- Added unit and integration coverage for demon generation, placement, ownership, replacement, command control, automation settings, defense banes, Suffering, rest lifecycle, hook registration, and socket validation.
+- Expanded the prerelease Warlock Demon system test with all four demons, disabled automation, lifecycle, defense, and Suffering checks.
+- Expanded the real-player harness with Player-owned command control, Phase Shift, Seductive, Stretch and Shift cleanup, Suffering, and genuine Player-to-primary-GM demon creation and replacement.
+- Added centralized build and packaging checks that execute every Foundry generator through its `--check` mode.
+
 ## [0.9.1] - 2026-07-24
 
 ### Added

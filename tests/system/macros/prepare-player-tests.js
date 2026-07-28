@@ -350,6 +350,64 @@ try {
     "system.hitPoints.value": 20,
   });
 
+
+  const summonActor = await Actor.create(
+    markFixture({
+      name:
+        `[BOA TEST] Demon Summoner ${suffix}`,
+      type: "character",
+      ownership: {
+        default:
+          CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE,
+        [user.id]:
+          CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+      },
+    }, sessionId, "demon-summoner"),
+    { renderSheet: false },
+  );
+  if (!summonActor) {
+    throw new Error(
+      "The temporary demon-summoner Actor "
+      + "could not be created.",
+    );
+  }
+  created.actors.push(summonActor);
+
+  const demonologistSource =
+    requiredAbilities.find(entry =>
+      entry.key
+        === "heroic-class-ability.warlock.demonologist"
+    )?.item ?? null;
+  if (!demonologistSource) {
+    throw new Error(
+      "The imported Demonologist ability "
+      + "could not be found.",
+    );
+  }
+
+  await summonActor.createEmbeddedDocuments(
+    "Item",
+    [
+      boaCloneEmbeddedItem(
+        demonologistSource,
+      ),
+    ],
+  );
+  const summonAbility =
+    boaCollectionValues(
+      summonActor.items,
+    ).find(item =>
+      boaContentKey(item)
+        === "heroic-class-ability.warlock.demonologist"
+      || item.name === "Demonologist"
+    ) ?? null;
+  if (!summonAbility) {
+    throw new Error(
+      "Demonologist was not embedded in the "
+      + "temporary demon summoner.",
+    );
+  }
+
   await actor.createEmbeddedDocuments(
     "Item",
     requiredAbilities.map(entry =>
@@ -459,6 +517,23 @@ try {
     sessionId,
     "character-token",
   );
+
+
+  const summonCasterToken =
+    await createFixtureToken(
+      summonActor,
+      lifecycleScene,
+      {
+        x: 1400,
+        y: 800,
+        actorLink: true,
+        disposition:
+          CONST.TOKEN_DISPOSITIONS?.FRIENDLY
+          ?? 1,
+      },
+      sessionId,
+      "demon-summoner-token",
+    );
 
   const impTargetToken = await createFixtureToken(
     imp,
@@ -603,6 +678,32 @@ try {
     },
   );
 
+
+  const summonSourceMessage =
+    await ChatMessage.create(
+      markFixture({
+        user: user.id,
+        speaker: {
+          actor: summonActor.id,
+          token: summonCasterToken.id,
+          scene: lifecycleScene.id,
+          alias: summonActor.name,
+        },
+        content:
+          `@UUID[${summonAbility.uuid}]`
+          + `{${summonAbility.name}}`,
+      }, sessionId, "demonologist-source-message"),
+    );
+  if (!summonSourceMessage) {
+    throw new Error(
+      "The Player-authored Demonologist source "
+      + "message could not be created.",
+    );
+  }
+  created.messages.push(
+    summonSourceMessage,
+  );
+
   const playerMacro = await Macro.create(
     markFixture({
       name: `[BOA TEST] Run Player Tests ${suffix}`,
@@ -641,6 +742,10 @@ try {
     shiftActorUuid: shiftActor.uuid,
     sufferingActorId: sufferingActor.id,
     sufferingActorUuid: sufferingActor.uuid,
+    summonActorId: summonActor.id,
+    summonActorUuid: summonActor.uuid,
+    summonCasterTokenId: summonCasterToken.id,
+    summonSourceMessageId: summonSourceMessage.id,
     sceneId: scene.id,
     lifecycleSceneId: lifecycleScene.id,
     tokenId: token.id,
@@ -681,6 +786,9 @@ try {
     [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
   });
   await sufferingActor.update({
+    [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
+  });
+  await summonActor.update({
     [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
   });
 

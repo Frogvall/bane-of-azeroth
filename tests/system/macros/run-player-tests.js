@@ -111,6 +111,8 @@ const shiftActor =
   game.actors.get(session.shiftActorId) ?? null;
 const sufferingActor =
   game.actors.get(session.sufferingActorId) ?? null;
+const summonActor =
+  game.actors.get(session.summonActorId) ?? null;
 const scene = game.scenes.get(session.sceneId);
 const lifecycleScene =
   game.scenes.get(session.lifecycleSceneId);
@@ -126,6 +128,14 @@ const sufferingActorToken =
   scene?.tokens.get(session.sufferingActorTokenId) ?? null;
 const sufferingVoidwalkerToken =
   scene?.tokens.get(session.sufferingVoidwalkerTokenId) ?? null;
+const summonCasterToken =
+  lifecycleScene?.tokens.get(
+    session.summonCasterTokenId,
+  ) ?? null;
+const summonSourceMessage =
+  game.messages.get(
+    session.summonSourceMessageId,
+  ) ?? null;
 const activeGMs = boaCollectionValues(game.users)
   .filter(user => user.active && user.isGM);
 
@@ -398,6 +408,240 @@ if (actor) {
       );
     }
   }
+}
+
+
+if (
+  summonActor
+  && summonCasterToken
+  && summonSourceMessage
+) {
+  try {
+    const summonAbility =
+      boaCollectionValues(
+        summonActor.items,
+      ).find(item =>
+        boaContentKey(item)
+          === "heroic-class-ability.warlock.demonologist"
+        || item.name === "Demonologist"
+      ) ?? null;
+    if (!summonAbility) {
+      throw new Error(
+        "The prepared summon Actor has no "
+        + "Demonologist ability.",
+      );
+    }
+
+    const {
+      buildWarlockDemonPlan,
+      requestWarlockDemonCreation,
+    } = await import(
+      `/modules/${BOA_TEST_MODULE_ID}/scripts/warlock-demons.js`
+    );
+
+    const impPlan =
+      buildWarlockDemonPlan(
+        summonSourceMessage,
+        {
+          actor: summonActor,
+          ability: summonAbility,
+        },
+        "imp",
+      );
+
+    let outsideRangeRejected = false;
+    let outsideRangeError = "";
+    try {
+      await requestWarlockDemonCreation(
+        impPlan,
+        {
+          x: 100,
+          y: 100,
+        },
+      );
+    } catch (error) {
+      outsideRangeRejected = true;
+      outsideRangeError =
+        error.message ?? String(error);
+    }
+
+    boaCheck(
+      checks,
+      "Primary GM rejects an out-of-range real Player demon placement",
+      outsideRangeRejected
+        && outsideRangeError.includes(
+          "outside range",
+        ),
+      outsideRangeError,
+    );
+
+    const firstResult =
+      await requestWarlockDemonCreation(
+        impPlan,
+        {
+          x: 1600,
+          y: 800,
+        },
+      );
+    const firstToken =
+      lifecycleScene.tokens.get(
+        firstResult.createdTokenId,
+      ) ?? null;
+    const firstFlags =
+      firstToken?.flags
+        ?.[BOA_TEST_MODULE_ID]
+      ?? {};
+
+    boaCheckEqual(
+      checks,
+      "Real Player creates an owned Imp through the primary GM socket",
+      {
+        exists: Boolean(firstToken),
+        actorIsSynthetic:
+          firstToken?.actor?.isToken
+          ?? false,
+        playerIsOwner:
+          firstToken?.actor
+            ?.testUserPermission(
+              game.user,
+              CONST
+                .DOCUMENT_OWNERSHIP_LEVELS
+                .OWNER,
+            )
+          ?? false,
+        defaultOwnership:
+          firstToken?.actor?.ownership
+            ?.default
+          ?? null,
+        casterActorUuid:
+          firstFlags.casterActorUuid
+          ?? null,
+        summonType:
+          firstFlags.summonType
+          ?? null,
+        demonKey:
+          firstFlags.demonKey
+          ?? null,
+        duration:
+          firstFlags.duration
+          ?? null,
+      },
+      {
+        exists: true,
+        actorIsSynthetic: true,
+        playerIsOwner: true,
+        defaultOwnership:
+          CONST
+            .DOCUMENT_OWNERSHIP_LEVELS
+            .OBSERVER,
+        casterActorUuid:
+          summonActor.uuid,
+        summonType:
+          "warlock-demon",
+        demonKey: "imp",
+        duration: "shift",
+      },
+    );
+
+    const sayaadPlan = {
+      ...impPlan,
+      demonKey: "sayaad",
+    };
+    const secondResult =
+      await requestWarlockDemonCreation(
+        sayaadPlan,
+        {
+          x: 1800,
+          y: 800,
+        },
+      );
+    const secondToken =
+      lifecycleScene.tokens.get(
+        secondResult.createdTokenId,
+      ) ?? null;
+    const secondFlags =
+      secondToken?.flags
+        ?.[BOA_TEST_MODULE_ID]
+      ?? {};
+
+    boaCheckEqual(
+      checks,
+      "A second real Player summon replaces the previous demon",
+      {
+        firstExists:
+          Boolean(
+            lifecycleScene.tokens.get(
+              firstResult.createdTokenId,
+            ),
+          ),
+        secondExists:
+          Boolean(secondToken),
+        demonKey:
+          secondFlags.demonKey
+          ?? null,
+        casterActorUuid:
+          secondFlags.casterActorUuid
+          ?? null,
+      },
+      {
+        firstExists: false,
+        secondExists: true,
+        demonKey: "sayaad",
+        casterActorUuid:
+          summonActor.uuid,
+      },
+    );
+
+    await runRestMethod(
+      summonActor,
+      "restShift",
+      "player-created-demon-shift-rest",
+    );
+    await boaWaitFor(
+      () => !lifecycleScene.tokens.get(
+        secondResult.createdTokenId,
+      ),
+      {
+        timeout: 10000,
+        interval: 100,
+        description:
+          "Shift rest cleanup of the real "
+          + "Player-created Warlock demon",
+      },
+    );
+
+    boaCheckEqual(
+      checks,
+      "Real Player Shift rest removes the demon created through the GM socket",
+      Boolean(
+        lifecycleScene.tokens.get(
+          secondResult.createdTokenId,
+        ),
+      ),
+      false,
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player Demonologist summoning through the primary GM completed",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+} else {
+  boaCheck(
+    checks,
+    "Prepared Demonologist summoning fixtures are available",
+    false,
+    {
+      summonActor:
+        summonActor?.id ?? null,
+      summonCasterToken:
+        summonCasterToken?.id ?? null,
+      summonSourceMessage:
+        summonSourceMessage?.id ?? null,
+    },
+  );
 }
 
 if (actor && imp) {

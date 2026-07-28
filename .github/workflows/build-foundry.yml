@@ -222,18 +222,10 @@ jobs:
           echo "Release tag:     $release_tag"
           echo "Manifest URL:    $manifest_url"
           echo "Download URL:    $download_url"
-
       - name: Verify generated Foundry content
         run: |
           set -euo pipefail
-
-          python3 tools/generate-kin.py --check
-          python3 tools/generate-heroic-class-abilities.py --check
-          python3 tools/generate-gear.py --check
-          python3 tools/generate-spells.py --check
-          python3 tools/generate-elemental-totems.py --check
-          python3 tools/generate-hunter-companions.py --check
-          python3 tools/generate-summoned-monsters.py --check
+          python3 tools/check-foundry-generators.py
 
       - name: Build Foundry package
         run: |

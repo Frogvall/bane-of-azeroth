@@ -9,7 +9,8 @@
     "test": "vitest run",
     "test:unit": "vitest run tests/unit",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "check:generated": "python3 tools/check-foundry-generators.py"
   },
   "devDependencies": {
     "vitest": "4.1.10",

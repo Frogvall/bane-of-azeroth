@@ -420,4 +420,37 @@ describe("real-player test harness registration", () => {
     );
   });
 
+
+  test("the Player harness verifies real Demonologist creation through the primary GM", () => {
+    const prep = read(PREP);
+    const player = read(PLAYER);
+
+    for (const marker of [
+      '"demon-summoner"',
+      '"demon-summoner-token"',
+      '"demonologist-source-message"',
+      "summonActorId",
+      "summonCasterTokenId",
+      "summonSourceMessageId",
+      "user: user.id",
+    ]) {
+      expect(prep).toContain(marker);
+    }
+
+    for (const marker of [
+      "buildWarlockDemonPlan",
+      "requestWarlockDemonCreation",
+      "Primary GM rejects an out-of-range real Player demon placement",
+      "Real Player creates an owned Imp through the primary GM socket",
+      "A second real Player summon replaces the previous demon",
+      "Real Player Shift rest removes the demon created through the GM socket",
+      "actorIsSynthetic",
+      "DOCUMENT_OWNERSHIP_LEVELS.OBSERVER",
+      'summonType: "warlock-demon"',
+      'duration: "shift"',
+    ]) {
+      expect(player).toContain(marker);
+    }
+  });
+
 });

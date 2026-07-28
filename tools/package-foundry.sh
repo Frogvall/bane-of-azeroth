@@ -34,6 +34,11 @@ if [[ ! -d "$PACK_SOURCE" ]]; then
   exit 1
 fi
 
+echo "Verifying generated Foundry content..."
+python3 \
+  "${ROOT_DIR}/tools/check-foundry-generators.py"
+
+
 MODULE_ID="$(jq -er '.id' "$MODULE_JSON")"
 SOURCE_VERSION="$(jq -er '.version' "$MODULE_JSON")"
 

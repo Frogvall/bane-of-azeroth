@@ -69,7 +69,12 @@ Implemented content and automation include:
 - Fourteen Common Animal actors with dedicated portraits, token artwork, attacks, skills, armor, and alternate movement rates
 - Common Animal attack effects for lethal poison, Constriction, and Web Spray
 - Automatic application of Dragonbane's **Restrained** condition when a successful Restrain effect has a target
-
+- Death Knight Ghoul summoning with validated ownership, command control, and Infectious Bite Willpower handling
+- Warlock Demonologist support for Imp, Sayaad, Felhunter, and Voidwalker summons
+- Validated Player-to-GM demon placement, ownership propagation, replacement, and Shift-rest cleanup
+- Optional per-world automation settings for Elemental Totems and Warlock demons
+- Imp Phase Shift and Sayaad Seductive defense banes
+- Voidwalker Suffering with rounded-up damage sharing, native Dragonbane damage cards, and corrected chat presentation
 Generated content uses stable Foundry document identifiers and is checked against its structured source during development and packaging.
 
 ## Compatibility
@@ -137,14 +142,13 @@ docker run --rm \
 
 Every generator that supports `--check` must succeed before release. The complete generator set is also exercised by the automated and packaging workflows.
 
-For the current Common Animal and Developer Test sources:
+Run the complete generator verification from the repository root:
 
 ```bash
-python3 tools/generate-hunter-companions.py --check
-python3 tools/generate-summoned-monsters.py --check
-python3 tools/generate-system-test-macros.py --check
+npm run check:generated
 ```
 
+The npm command runs `python3 tools/check-foundry-generators.py`, which discovers every `tools/generate-*.py` script and invokes its `--check` mode. The same central check runs in GitHub Actions and at the start of `tools/package-foundry.sh`, so new generators are automatically included in build and packaging verification.
 ### Foundry system tests
 
 Developer Test macros are included in prerelease packages only.
