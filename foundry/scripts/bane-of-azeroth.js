@@ -51,6 +51,10 @@ import {
 registerWarlockDemonSocket,
 } from "./warlock-demons.js";
 import {
+  patchVoidwalkerSuffering,
+  registerVoidwalkerSufferingSocket,
+} from "./warlock-demons/suffering.js";
+import {
   isPrimaryActiveGM,
 } from "./core/users.js";
 import {
@@ -153,6 +157,9 @@ Hooks.on(
 
   Object.assign(featureTypes, WEAPON_FEATURES);
   patchWeaponTests();
+  patchVoidwalkerSuffering({
+    useAuthority: true,
+  });
 
   console.log(
     `${MODULE_ID} | Registered custom weapon features, Armor Piercing, and Scattershot.`
@@ -167,6 +174,7 @@ Hooks.once("ready", async () => {
   patchSummonRestLifecycle();
   registerElementalTotemSocket();
   registerWarlockDemonSocket();
+  registerVoidwalkerSufferingSocket();
   registerCommonAnimalStatusSocket();
 
   try {

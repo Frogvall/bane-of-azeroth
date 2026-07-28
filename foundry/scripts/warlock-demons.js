@@ -53,3 +53,15 @@ export {
   applyWarlockDemonDefenseBane,
   getWarlockDemonDefenseBane,
 } from "./warlock-demons/defenses.js";
+
+export {
+  createVoidwalkerSufferingMessage,
+  executeVoidwalkerSufferingTransfer,
+  findEligibleVoidwalkerForSuffering,
+  patchVoidwalkerSuffering,
+  registerVoidwalkerSufferingSocket,
+  requestVoidwalkerSufferingTransfer,
+  resolveVoidwalkerSuffering,
+  splitVoidwalkerSufferingDamage,
+  SUFFERING_MAX_DISTANCE,
+} from "./warlock-demons/suffering.js";

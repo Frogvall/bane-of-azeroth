@@ -40,6 +40,8 @@ describe("Warlock demon automation system-test coverage", () => {
       "registerWarlockDemonSocket",
       "registerSummonDurationLifecycleSocket",
       "patchSummonRestLifecycle",
+      "patchVoidwalkerSuffering",
+      "registerVoidwalkerSufferingSocket",
     ]) {
       expect(main).toContain(marker);
     }

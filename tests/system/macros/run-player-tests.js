@@ -556,7 +556,16 @@ if (
       );
     }
 
-    await sufferingActor.applyDamage(finalDamage);
+    const sufferingMessagesBefore =
+      currentMessageIds();
+    try {
+      await sufferingActor.applyDamage(finalDamage);
+    } finally {
+      await markMessagesSince(
+        sufferingMessagesBefore,
+        "player-suffering-message",
+      );
+    }
     await boaWaitFor(
       () => (
         Number(

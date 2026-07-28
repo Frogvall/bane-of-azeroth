@@ -90,7 +90,8 @@
     },
     "chat": {
       "monsterAttackWpSpent": "{actor} spends {amount} WP to use <strong>{attack}</strong>.",
-      "monsterCommandWpSpent": "{actor} spent {amount} WP to command {demon} to use {attack}."
+      "monsterCommandWpSpent": "{actor} spent {amount} WP to command {demon} to use {attack}.",
+      "voidwalkerSuffering": "{caster} would take {originalDamage} damage. <strong>Suffering</strong> makes {caster} and {voidwalker} lose {damage} HP each."
     },
     "settings": {
       "automation": {
