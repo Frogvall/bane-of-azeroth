@@ -79,4 +79,22 @@ describe("Warlock demon system-test registration", () => {
       expect(macro).toContain(marker);
     }
   });
+
+
+  test("includes defense-bane verification in the Warlock Macro", () => {
+    const macro = read(VERIFY);
+
+    for (const marker of [
+      "applyWarlockDemonDefenseBane",
+      "getWarlockDemonDefenseBane",
+      "Phase Shift defense bane is offered for melee and ranged attacks",
+      "Seductive defense bane is offered only for melee attacks",
+      "Other Warlock demons do not add advisory defense banes",
+      "Warlock demon defense bane is inserted exactly once",
+      "Dragonbane no-banes-and-boons mode suppresses the defense bane",
+    ]) {
+      expect(macro).toContain(marker);
+    }
+  });
+
 });

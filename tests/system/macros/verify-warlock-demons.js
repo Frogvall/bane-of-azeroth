@@ -169,6 +169,157 @@ for (const expected of expectedDemons) {
   );
 }
 
+const defenseImp = actors.get("imp") ?? null;
+const defenseSayaad = actors.get("sayaad") ?? null;
+const defenseFelhunter = actors.get("felhunter") ?? null;
+const defenseVoidwalker = actors.get("voidwalker") ?? null;
+
+if (
+  defenseImp &&
+  defenseSayaad &&
+  defenseFelhunter &&
+  defenseVoidwalker
+) {
+  try {
+    const {
+      applyWarlockDemonDefenseBane,
+      getWarlockDemonDefenseBane,
+    } = await import(
+      "/modules/bane-of-azeroth/scripts/warlock-demons.js"
+    );
+
+    const meleeWeapon = { isRangedWeapon: false };
+    const rangedWeapon = { isRangedWeapon: true };
+    const targetToken = actor => ({ actor });
+    const phaseShiftLabel = game.i18n.localize(
+      "BOA.dialog.warlockDemon.phaseShiftBane",
+    );
+    const seductiveLabel = game.i18n.localize(
+      "BOA.dialog.warlockDemon.seductiveBane",
+    );
+
+    boaCheckEqual(
+      checks,
+      "Phase Shift defense bane is offered for melee and ranged attacks",
+      {
+        melee: getWarlockDemonDefenseBane({
+          targetToken: targetToken(defenseImp),
+          weapon: meleeWeapon,
+        }),
+        ranged: getWarlockDemonDefenseBane({
+          targetToken: targetToken(defenseImp),
+          weapon: rangedWeapon,
+        }),
+      },
+      {
+        melee: { source: phaseShiftLabel, value: true },
+        ranged: { source: phaseShiftLabel, value: true },
+      },
+    );
+
+    boaCheckEqual(
+      checks,
+      "Seductive defense bane is offered only for melee attacks",
+      {
+        melee: getWarlockDemonDefenseBane({
+          targetToken: targetToken(defenseSayaad),
+          weapon: meleeWeapon,
+        }),
+        ranged: getWarlockDemonDefenseBane({
+          targetToken: targetToken(defenseSayaad),
+          weapon: rangedWeapon,
+        }),
+      },
+      {
+        melee: { source: seductiveLabel, value: true },
+        ranged: null,
+      },
+    );
+
+    boaCheckEqual(
+      checks,
+      "Other Warlock demons do not add advisory defense banes",
+      {
+        felhunter: getWarlockDemonDefenseBane({
+          targetToken: targetToken(defenseFelhunter),
+          weapon: meleeWeapon,
+        }),
+        voidwalker: getWarlockDemonDefenseBane({
+          targetToken: targetToken(defenseVoidwalker),
+          weapon: meleeWeapon,
+        }),
+      },
+      {
+        felhunter: null,
+        voidwalker: null,
+      },
+    );
+
+    const dialogTest = {
+      options: {
+        targets: [{ document: targetToken(defenseImp) }],
+      },
+      weapon: rangedWeapon,
+      dialogData: { banes: [] },
+      noBanesBoons: false,
+    };
+    const firstAdded = applyWarlockDemonDefenseBane(dialogTest);
+    const secondAdded = applyWarlockDemonDefenseBane(dialogTest);
+
+    boaCheckEqual(
+      checks,
+      "Warlock demon defense bane is inserted exactly once",
+      {
+        firstAdded,
+        secondAdded,
+        banes: dialogTest.dialogData.banes,
+      },
+      {
+        firstAdded: true,
+        secondAdded: false,
+        banes: [{ source: phaseShiftLabel, value: true }],
+      },
+    );
+
+    const noBanesBoonsTest = {
+      options: {
+        targets: [{ document: targetToken(defenseImp) }],
+      },
+      weapon: meleeWeapon,
+      dialogData: { banes: [] },
+      noBanesBoons: true,
+    };
+    const suppressed = applyWarlockDemonDefenseBane(
+      noBanesBoonsTest,
+    );
+
+    boaCheckEqual(
+      checks,
+      "Dragonbane no-banes-and-boons mode suppresses the defense bane",
+      {
+        added: suppressed,
+        banes: noBanesBoonsTest.dialogData.banes,
+      },
+      {
+        added: false,
+        banes: [],
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Warlock demon defense-bane runtime checks complete",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+} else {
+  notes.push(
+    "Defense-bane runtime checks were skipped because one or more " +
+    "imported Warlock demon Actors were unavailable.",
+  );
+}
+
 const imp = actors.get("imp") ?? null;
 const impTable = tables.get("imp") ?? null;
 const firebolt = attacks.get("imp") ?? null;

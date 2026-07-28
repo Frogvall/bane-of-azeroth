@@ -75,4 +75,28 @@ describe("Warlock demon automation system-test coverage", () => {
       expect(macro).toContain(marker);
     }
   });
+
+
+  test("Foundry Macro verifies Imp and Sayaad defense banes", () => {
+    const barrel = read(BARREL);
+    const macro = read(MACRO);
+
+    for (const marker of [
+      "applyWarlockDemonDefenseBane",
+      "getWarlockDemonDefenseBane",
+    ]) {
+      expect(barrel).toContain(marker);
+    }
+
+    for (const marker of [
+      "Phase Shift defense bane is offered for melee and ranged attacks",
+      "Seductive defense bane is offered only for melee attacks",
+      "Other Warlock demons do not add advisory defense banes",
+      "Warlock demon defense bane is inserted exactly once",
+      "Dragonbane no-banes-and-boons mode suppresses the defense bane",
+    ]) {
+      expect(macro).toContain(marker);
+    }
+  });
+
 });
