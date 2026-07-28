@@ -6,6 +6,8 @@ import {
 } from "vitest";
 
 import {
+  createVoidwalkerSufferingMessage,
+  executeVoidwalkerSufferingTransfer,
   findEligibleVoidwalkerForSuffering,
   patchVoidwalkerSuffering,
   resolveVoidwalkerSuffering,
@@ -613,5 +615,177 @@ describe("Dragonbane applyDamage Suffering patch", () => {
       applyDamage:
         "already-patched",
     });
+  });
+});
+
+describe("Voidwalker Suffering chat presentation", () => {
+  test("passes the visible halving formula to localization and message flags", async () => {
+    const create = vi.fn(async data => data);
+    const format = vi.fn(() => "Formatted Suffering message");
+    const casterActor = {
+      name: "Warlock",
+      uuid: CASTER_UUID,
+    };
+    const voidwalkerToken = makeToken(
+      "message-voidwalker",
+    );
+
+    await createVoidwalkerSufferingMessage({
+      casterActor,
+      originalDamage: 5,
+      warlockDamage: 3,
+      voidwalkerDamage: 3,
+      voidwalkerToken,
+      chatMessageClass: {
+        create,
+        getSpeaker: vi.fn(
+          () => ({
+            alias: "Warlock",
+          }),
+        ),
+      },
+      i18n: {
+        format,
+      },
+      user: {
+        id: "player",
+      },
+    });
+
+    const expectedFormula =
+      "ceil(5 / 2) = 3";
+
+    expect(format)
+      .toHaveBeenCalledWith(
+        "BOA.chat.voidwalkerSuffering",
+        expect.objectContaining({
+          originalDamage: 5,
+          damage: 3,
+          formula: expectedFormula,
+        }),
+      );
+
+    expect(create)
+      .toHaveBeenCalledWith(
+        expect.objectContaining({
+          flags: {
+            [MODULE_ID]: {
+              voidwalkerSuffering:
+                expect.objectContaining({
+                  originalDamage: 5,
+                  warlockDamage: 3,
+                  voidwalkerDamage: 3,
+                  formula: expectedFormula,
+                }),
+            },
+          },
+        }),
+      );
+  });
+
+  test("uses Dragonbane's localized damage-applied path for the Voidwalker", async () => {
+    const player = {
+      id: "player",
+      isGM: false,
+    };
+    const casterActor = {
+      documentName: "Actor",
+      name: "Warlock",
+      uuid: CASTER_UUID,
+      testUserPermission: vi.fn(
+        user => user === player,
+      ),
+    };
+    const voidwalkerActor = {
+      name: "Voidwalker",
+      system: {
+        hitPoints: {
+          max: 20,
+          value: 20,
+        },
+      },
+      uuid: "Actor.voidwalker",
+    };
+    const scene = {
+      documentName: "Scene",
+      id: "suffering-scene",
+    };
+    const casterToken = {
+      actor: casterActor,
+      id: "caster-token",
+      parent: scene,
+      uuid:
+        "Scene.suffering-scene.Token.caster-token",
+    };
+    const voidwalkerToken = makeToken(
+      "native-card-voidwalker",
+      {
+        actor: voidwalkerActor,
+      },
+    );
+    voidwalkerToken.parent = scene;
+
+    const documents = new Map([
+      [casterActor.uuid, casterActor],
+      [casterToken.uuid, casterToken],
+      [voidwalkerToken.uuid, voidwalkerToken],
+    ]);
+    const originalApplyDamage = vi.fn(
+      async function (damage) {
+        this.system.hitPoints.value -= damage;
+        return this.system.hitPoints.value;
+      },
+    );
+    const applyDamageMessageFn = vi.fn(
+      async ({
+        actor,
+        damage,
+      }) => {
+        actor.system.hitPoints.value -= damage;
+      },
+    );
+
+    await executeVoidwalkerSufferingTransfer(
+      {
+        casterActorUuid:
+          casterActor.uuid,
+        casterTokenUuid:
+          casterToken.uuid,
+        voidwalkerTokenUuid:
+          voidwalkerToken.uuid,
+        originalDamage: 5,
+        damage: 3,
+        casterHpBefore: 10,
+        casterHpAfter: 7,
+      },
+      player.id,
+      {
+        applyDamageMessageFn,
+        calculateDistanceFn:
+          () => 6,
+        fromUuidFn:
+          async uuid => documents.get(uuid),
+        originalApplyDamage,
+        users: new Map([
+          [player.id, player],
+        ]),
+      },
+    );
+
+    expect(
+      applyDamageMessageFn,
+    ).toHaveBeenCalledOnce();
+    expect(
+      applyDamageMessageFn,
+    ).toHaveBeenCalledWith({
+      actor: voidwalkerActor,
+      damage: 3,
+      damageType: "none",
+      ignoreArmor: true,
+      multiplier: 1,
+    });
+    expect(
+      originalApplyDamage,
+    ).not.toHaveBeenCalled();
   });
 });
