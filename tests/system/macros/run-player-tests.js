@@ -132,10 +132,6 @@ const summonCasterToken =
   lifecycleScene?.tokens.get(
     session.summonCasterTokenId,
   ) ?? null;
-const summonSourceMessage =
-  game.messages.get(
-    session.summonSourceMessageId,
-  ) ?? null;
 const activeGMs = boaCollectionValues(game.users)
   .filter(user => user.active && user.isGM);
 
@@ -414,7 +410,6 @@ if (actor) {
 if (
   summonActor
   && summonCasterToken
-  && summonSourceMessage
 ) {
   try {
     const summonAbility =
@@ -431,6 +426,56 @@ if (
         + "Demonologist ability.",
       );
     }
+
+    const summonSourceMessage =
+      await ChatMessage.create({
+        speaker: {
+          actor: summonActor.id,
+          token: summonCasterToken.id,
+          scene: lifecycleScene.id,
+          alias: summonActor.name,
+        },
+        content:
+          "<p>BOA real-player Demonologist "
+          + "source-message fixture.</p>",
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            [fixtureFlag]: {
+              schemaVersion: 1,
+              sessionId: session.sessionId,
+              kind:
+                "demonologist-source-message",
+            },
+            [sessionIdFlag]:
+              session.sessionId,
+          },
+        },
+      });
+    if (!summonSourceMessage) {
+      throw new Error(
+        "The real Player could not create the "
+        + "Demonologist source message.",
+      );
+    }
+
+    const summonMessageAuthorId =
+      summonSourceMessage.author?.id
+      ?? summonSourceMessage.user?.id
+      ?? summonSourceMessage.user
+      ?? null;
+
+    boaCheckEqual(
+      checks,
+      "Real Player authored the Demonologist source message",
+      summonMessageAuthorId,
+      game.user.id,
+    );
+
+    await summonSourceMessage.update({
+      content:
+        `@UUID[${summonAbility.uuid}]`
+        + `{${summonAbility.name}}`,
+    });
 
     const {
       buildWarlockDemonPlan,
@@ -637,10 +682,7 @@ if (
       summonActor:
         summonActor?.id ?? null,
       summonCasterToken:
-        summonCasterToken?.id ?? null,
-      summonSourceMessage:
-        summonSourceMessage?.id ?? null,
-    },
+        summonCasterToken?.id ?? null,},
   );
 }
 

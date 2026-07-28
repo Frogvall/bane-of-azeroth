@@ -677,33 +677,6 @@ try {
       duration: "shift",
     },
   );
-
-
-  const summonSourceMessage =
-    await ChatMessage.create(
-      markFixture({
-        user: user.id,
-        speaker: {
-          actor: summonActor.id,
-          token: summonCasterToken.id,
-          scene: lifecycleScene.id,
-          alias: summonActor.name,
-        },
-        content:
-          `@UUID[${summonAbility.uuid}]`
-          + `{${summonAbility.name}}`,
-      }, sessionId, "demonologist-source-message"),
-    );
-  if (!summonSourceMessage) {
-    throw new Error(
-      "The Player-authored Demonologist source "
-      + "message could not be created.",
-    );
-  }
-  created.messages.push(
-    summonSourceMessage,
-  );
-
   const playerMacro = await Macro.create(
     markFixture({
       name: `[BOA TEST] Run Player Tests ${suffix}`,
@@ -745,7 +718,6 @@ try {
     summonActorId: summonActor.id,
     summonActorUuid: summonActor.uuid,
     summonCasterTokenId: summonCasterToken.id,
-    summonSourceMessageId: summonSourceMessage.id,
     sceneId: scene.id,
     lifecycleSceneId: lifecycleScene.id,
     tokenId: token.id,

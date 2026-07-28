@@ -428,18 +428,31 @@ describe("real-player test harness registration", () => {
     for (const marker of [
       '"demon-summoner"',
       '"demon-summoner-token"',
-      '"demonologist-source-message"',
       "summonActorId",
       "summonCasterTokenId",
-      "summonSourceMessageId",
-      "user: user.id",
     ]) {
       expect(prep).toContain(marker);
+    }
+
+    for (const removed of [
+      "const summonSourceMessage =",
+      "summonSourceMessageId:",
+      '"demonologist-source-message"',
+      "user: user.id",
+      '@UUID[${summonAbility.uuid}]',
+    ]) {
+      expect(prep).not.toContain(removed);
     }
 
     for (const marker of [
       "buildWarlockDemonPlan",
       "requestWarlockDemonCreation",
+      "ChatMessage.create({",
+      "summonSourceMessage.update({",
+      "source-message fixture",
+      '"demonologist-source-message"',
+      "Real Player authored the Demonologist source message",
+      "summonMessageAuthorId",
       "Primary GM rejects an out-of-range real Player demon placement",
       "Real Player creates an owned Imp through the primary GM socket",
       "A second real Player summon replaces the previous demon",
@@ -455,6 +468,25 @@ describe("real-player test harness registration", () => {
     );
     expect(player).toMatch(
       /DOCUMENT_OWNERSHIP_LEVELS\s*\.\s*OBSERVER/,
+    );
+
+    expect(
+      player.indexOf(
+        '"<p>BOA real-player Demonologist "',
+      ),
+    ).toBeLessThan(
+      player.indexOf(
+        "summonSourceMessage.update({",
+      ),
+    );
+    expect(
+      player.indexOf(
+        "summonSourceMessage.update({",
+      ),
+    ).toBeLessThan(
+      player.indexOf(
+        "buildWarlockDemonPlan(",
+      ),
     );
   });
 
