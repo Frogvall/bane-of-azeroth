@@ -132,7 +132,7 @@
       "tokenWidth": 1,
       "tokenHeight": 1,
       "tokenDisposition": 1,
-      "traitsHtml": "<p><strong>Magic Resistance</strong>: Felhunters are resistant to magic and are considered to be constantly under the effect of the MAGIC SHIELD spell at power level 1, without spending a reaction.</p>",
+      "traitsHtml": "<p><strong>Magic Resistance</strong>: The felhunter is resistant to magic and is considered to constantly be under the effect of the MAGIC SHIELD spell, power level 1, without spending a reaction.</p>",
       "attackTable": {
         "id": "Y6MEcCH35zRiBNUw",
         "name": "Monster Attacks – Felhunter",

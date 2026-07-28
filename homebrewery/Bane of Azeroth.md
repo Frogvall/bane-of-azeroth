@@ -1606,7 +1606,7 @@ Hunters on Azeroth tend to find companions in a multitude of places. The Compani
 Mana Bite. Automatically hits in melee combat (but can be dodged or parried) and inflicts D10 slashing damage. The next damage dealing spell cast at the target gets a boon. The effect lasts until the warlock's turn in the next round.
 
 #### Magic Resistance:
-Fulhunters are resistant to magic and is considered to constantly be under the effect of the MAGIC SHIELD spell, power level 1, without spending a reaction.
+The felhunter is resistant to magic and is considered to constantly be under the effect of the MAGIC SHIELD spell, power level 1, without spending a reaction.
 }}
 
 {{paperbox
