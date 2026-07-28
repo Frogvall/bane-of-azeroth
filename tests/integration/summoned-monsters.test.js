@@ -31,6 +31,10 @@ const WORKFLOW = resolve(
   "workflows",
   "build-foundry.yml",
 );
+const GENERATOR_CHECKER = resolve(
+  "tools",
+  "check-foundry-generators.py",
+);
 const ADVENTURE_SOURCE = resolve(
   "foundry",
   "pack-src",
@@ -176,12 +180,38 @@ describe("Summoned monster source contract", () => {
     expect(statSync(token).size).toBeGreaterThan(0);
   });
 
-  test("has a generator checked by GitHub Actions", () => {
+  test("is covered by the central GitHub Actions generator check", () => {
     expect(existsSync(GENERATOR)).toBe(true);
-    expect(statSync(GENERATOR).isFile()).toBe(true);
-    const workflow = readFileSync(WORKFLOW, "utf-8");
-    expect(workflow).toMatch(
-      /python3 tools\/generate-summoned-monsters\.py --check/,
+    expect(
+      statSync(GENERATOR).isFile()
+    ).toBe(true);
+    expect(
+      existsSync(GENERATOR_CHECKER)
+    ).toBe(true);
+    expect(
+      statSync(GENERATOR_CHECKER).isFile()
+    ).toBe(true);
+
+    const workflow = readFileSync(
+      WORKFLOW,
+      "utf-8",
+    );
+    const checker = readFileSync(
+      GENERATOR_CHECKER,
+      "utf-8",
+    );
+
+    expect(workflow).toContain(
+      "python3 tools/check-foundry-generators.py",
+    );
+    expect(checker).toContain(
+      'glob("generate-*.py")',
+    );
+    expect(checker).toContain(
+      '"--check"',
+    );
+    expect(GENERATOR_NAME).toMatch(
+      /^tools\/generate-.+\.py$/,
     );
   });
 });

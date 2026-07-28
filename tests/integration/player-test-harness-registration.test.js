@@ -445,12 +445,17 @@ describe("real-player test harness registration", () => {
       "A second real Player summon replaces the previous demon",
       "Real Player Shift rest removes the demon created through the GM socket",
       "actorIsSynthetic",
-      "DOCUMENT_OWNERSHIP_LEVELS.OBSERVER",
-      'summonType: "warlock-demon"',
       'duration: "shift"',
     ]) {
       expect(player).toContain(marker);
     }
+
+    expect(player).toMatch(
+      /summonType\s*:\s*"warlock-demon"/,
+    );
+    expect(player).toMatch(
+      /DOCUMENT_OWNERSHIP_LEVELS\s*\.\s*OBSERVER/,
+    );
   });
 
 });
