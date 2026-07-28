@@ -8,6 +8,9 @@ import DoD_Utility from
   "/systems/dragonbane/modules/utility.js";
 
 import { MODULE_ID } from "./core/constants.js";
+import {
+  applyWarlockDemonDefenseBane,
+} from "./warlock-demons/defenses.js";
 
 export function isArmorPiercingRangedWeapon(weapon) {
   return Boolean(
@@ -114,6 +117,8 @@ export function patchWeaponTests() {
 
   prototype.updateDialogData = function (...args) {
     const result = originalUpdateDialogData.apply(this, args);
+    applyWarlockDemonDefenseBane(this);
+
 
     /*
      * Armor Piercing:

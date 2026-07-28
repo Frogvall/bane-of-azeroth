@@ -68,7 +68,9 @@
         "manualDemon": "Demon: {demon}",
         "manualDuration": "Duration: {duration}",
         "manualAutomationDisabled": "Placement and lifecycle automation is disabled. Place and manage the selected demon manually. A previous demon is not removed automatically.",
-        "manualNotification": "Warlock demon automation is disabled. Manual instructions were posted to chat."
+        "manualNotification": "Warlock demon automation is disabled. Manual instructions were posted to chat.",
+        "phaseShiftBane": "Phase Shift",
+        "seductiveBane": "Seductive"
       }
     },
     "spellAutomation": {
