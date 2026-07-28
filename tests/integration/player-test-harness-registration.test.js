@@ -376,4 +376,30 @@ describe("real-player test harness registration", () => {
     }
   });
 
+
+  test("player Macro waits for the GM-authored native Suffering card to synchronize", () => {
+    const source = read(PLAYER);
+
+    for (const marker of [
+      "isNativeVoidwalkerDamageMessage",
+      "native Voidwalker damage card synchronization",
+      "messagesSince(",
+      "sufferingMessagesBefore",
+      "sufferingMessages = messagesSince(",
+      ".some(",
+    ]) {
+      expect(source).toContain(marker);
+    }
+
+    expect(
+      source.indexOf(
+        "native Voidwalker damage card synchronization",
+      ),
+    ).toBeLessThan(
+      source.indexOf(
+        "nativeVoidwalkerDamageMessages",
+      ),
+    );
+  });
+
 });

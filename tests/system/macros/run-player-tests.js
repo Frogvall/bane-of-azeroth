@@ -631,13 +631,6 @@ if (
         voidwalkerArmor: 6,
       },
     );
-    const sufferingFeatureMessages =
-      sufferingMessages.filter(message =>
-        boaGetFlag(
-          message,
-          "voidwalkerSuffering",
-        )
-      );
     const voidwalkerActor =
       sufferingVoidwalkerToken.actor;
     const voidwalkerActorName =
@@ -655,14 +648,44 @@ if (
           actor: voidwalkerActorName,
         },
       );
-    const nativeVoidwalkerDamageMessages =
-      sufferingMessages.filter(message =>
+    const isNativeVoidwalkerDamageMessage =
+      message => (
         String(message.content ?? "")
           .includes(localizedDamageApplied)
         && String(message.content ?? "")
           .includes(
             `data-actor-id="${voidwalkerActor.uuid}"`,
           )
+      );
+
+    await boaWaitFor(
+      () => messagesSince(
+        sufferingMessagesBefore,
+      ).some(
+        isNativeVoidwalkerDamageMessage,
+      ),
+      {
+        timeout: 5000,
+        interval: 100,
+        description:
+          "native Voidwalker damage card synchronization",
+      },
+    );
+
+    sufferingMessages = messagesSince(
+      sufferingMessagesBefore,
+    );
+
+    const sufferingFeatureMessages =
+      sufferingMessages.filter(message =>
+        boaGetFlag(
+          message,
+          "voidwalkerSuffering",
+        )
+      );
+    const nativeVoidwalkerDamageMessages =
+      sufferingMessages.filter(
+        isNativeVoidwalkerDamageMessage,
       );
     const expectedFormula =
       `ceil(${finalDamage} / 2) = `
