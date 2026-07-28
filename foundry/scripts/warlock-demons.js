@@ -64,4 +64,6 @@ export {
   resolveVoidwalkerSuffering,
   splitVoidwalkerSufferingDamage,
   SUFFERING_MAX_DISTANCE,
+  registerVoidwalkerSufferingDamageCardHook,
+  rewriteVoidwalkerSufferingCasterDamageCard,
 } from "./warlock-demons/suffering.js";

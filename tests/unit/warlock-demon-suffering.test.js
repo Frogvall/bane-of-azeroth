@@ -12,6 +12,7 @@ import {
   patchVoidwalkerSuffering,
   resolveVoidwalkerSuffering,
   splitVoidwalkerSufferingDamage,
+  rewriteVoidwalkerSufferingCasterDamageCard,
 } from "../../foundry/scripts/warlock-demons/suffering.js";
 
 const MODULE_ID = "bane-of-azeroth";
@@ -787,5 +788,160 @@ describe("Voidwalker Suffering chat presentation", () => {
     expect(
       originalApplyDamage,
     ).not.toHaveBeenCalled();
+  });
+});
+
+describe("Voidwalker Suffering native caster-card correction", () => {
+  test("shows a rounded half multiplier and the actual shared total", () => {
+    const actorUuid =
+      "Actor.suffering-caster";
+    const source = `
+      <div
+        class="damage-message permission-owner"
+        data-damage="3"
+        data-actor-id="${actorUuid}"
+      >
+        <div class="damage-details">
+          <div class="expandable">
+            <b>Damage:</b> 7 Damage<br>
+            <b>Armor:</b> 2<br>
+            <b>Multiplier:</b> x1<br>
+            <b>Total damage:</b> 5<br>
+            <b>HP:</b> 7 → 4<br>
+          </div>
+        </div>
+      </div>
+    `;
+    const i18n = {
+      localize: vi.fn(key => ({
+        "DoD.ui.chat.damageDetailMultiplier":
+          "Multiplier",
+        "DoD.ui.chat.damageDetailTotal":
+          "Total damage",
+        "BOA.chat.sufferingRoundedUp":
+          "rounded up",
+      })[key]),
+    };
+
+    const rewritten =
+      rewriteVoidwalkerSufferingCasterDamageCard(
+        source,
+        {
+          actorUuid,
+          sharedDamage: 3,
+          i18n,
+        },
+      );
+
+    expect(rewritten)
+      .toContain(
+        "<b>Multiplier:</b> x0.5 (rounded up)<br>",
+      );
+    expect(rewritten)
+      .toContain(
+        "<b>Total damage:</b> 3<br>",
+      );
+    expect(rewritten)
+      .toContain(
+        "<b>Damage:</b> 7 Damage<br>",
+      );
+    expect(rewritten)
+      .toContain(
+        "<b>Armor:</b> 2<br>",
+      );
+    expect(rewritten)
+      .toContain(
+        'data-damage="3"',
+      );
+  });
+
+  test("does not rewrite another Actor's damage card", () => {
+    const source =
+      '<div class="damage-message" '
+      + 'data-damage="3" '
+      + 'data-actor-id="Actor.other">'
+      + "<b>Multiplier:</b> x1<br>"
+      + "<b>Total damage:</b> 5<br>"
+      + "</div>";
+
+    expect(
+      rewriteVoidwalkerSufferingCasterDamageCard(
+        source,
+        {
+          actorUuid:
+            "Actor.suffering-caster",
+          sharedDamage: 3,
+          i18n: {
+            localize: key => ({
+              "DoD.ui.chat.damageDetailMultiplier":
+                "Multiplier",
+              "DoD.ui.chat.damageDetailTotal":
+                "Total damage",
+              "BOA.chat.sufferingRoundedUp":
+                "rounded up",
+            })[key],
+          },
+        },
+      ),
+    ).toBe(source);
+  });
+
+  test("damages the caster, explains Suffering, then damages the Voidwalker", async () => {
+    const events = [];
+
+    class OrderedActor {
+      constructor() {
+        this.uuid =
+          "Actor.ordered-caster";
+        this.system = {
+          hitPoints: {
+            value: 10,
+            max: 10,
+          },
+        };
+      }
+
+      async applyDamage(damage) {
+        events.push("caster");
+        this.system.hitPoints.value -= damage;
+        return this.system.hitPoints.value;
+      }
+    }
+
+    const voidwalkerToken = {
+      actor: {
+        uuid:
+          "Actor.ordered-voidwalker",
+      },
+      uuid:
+        "Scene.ordered.Token.voidwalker",
+    };
+
+    patchVoidwalkerSuffering({
+      actorClass: OrderedActor,
+      resolveSufferingFn:
+        async () => ({
+          warlockDamage: 3,
+          voidwalkerDamage: 3,
+          voidwalkerToken,
+        }),
+      createMessageFn:
+        async () => {
+          events.push("suffering");
+        },
+      transferDamageFn:
+        async () => {
+          events.push("voidwalker");
+        },
+    });
+
+    const actor = new OrderedActor();
+    await actor.applyDamage(5);
+
+    expect(events).toEqual([
+      "caster",
+      "suffering",
+      "voidwalker",
+    ]);
   });
 });

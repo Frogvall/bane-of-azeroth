@@ -1167,6 +1167,7 @@ try {
 try {
   const {
     createVoidwalkerSufferingMessage,
+    rewriteVoidwalkerSufferingCasterDamageCard,
   } = await import(
     "/modules/bane-of-azeroth/scripts/"
     + "warlock-demons/suffering.js"
@@ -1243,6 +1244,66 @@ try {
         expectedFormula,
     },
   );
+
+  const multiplierLabel =
+    game.i18n.localize(
+      "DoD.ui.chat.damageDetailMultiplier",
+    );
+  const totalLabel =
+    game.i18n.localize(
+      "DoD.ui.chat.damageDetailTotal",
+    );
+  const roundedUp =
+    game.i18n.localize(
+      "BOA.chat.sufferingRoundedUp",
+    );
+  const casterActorUuid =
+    "Actor.BoaFormulaWarlock";
+  const nativeCasterCard = `
+    <div
+      class="damage-message permission-owner"
+      data-damage="3"
+      data-actor-id="${casterActorUuid}"
+    >
+      <div class="damage-details">
+        <div class="expandable">
+          <b>${multiplierLabel}:</b> x1<br>
+          <b>${totalLabel}:</b> 5<br>
+        </div>
+      </div>
+    </div>
+  `;
+  const correctedCasterCard =
+    rewriteVoidwalkerSufferingCasterDamageCard(
+      nativeCasterCard,
+      {
+        actorUuid:
+          casterActorUuid,
+        sharedDamage: 3,
+        i18n: game.i18n,
+      },
+    );
+
+  boaCheckEqual(
+    checks,
+    "Suffering corrects the native caster card to rounded half damage",
+    {
+      multiplier:
+        correctedCasterCard.includes(
+          `<b>${multiplierLabel}:</b> `
+          + `x0.5 (${roundedUp})<br>`,
+        ),
+      total:
+        correctedCasterCard.includes(
+          `<b>${totalLabel}:</b> 3<br>`,
+        ),
+    },
+    {
+      multiplier: true,
+      total: true,
+    },
+  );
+
 } catch (error) {
   boaCheck(
     checks,

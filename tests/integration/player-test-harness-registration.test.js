@@ -340,7 +340,7 @@ describe("real-player test harness registration", () => {
 
     for (const marker of [
       "sufferingMessages",
-      "DoD.ui.chat.damageApplied",
+      'data-actor-id="${voidwalkerActor.uuid}"',
       "nativeVoidwalkerDamageMessages",
       "voidwalkerSuffering",
       "Real Player Suffering shows its halving formula and one native Voidwalker damage card",
@@ -399,6 +399,24 @@ describe("real-player test harness registration", () => {
       source.indexOf(
         "nativeVoidwalkerDamageMessages",
       ),
+    );
+  });
+
+
+  test("player Macro identifies the GM-authored native card by Actor UUID", () => {
+    const source = read(PLAYER);
+
+    for (const marker of [
+      "isNativeVoidwalkerDamageMessage",
+      'class="damage-message',
+      'data-actor-id="${voidwalkerActor.uuid}"',
+      "native Voidwalker damage card synchronization",
+    ]) {
+      expect(source).toContain(marker);
+    }
+
+    expect(source).not.toContain(
+      "const localizedDamageApplied =",
     );
   });
 

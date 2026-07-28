@@ -640,23 +640,25 @@ if (
             ?? voidwalkerActor.name
           )
         : voidwalkerActor.name;
-    const localizedDamageApplied =
-      game.i18n.format(
-        "DoD.ui.chat.damageApplied",
-        {
-          damage: expectedSharedDamage,
-          actor: voidwalkerActorName,
-        },
-      );
     const isNativeVoidwalkerDamageMessage =
-      message => (
-        String(message.content ?? "")
-          .includes(localizedDamageApplied)
-        && String(message.content ?? "")
-          .includes(
+      message => {
+        const content = String(
+          message.content ?? "",
+        );
+
+        return (
+          content.includes(
+            'class="damage-message',
+          )
+          && content.includes(
             `data-actor-id="${voidwalkerActor.uuid}"`,
           )
-      );
+          && !boaGetFlag(
+            message,
+            "voidwalkerSuffering",
+          )
+        );
+      };
 
     await boaWaitFor(
       () => messagesSince(

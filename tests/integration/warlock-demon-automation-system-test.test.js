@@ -153,4 +153,33 @@ describe("Warlock demon automation system-test coverage", () => {
     }
   });
 
+
+  test("registers and verifies the Suffering caster-card correction", () => {
+    const main = read(MAIN);
+    const barrel = read(BARREL);
+    const macro = read(MACRO);
+
+    for (const marker of [
+      "registerVoidwalkerSufferingDamageCardHook",
+      "patchVoidwalkerSuffering",
+    ]) {
+      expect(main).toContain(marker);
+    }
+
+    for (const marker of [
+      "rewriteVoidwalkerSufferingCasterDamageCard",
+      "registerVoidwalkerSufferingDamageCardHook",
+    ]) {
+      expect(barrel).toContain(marker);
+    }
+
+    for (const marker of [
+      "Suffering corrects the native caster card to rounded half damage",
+      "x0.5",
+      "sufferingRoundedUp",
+    ]) {
+      expect(macro).toContain(marker);
+    }
+  });
+
 });

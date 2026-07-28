@@ -20,6 +20,11 @@ const PATCH_MARKER = Symbol.for(
 const pendingRequests = new Map();
 let socketRegistered = false;
 
+const pendingSufferingDamageCardCorrections =
+  new Map();
+let nextSufferingDamageCardCorrectionId = 0;
+let sufferingDamageCardHookRegistered = false;
+
 const DRAGONBANE_CHAT_MODULE =
   "/systems/dragonbane/modules/chat.js";
 
@@ -45,6 +50,80 @@ async function getDragonbaneApplyDamageMessage() {
   return dragonbaneApplyDamageMessagePromise;
 }
 
+function messageIds(
+  messages = globalThis.game?.messages,
+) {
+  return new Set(
+    collectionValues(messages)
+      .map(message => message?.id)
+      .filter(Boolean),
+  );
+}
+
+function isNativeDamageMessageForActor(
+  message,
+  {
+    actorUuid,
+    damage,
+  },
+) {
+  const content = String(
+    message?.content ?? "",
+  );
+
+  return (
+    content.includes(
+      'class="damage-message',
+    )
+    && content.includes(
+      `data-actor-id="${actorUuid}"`,
+    )
+    && content.includes(
+      `data-damage="${damage}"`,
+    )
+  );
+}
+
+async function waitForNativeDamageMessage({
+  actorUuid,
+  damage,
+  beforeIds,
+  messages = globalThis.game?.messages,
+  timeoutMs = 3000,
+  intervalMs = 25,
+}) {
+  if (!messages) return null;
+
+  const deadline =
+    Date.now() + timeoutMs;
+
+  while (Date.now() <= deadline) {
+    const found =
+      collectionValues(messages)
+        .find(message => (
+          !beforeIds.has(message?.id)
+          && isNativeDamageMessageForActor(
+            message,
+            {
+              actorUuid,
+              damage,
+            },
+          )
+        ));
+
+    if (found) return found;
+
+    await new Promise(resolve => {
+      setTimeout(resolve, intervalMs);
+    });
+  }
+
+  throw new Error(
+    "Timed out waiting for Dragonbane's "
+    + "native Voidwalker damage card.",
+  );
+}
+
 async function applyTransferredDamageWithSystemMessage({
   voidwalkerToken,
   damage,
@@ -60,6 +139,13 @@ async function applyTransferredDamageWithSystemMessage({
     );
   }
 
+  const useRealSystemMessage =
+    applyDamageMessageFn === null;
+  const beforeIds =
+    useRealSystemMessage
+      ? messageIds()
+      : new Set();
+
   const applyDamageMessage =
     applyDamageMessageFn
     ?? await getDragonbaneApplyDamageMessage();
@@ -72,11 +158,259 @@ async function applyTransferredDamageWithSystemMessage({
     multiplier: 1,
   });
 
+  if (useRealSystemMessage) {
+    await waitForNativeDamageMessage({
+      actorUuid:
+        voidwalkerActor.uuid,
+      damage,
+      beforeIds,
+    });
+  }
+
   return Number(
     voidwalkerActor.system
       ?.hitPoints
       ?.value,
   );
+}
+
+function escapeRegularExpression(value) {
+  return String(value)
+    .replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&",
+    );
+}
+
+function replaceDamageDetailValue(
+  content,
+  label,
+  value,
+) {
+  const escapedLabel =
+    escapeRegularExpression(label);
+  const pattern = new RegExp(
+    `(<b>\\s*${escapedLabel}\\s*:\\s*</b>`
+    + `\\s*)[^<]*(<br\\s*\\/?>)`,
+    "g",
+  );
+
+  return content.replace(
+    pattern,
+    `$1${value}$2`,
+  );
+}
+
+export function rewriteVoidwalkerSufferingCasterDamageCard(
+  content,
+  {
+    actorUuid,
+    sharedDamage,
+    i18n = globalThis.game?.i18n,
+  } = {},
+) {
+  const numericDamage =
+    Number(sharedDamage);
+
+  if (
+    typeof content !== "string"
+    || !actorUuid
+    || !Number.isFinite(numericDamage)
+    || numericDamage <= 0
+  ) {
+    return content;
+  }
+
+  if (
+    !content.includes(
+      `data-actor-id="${actorUuid}"`,
+    )
+    || !content.includes(
+      `data-damage="${numericDamage}"`,
+    )
+    || !content.includes(
+      'class="damage-message',
+    )
+  ) {
+    return content;
+  }
+
+  const multiplierLabel =
+    i18n?.localize?.(
+      "DoD.ui.chat.damageDetailMultiplier",
+    )
+    ?? "Multiplier";
+  const totalLabel =
+    i18n?.localize?.(
+      "DoD.ui.chat.damageDetailTotal",
+    )
+    ?? "Total damage";
+  const roundedUp =
+    i18n?.localize?.(
+      "BOA.chat.sufferingRoundedUp",
+    )
+    ?? "rounded up";
+
+  let rewritten =
+    replaceDamageDetailValue(
+      content,
+      multiplierLabel,
+      `x0.5 (${roundedUp})`,
+    );
+  rewritten =
+    replaceDamageDetailValue(
+      rewritten,
+      totalLabel,
+      String(numericDamage),
+    );
+
+  return rewritten;
+}
+
+function removePendingDamageCardCorrection(
+  actorUuid,
+  correctionId,
+) {
+  const queue =
+    pendingSufferingDamageCardCorrections
+      .get(actorUuid)
+    ?? [];
+  const remaining =
+    queue.filter(
+      correction =>
+        correction.id !== correctionId,
+    );
+
+  if (remaining.length > 0) {
+    pendingSufferingDamageCardCorrections
+      .set(actorUuid, remaining);
+  } else {
+    pendingSufferingDamageCardCorrections
+      .delete(actorUuid);
+  }
+}
+
+function queueSufferingDamageCardCorrection({
+  actorUuid,
+  sharedDamage,
+}) {
+  if (!actorUuid) return;
+
+  const correction = {
+    id:
+      ++nextSufferingDamageCardCorrectionId,
+    actorUuid,
+    sharedDamage,
+  };
+  const queue =
+    pendingSufferingDamageCardCorrections
+      .get(actorUuid)
+    ?? [];
+
+  queue.push(correction);
+  pendingSufferingDamageCardCorrections
+    .set(actorUuid, queue);
+
+  setTimeout(() => {
+    removePendingDamageCardCorrection(
+      actorUuid,
+      correction.id,
+    );
+  }, 2000);
+}
+
+function findPendingDamageCardCorrection(
+  content,
+) {
+  for (
+    const [
+      actorUuid,
+      queue,
+    ]
+    of pendingSufferingDamageCardCorrections
+  ) {
+    for (const correction of queue) {
+      if (
+        content.includes(
+          `data-actor-id="${actorUuid}"`,
+        )
+        && content.includes(
+          `data-damage="${correction.sharedDamage}"`,
+        )
+        && content.includes(
+          'class="damage-message',
+        )
+      ) {
+        return correction;
+      }
+    }
+  }
+
+  return null;
+}
+
+function onPreCreateSufferingDamageCard(
+  document,
+  data,
+) {
+  const content = String(
+    data?.content
+    ?? document?.content
+    ?? "",
+  );
+  const correction =
+    findPendingDamageCardCorrection(
+      content,
+    );
+
+  if (!correction) return;
+
+  const rewritten =
+    rewriteVoidwalkerSufferingCasterDamageCard(
+      content,
+      {
+        actorUuid:
+          correction.actorUuid,
+        sharedDamage:
+          correction.sharedDamage,
+      },
+    );
+
+  if (rewritten === content) return;
+
+  if (
+    typeof document?.updateSource
+    === "function"
+  ) {
+    document.updateSource({
+      content: rewritten,
+    });
+  } else if (data) {
+    data.content = rewritten;
+  }
+
+  removePendingDamageCardCorrection(
+    correction.actorUuid,
+    correction.id,
+  );
+}
+
+export function registerVoidwalkerSufferingDamageCardHook({
+  hooks = globalThis.Hooks,
+} = {}) {
+  if (sufferingDamageCardHookRegistered) {
+    return false;
+  }
+  if (typeof hooks?.on !== "function") {
+    return false;
+  }
+
+  hooks.on(
+    "preCreateChatMessage",
+    onPreCreateSufferingDamageCard,
+  );
+  sufferingDamageCardHookRegistered = true;
+  return true;
 }
 
 function collectionValues(collection) {
@@ -995,18 +1329,6 @@ export function patchVoidwalkerSuffering({
       );
     }
 
-    await applyTransfer({
-      casterActor: this,
-      casterToken,
-      voidwalkerToken:
-        plan.voidwalkerToken,
-      damage: actualHpLoss,
-      originalDamage: Number(damage),
-      casterHpBefore,
-      casterHpAfter,
-      originalApplyDamage: original,
-    });
-
     try {
       await createMessageFn({
         casterActor: this,
@@ -1023,6 +1345,25 @@ export function patchVoidwalkerSuffering({
         + "message could not be created.",
         error,
       );
+    }
+
+    await applyTransfer({
+      casterActor: this,
+      casterToken,
+      voidwalkerToken:
+        plan.voidwalkerToken,
+      damage: actualHpLoss,
+      originalDamage: Number(damage),
+      casterHpBefore,
+      casterHpAfter,
+      originalApplyDamage: original,
+    });
+
+    if (useAuthority) {
+      queueSufferingDamageCardCorrection({
+        actorUuid: this.uuid,
+        sharedDamage: actualHpLoss,
+      });
     }
 
     return result;

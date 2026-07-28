@@ -53,6 +53,7 @@ registerWarlockDemonSocket,
 import {
   patchVoidwalkerSuffering,
   registerVoidwalkerSufferingSocket,
+  registerVoidwalkerSufferingDamageCardHook,
 } from "./warlock-demons/suffering.js";
 import {
   isPrimaryActiveGM,
@@ -175,6 +176,7 @@ Hooks.once("ready", async () => {
   registerElementalTotemSocket();
   registerWarlockDemonSocket();
   registerVoidwalkerSufferingSocket();
+  registerVoidwalkerSufferingDamageCardHook();
   registerCommonAnimalStatusSocket();
 
   try {
