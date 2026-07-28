@@ -136,6 +136,29 @@ describe("real-player test harness registration", () => {
     );
   });
 
+  test("prep creates rest lifecycle and demon defense fixtures", () => {
+    const source = read(PREP);
+
+    for (const marker of [
+      "actors.summoned-monsters.sayaad",
+      "actors.elemental-totems.cleansing",
+      "createFixtureToken",
+      '"phase-shift-target"',
+      '"seductive-target"',
+      '"stretch-totem"',
+      '"stretch-demon"',
+      '"shift-totem"',
+      '"shift-demon"',
+      '"other-caster-control"',
+      "shiftActorId",
+      "lifecycleSceneId",
+      "originalDemonAutomationSetting",
+      '"demonAutomation"',
+    ]) {
+      expect(source).toContain(marker);
+    }
+  });
+
   test("player Macro stores its complete structured stage result", () => {
     const source = read(PLAYER);
 
@@ -158,6 +181,25 @@ describe("real-player test harness registration", () => {
       "BOA DEV – Cleanup Player Tests",
       'kind: "player-summary"',
       "whisper: gmIds",
+    ]) {
+      expect(source).toContain(marker);
+    }
+  });
+
+  test("player Macro verifies defense banes and real Player rest cleanup", () => {
+    const source = read(PLAYER);
+
+    for (const marker of [
+      "applyWarlockDemonDefenseBane",
+      "Real Player receives Phase Shift as a preselected bane against an Imp",
+      "Real Player receives Seductive only for a melee attack against a Sayaad",
+      "restStretch",
+      "restShift",
+      "runRestMethod",
+      "Real Player Stretch rest removes Totems but keeps Shift-duration demons",
+      "Real Player Shift rest removes Totems and Warlock demons across Scenes",
+      "otherCasterTotemTokenId",
+      "boaWaitFor",
     ]) {
       expect(source).toContain(marker);
     }
@@ -212,6 +254,9 @@ describe("real-player test harness registration", () => {
       "Actor.deleteDocuments",
       "User.deleteDocuments",
       "originalAutomationSetting",
+      "originalDemonAutomationSetting",
+      '"demonAutomation"',
+      "Restored Warlock demon automation",
       "previousActiveSceneId",
       "All player-test fixtures were removed",
     ]) {

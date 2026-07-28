@@ -147,6 +147,37 @@ for (const preparedSession of sessions) {
     );
   }
 
+  if (
+    Object.prototype.hasOwnProperty.call(
+      preparedSession,
+      "originalDemonAutomationSetting",
+    )
+  ) {
+    try {
+      await game.settings.set(
+        BOA_TEST_MODULE_ID,
+        "demonAutomation",
+        preparedSession.originalDemonAutomationSetting,
+      );
+      boaCheckEqual(
+        checks,
+        `Restored Warlock demon automation for ${preparedSession.sessionId}`,
+        game.settings.get(
+          BOA_TEST_MODULE_ID,
+          "demonAutomation",
+        ),
+        preparedSession.originalDemonAutomationSetting,
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        `Restored Warlock demon automation for ${preparedSession.sessionId}`,
+        false,
+        error.stack ?? error.message,
+      );
+    }
+  }
+
   try {
     const previousScene = preparedSession.previousActiveSceneId
       ? game.scenes.get(preparedSession.previousActiveSceneId)

@@ -80,6 +80,43 @@ function ownedActorClone(source, userId, sessionId, kind) {
   return data;
 }
 
+async function createFixtureToken(
+  sourceActor,
+  scene,
+  tokenOverrides,
+  sessionId,
+  kind,
+  moduleFlags = {},
+) {
+  const tokenDocument = await sourceActor.getTokenDocument(
+    tokenOverrides,
+    { parent: scene },
+  );
+  const tokenData = tokenDocument.toObject();
+  delete tokenData._id;
+  markFixture(tokenData, sessionId, kind);
+
+  for (const [key, value] of Object.entries(moduleFlags)) {
+    foundry.utils.setProperty(
+      tokenData,
+      `flags.${BOA_TEST_MODULE_ID}.${key}`,
+      value,
+    );
+  }
+
+  const [token] = await scene.createEmbeddedDocuments(
+    "Token",
+    [tokenData],
+  );
+  if (!token) {
+    throw new Error(
+      `The ${kind} Token fixture could not be created.`,
+    );
+  }
+
+  return token;
+}
+
 async function rollback() {
   for (const message of [...created.messages].reverse()) {
     if (game.messages.get(message.id)) await message.delete();
@@ -159,11 +196,40 @@ if (missingAbilities.length > 0) {
 const impTemplate = boaFindWorldActor(
   "actors.summoned-monsters.imp",
 );
+const sayaadTemplate = boaFindWorldActor(
+  "actors.summoned-monsters.sayaad",
+);
+const cleansingTotemTemplate =
+  boaFindWorldActor(
+    "actors.elemental-totems.cleansing",
+  )
+  ?? boaCollectionValues(game.actors).find(actor => (
+    actor.name === "Cleansing Totem"
+  ))
+  ?? null;
+
+const requiredActorTemplates = [
+  {
+    key: "actors.summoned-monsters.imp",
+    actor: impTemplate,
+  },
+  {
+    key: "actors.summoned-monsters.sayaad",
+    actor: sayaadTemplate,
+  },
+  {
+    key: "actors.elemental-totems.cleansing",
+    actor: cleansingTotemTemplate,
+  },
+];
+const missingActorTemplates =
+  requiredActorTemplates.filter(entry => !entry.actor);
+
 if (!boaCheck(
   checks,
-  "Imported Imp Actor is available",
-  Boolean(impTemplate),
-  "actors.summoned-monsters.imp",
+  "Imported Player-test Actor templates are available",
+  missingActorTemplates.length === 0,
+  missingActorTemplates.map(entry => entry.key).join(", "),
 )) {
   return boaFinish(testKey, testName, checks, notes);
 }
@@ -171,6 +237,10 @@ if (!boaCheck(
 const originalAutomationSetting = game.settings.get(
   BOA_TEST_MODULE_ID,
   "elementalTotemAutomation",
+);
+const originalDemonAutomationSetting = game.settings.get(
+  BOA_TEST_MODULE_ID,
+  "demonAutomation",
 );
 const previousActiveSceneId = game.scenes.active?.id ?? null;
 const sessionId =
@@ -232,6 +302,24 @@ try {
     "system.willPoints.value": 10,
   });
 
+  const shiftActor = await Actor.create(
+    markFixture({
+      name: `[BOA TEST] Shift Rest Character ${suffix}`,
+      type: "character",
+      ownership: {
+        default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE,
+        [user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+      },
+    }, sessionId, "shift-rest-character"),
+    { renderSheet: false },
+  );
+  if (!shiftActor) {
+    throw new Error(
+      "The temporary Shift-rest Actor could not be created.",
+    );
+  }
+  created.actors.push(shiftActor);
+
   await actor.createEmbeddedDocuments(
     "Item",
     requiredAbilities.map(entry =>
@@ -267,6 +355,22 @@ try {
   }
   created.actors.push(imp);
 
+  const sayaad = await Actor.create(
+    ownedActorClone(
+      sayaadTemplate,
+      user.id,
+      sessionId,
+      "defense-target-sayaad",
+    ),
+    { renderSheet: false },
+  );
+  if (!sayaad) {
+    throw new Error(
+      "The player-owned Sayaad fixture could not be created.",
+    );
+  }
+  created.actors.push(sayaad);
+
   const scene = await Scene.create(
     markFixture({
       name: `[BOA TEST] Player Tests ${suffix}`,
@@ -289,25 +393,155 @@ try {
   }
   created.scenes.push(scene);
 
-  const tokenDocument = await actor.getTokenDocument(
+  const lifecycleScene = await Scene.create(
+    markFixture({
+      name: `[BOA TEST] Player Lifecycle ${suffix}`,
+      active: false,
+      navigation: true,
+      width: 2000,
+      height: 1200,
+      padding: 0,
+      grid: {
+        type: CONST.GRID_TYPES?.SQUARE ?? 1,
+        size: 100,
+        distance: 2,
+        units: "m",
+      },
+    }, sessionId, "lifecycle-scene"),
+    { renderSheet: false },
+  );
+  if (!lifecycleScene) {
+    throw new Error(
+      "The temporary lifecycle Scene could not be created.",
+    );
+  }
+  created.scenes.push(lifecycleScene);
+
+  const token = await createFixtureToken(
+    actor,
+    scene,
     {
       x: 400,
       y: 400,
       actorLink: true,
       disposition: CONST.TOKEN_DISPOSITIONS?.FRIENDLY ?? 1,
     },
-    { parent: scene },
+    sessionId,
+    "character-token",
   );
-  const tokenData = tokenDocument.toObject();
-  delete tokenData._id;
-  markFixture(tokenData, sessionId, "character-token");
-  const [token] = await scene.createEmbeddedDocuments(
-    "Token",
-    [tokenData],
+
+  const impTargetToken = await createFixtureToken(
+    imp,
+    scene,
+    {
+      x: 700,
+      y: 200,
+      actorLink: true,
+      disposition: CONST.TOKEN_DISPOSITIONS?.HOSTILE ?? -1,
+    },
+    sessionId,
+    "phase-shift-target",
   );
-  if (!token) {
-    throw new Error("The player-test character Token could not be created.");
-  }
+  const sayaadTargetToken = await createFixtureToken(
+    sayaad,
+    scene,
+    {
+      x: 1000,
+      y: 200,
+      actorLink: true,
+      disposition: CONST.TOKEN_DISPOSITIONS?.HOSTILE ?? -1,
+    },
+    sessionId,
+    "seductive-target",
+  );
+
+  const stretchTotemToken = await createFixtureToken(
+    cleansingTotemTemplate,
+    lifecycleScene,
+    {
+      x: 400,
+      y: 400,
+      actorLink: false,
+      disposition: CONST.TOKEN_DISPOSITIONS?.FRIENDLY ?? 1,
+    },
+    sessionId,
+    "stretch-totem",
+    {
+      summonType: "elementalTotem",
+      casterActorUuid: actor.uuid,
+      duration: "stretch",
+    },
+  );
+  const stretchDemonToken = await createFixtureToken(
+    impTemplate,
+    scene,
+    {
+      x: 1300,
+      y: 500,
+      actorLink: false,
+      disposition: CONST.TOKEN_DISPOSITIONS?.FRIENDLY ?? 1,
+    },
+    sessionId,
+    "stretch-demon",
+    {
+      summonType: "warlock-demon",
+      casterActorUuid: actor.uuid,
+      demonKey: "imp",
+      duration: "shift",
+    },
+  );
+  const shiftTotemToken = await createFixtureToken(
+    cleansingTotemTemplate,
+    scene,
+    {
+      x: 1500,
+      y: 500,
+      actorLink: false,
+      disposition: CONST.TOKEN_DISPOSITIONS?.FRIENDLY ?? 1,
+    },
+    sessionId,
+    "shift-totem",
+    {
+      summonType: "elementalTotem",
+      casterActorUuid: shiftActor.uuid,
+      duration: "stretch",
+    },
+  );
+  const shiftDemonToken = await createFixtureToken(
+    sayaadTemplate,
+    lifecycleScene,
+    {
+      x: 700,
+      y: 400,
+      actorLink: false,
+      disposition: CONST.TOKEN_DISPOSITIONS?.FRIENDLY ?? 1,
+    },
+    sessionId,
+    "shift-demon",
+    {
+      summonType: "warlock-demon",
+      casterActorUuid: shiftActor.uuid,
+      demonKey: "sayaad",
+      duration: "shift",
+    },
+  );
+  const otherCasterTotemToken = await createFixtureToken(
+    cleansingTotemTemplate,
+    lifecycleScene,
+    {
+      x: 1000,
+      y: 400,
+      actorLink: false,
+      disposition: CONST.TOKEN_DISPOSITIONS?.FRIENDLY ?? 1,
+    },
+    sessionId,
+    "other-caster-control",
+    {
+      summonType: "elementalTotem",
+      casterActorUuid: "Actor.BoaOtherPlayerTestCaster",
+      duration: "stretch",
+    },
+  );
 
   const playerMacro = await Macro.create(
     markFixture({
@@ -332,18 +566,35 @@ try {
     "elementalTotemAutomation",
     true,
   );
+  await game.settings.set(
+    BOA_TEST_MODULE_ID,
+    "demonAutomation",
+    true,
+  );
 
   const session = {
     schemaVersion: sessionSchemaVersion,
     sessionId,
     actorId: actor.id,
     actorUuid: actor.uuid,
+    shiftActorId: shiftActor.id,
+    shiftActorUuid: shiftActor.uuid,
     sceneId: scene.id,
+    lifecycleSceneId: lifecycleScene.id,
     tokenId: token.id,
     impActorId: imp.id,
+    sayaadActorId: sayaad.id,
+    impTargetTokenId: impTargetToken.id,
+    sayaadTargetTokenId: sayaadTargetToken.id,
+    stretchTotemTokenId: stretchTotemToken.id,
+    stretchDemonTokenId: stretchDemonToken.id,
+    shiftTotemTokenId: shiftTotemToken.id,
+    shiftDemonTokenId: shiftDemonToken.id,
+    otherCasterTotemTokenId: otherCasterTotemToken.id,
     playerMacroId: playerMacro.id,
     previousActiveSceneId,
     originalAutomationSetting,
+    originalDemonAutomationSetting,
     requiredAbilityKeys: requiredAbilities.map(entry => entry.key),
     createdAt: new Date().toISOString(),
   };
@@ -356,7 +607,13 @@ try {
   await scene.update({
     [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
   });
+  await lifecycleScene.update({
+    [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
+  });
   await actor.update({
+    [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
+  });
+  await shiftActor.update({
     [`flags.${BOA_TEST_MODULE_ID}.${sessionFlag}`]: session,
   });
 
@@ -433,6 +690,56 @@ try {
   );
   boaCheck(
     checks,
+    "Player owns the Shift-rest and demon defense Actors",
+    Boolean(
+      shiftActor.testUserPermission(
+        user,
+        CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+      )
+      && imp.testUserPermission(
+        user,
+        CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+      )
+      && sayaad.testUserPermission(
+        user,
+        CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+      )
+    ),
+    {
+      shiftActor: shiftActor.ownership,
+      imp: imp.ownership,
+      sayaad: sayaad.ownership,
+    },
+  );
+  boaCheckEqual(
+    checks,
+    "Rest and demon defense Token fixtures were created",
+    {
+      defenseTargets: [
+        impTargetToken.id,
+        sayaadTargetToken.id,
+      ].filter(Boolean).length,
+      stretchFixtures: [
+        stretchTotemToken.id,
+        stretchDemonToken.id,
+      ].filter(Boolean).length,
+      shiftFixtures: [
+        shiftTotemToken.id,
+        shiftDemonToken.id,
+      ].filter(Boolean).length,
+      controls: [
+        otherCasterTotemToken.id,
+      ].filter(Boolean).length,
+    },
+    {
+      defenseTargets: 2,
+      stretchFixtures: 2,
+      shiftFixtures: 2,
+      controls: 1,
+    },
+  );
+  boaCheck(
+    checks,
     "Player-test Macro is assigned to hotbar slot 1",
     game.users.get(user.id)?.hotbar?.["1"] === playerMacro.id,
     playerMacro.id,
@@ -443,6 +750,15 @@ try {
     game.settings.get(
       BOA_TEST_MODULE_ID,
       "elementalTotemAutomation",
+    ),
+    true,
+  );
+  boaCheckEqual(
+    checks,
+    "Warlock demon automation is enabled for player tests",
+    game.settings.get(
+      BOA_TEST_MODULE_ID,
+      "demonAutomation",
     ),
     true,
   );
@@ -471,6 +787,18 @@ try {
   } catch (settingError) {
     notes.push(
       `Could not restore Elemental Totem automation: ${settingError.message}`,
+    );
+  }
+
+  try {
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      "demonAutomation",
+      originalDemonAutomationSetting,
+    );
+  } catch (settingError) {
+    notes.push(
+      `Could not restore Warlock demon automation: ${settingError.message}`,
     );
   }
 

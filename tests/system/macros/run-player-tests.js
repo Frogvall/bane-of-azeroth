@@ -47,10 +47,61 @@ function messagesSince(before) {
     .filter(message => !before.has(message.id));
 }
 
+async function markMessagesSince(before, kind) {
+  const messages = messagesSince(before);
+
+  for (const message of messages) {
+    await message.update({
+      [`flags.${BOA_TEST_MODULE_ID}.${fixtureFlag}`]: {
+        schemaVersion: 1,
+        sessionId: session.sessionId,
+        kind,
+      },
+      [`flags.${BOA_TEST_MODULE_ID}.${sessionIdFlag}`]:
+        session.sessionId,
+    });
+  }
+
+  return messages;
+}
+
+function tokenIdExists(targetScene, tokenId) {
+  return Boolean(
+    targetScene?.tokens?.get(tokenId),
+  );
+}
+
+async function runRestMethod(
+  restingActor,
+  methodName,
+  messageKind,
+) {
+  const beforeMessages = currentMessageIds();
+
+  try {
+    return await restingActor[methodName]();
+  } finally {
+    await markMessagesSince(
+      beforeMessages,
+      messageKind,
+    );
+  }
+}
+
 const actor = game.user.character;
+const shiftActor =
+  game.actors.get(session.shiftActorId) ?? null;
 const scene = game.scenes.get(session.sceneId);
+const lifecycleScene =
+  game.scenes.get(session.lifecycleSceneId);
 const token = scene?.tokens.get(session.tokenId) ?? null;
 const imp = game.actors.get(session.impActorId) ?? null;
+const sayaad =
+  game.actors.get(session.sayaadActorId) ?? null;
+const impTargetToken =
+  scene?.tokens.get(session.impTargetTokenId) ?? null;
+const sayaadTargetToken =
+  scene?.tokens.get(session.sayaadTargetTokenId) ?? null;
 const activeGMs = boaCollectionValues(game.users)
   .filter(user => user.active && user.isGM);
 
@@ -104,7 +155,12 @@ boaCheck(
     sessionIdOf(actor) === session.sessionId
     && sessionIdOf(scene) === session.sessionId
     && sessionIdOf(token) === session.sessionId
+    && sessionIdOf(shiftActor) === session.sessionId
+    && sessionIdOf(lifecycleScene) === session.sessionId
     && sessionIdOf(imp) === session.sessionId
+    && sessionIdOf(sayaad) === session.sessionId
+    && sessionIdOf(impTargetToken) === session.sessionId
+    && sessionIdOf(sayaadTargetToken) === session.sessionId
   ),
   session.sessionId,
 );
@@ -148,6 +204,132 @@ boaCheck(
   ),
   elementalTotemSpell?.system ?? {},
 );
+
+if (
+  impTargetToken
+  && sayaadTargetToken
+) {
+  try {
+    const {
+      applyWarlockDemonDefenseBane,
+    } = await import(
+      `/modules/${BOA_TEST_MODULE_ID}/scripts/warlock-demons/defenses.js`
+    );
+
+    function defenseOutcome(
+      targetToken,
+      isRangedWeapon,
+    ) {
+      const test = {
+        dialogData: {
+          banes: [],
+        },
+        noBanesBoons: false,
+        options: {
+          targets: [{
+            document: targetToken,
+          }],
+        },
+        weapon: {
+          isRangedWeapon,
+        },
+      };
+      const applied =
+        applyWarlockDemonDefenseBane(test);
+
+      return {
+        applied,
+        banes: test.dialogData.banes.map(bane => ({
+          source: bane.source,
+          value: bane.value,
+        })),
+      };
+    }
+
+    const phaseShiftLabel = game.i18n.localize(
+      "BOA.dialog.warlockDemon.phaseShiftBane",
+    );
+    const seductiveLabel = game.i18n.localize(
+      "BOA.dialog.warlockDemon.seductiveBane",
+    );
+
+    boaCheckEqual(
+      checks,
+      "Real Player receives Phase Shift as a preselected bane against an Imp",
+      {
+        melee: defenseOutcome(
+          impTargetToken,
+          false,
+        ),
+        ranged: defenseOutcome(
+          impTargetToken,
+          true,
+        ),
+      },
+      {
+        melee: {
+          applied: true,
+          banes: [{
+            source: phaseShiftLabel,
+            value: true,
+          }],
+        },
+        ranged: {
+          applied: true,
+          banes: [{
+            source: phaseShiftLabel,
+            value: true,
+          }],
+        },
+      },
+    );
+    boaCheckEqual(
+      checks,
+      "Real Player receives Seductive only for a melee attack against a Sayaad",
+      {
+        melee: defenseOutcome(
+          sayaadTargetToken,
+          false,
+        ),
+        ranged: defenseOutcome(
+          sayaadTargetToken,
+          true,
+        ),
+      },
+      {
+        melee: {
+          applied: true,
+          banes: [{
+            source: seductiveLabel,
+            value: true,
+          }],
+        },
+        ranged: {
+          applied: false,
+          banes: [],
+        },
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player demon defense bane checks completed",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+} else {
+  boaCheck(
+    checks,
+    "Prepared Imp and Sayaad target Tokens are available",
+    false,
+    `${
+      impTargetToken?.id ?? "no Imp target"
+    } / ${
+      sayaadTargetToken?.id ?? "no Sayaad target"
+    }`,
+  );
+}
 
 if (actor) {
   const originalWillPoints =
@@ -330,6 +512,150 @@ if (actor && imp) {
     "Prepared player and Imp fixtures are available",
     false,
     `${actor?.id ?? "no actor"} / ${imp?.id ?? "no imp"}`,
+  );
+}
+
+if (
+  actor
+  && shiftActor
+  && scene
+  && lifecycleScene
+) {
+  try {
+    if (typeof actor.restStretch !== "function") {
+      throw new Error(
+        "The assigned Actor has no restStretch() method.",
+      );
+    }
+
+    await runRestMethod(
+      actor,
+      "restStretch",
+      "player-stretch-rest",
+    );
+    await boaWaitFor(
+      () => !tokenIdExists(
+        lifecycleScene,
+        session.stretchTotemTokenId,
+      ),
+      {
+        timeout: 10000,
+        interval: 100,
+        description:
+          "Stretch rest Totem cleanup through the active GM",
+      },
+    );
+
+    boaCheckEqual(
+      checks,
+      "Real Player Stretch rest removes Totems but keeps Shift-duration demons",
+      {
+        totemExists: tokenIdExists(
+          lifecycleScene,
+          session.stretchTotemTokenId,
+        ),
+        demonExists: tokenIdExists(
+          scene,
+          session.stretchDemonTokenId,
+        ),
+        shiftTotemExists: tokenIdExists(
+          scene,
+          session.shiftTotemTokenId,
+        ),
+        shiftDemonExists: tokenIdExists(
+          lifecycleScene,
+          session.shiftDemonTokenId,
+        ),
+      },
+      {
+        totemExists: false,
+        demonExists: true,
+        shiftTotemExists: true,
+        shiftDemonExists: true,
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player Stretch rest lifecycle completed",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+
+  try {
+    if (typeof shiftActor.restShift !== "function") {
+      throw new Error(
+        "The Shift-rest Actor has no restShift() method.",
+      );
+    }
+
+    await runRestMethod(
+      shiftActor,
+      "restShift",
+      "player-shift-rest",
+    );
+    await boaWaitFor(
+      () => (
+        !tokenIdExists(
+          scene,
+          session.shiftTotemTokenId,
+        )
+        && !tokenIdExists(
+          lifecycleScene,
+          session.shiftDemonTokenId,
+        )
+      ),
+      {
+        timeout: 10000,
+        interval: 100,
+        description:
+          "Shift rest summon cleanup through the active GM",
+      },
+    );
+
+    boaCheckEqual(
+      checks,
+      "Real Player Shift rest removes Totems and Warlock demons across Scenes",
+      {
+        totemExists: tokenIdExists(
+          scene,
+          session.shiftTotemTokenId,
+        ),
+        demonExists: tokenIdExists(
+          lifecycleScene,
+          session.shiftDemonTokenId,
+        ),
+        otherCasterTotemExists: tokenIdExists(
+          lifecycleScene,
+          session.otherCasterTotemTokenId,
+        ),
+      },
+      {
+        totemExists: false,
+        demonExists: false,
+        otherCasterTotemExists: true,
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player Shift rest lifecycle completed",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+} else {
+  boaCheck(
+    checks,
+    "Prepared Player rest lifecycle fixtures are available",
+    false,
+    {
+      actor: actor?.id ?? null,
+      shiftActor: shiftActor?.id ?? null,
+      scene: scene?.id ?? null,
+      lifecycleScene: lifecycleScene?.id ?? null,
+    },
   );
 }
 
