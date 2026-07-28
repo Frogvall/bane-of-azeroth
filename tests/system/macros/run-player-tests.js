@@ -558,13 +558,15 @@ if (
 
     const sufferingMessagesBefore =
       currentMessageIds();
+    let sufferingMessages = [];
     try {
       await sufferingActor.applyDamage(finalDamage);
     } finally {
-      await markMessagesSince(
-        sufferingMessagesBefore,
-        "player-suffering-message",
-      );
+      sufferingMessages =
+        await markMessagesSince(
+          sufferingMessagesBefore,
+          "player-suffering-message",
+        );
     }
     await boaWaitFor(
       () => (
@@ -611,6 +613,80 @@ if (
         voidwalkerArmor: 6,
       },
     );
+    const sufferingFeatureMessages =
+      sufferingMessages.filter(message =>
+        boaGetFlag(
+          message,
+          "voidwalkerSuffering",
+        )
+      );
+    const voidwalkerActor =
+      sufferingVoidwalkerToken.actor;
+    const voidwalkerActorName =
+      voidwalkerActor.isToken
+        ? (
+            voidwalkerActor.token?.name
+            ?? voidwalkerActor.name
+          )
+        : voidwalkerActor.name;
+    const localizedDamageApplied =
+      game.i18n.format(
+        "DoD.ui.chat.damageApplied",
+        {
+          damage: expectedSharedDamage,
+          actor: voidwalkerActorName,
+        },
+      );
+    const nativeVoidwalkerDamageMessages =
+      sufferingMessages.filter(message =>
+        String(message.content ?? "")
+          .includes(localizedDamageApplied)
+        && String(message.content ?? "")
+          .includes(
+            `data-actor-id="${voidwalkerActor.uuid}"`,
+          )
+      );
+    const expectedFormula =
+      `ceil(${finalDamage} / 2) = `
+      + `${expectedSharedDamage}`;
+    const featureMessage =
+      sufferingFeatureMessages[0] ?? null;
+    const featureData =
+      boaGetFlag(
+        featureMessage,
+        "voidwalkerSuffering",
+      );
+
+    boaCheckEqual(
+      checks,
+      "Real Player Suffering shows its halving formula and one native Voidwalker damage card",
+      {
+        sufferingCards:
+          sufferingFeatureMessages.length,
+        nativeVoidwalkerDamageCards:
+          nativeVoidwalkerDamageMessages.length,
+        formula:
+          featureData?.formula ?? null,
+        visibleFormula:
+          String(
+            featureMessage?.content ?? "",
+          ).includes(
+            `⌈${finalDamage} ÷ 2⌉`,
+          )
+          && String(
+            featureMessage?.content ?? "",
+          ).includes(
+            `<strong>${expectedSharedDamage}</strong>`,
+          ),
+      },
+      {
+        sufferingCards: 1,
+        nativeVoidwalkerDamageCards: 1,
+        formula: expectedFormula,
+        visibleFormula: true,
+      },
+    );
+
   } catch (error) {
     boaCheck(
       checks,

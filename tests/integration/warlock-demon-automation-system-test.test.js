@@ -138,4 +138,19 @@ describe("Warlock demon automation system-test coverage", () => {
     }
   });
 
+
+  test("Foundry Macro defines the red Suffering chat presentation contract", () => {
+    const macro = read(MACRO);
+
+    for (const marker of [
+      "createVoidwalkerSufferingMessage",
+      "Suffering chat exposes the halving formula to localization and metadata",
+      "ceil(4 / 2) = 2",
+      "localizationFormula",
+      "flagFormula",
+    ]) {
+      expect(macro).toContain(marker);
+    }
+  });
+
 });

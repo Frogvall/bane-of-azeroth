@@ -334,4 +334,20 @@ describe("real-player test harness registration", () => {
     }
   });
 
+
+  test("player Macro expects the formula and Dragonbane-native Voidwalker damage card", () => {
+    const source = read(PLAYER);
+
+    for (const marker of [
+      "sufferingMessages",
+      "DoD.ui.chat.damageApplied",
+      "nativeVoidwalkerDamageMessages",
+      "voidwalkerSuffering",
+      "Real Player Suffering shows its halving formula and one native Voidwalker damage card",
+      "visibleFormula",
+    ]) {
+      expect(source).toContain(marker);
+    }
+  });
+
 });

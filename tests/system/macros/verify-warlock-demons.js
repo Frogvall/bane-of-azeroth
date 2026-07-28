@@ -1164,6 +1164,94 @@ try {
   }
 }
 
+try {
+  const {
+    createVoidwalkerSufferingMessage,
+  } = await import(
+    "/modules/bane-of-azeroth/scripts/"
+    + "warlock-demons/suffering.js"
+  );
+
+  let createdMessageData = null;
+  let localizationData = null;
+
+  await createVoidwalkerSufferingMessage({
+    casterActor: {
+      name: "BOA Formula Warlock",
+      uuid: "Actor.BoaFormulaWarlock",
+    },
+    originalDamage: 4,
+    warlockDamage: 2,
+    voidwalkerDamage: 2,
+    voidwalkerToken: {
+      actor: {
+        name: "Voidwalker",
+        uuid: "Actor.BoaFormulaVoidwalker",
+      },
+      uuid:
+        "Scene.BoaFormula.Token.Voidwalker",
+    },
+    chatMessageClass: {
+      create: async data => {
+        createdMessageData = data;
+        return data;
+      },
+      getSpeaker: () => ({
+        alias: "BOA Formula Warlock",
+      }),
+    },
+    i18n: {
+      format: (key, data) => {
+        localizationData = {
+          key,
+          data,
+        };
+        return "BOA Suffering formula fixture";
+      },
+    },
+    user: {
+      id: game.user.id,
+    },
+  });
+
+  const expectedFormula =
+    "ceil(4 / 2) = 2";
+
+  boaCheckEqual(
+    checks,
+    "Suffering chat exposes the halving formula to localization and metadata",
+    {
+      localizationKey:
+        localizationData?.key ?? null,
+      localizationFormula:
+        localizationData?.data?.formula
+        ?? null,
+      flagFormula:
+        createdMessageData
+          ?.flags
+          ?.[BOA_TEST_MODULE_ID]
+          ?.voidwalkerSuffering
+          ?.formula
+        ?? null,
+    },
+    {
+      localizationKey:
+        "BOA.chat.voidwalkerSuffering",
+      localizationFormula:
+        expectedFormula,
+      flagFormula:
+        expectedFormula,
+    },
+  );
+} catch (error) {
+  boaCheck(
+    checks,
+    "Suffering chat presentation contract completed",
+    false,
+    error.stack ?? error.message,
+  );
+}
+
 notes.push(
   "The runtime checks inject a harmless attack executor. They verify " +
   "shortcut behavior, real WP payment, ChatMessage metadata, and cleanup " +
