@@ -20,6 +20,65 @@ const PATCH_MARKER = Symbol.for(
 const pendingRequests = new Map();
 let socketRegistered = false;
 
+const DRAGONBANE_CHAT_MODULE =
+  "/systems/dragonbane/modules/chat.js";
+
+let dragonbaneApplyDamageMessagePromise = null;
+
+async function getDragonbaneApplyDamageMessage() {
+  dragonbaneApplyDamageMessagePromise ??= import(
+    DRAGONBANE_CHAT_MODULE
+  ).then(module => {
+    if (
+      typeof module.applyDamageMessage
+      !== "function"
+    ) {
+      throw new Error(
+        "Dragonbane does not export "
+        + "applyDamageMessage().",
+      );
+    }
+
+    return module.applyDamageMessage;
+  });
+
+  return dragonbaneApplyDamageMessagePromise;
+}
+
+async function applyTransferredDamageWithSystemMessage({
+  voidwalkerToken,
+  damage,
+  applyDamageMessageFn = null,
+}) {
+  const voidwalkerActor =
+    voidwalkerToken?.actor;
+
+  if (!voidwalkerActor) {
+    throw new Error(
+      "The linked Voidwalker Actor "
+      + "could not receive Suffering damage.",
+    );
+  }
+
+  const applyDamageMessage =
+    applyDamageMessageFn
+    ?? await getDragonbaneApplyDamageMessage();
+
+  await applyDamageMessage({
+    actor: voidwalkerActor,
+    damage,
+    damageType: "none",
+    ignoreArmor: true,
+    multiplier: 1,
+  });
+
+  return Number(
+    voidwalkerActor.system
+      ?.hitPoints
+      ?.value,
+  );
+}
+
 function collectionValues(collection) {
   if (!collection) return [];
   if (Array.isArray(collection)) return collection;
@@ -405,6 +464,7 @@ export async function executeVoidwalkerSufferingTransfer(
     calculateDistanceFn = defaultDistance,
     originalApplyDamage =
       getOriginalApplyDamage(),
+    applyDamageMessageFn = null,
   } = {},
 ) {
   if (
@@ -527,16 +587,17 @@ export async function executeVoidwalkerSufferingTransfer(
     );
   }
 
-  const result =
-    await originalApplyDamage.apply(
-      voidwalkerToken.actor,
-      [transferredDamage],
-    );
+  const voidwalkerHp =
+    await applyTransferredDamageWithSystemMessage({
+      voidwalkerToken,
+      damage: transferredDamage,
+      applyDamageMessageFn,
+    });
 
   return {
     voidwalkerActorUuid:
       voidwalkerToken.actor.uuid,
-    voidwalkerHp: result,
+    voidwalkerHp,
   };
 }
 
@@ -731,12 +792,18 @@ async function transferDamageThroughAuthority({
   if (
     !game?.user
     || typeof game?.socket?.emit !== "function"
-    || game.user.isGM
   ) {
     return applyTransferredDamageDirectly({
       voidwalkerToken,
       damage,
       originalApplyDamage,
+    });
+  }
+
+  if (game.user.isGM) {
+    return applyTransferredDamageWithSystemMessage({
+      voidwalkerToken,
+      damage,
     });
   }
 
@@ -770,6 +837,13 @@ export async function createVoidwalkerSufferingMessage({
     return null;
   }
 
+  const formula =
+    `ceil(${originalDamage} / 2) = `
+    + `${warlockDamage}`;
+  const displayFormula =
+    `⌈${originalDamage} ÷ 2⌉ = `
+    + `<strong>${warlockDamage}</strong>`;
+
   const content = i18n?.format?.(
     "BOA.chat.voidwalkerSuffering",
     {
@@ -780,12 +854,17 @@ export async function createVoidwalkerSufferingMessage({
         ?? voidwalkerToken.actor.uuid,
       originalDamage,
       damage: warlockDamage,
+      formula,
+      displayFormula,
     },
   ) ?? (
     `${casterActor.name ?? "The caster"} `
-    + `shares ${originalDamage} damage through `
-    + `Suffering: both creatures lose `
-    + `${warlockDamage} HP.`
+    + `would take ${originalDamage} damage. `
+    + `<strong>Suffering</strong> halves it: `
+    + `${displayFormula}. `
+    + `${casterActor.name ?? "The caster"} and `
+    + `${voidwalkerToken.actor.name ?? "Voidwalker"} `
+    + `lose ${warlockDamage} HP each.`
   );
 
   return chatMessageClass.create({
@@ -805,6 +884,7 @@ export async function createVoidwalkerSufferingMessage({
           originalDamage,
           warlockDamage,
           voidwalkerDamage,
+          formula,
         },
       },
     },
