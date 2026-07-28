@@ -206,47 +206,68 @@ describe("shared summon duration rules", () => {
   });
 
   test("continues after a Scene cleanup failure", async () => {
-    const failed = makeScene(
-      "Failed",
-      [
-        summonToken({
-          id: "failed-totem",
-          summonType: "elementalTotem",
-          duration: "stretch",
-        }),
-      ],
-      { fail: true },
-    );
-    const healthy = makeScene(
-      "Healthy",
-      [
-        summonToken({
-          id: "healthy-totem",
-          summonType: "elementalTotem",
-          duration: "stretch",
-        }),
-      ],
-    );
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
-    await expect(
-      deleteSummonsExpiredByRest(
-        "Actor.caster",
-        "stretch",
-        {
-          scenes: [
-            failed,
-            healthy,
-          ],
-        },
-      ),
-    ).resolves.toEqual({
-      deletedCount: 1,
-      failedScenes: ["Failed"],
-    });
-    expect(
-      healthy.deleteEmbeddedDocuments,
-    ).toHaveBeenCalledOnce();
-  });
+    try {
+      const failed = makeScene(
+        "Failed",
+        [
+          summonToken({
+            id: "failed-totem",
+            summonType: "elementalTotem",
+            duration: "stretch",
+          }),
+        ],
+        { fail: true },
+      );
+      const healthy = makeScene(
+        "Healthy",
+        [
+          summonToken({
+            id: "healthy-totem",
+            summonType: "elementalTotem",
+            duration: "stretch",
+          }),
+        ],
+      );
+
+      await expect(
+        deleteSummonsExpiredByRest(
+          "Actor.caster",
+          "stretch",
+          {
+            scenes: [
+              failed,
+              healthy,
+            ],
+          },
+        ),
+      ).resolves.toEqual({
+        deletedCount: 1,
+        failedScenes: ["Failed"],
+      });
+
+      expect(
+        healthy.deleteEmbeddedDocuments,
+      ).toHaveBeenCalledOnce();
+      expect(
+        consoleError,
+      ).toHaveBeenCalledOnce();
+      expect(
+        consoleError,
+      ).toHaveBeenCalledWith(
+        "bane-of-azeroth | Could not remove "
+          + "expired summons from Failed.",
+        expect.objectContaining({
+          message: "Failed deletion failed",
+        }),
+      );
+    } finally {
+      consoleError.mockRestore();
+    }
+});
 });
 
 describe("Dragonbane rest integration", () => {
