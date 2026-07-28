@@ -230,7 +230,7 @@ jobs:
       - name: Build Foundry package
         run: |
           set -euo pipefail
-          tools/package-foundry.sh
+          bash tools/package-foundry.sh
 
       - name: Export and validate generated manifest
         run: |
