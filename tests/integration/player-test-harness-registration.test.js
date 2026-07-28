@@ -350,4 +350,30 @@ describe("real-player test harness registration", () => {
     }
   });
 
+
+  test("Player message collection respects GM-authored Suffering cards and cleanup removes them", () => {
+    const player = read(PLAYER);
+    const cleanup = read(CLEANUP);
+
+    for (const marker of [
+      'message.canUserModify(',
+      'game.user,',
+      '"update"',
+      "if (!canUpdate) continue;",
+      "return messages;",
+    ]) {
+      expect(player).toContain(marker);
+    }
+
+    for (const marker of [
+      "nativeSufferingActorUuids",
+      "sufferingVoidwalkerTokenId",
+      "isNativeSufferingFixtureMessage",
+      'data-actor-id="${actorUuid}"',
+      "ChatMessage.deleteDocuments",
+    ]) {
+      expect(cleanup).toContain(marker);
+    }
+  });
+
 });

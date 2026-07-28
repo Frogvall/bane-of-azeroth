@@ -89,6 +89,40 @@ const sessionIds = new Set(
     .map(document => sessionIdOf(document))
     .filter(Boolean),
 );
+const nativeSufferingActorUuids = new Set(
+  sessions
+    .map(preparedSession => {
+      const targetScene = game.scenes.get(
+        preparedSession.sceneId,
+      );
+      const voidwalkerToken =
+        targetScene?.tokens?.get(
+          preparedSession
+            .sufferingVoidwalkerTokenId,
+        )
+        ?? null;
+
+      return voidwalkerToken?.actor?.uuid
+        ?? null;
+    })
+    .filter(Boolean),
+);
+
+function isNativeSufferingFixtureMessage(
+  message,
+) {
+  const content = String(
+    message?.content ?? "",
+  );
+
+  return Array.from(
+    nativeSufferingActorUuids,
+  ).some(actorUuid =>
+    content.includes(
+      `data-actor-id="${actorUuid}"`,
+    )
+  );
+}
 
 const stageResultsBySession = new Map();
 for (const message of boaCollectionValues(game.messages)) {
@@ -199,9 +233,20 @@ for (const preparedSession of sessions) {
   }
 }
 
-const messageIds = boaCollectionValues(game.messages)
-  .filter(message => sessionIds.has(sessionIdOf(message)))
-  .map(message => message.id);
+const messageIds = [
+  ...new Set(
+    boaCollectionValues(game.messages)
+      .filter(message => (
+        sessionIds.has(
+          sessionIdOf(message),
+        )
+        || isNativeSufferingFixtureMessage(
+          message,
+        )
+      ))
+      .map(message => message.id),
+  ),
+];
 if (messageIds.length > 0) {
   await ChatMessage.deleteDocuments(messageIds);
 }

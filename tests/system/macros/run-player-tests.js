@@ -51,6 +51,24 @@ async function markMessagesSince(before, kind) {
   const messages = messagesSince(before);
 
   for (const message of messages) {
+    const authorId =
+      message.author?.id
+      ?? message.user?.id
+      ?? message.user
+      ?? null;
+    const canUpdate =
+      typeof message.canUserModify === "function"
+        ? message.canUserModify(
+            game.user,
+            "update",
+          )
+        : (
+            message.isOwner === true
+            || authorId === game.user.id
+          );
+
+    if (!canUpdate) continue;
+
     await message.update({
       [`flags.${BOA_TEST_MODULE_ID}.${fixtureFlag}`]: {
         schemaVersion: 1,
