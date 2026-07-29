@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 from difflib import unified_diff
-import html
 import json
 from pathlib import Path
 import re
@@ -141,17 +140,30 @@ def source_documents(
 ) -> list[dict[str, object]]:
     if not source_directory.is_dir():
         raise GenerationError(
-            f"Missing journal source directory: "
+            "Missing journal source directory: "
             f"{source_directory}"
         )
 
-    paths = sorted(
+    legacy_paths = sorted(
         source_directory.glob("*.json")
     )
-    if not paths:
+    if legacy_paths:
         raise GenerationError(
-            "Journal source directory contains "
-            "no JSON documents."
+            "Legacy top-level journal JSON files "
+            "are not allowed:\n  "
+            + "\n  ".join(
+                str(path)
+                for path in legacy_paths
+            )
+        )
+
+    journal_paths = sorted(
+        source_directory.glob("*/journal.json")
+    )
+    if not journal_paths:
+        raise GenerationError(
+            "Journal source directory contains no "
+            "*/journal.json documents."
         )
 
     documents: list[dict[str, object]] = []
@@ -160,42 +172,58 @@ def source_documents(
     seen_page_keys: set[str] = set()
     seen_page_ids: set[str] = set()
 
-    for path in paths:
-        source = read_json(path)
+    for journal_path in journal_paths:
+        directory = journal_path.parent
+        source = read_json(journal_path)
         if not isinstance(source, dict):
             raise GenerationError(
-                f"Journal source must be an object: "
-                f"{path}"
+                "Journal source must be an object: "
+                f"{journal_path}"
             )
         if source.get("schemaVersion") != 1:
             raise GenerationError(
-                f"Unsupported journal schema in {path}."
+                "Unsupported journal schema in "
+                f"{journal_path}."
+            )
+        if "pages" in source:
+            raise GenerationError(
+                f"{journal_path}: pages must be "
+                "stored as separate JSON files."
             )
 
         key = source.get("key")
         name = source.get("name")
         document_id = validate_id(
             source.get("id"),
-            f"{path}: id",
+            f"{journal_path}: id",
         )
         enabled = source.get("enabled")
-        pages = source.get("pages")
+        sort = source.get("sort")
 
         if not isinstance(key, str) or not key:
             raise GenerationError(
-                f"{path}: key must be a non-empty string."
+                f"{journal_path}: key must be a "
+                "non-empty string."
+            )
+        if directory.name != key:
+            raise GenerationError(
+                f"{journal_path}: directory name "
+                f"must match journal key {key!r}."
             )
         if not isinstance(name, str) or not name:
             raise GenerationError(
-                f"{path}: name must be a non-empty string."
+                f"{journal_path}: name must be a "
+                "non-empty string."
             )
         if not isinstance(enabled, bool):
             raise GenerationError(
-                f"{path}: enabled must be boolean."
+                f"{journal_path}: enabled must be "
+                "boolean."
             )
-        if not isinstance(pages, list):
+        if not isinstance(sort, int):
             raise GenerationError(
-                f"{path}: pages must be an array."
+                f"{journal_path}: sort must be an "
+                "integer."
             )
         if key in seen_keys:
             raise GenerationError(
@@ -203,34 +231,96 @@ def source_documents(
             )
         if document_id in seen_ids:
             raise GenerationError(
-                f"Duplicate JournalEntry ID: {document_id}"
+                "Duplicate JournalEntry ID: "
+                f"{document_id}"
             )
-
         seen_keys.add(key)
         seen_ids.add(document_id)
 
-        for page in pages:
+        page_paths = sorted(
+            path
+            for path in directory.glob("*.json")
+            if path.name != "journal.json"
+        )
+        pages: list[dict[str, object]] = []
+
+        for page_path in page_paths:
+            page = read_json(page_path)
             if not isinstance(page, dict):
                 raise GenerationError(
-                    f"{path}: each page must be an object."
+                    "Journal page source must be an "
+                    f"object: {page_path}"
                 )
-            page_key = page.get("key")
-            page_id = validate_id(
-                page.get("id"),
-                f"{path}: page id",
-            )
-            qualified_page_key = (
-                f"{key}.{page_key}"
-            )
+            if page.get("schemaVersion") != 1:
+                raise GenerationError(
+                    "Unsupported journal page schema "
+                    f"in {page_path}."
+                )
 
+            page_key = page.get("key")
             if (
                 not isinstance(page_key, str)
                 or not page_key
             ):
                 raise GenerationError(
-                    f"{path}: page key must be "
-                    "a non-empty string."
+                    f"{page_path}: key must be a "
+                    "non-empty string."
                 )
+            if page_path.stem != page_key:
+                raise GenerationError(
+                    f"{page_path}: filename must "
+                    f"match page key {page_key!r}."
+                )
+
+            page_id = validate_id(
+                page.get("id"),
+                f"{page_path}: id",
+            )
+            page_name = page.get("name")
+            page_sort = page.get("sort")
+            page_title = page.get("title")
+            page_source = page.get("source")
+
+            if (
+                not isinstance(page_name, str)
+                or not page_name
+            ):
+                raise GenerationError(
+                    f"{page_path}: name must be a "
+                    "non-empty string."
+                )
+            if not isinstance(page_sort, int):
+                raise GenerationError(
+                    f"{page_path}: sort must be an "
+                    "integer."
+                )
+            if not isinstance(page_title, dict):
+                raise GenerationError(
+                    f"{page_path}: title must be an "
+                    "object."
+                )
+            if not isinstance(page_source, dict):
+                raise GenerationError(
+                    f"{page_path}: source must be an "
+                    "object."
+                )
+            if page_source.get("type") != "html":
+                raise GenerationError(
+                    f"{page_path}: curated pages "
+                    "must use source.type \"html\"."
+                )
+            if not isinstance(
+                page_source.get("content"),
+                str,
+            ):
+                raise GenerationError(
+                    f"{page_path}: source.content "
+                    "must be a string."
+                )
+
+            qualified_page_key = (
+                f"{key}.{page_key}"
+            )
             if qualified_page_key in seen_page_keys:
                 raise GenerationError(
                     "Duplicate JournalEntryPage key: "
@@ -241,13 +331,15 @@ def source_documents(
                     "Duplicate JournalEntryPage ID: "
                     f"{page_id}"
                 )
-
             seen_page_keys.add(
                 qualified_page_key
             )
             seen_page_ids.add(page_id)
+            pages.append(page)
 
-        documents.append(source)
+        document = dict(source)
+        document["pages"] = pages
+        documents.append(document)
 
     required = {
         "credits",
@@ -272,7 +364,6 @@ def source_documents(
             str(document["key"]),
         ),
     )
-
 
 def build_internal_references(
     documents: list[dict[str, object]],
@@ -398,186 +489,36 @@ def resolve_references(
     return rendered
 
 
-def markdown_inline(text: str) -> str:
-    result: list[str] = []
-    cursor = 0
-
-    for match in MARKDOWN_LINK_PATTERN.finditer(text):
-        result.append(
-            html.escape(
-                text[cursor:match.start()]
-            )
-        )
-        label = html.escape(
-            match.group("label")
-        )
-        href = html.escape(
-            match.group("href"),
-            quote=True,
-        )
-        result.append(
-            f'<a href="{href}">{label}</a>'
-        )
-        cursor = match.end()
-
-    result.append(
-        html.escape(text[cursor:])
-    )
-    return "".join(result)
-
-
-def extract_homebrewery_section(
-    repo_root: Path,
-    source: dict[str, object],
-) -> str:
-    relative_path = source.get("path")
-    start_marker = source.get("start")
-    end_marker = source.get("end")
-    prepend_html = source.get(
-        "prependHtml",
-        "",
-    )
-
-    if (
-        not isinstance(relative_path, str)
-        or not isinstance(start_marker, str)
-        or not isinstance(end_marker, str)
-        or not isinstance(prepend_html, str)
-    ):
-        raise GenerationError(
-            "homebrewery-section source is incomplete."
-        )
-
-    path = repo_root / relative_path
-    try:
-        markdown = path.read_text(
-            encoding="utf-8",
-        )
-    except FileNotFoundError as error:
-        raise GenerationError(
-            f"Missing Homebrewery source: {path}"
-        ) from error
-
-    start = markdown.find(start_marker)
-    if start < 0:
-        raise GenerationError(
-            f"Start marker not found in {path}: "
-            f"{start_marker}"
-        )
-    end = markdown.find(
-        end_marker,
-        start + len(start_marker),
-    )
-    if end < 0:
-        raise GenerationError(
-            f"End marker not found in {path}: "
-            f"{end_marker}"
-        )
-
-    section = markdown[start:end]
-    section = re.sub(
-        r"<br\s*/?>",
-        " ",
-        section,
-        flags=re.IGNORECASE,
-    )
-    lines = section.splitlines()
-
-    output: list[str] = []
-    if prepend_html:
-        output.append(prepend_html)
-
-    paragraph: list[str] = []
-
-    def flush_paragraph() -> None:
-        if not paragraph:
-            return
-        text = " ".join(
-            part.strip()
-            for part in paragraph
-            if part.strip()
-        )
-        paragraph.clear()
-        if text:
-            output.append(
-                f"<p>{markdown_inline(text)}</p>"
-            )
-
-    for raw_line in lines:
-        line = raw_line.strip()
-
-        if not line:
-            flush_paragraph()
-            continue
-
-        if (
-            line.startswith("{{")
-            or line.startswith("{")
-            or line == ":"
-        ):
-            flush_paragraph()
-            continue
-
-        heading = re.fullmatch(
-            r"###\s+(.+?)\s*:?\s*",
-            line,
-        )
-        if heading:
-            flush_paragraph()
-            title = heading.group(1).rstrip(":")
-            output.append(
-                f"<h4>{html.escape(title.upper())}</h4>"
-            )
-            continue
-
-        paragraph.append(line)
-
-    flush_paragraph()
-
-    rendered = "".join(output)
-    if "{{" in rendered or "\\page" in rendered:
-        raise GenerationError(
-            "Homebrewery directives leaked into "
-            "generated Journal HTML."
-        )
-    return rendered
-
-
 def render_page_content(
     repo_root: Path,
     page: dict[str, object],
     references: dict[str, dict[str, str]],
 ) -> str:
+    del repo_root
+
     source = page.get("source")
     if not isinstance(source, dict):
         raise GenerationError(
             f"Page {page.get('key')} has no source."
         )
-
     source_type = source.get("type")
-    if source_type == "homebrewery-section":
-        content = extract_homebrewery_section(
-            repo_root,
-            source,
-        )
-    elif source_type == "html":
-        content = source.get("content")
-        if not isinstance(content, str):
-            raise GenerationError(
-                "HTML page source must have "
-                "string content."
-            )
-    else:
+    if source_type != "html":
         raise GenerationError(
-            f"Unsupported page source type: "
-            f"{source_type!r}"
+            "Curated Journal pages must use HTML "
+            f"source, found {source_type!r}."
+        )
+
+    content = source.get("content")
+    if not isinstance(content, str):
+        raise GenerationError(
+            "HTML page source must have string "
+            "content."
         )
 
     return resolve_references(
         content,
         references,
     )
-
 
 def render_page(
     repo_root: Path,

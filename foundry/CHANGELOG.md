@@ -8,6 +8,9 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ### Changed
 
+- Split Journal sources into one directory per JournalEntry and one JSON file per page.
+- Converted Credits to curated HTML source and removed build-time Homebrewery extraction from Journal generation.
+
 - Moved development system-test reports into a dedicated flat Journal folder.
 - Renamed the development-only report folder to `Bane of Azeroth - System Tests`.
 
@@ -17,7 +20,7 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ### Added
 
-- Added generated JournalEntry infrastructure with Credits as the first Homebrewery-backed pilot.
+- Added generated JournalEntry infrastructure with Credits as the first curated pilot.
 - Reserved stable parent JournalEntry IDs for Player Options, Appendices, and Foundry VTT Guide.
 - Added symbolic `@Ref[...]` and `@DisplayRef[...]` resolution to the Journal generator.
 - Added Adventure and integration coverage for generated JournalEntries.

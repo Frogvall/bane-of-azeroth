@@ -1,6 +1,7 @@
 import {
   readFileSync,
   readdirSync,
+  statSync,
 } from "node:fs";
 import {
   join,
@@ -78,12 +79,20 @@ function sourceDocuments() {
   return readdirSync(
     SOURCE_DIRECTORY,
   )
-    .filter(file => file.endsWith(".json"))
-    .map(file =>
+    .map(entry =>
+      join(
+        SOURCE_DIRECTORY,
+        entry,
+      )
+    )
+    .filter(path =>
+      statSync(path).isDirectory()
+    )
+    .map(directory =>
       readJson(
         join(
-          SOURCE_DIRECTORY,
-          file,
+          directory,
+          "journal.json",
         ),
       )
     );
@@ -265,13 +274,84 @@ describe("generated Journal infrastructure", () => {
     ).toBe(false);
   });
 
-  test("keeps generation source-driven and reference-ready", () => {
+  test("keeps journal sources curated, split, and reference-ready", () => {
+    const entries = readdirSync(
+      SOURCE_DIRECTORY,
+    ).sort();
+    expect(entries).toEqual([
+      "appendices",
+      "credits",
+      "foundry-vtt-guide",
+      "player-options",
+    ]);
+    expect(
+      entries.every(entry =>
+        statSync(
+          join(
+            SOURCE_DIRECTORY,
+            entry,
+          ),
+        ).isDirectory()
+      ),
+    ).toBe(true);
+
+    const creditsJournal = readJson(
+      join(
+        SOURCE_DIRECTORY,
+        "credits",
+        "journal.json",
+      ),
+    );
+    const creditsPage = readJson(
+      join(
+        SOURCE_DIRECTORY,
+        "credits",
+        "credits.json",
+      ),
+    );
+
+    expect(creditsJournal).not.toHaveProperty(
+      "pages",
+    );
+    expect(creditsPage).toMatchObject({
+      schemaVersion: 1,
+      key: "credits",
+      id: "BoAPgCredits0001",
+      name: "Credits",
+      source: {
+        type: "html",
+      },
+      provenance: {
+        canonicalSource:
+          "homebrewery/Bane of Azeroth.md",
+        section: "Credits",
+        sync: "curated",
+      },
+    });
+    expect(
+      creditsPage.source.content,
+    ).toContain(
+      "modules/bane-of-azeroth/assets/"
+      + "adventure/logo.webp",
+    );
+
     const generator = read(
       GENERATOR,
     );
-
     expect(generator).toContain(
+      'glob("*/journal.json")',
+    );
+    expect(generator).toContain(
+      'path.name != "journal.json"',
+    );
+    expect(generator).not.toContain(
       "homebrewery-section",
+    );
+    expect(generator).not.toContain(
+      "extract_homebrewery_section",
+    );
+    expect(generator).not.toContain(
+      "markdown_inline",
     );
     expect(generator).toMatch(
       /repo_root\s*\/\s*"foundry"\s*\/\s*"config"\s*\/\s*"references"\s*\/\s*"external-references\.json"/,

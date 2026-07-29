@@ -4,6 +4,5 @@
   "id": "BoAJrnlPlayerOpt",
   "name": "Player Options",
   "enabled": false,
-  "sort": 200000,
-  "pages": []
+  "sort": 200000
 }
