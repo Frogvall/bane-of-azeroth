@@ -37,6 +37,7 @@ if (!boaCheck(
 
 const orderedKeys = [
   "smoke",
+  "external-uuids",
   "generated-content",
   "common-animals",
   "common-animal-attack-messages",

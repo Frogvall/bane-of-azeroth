@@ -15,6 +15,11 @@ MODULE_ID = "bane-of-azeroth"
 GENERATOR_NAME = "tools/generate-system-test-macros.py"
 ID_PATTERN = re.compile(r"^[A-Za-z0-9]{16}$")
 
+EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER = (
+    "__BOA_EXTERNAL_UUID_CONFIGURATION__"
+)
+
+
 
 MACROS = [
     {
@@ -153,6 +158,16 @@ MACROS = [
         "suiteMember": False,
         "img": "icons/svg/biohazard.svg",
     },
+    {
+        "key": "external-uuids",
+        "id": "BoaDevExtUuid001",
+        "name": "BOA DEV – Verify External UUIDs",
+        "file": "verify-external-uuids.js",
+        "order": 16,
+        "suiteMember": True,
+        "img": "icons/svg/book.svg",
+    },
+
 ]
 
 
@@ -201,6 +216,115 @@ def safe_filename(name: str, document_id: str) -> str:
     return f"{stem}_{document_id}.json"
 
 
+def load_json_object(
+    path: Path,
+) -> dict[str, object]:
+    try:
+        value = json.loads(
+            path.read_text(
+                encoding="utf-8",
+            )
+        )
+    except FileNotFoundError as error:
+        raise SystemExit(
+            f"Missing system-test source data: {path}"
+        ) from error
+    except json.JSONDecodeError as error:
+        raise SystemExit(
+            f"Invalid JSON in {path}: {error}"
+        ) from error
+
+    if not isinstance(value, dict):
+        raise SystemExit(
+            f"Expected a JSON object in {path}."
+        )
+    return value
+
+
+def load_external_uuid_configuration(
+    repo_root: Path,
+) -> dict[str, object]:
+    content_root = (
+        repo_root
+        / "foundry"
+        / "content"
+    )
+    compatibility = load_json_object(
+        content_root
+        / "compatibility.json"
+    )
+    sources = load_json_object(
+        content_root
+        / "references"
+        / "external-sources.json"
+    )
+    references = load_json_object(
+        content_root
+        / "references"
+        / "external-references.json"
+    )
+
+    configuration = {
+        "verifiedEnvironment":
+            compatibility.get(
+                "verifiedEnvironment",
+                {},
+            ),
+        "sources":
+            sources.get(
+                "sources",
+                {},
+            ),
+        "references":
+            references.get(
+                "references",
+                {},
+            ),
+    }
+
+    if not configuration["references"]:
+        raise SystemExit(
+            "External UUID verification requires "
+            "at least one registered reference."
+        )
+
+    return configuration
+
+
+def render_macro_body(
+    body: str,
+    *,
+    external_configuration:
+        dict[str, object],
+) -> str:
+    count = body.count(
+        EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER
+    )
+    if count == 0:
+        return body
+
+    rendered = body.replace(
+        EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER,
+        json.dumps(
+            external_configuration,
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        ),
+    )
+
+    if (
+        EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER
+        in rendered
+    ):
+        raise SystemExit(
+            "External UUID configuration placeholder "
+            "was not fully rendered."
+        )
+
+    return rendered
+
+
 def base_stats() -> dict[str, object]:
     return {
         "coreVersion": "14.364",
@@ -217,6 +341,7 @@ def base_stats() -> dict[str, object]:
 
 def main() -> int:
     args = parse_args()
+    repo_root = Path(__file__).resolve().parents[1]
     temporary_output = None
     if args.check:
         temporary_output = tempfile.TemporaryDirectory(
@@ -232,6 +357,12 @@ def main() -> int:
         )
 
     library = args.library.read_text(encoding="utf-8").rstrip()
+    external_configuration = (
+        load_external_uuid_configuration(
+            repo_root
+        )
+    )
+
 
     shutil.rmtree(args.output_directory, ignore_errors=True)
     args.output_directory.mkdir(parents=True, exist_ok=True)
@@ -258,6 +389,12 @@ def main() -> int:
             raise SystemExit(f"Missing Macro source: {source_path}")
 
         body = source_path.read_text(encoding="utf-8").strip()
+        body = render_macro_body(
+            body,
+            external_configuration=
+                external_configuration,
+        )
+
         command = (
             f"{library}\n\n"
             f"/* System test: {macro['key']} */\n"

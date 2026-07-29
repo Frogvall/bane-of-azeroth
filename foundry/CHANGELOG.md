@@ -8,6 +8,17 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ### Added
 
+- Added generated external UUID verification to the Run All system-test suite.
+- Added an installable generated external-reference JavaScript module derived from the source registries.
+- Added literal UUID discovery to the reference inventory.
+
+### Changed
+
+- Centralized the Dragonbane Core lethal-poison JournalEntryPage UUID for runtime, Common Animal generation, and system tests.
+- Limited the reference inventory to authoritative source areas instead of generated `pack-src` output.
+
+### Added
+
 - Added the central verified-environment manifest for Foundry, Dragonbane, Dragonbane Core Set, and YZE Combat.
 - Added an external-source registry where package ownership is separate from the module-wide verified version.
 - Added the shared `@Ref[...]` and `@DisplayRef[...]` symbolic-reference resolver.

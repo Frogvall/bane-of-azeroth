@@ -17,9 +17,14 @@ if (!game.user.isGM) {
 }
 
 const moduleId = "bane-of-azeroth";
+const externalUuidConfiguration =
+  __BOA_EXTERNAL_UUID_CONFIGURATION__;
 const poisonRuleUuid =
-  "JournalEntry.SbbSMsuvWeo3HaID." +
-  "JournalEntryPage.6WPxPxUjh4W80RNy#poison";
+  externalUuidConfiguration
+    .references[
+      "dragonbane-core:journal-page.combat-damage.poison"
+    ]
+    .uuid;
 
 const expectedAnimals = [
   {

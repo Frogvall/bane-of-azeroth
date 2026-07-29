@@ -53,6 +53,24 @@ def _expect_object(value: object, label: str) -> dict[str, object]:
     return value
 
 
+def resolved_document_type(
+    uuid: str,
+) -> str:
+    document_uuid = uuid.split(
+        "#",
+        1,
+    )[0]
+    parts = document_uuid.split(".")
+    if (
+        len(parts) < 2
+        or len(parts) % 2 != 0
+    ):
+        raise ReferenceError(
+            f"Invalid Foundry document UUID: {uuid}"
+        )
+    return parts[-2]
+
+
 def validate_reference_sources(
     compatibility: object,
     external_sources: object,
@@ -178,13 +196,14 @@ def validate_reference_sources(
                 f"External reference {key} must define documentType."
             )
 
-        uuid_type = FOUNDRY_UUID_PATTERN.fullmatch(uuid).group(
-            "document_type"
+        resolved_type = resolved_document_type(
+            uuid
         )
-        if uuid_type != document_type:
+        if resolved_type != document_type:
             raise ReferenceError(
-                f"External reference {key} declares {document_type}, "
-                f"but its UUID starts with {uuid_type}."
+                f"External reference {key} declares "
+                f"{document_type}, but its UUID resolves "
+                f"to {resolved_type}."
             )
 
         for forbidden_key in (

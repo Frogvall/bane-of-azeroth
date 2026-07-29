@@ -120,7 +120,14 @@ describe("0.10.0 reference foundation", () => {
       },
     });
     expect(references.schemaVersion).toBe(1);
-    expect(references.references).toEqual({});
+    expect(references.references).toEqual({
+      "dragonbane-core:journal-page.combat-damage.poison": {
+        source: "dragonbane-core",
+        uuid:
+          "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+        documentType: "JournalEntryPage",
+      },
+    });
 
     const serializedRegistries = JSON.stringify({
       sources,
@@ -177,6 +184,20 @@ describe("0.10.0 reference foundation", () => {
       "tools/generate-reference-inventory.py",
     );
     expect(Array.isArray(inventory.entries)).toBe(true);
+    expect(inventory.scanRoots).toContain(
+      "tools",
+    );
+    expect(inventory.scanRoots).not.toContain(
+      "foundry/pack-src",
+    );
+    expect(
+      inventory.entries.some(
+        entry =>
+          entry.kind === "uuid-literal"
+          && entry.classification
+            === "external-registry",
+      ),
+    ).toBe(true);
     const sortedEntries = [
       ...inventory.entries,
     ].sort((left, right) => {

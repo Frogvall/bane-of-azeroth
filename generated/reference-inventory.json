@@ -4,13 +4,14 @@
   "scanRoots": [
     "homebrewery",
     "foundry/content",
-    "foundry/pack-src",
     "foundry/scripts",
-    "tests/system/macros"
+    "tests/system/macros",
+    "tools"
   ],
   "counts": {
-    "runtime-uuid-lookup": 4,
-    "uuid-link": 16
+    "runtime-uuid-lookup": 5,
+    "uuid-link": 9,
+    "uuid-literal": 21
   },
   "entries": [
     {
@@ -24,79 +25,18 @@
       "label": "Elemental Totem"
     },
     {
-      "kind": "uuid-link",
-      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Giant_Spider_8db68cb83b2f1331.json",
-      "line": 33,
-      "column": 136,
+      "kind": "uuid-literal",
+      "path": "foundry/content/references/external-references.json",
+      "line": 6,
+      "column": 16,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
-      "classification": "unclassified",
-      "snippet": "\"traits\": \"<p><strong>Lethal Poison:</strong> If the giant spider hits a creature with its Bite attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency o",
-      "label": "lethal poison"
-    },
-    {
-      "kind": "uuid-link",
-      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Large_Serpent_um17JUy9CcBXlloq.json",
-      "line": 33,
-      "column": 137,
-      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
-      "classification": "unclassified",
-      "snippet": "\"traits\": \"<p><strong>Lethal Poison:</strong> If the large serpent hits a creature with its Bite attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency ",
-      "label": "lethal poison"
-    },
-    {
-      "kind": "uuid-link",
-      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Scorpid_0755558cf1561101.json",
-      "line": 33,
-      "column": 131,
-      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
-      "classification": "unclassified",
-      "snippet": "\"traits\": \"<p><strong>Lethal Poison:</strong> If the scorpid hits a creature with its Tail attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency of 12,",
-      "label": "lethal poison"
-    },
-    {
-      "kind": "uuid-link",
-      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Cleansing_Totem_CleanTotem4kP7xQ.json",
-      "line": 8,
-      "column": 60,
-      "target": "Item.ElTotem1a2b3c4d5",
-      "classification": "unclassified",
-      "snippet": "\"description\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
-      "label": "Elemental Totem"
-    },
-    {
-      "kind": "uuid-link",
-      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Flametongue_Totem_FlameTotem6mR2zV.json",
-      "line": 8,
-      "column": 60,
-      "target": "Item.ElTotem1a2b3c4d5",
-      "classification": "unclassified",
-      "snippet": "\"description\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
-      "label": "Elemental Totem"
-    },
-    {
-      "kind": "uuid-link",
-      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Stoneskin_Totem_StoneTotem8nT3wY.json",
-      "line": 8,
-      "column": 60,
-      "target": "Item.ElTotem1a2b3c4d5",
-      "classification": "unclassified",
-      "snippet": "\"description\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
-      "label": "Elemental Totem"
-    },
-    {
-      "kind": "uuid-link",
-      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Windfury_Totem_WindTotem5pL9sX7.json",
-      "line": 8,
-      "column": 60,
-      "target": "Item.ElTotem1a2b3c4d5",
-      "classification": "unclassified",
-      "snippet": "\"description\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
-      "label": "Elemental Totem"
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison\","
     },
     {
       "kind": "uuid-link",
       "path": "foundry/scripts/common-animal-attack-effects.js",
-      "line": 61,
+      "line": 65,
       "column": 8,
       "target": "${ruleUuid}",
       "classification": "unclassified",
@@ -106,7 +46,7 @@
     {
       "kind": "uuid-link",
       "path": "foundry/scripts/common-animal-attack-effects.js",
-      "line": 415,
+      "line": 419,
       "column": 8,
       "target": "${ruleUuid}",
       "classification": "unclassified",
@@ -121,6 +61,51 @@
       "function": "fromUuid",
       "classification": "runtime",
       "snippet": "const document = await fromUuid(uuid);"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/core/constants.js",
+      "line": 10,
+      "column": 16,
+      "target": "BOA.weaponFeatureTyp",
+      "classification": "unclassified",
+      "snippet": "freehanded: \"BOA.weaponFeatureTypes.freehanded\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/core/constants.js",
+      "line": 11,
+      "column": 15,
+      "target": "BOA.weaponFeatureTyp",
+      "classification": "unclassified",
+      "snippet": "returning: \"BOA.weaponFeatureTypes.returning\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/core/constants.js",
+      "line": 12,
+      "column": 16,
+      "target": "BOA.weaponFeatureTyp",
+      "classification": "unclassified",
+      "snippet": "ammunition: \"BOA.weaponFeatureTypes.ammunition\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/core/constants.js",
+      "line": 13,
+      "column": 19,
+      "target": "BOA.weaponFeatureTyp",
+      "classification": "unclassified",
+      "snippet": "armorPiercing: \"BOA.weaponFeatureTypes.armorPiercing\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/core/constants.js",
+      "line": 14,
+      "column": 17,
+      "target": "BOA.weaponFeatureTyp",
+      "classification": "unclassified",
+      "snippet": "scattershot: \"BOA.weaponFeatureTypes.scattershot\","
     },
     {
       "kind": "runtime-uuid-lookup",
@@ -151,9 +136,18 @@
       "label": "Open the complete player-test report"
     },
     {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/prepare-player-tests.js",
+      "line": 646,
+      "column": 25,
+      "target": "Actor.BoaOtherPlayerTe",
+      "classification": "unclassified",
+      "snippet": "casterActorUuid: \"Actor.BoaOtherPlayerTestCaster\","
+    },
+    {
       "kind": "uuid-link",
       "path": "tests/system/macros/run-all.js",
-      "line": 266,
+      "line": 267,
       "column": 8,
       "target": "${report.uuid}",
       "classification": "unclassified",
@@ -170,9 +164,45 @@
       "snippet": "`@UUID[${summonAbility.uuid}]`"
     },
     {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-common-animal-attack-messages.js",
+      "line": 75,
+      "column": 8,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID",
+      "classification": "unclassified",
+      "snippet": "\"JournalEntry.SbbSMsuvWeo3HaID.\" +"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-common-animal-attack-messages.js",
+      "line": 76,
+      "column": 8,
+      "target": "JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "unclassified",
+      "snippet": "\"JournalEntryPage.6WPxPxUjh4W80RNy#poison\""
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-common-animal-attack-messages.js",
+      "line": 80,
+      "column": 9,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID",
+      "classification": "unclassified",
+      "snippet": "'\"JournalEntry.SbbSMsuvWeo3HaID.' +"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-common-animal-attack-messages.js",
+      "line": 81,
+      "column": 8,
+      "target": "JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "unclassified",
+      "snippet": "\"JournalEntryPage.6WPxPxUjh4W80RNy#poison\" +"
+    },
+    {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-common-animals.js",
-      "line": 249,
+      "line": 254,
       "column": 8,
       "target": "${poisonRuleUuid}",
       "classification": "unclassified",
@@ -182,7 +212,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-common-animals.js",
-      "line": 315,
+      "line": 320,
       "column": 8,
       "target": "${poisonRuleUuid}",
       "classification": "unclassified",
@@ -192,12 +222,30 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-common-animals.js",
-      "line": 528,
+      "line": 533,
       "column": 8,
       "target": "${poisonRuleUuid}",
       "classification": "unclassified",
       "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
       "label": "lethal poison"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-external-uuids.js",
+      "line": 158,
+      "column": 22,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "document = await fromUuid("
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-ghoul.js",
+      "line": 99,
+      "column": 4,
+      "target": "RollTable.GhoulAtk4mN7Qx2P",
+      "classification": "unclassified",
+      "snippet": "\"RollTable.GhoulAtk4mN7Qx2P\","
     },
     {
       "kind": "runtime-uuid-lookup",
@@ -207,6 +255,87 @@
       "function": "fromUuid",
       "classification": "runtime",
       "snippet": "attackTable = await fromUuid(attackTableUuid);"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 383,
+      "column": 8,
+      "target": "Actor.BoaLifecycleCast",
+      "classification": "unclassified",
+      "snippet": "\"Actor.BoaLifecycleCaster\""
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 398,
+      "column": 8,
+      "target": "Actor.BoaLifecycleCast",
+      "classification": "unclassified",
+      "snippet": "\"Actor.BoaLifecycleCaster\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 465,
+      "column": 8,
+      "target": "Actor.BoaLifecycleCast",
+      "classification": "unclassified",
+      "snippet": "\"Actor.BoaLifecycleCaster\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 564,
+      "column": 6,
+      "target": "Actor.BoaSufferingCast",
+      "classification": "unclassified",
+      "snippet": "\"Actor.BoaSufferingCaster\";"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 568,
+      "column": 27,
+      "target": "Token.BoaSufferingCast",
+      "classification": "unclassified",
+      "snippet": "\"Scene.BoaSuffering.Token.BoaSufferingCasterToken\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 613,
+      "column": 27,
+      "target": "Token.BoaManualVoidwal",
+      "classification": "unclassified",
+      "snippet": "\"Scene.BoaSuffering.Token.BoaManualVoidwalker\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 1182,
+      "column": 14,
+      "target": "Actor.BoaFormulaWarloc",
+      "classification": "unclassified",
+      "snippet": "uuid: \"Actor.BoaFormulaWarlock\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 1190,
+      "column": 16,
+      "target": "Actor.BoaFormulaVoidwa",
+      "classification": "unclassified",
+      "snippet": "uuid: \"Actor.BoaFormulaVoidwalker\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-warlock-demons.js",
+      "line": 1261,
+      "column": 6,
+      "target": "Actor.BoaFormulaWarloc",
+      "classification": "unclassified",
+      "snippet": "\"Actor.BoaFormulaWarlock\";"
     }
   ]
 }

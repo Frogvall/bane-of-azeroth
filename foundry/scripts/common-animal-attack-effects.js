@@ -1,9 +1,13 @@
 import {
   applyCommonAnimalAttackStatuses,
 } from "./common-animal-status-effects.js";
+import {
+  externalReferenceUuid,
+} from "../generated/external-references.js";
 export const LETHAL_POISON_RULE_UUID =
-  "JournalEntry.SbbSMsuvWeo3HaID." +
-  "JournalEntryPage.6WPxPxUjh4W80RNy#poison";
+  externalReferenceUuid(
+    "dragonbane-core:journal-page.combat-damage.poison",
+  );
 
 function escapeHtml(value) {
   return String(value ?? "")

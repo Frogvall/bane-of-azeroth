@@ -14,10 +14,65 @@ MODULE_ID = "bane-of-azeroth"
 GENERATOR_NAME = "tools/generate-hunter-companions.py"
 ROOT_CONTENT_KEY = "actors.folder.bane-of-azeroth"
 COMMON_ANIMALS_CONTENT_KEY = "actors.folder.common-animals"
-LETHAL_POISON_UUID = (
-    "JournalEntry.SbbSMsuvWeo3HaID."
-    "JournalEntryPage.6WPxPxUjh4W80RNy#poison"
+LETHAL_POISON_REFERENCE_KEY = (
+    "dragonbane-core:journal-page.combat-damage.poison"
 )
+EXTERNAL_REFERENCES_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "foundry"
+    / "content"
+    / "references"
+    / "external-references.json"
+)
+
+
+def load_external_reference_uuid(
+    key: str,
+) -> str:
+    try:
+        data = json.loads(
+            EXTERNAL_REFERENCES_PATH.read_text(
+                encoding="utf-8",
+            )
+        )
+    except FileNotFoundError as error:
+        raise RuntimeError(
+            "Missing external-reference registry: "
+            f"{EXTERNAL_REFERENCES_PATH}"
+        ) from error
+    except json.JSONDecodeError as error:
+        raise RuntimeError(
+            "Invalid external-reference registry: "
+            f"{error}"
+        ) from error
+
+    reference = (
+        data.get("references", {})
+        .get(key)
+    )
+    if not isinstance(reference, dict):
+        raise RuntimeError(
+            f"Missing external reference: {key}"
+        )
+
+    uuid = reference.get("uuid")
+    if (
+        not isinstance(uuid, str)
+        or not uuid.strip()
+    ):
+        raise RuntimeError(
+            f"External reference {key} has no UUID."
+        )
+
+    return uuid
+
+
+LETHAL_POISON_UUID = (
+    load_external_reference_uuid(
+        LETHAL_POISON_REFERENCE_KEY
+    )
+)
+
 LEGACY_COMPANIONS_FOLDER_ID = "2dkrC4gndsTQ383p"
 LEGACY_COMPANIONS_FOLDER_NAME = "Companions"
 ID_PATTERN = re.compile(r"^[A-Za-z0-9]{16}$")

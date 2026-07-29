@@ -20,9 +20,9 @@ DEFAULT_OUTPUT = (
 SCAN_ROOTS = (
     Path("homebrewery"),
     Path("foundry/content"),
-    Path("foundry/pack-src"),
     Path("foundry/scripts"),
     Path("tests/system/macros"),
+    Path("tools"),
 )
 
 TEXT_SUFFIXES = {
@@ -76,6 +76,14 @@ INLINE_PATTERNS = (
 
 RUNTIME_PATTERN = re.compile(
     r"\b(?P<function>fromUuidSync|fromUuid)\s*\("
+)
+UUID_LITERAL_PATTERN = re.compile(
+    r"(?<![A-Za-z0-9_${])"
+    r"(?P<target>"
+    r"[A-Z][A-Za-z0-9]*\.[A-Za-z0-9]{16}"
+    r"(?:\.[A-Z][A-Za-z0-9]*\.[A-Za-z0-9]{16})*"
+    r"(?:#[A-Za-z0-9._:-]+)?"
+    r")"
 )
 
 
@@ -157,8 +165,15 @@ def inventory_entries(
             errors="replace",
         )
 
+        occupied_spans: list[
+            tuple[int, int]
+        ] = []
+
         for kind, pattern in INLINE_PATTERNS:
             for match in pattern.finditer(text):
+                occupied_spans.append(
+                    match.span()
+                )
                 line, column = line_and_column(
                     text,
                     match.start(),
@@ -179,6 +194,37 @@ def inventory_entries(
                 if label is not None:
                     entry["label"] = label
                 entries.append(entry)
+
+        for match in UUID_LITERAL_PATTERN.finditer(text):
+            if any(
+                start <= match.start() < end
+                for start, end in occupied_spans
+            ):
+                continue
+
+            line, column = line_and_column(
+                text,
+                match.start(),
+            )
+            entries.append({
+                "kind": "uuid-literal",
+                "path": relative,
+                "line": line,
+                "column": column,
+                "target": match.group("target"),
+                "classification":
+                    (
+                        "external-registry"
+                        if relative.endswith(
+                            "external-references.json"
+                        )
+                        else "unclassified"
+                    ),
+                "snippet": snippet_for(
+                    text,
+                    match.start(),
+                ),
+            })
 
         for match in RUNTIME_PATTERN.finditer(text):
             line, column = line_and_column(
