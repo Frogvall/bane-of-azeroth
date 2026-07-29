@@ -136,7 +136,8 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/Incarnation_of_the_Stars_StarsInc6AbCdE7f.json"
   ],
   "journal": [
-    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Credits_BoAJrnlCredits01.json"
+    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Credits_BoAJrnlCredits01.json",
+    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Player_Options_BoAJrnlPlayerOpt.json"
   ],
   "scenes": [],
   "tables": [

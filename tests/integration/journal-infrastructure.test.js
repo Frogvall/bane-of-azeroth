@@ -48,7 +48,7 @@ const EXPECTED_DOCUMENTS = {
   "player-options": {
     id: "BoAJrnlPlayerOpt",
     name: "Player Options",
-    enabled: false,
+    enabled: true,
   },
   appendices: {
     id: "BoAJrnlAppendix1",
@@ -145,13 +145,17 @@ describe("generated Journal infrastructure", () => {
     }
   });
 
-  test("generates Credits as the first complete pilot", () => {
+  test("keeps Credits generated as a complete journal", () => {
     const documents =
       generatedJournalDocuments();
 
-    expect(documents).toHaveLength(1);
+    expect(documents).toHaveLength(2);
 
-    const credits = documents[0];
+    const credits = documents.find(
+      document =>
+        document._id === "BoAJrnlCredits01",
+    );
+    expect(credits).toBeDefined();
     expect(credits._id).toBe(
       "BoAJrnlCredits01",
     );
@@ -206,8 +210,12 @@ describe("generated Journal infrastructure", () => {
   });
 
   test("emits fvtt-cli LevelDB keys for the generated Journal hierarchy", () => {
-    const [credits] =
-      generatedJournalDocuments();
+    const credits =
+      generatedJournalDocuments().find(
+        document =>
+          document._id === "BoAJrnlCredits01",
+      );
+    expect(credits).toBeDefined();
     const folder = readJson(
       join(
         JOURNAL_DIRECTORY,
@@ -271,7 +279,7 @@ describe("generated Journal infrastructure", () => {
             "BoAJrnlPlayerOpt",
           ),
       ),
-    ).toBe(false);
+    ).toBe(true);
   });
 
   test("keeps journal sources curated, split, and reference-ready", () => {

@@ -6,6 +6,11 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Added
+
+- Added the curated Kin chapter to the Player Options Journal.
+- Added scoped Journal styling for Kin sections, ability boxes, and tables.
+
 ### Changed
 
 - Split Journal sources into one directory per JournalEntry and one JSON file per page.

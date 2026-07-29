@@ -3,6 +3,6 @@
   "key": "player-options",
   "id": "BoAJrnlPlayerOpt",
   "name": "Player Options",
-  "enabled": false,
+  "enabled": true,
   "sort": 200000
 }
