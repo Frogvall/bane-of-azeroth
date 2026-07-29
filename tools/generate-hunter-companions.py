@@ -20,7 +20,7 @@ LETHAL_POISON_REFERENCE_KEY = (
 EXTERNAL_REFERENCES_PATH = (
     Path(__file__).resolve().parents[1]
     / "foundry"
-    / "content"
+    / "config"
     / "references"
     / "external-references.json"
 )

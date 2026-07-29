@@ -10,10 +10,9 @@ import {
   test,
 } from "vitest";
 
-const ROOT = process.cwd();
 const REFERENCES = resolve(
   "foundry",
-  "content",
+  "config",
   "references",
   "external-references.json",
 );
@@ -55,12 +54,12 @@ const RUN_ALL = resolve(
 );
 const COMPATIBILITY = resolve(
   "foundry",
-  "content",
+  "config",
   "compatibility.json",
 );
 const EXTERNAL_SOURCES = resolve(
   "foundry",
-  "content",
+  "config",
   "references",
   "external-sources.json",
 );
@@ -98,8 +97,8 @@ function generatorEntry(
 
 describe("external UUID system verification", () => {
   test("registers the Dragonbane Core poison rule once", () => {
-    const source = JSON.parse(
-      read(REFERENCES),
+    const source = readJson(
+      REFERENCES,
     );
 
     expect(source).toEqual({

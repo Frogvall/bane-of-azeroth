@@ -301,17 +301,21 @@ def resolve_symbolic_references(
 def load_external_reference_targets(
     repo_root: Path,
 ) -> dict[str, ReferenceTarget]:
-    content_root = repo_root / "foundry" / "content"
+    config_root = (
+        repo_root
+        / "foundry"
+        / "config"
+    )
     compatibility = load_json(
-        content_root / "compatibility.json"
+        config_root / "compatibility.json"
     )
     sources = load_json(
-        content_root
+        config_root
         / "references"
         / "external-sources.json"
     )
     references = load_json(
-        content_root
+        config_root
         / "references"
         / "external-references.json"
     )

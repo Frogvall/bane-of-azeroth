@@ -19,6 +19,7 @@ DEFAULT_OUTPUT = (
 
 SCAN_ROOTS = (
     Path("homebrewery"),
+    Path("foundry/config"),
     Path("foundry/content"),
     Path("foundry/scripts"),
     Path("tests/system/macros"),

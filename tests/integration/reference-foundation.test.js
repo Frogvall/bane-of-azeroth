@@ -11,20 +11,20 @@ const MODULE = path.join(
 const COMPATIBILITY = path.join(
   ROOT,
   "foundry",
-  "content",
+  "config",
   "compatibility.json",
 );
 const EXTERNAL_SOURCES = path.join(
   ROOT,
   "foundry",
-  "content",
+  "config",
   "references",
   "external-sources.json",
 );
 const EXTERNAL_REFERENCES = path.join(
   ROOT,
   "foundry",
-  "content",
+  "config",
   "references",
   "external-references.json",
 );

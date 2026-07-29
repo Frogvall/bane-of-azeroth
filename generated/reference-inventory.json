@@ -3,6 +3,7 @@
   "generatedBy": "tools/generate-reference-inventory.py",
   "scanRoots": [
     "homebrewery",
+    "foundry/config",
     "foundry/content",
     "foundry/scripts",
     "tests/system/macros",
@@ -15,6 +16,15 @@
   },
   "entries": [
     {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 6,
+      "column": 16,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison\","
+    },
+    {
       "kind": "uuid-link",
       "path": "foundry/content/elemental-totems.json",
       "line": 24,
@@ -23,15 +33,6 @@
       "classification": "unclassified",
       "snippet": "\"descriptionHtml\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
       "label": "Elemental Totem"
-    },
-    {
-      "kind": "uuid-literal",
-      "path": "foundry/content/references/external-references.json",
-      "line": 6,
-      "column": 16,
-      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
-      "classification": "external-registry",
-      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison\","
     },
     {
       "kind": "uuid-link",

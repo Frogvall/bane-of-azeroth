@@ -6,6 +6,12 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Changed
+
+- Moved module compatibility and external reference registries from `foundry/content` to `foundry/config`.
+- Kept generated runtime reference data under `foundry/generated` and generated audit output under `generated`.
+- Made the external UUID Macro integration test source-based, without Python or `pack-src` assumptions.
+
 ### Added
 
 - Added generated external UUID verification to the Run All system-test suite.

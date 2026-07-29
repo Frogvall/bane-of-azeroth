@@ -244,22 +244,22 @@ def load_json_object(
 def load_external_uuid_configuration(
     repo_root: Path,
 ) -> dict[str, object]:
-    content_root = (
+    config_root = (
         repo_root
         / "foundry"
-        / "content"
+        / "config"
     )
     compatibility = load_json_object(
-        content_root
+        config_root
         / "compatibility.json"
     )
     sources = load_json_object(
-        content_root
+        config_root
         / "references"
         / "external-sources.json"
     )
     references = load_json_object(
-        content_root
+        config_root
         / "references"
         / "external-references.json"
     )
