@@ -6,6 +6,10 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Fixed
+
+- Added LevelDB source keys to generated JournalEntry pages and folders.
+
 ### Added
 
 - Added generated JournalEntry infrastructure with Credits as the first Homebrewery-backed pilot.

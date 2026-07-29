@@ -602,6 +602,7 @@ def render_page(
         )
 
     page_id = str(page["id"])
+    document_id = str(document["id"])
     content = render_page_content(
         repo_root,
         page,
@@ -609,6 +610,10 @@ def render_page(
     )
 
     return {
+        "_key": (
+            "!journal.pages!"
+            f"{document_id}.{page_id}"
+        ),
         "sort": int(page.get("sort", 0)),
         "name": str(page["name"]),
         "type": "text",
@@ -698,6 +703,7 @@ def render_document(
 
 def render_folder() -> dict[str, object]:
     return {
+        "_key": f"!folders!{JOURNAL_FOLDER_ID}",
         "type": "JournalEntry",
         "folder": None,
         "name": JOURNAL_FOLDER_NAME,

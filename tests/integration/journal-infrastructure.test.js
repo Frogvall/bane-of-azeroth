@@ -196,6 +196,34 @@ describe("generated Journal infrastructure", () => {
     expect(html).not.toContain("\\page");
   });
 
+  test("emits fvtt-cli LevelDB keys for the generated Journal hierarchy", () => {
+    const [credits] =
+      generatedJournalDocuments();
+    const folder = readJson(
+      join(
+        JOURNAL_DIRECTORY,
+        "_Folder.json",
+      ),
+    );
+
+    expect(credits._key).toBe(
+      "!journal!BoAJrnlCredits01",
+    );
+    expect(folder._key).toBe(
+      "!folders!BoAJournals00001",
+    );
+
+    for (const page of credits.pages) {
+      expect(page._key).toBe(
+        `!journal.pages!${credits._id}.${page._id}`,
+      );
+    }
+
+    expect(credits.pages[0]._key).toBe(
+      "!journal.pages!BoAJrnlCredits01.BoAPgCredits0001",
+    );
+  });
+
   test("adds the Credits journal and folder to the Adventure", () => {
     const adventure = readJson(
       ADVENTURE,
