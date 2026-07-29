@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "key": "player-options",
+  "id": "BoAJrnlPlayerOpt",
+  "name": "Player Options",
+  "enabled": false,
+  "sort": 200000,
+  "pages": []
+}

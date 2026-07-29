@@ -135,7 +135,9 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/Incarnation_of_Harmony_Harmony4UvWxY5zQ.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/Incarnation_of_the_Stars_StarsInc6AbCdE7f.json"
   ],
-  "journal": [],
+  "journal": [
+    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Credits_BoAJrnlCredits01.json"
+  ],
   "scenes": [],
   "tables": [
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/Monster_Attacks_Ghoul_GhoulAtk4mN7Qx2P.json",
@@ -180,7 +182,8 @@
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Undead_UndeadBoA9x4K2mN/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Demons_ZIY5EouNXixTTKSe/_Folder.json",
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/_Folder.json",
-    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/_Folder.json"
+    "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/_Folder.json",
+    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/_Folder.json"
   ],
   "_id": "ZoNOXZjdkOjV56e3",
   "folder": null,

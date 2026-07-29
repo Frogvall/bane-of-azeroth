@@ -6,6 +6,13 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Added
+
+- Added generated JournalEntry infrastructure with Credits as the first Homebrewery-backed pilot.
+- Reserved stable parent JournalEntry IDs for Player Options, Appendices, and Foundry VTT Guide.
+- Added symbolic `@Ref[...]` and `@DisplayRef[...]` resolution to the Journal generator.
+- Added Adventure and integration coverage for generated JournalEntries.
+
 ### Changed
 
 - Moved module compatibility and external reference registries from `foundry/content` to `foundry/config`.

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "key": "foundry-vtt-guide",
+  "id": "BoAJrnlFoundry01",
+  "name": "Foundry VTT Guide",
+  "enabled": false,
+  "sort": 400000,
+  "pages": []
+}
