@@ -8,6 +8,9 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ### Added
 
+- Added lossless WebP Journal assets generated from checked-in Homebrewery PNG masters.
+- Added a deterministic asset manifest and dependency-free CI verification for Journal artwork.
+
 - Added the curated Kin chapter to the Player Options Journal.
 - Added scoped Journal styling for Kin sections, ability boxes, and tables.
 
