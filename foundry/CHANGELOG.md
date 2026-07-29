@@ -6,6 +6,11 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Changed
+
+- Moved development system-test reports into a dedicated flat Journal folder.
+- Renamed the development-only report folder to `Bane of Azeroth - System Tests`.
+
 ### Fixed
 
 - Added LevelDB source keys to generated JournalEntry pages and folders.

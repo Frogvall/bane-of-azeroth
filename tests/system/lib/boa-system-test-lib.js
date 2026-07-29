@@ -1168,17 +1168,11 @@ async function boaCreateSystemTestReport({
     completedAt
   );
 
-  const rootFolder = await boaEnsureJournalFolder(
-    "Bane of Azeroth",
-    null,
-    "#1f5fbf"
-  );
-
   const systemTestsFolder =
     await boaEnsureJournalFolder(
-      "System Tests",
-      rootFolder,
-      null
+      "Bane of Azeroth - System Tests",
+      null,
+      "#1f5fbf"
     );
 
   const reportName =
