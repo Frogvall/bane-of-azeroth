@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "tools/generate-reference-inventory.py",
+  "scanRoots": [
+    "homebrewery",
+    "foundry/content",
+    "foundry/pack-src",
+    "foundry/scripts",
+    "tests/system/macros"
+  ],
+  "counts": {
+    "runtime-uuid-lookup": 4,
+    "uuid-link": 16
+  },
+  "entries": [
+    {
+      "kind": "uuid-link",
+      "path": "foundry/content/elemental-totems.json",
+      "line": 24,
+      "column": 64,
+      "target": "Item.ElTotem1a2b3c4d5",
+      "classification": "unclassified",
+      "snippet": "\"descriptionHtml\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
+      "label": "Elemental Totem"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Giant_Spider_8db68cb83b2f1331.json",
+      "line": 33,
+      "column": 136,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "unclassified",
+      "snippet": "\"traits\": \"<p><strong>Lethal Poison:</strong> If the giant spider hits a creature with its Bite attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency o",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Large_Serpent_um17JUy9CcBXlloq.json",
+      "line": 33,
+      "column": 137,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "unclassified",
+      "snippet": "\"traits\": \"<p><strong>Lethal Poison:</strong> If the large serpent hits a creature with its Bite attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency ",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/Scorpid_0755558cf1561101.json",
+      "line": 33,
+      "column": 131,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "unclassified",
+      "snippet": "\"traits\": \"<p><strong>Lethal Poison:</strong> If the scorpid hits a creature with its Tail attack, the creature is exposed to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{lethal poison} with a potency of 12,",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Cleansing_Totem_CleanTotem4kP7xQ.json",
+      "line": 8,
+      "column": 60,
+      "target": "Item.ElTotem1a2b3c4d5",
+      "classification": "unclassified",
+      "snippet": "\"description\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
+      "label": "Elemental Totem"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Flametongue_Totem_FlameTotem6mR2zV.json",
+      "line": 8,
+      "column": 60,
+      "target": "Item.ElTotem1a2b3c4d5",
+      "classification": "unclassified",
+      "snippet": "\"description\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
+      "label": "Elemental Totem"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Stoneskin_Totem_StoneTotem8nT3wY.json",
+      "line": 8,
+      "column": 60,
+      "target": "Item.ElTotem1a2b3c4d5",
+      "classification": "unclassified",
+      "snippet": "\"description\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
+      "label": "Elemental Totem"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3/Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/Windfury_Totem_WindTotem5pL9sX7.json",
+      "line": 8,
+      "column": 60,
+      "target": "Item.ElTotem1a2b3c4d5",
+      "classification": "unclassified",
+      "snippet": "\"description\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
+      "label": "Elemental Totem"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/scripts/common-animal-attack-effects.js",
+      "line": 61,
+      "column": 8,
+      "target": "${ruleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${ruleUuid}]{lethal poison} ` +",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/scripts/common-animal-attack-effects.js",
+      "line": 415,
+      "column": 8,
+      "target": "${ruleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${ruleUuid}]{lethal poison} ` +",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "foundry/scripts/common-animal-status-effects.js",
+      "line": 80,
+      "column": 26,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "const document = await fromUuid(uuid);"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "foundry/scripts/elemental-totems/creation.js",
+      "line": 70,
+      "column": 31,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "const actorDocument = await fromUuid(plan.actorUuid);"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "foundry/scripts/warlock-demons/creation.js",
+      "line": 122,
+      "column": 11,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "await fromUuid(plan.actorUuid);"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/cleanup-player-tests.js",
+      "line": 406,
+      "column": 11,
+      "target": "${report.uuid}",
+      "classification": "unclassified",
+      "snippet": "?? `@UUID[${report.uuid}]{Open the complete player-test report}`",
+      "label": "Open the complete player-test report"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/run-all.js",
+      "line": 266,
+      "column": 8,
+      "target": "${report.uuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${report.uuid}]{Open the complete test report}`",
+      "label": "Open the complete test report"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/run-player-tests.js",
+      "line": 476,
+      "column": 10,
+      "target": "${summonAbility.uuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${summonAbility.uuid}]`"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-common-animals.js",
+      "line": 249,
+      "column": 8,
+      "target": "${poisonRuleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-common-animals.js",
+      "line": 315,
+      "column": 8,
+      "target": "${poisonRuleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-common-animals.js",
+      "line": 528,
+      "column": 8,
+      "target": "${poisonRuleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-ghoul.js",
+      "line": 104,
+      "column": 23,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "attackTable = await fromUuid(attackTableUuid);"
+    }
+  ]
+}

@@ -6,7 +6,17 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
-No unreleased changes recorded yet.
+### Added
+
+- Added the central verified-environment manifest for Foundry, Dragonbane, Dragonbane Core Set, and YZE Combat.
+- Added an external-source registry where package ownership is separate from the module-wide verified version.
+- Added the shared `@Ref[...]` and `@DisplayRef[...]` symbolic-reference resolver.
+- Added a generated, deterministic inventory of existing `@UUID`, `@DisplayTable`, symbolic reference, and runtime UUID lookup usage.
+- Added integration contracts for the 0.10.0 reference foundation.
+
+### Changed
+
+- Started 0.10.0 development and set the Foundry module source version to `0.10.0`.
 
 ## [0.9.2] - 2026-07-28
 
