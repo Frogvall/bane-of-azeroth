@@ -11,6 +11,7 @@
   ],
   "counts": {
     "runtime-uuid-lookup": 5,
+    "symbolic-display-reference": 19,
     "uuid-link": 9,
     "uuid-literal": 21
   },
@@ -33,6 +34,196 @@
       "classification": "unclassified",
       "snippet": "\"descriptionHtml\": \"<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>\",",
       "label": "Elemental Totem"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 240,
+      "target": "boa:table.kin.any-faction",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Any Faction"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 298,
+      "target": "boa:table.kin.alliance",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Alliance"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 350,
+      "target": "boa:table.kin.horde",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Horde"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 2226,
+      "target": "boa:table.kin.name.dracthyr",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Dracthyr"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 3412,
+      "target": "boa:table.kin.name.draenei",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Draenei"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 4886,
+      "target": "boa:table.kin.name.bronzebeard",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Bronzebeard"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 5775,
+      "target": "boa:table.kin.name.dark-iron",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Dark Iron"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 7303,
+      "target": "boa:table.kin.name.blood-elf",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Blood Elf"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 8209,
+      "target": "boa:table.kin.name.night-elf",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Night Elf"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 9289,
+      "target": "boa:table.kin.name.gnome",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Gnome"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 10320,
+      "target": "boa:table.kin.name.goblin",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Goblin"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 11395,
+      "target": "boa:table.kin.name.human",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Human"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 12438,
+      "target": "boa:table.kin.name.orc",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Orc"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 13394,
+      "target": "boa:table.kin.name.pandaren",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Pandaren"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 14558,
+      "target": "boa:table.kin.name.tauren",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Tauren"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 15624,
+      "target": "boa:table.kin.name.troll",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Troll"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 16610,
+      "target": "boa:table.kin.name.undead",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Undead"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 17688,
+      "target": "boa:table.kin.name.vulpera",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Vulpera"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 18994,
+      "target": "boa:table.kin.name.worgen",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Worgen"
     },
     {
       "kind": "uuid-link",
