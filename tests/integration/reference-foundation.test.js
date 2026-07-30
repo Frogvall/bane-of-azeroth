@@ -62,16 +62,44 @@ function readJson(file) {
   );
 }
 
-describe("0.10.0 reference foundation", () => {
-  test("uses one verified environment for the whole module", () => {
+const SEMVER_PATTERN =
+  /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
+
+function currentReadmeModuleVersion(readme) {
+  const matches = [
+    ...readme.matchAll(
+      /^> \*\*Current Foundry module version:\*\*\s+(\S+)\s*$/gm,
+    ),
+  ];
+
+  expect(matches).toHaveLength(1);
+
+  return matches[0][1];
+}
+
+describe("reference foundation", () => {
+  test("keeps module.json and README versions synchronized", () => {
     const module = readJson(MODULE);
+    const readme = fs.readFileSync(
+      README,
+      "utf8",
+    );
+
+    expect(module.version).toMatch(
+      SEMVER_PATTERN,
+    );
+    expect(
+      currentReadmeModuleVersion(readme),
+    ).toBe(module.version);
+  });
+
+  test("uses one verified environment for the whole module", () => {
     const compatibility = readJson(COMPATIBILITY);
     const readme = fs.readFileSync(
       README,
       "utf8",
     );
 
-    expect(module.version).toBe("0.10.0");
     expect(compatibility).toEqual({
       schemaVersion: 1,
       verifiedEnvironment: {
@@ -93,9 +121,6 @@ describe("0.10.0 reference foundation", () => {
       },
     });
 
-    expect(readme).toContain(
-      "Current Foundry module version:** 0.10.0",
-    );
     for (const version of [
       "14.365",
       "4.0.1",

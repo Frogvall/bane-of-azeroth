@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-shaman",
+  "id": "6d3b1eabef4d9ca7",
+  "name": "Shaman",
+  "sort": 410000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The shamans of Azeroth are intermediaries between the mortal world and the elemental spirits that pervade it. They do not command the elements so much as commune with them, entering into relationships of mutual respect with the spirits of fire, water, earth, and air. Elemental shamans channel this power into devastating offensive magic, calling down lightning and lava with the blessing of the spirits they serve. Enhancement shamans fight in close combat, their weapons empowered by elemental force.</p><p>Restoration shamans heal through cascading waves of spiritual energy that leap from ally to ally, their totem-anchored magic weaving a net of protection across the battlefield.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/shaman.webp\" alt=\"Shaman\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.shaman.shamanic-calling]{Shamanic Calling}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.shaman.bloodlust]{Bloodlust}</h3><p><strong>Requirement:</strong> Shamanic Calling</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.shaman.chain-heal]{Chain Heal}</h3><p><strong>Requirement:</strong> Shamanic Calling</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.shaman.stormstrike]{Stormstrike}</h3><p><strong>Requirement:</strong> Shamanic Calling</p><p><strong>Willpower Points:</strong> 3</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Shaman",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}

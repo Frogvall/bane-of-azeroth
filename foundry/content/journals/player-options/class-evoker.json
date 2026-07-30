@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-evoker",
+  "id": "090c783870452daa",
+  "name": "Evoker",
+  "sort": 340000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The dracthyr evokers are something unique in Azeroth: beings created specifically to wield the combined magical legacy of all five dragonflights. Born from Neltharion&#x27;s ambition, they were designed as weapons and then sealed away, only to awaken in a changed world. As evokers, they have learned to channel draconic magic through their breath, fire and frost and arcane and time and life, in ways no other spellcaster can match.</p><p>They are simultaneously ancient and new, carrying the power of dragonkind in mortal form.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/evoker.webp\" alt=\"Evoker\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.evoker.evokers-legacy]{Evoker's Legacy}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.evoker.ebon-might]{Ebon Might}</h3><p><strong>Requirement:</strong> Evoker&#x27;s Legacy</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.evoker.rewind]{Rewind}</h3><p><strong>Requirement:</strong> Evoker&#x27;s Legacy</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.evoker.tailwind]{Tailwind}</h3><p><strong>Requirement:</strong> Evoker&#x27;s Legacy</p><p><strong>Willpower Points:</strong> 1</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Evoker",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}

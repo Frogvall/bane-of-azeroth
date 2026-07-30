@@ -91,6 +91,622 @@
         "exportSource": null
       },
       "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.4f7e06538e580623",
+      "sort": 300000,
+      "name": "Heroic Class Abilities",
+      "type": "text",
+      "_id": "4f7e06538e580623",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a profession when creating your player character, choose one heroic class ability from this chapter that you start the game with. You must fulfill the requirement for the heroic ability you choose. You are now part of the class from which you chose a heroic ability.</p><p>When you gain heroic abilities during play, you can also choose heroic abilities from your class. You can only ever be part of one class unless your GM says otherwise. World of Warcraft limits which kin can choose certain classes. Bane of Azeroth does not impose such limitations by default, but the GM may do so, for example by limiting Demon Hunters to Elf kin.</p><p>The heroic ability gained through this chapter makes a character somewhat more powerful than a character created using only the Dragonbane core rules. It is equivalent to granting one extra heroic ability at character creation. If a campaign combines characters created with and without Bane of Azeroth, grant the other characters one extra starting heroic ability to keep them equivalent.</p><h2>CLASSES</h2><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.6481009763794d12]{Death Knight}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.0cdb8614e57ae1c3]{Demon Hunter}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.4431fdf454658d91]{Druid}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.090c783870452daa]{Evoker}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.e390904c7ad65044]{Hunter}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.1d558bec0dec9733]{Mage}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.b27e8bdc82a0dfc3]{Monk}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.77ff82d50c218ea8]{Paladin}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.8bab1f743c2cc083]{Priest}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.587a9acac8c9524e]{Rogue}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.6d3b1eabef4d9ca7]{Shaman}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.d49fe70f24331434]{Warlock}</p><p>@UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.29f4ad948094c915]{Warrior}</p>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.heroic-class-abilities"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.6481009763794d12",
+      "sort": 310000,
+      "name": "Death Knight",
+      "type": "text",
+      "_id": "6481009763794d12",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>Death knights are among the most feared warriors in Azeroth&#x27;s history. Created by the Lich King to serve as his most elite soldiers, death knights wield unholy magic, runic power, and the mastery of undeath that their master bestowed upon them. They are not undead in the traditional sense. They are fallen champions, raised and remade, their mortal lives extinguished and replaced with something colder and more terrible.</p><p>Over time, many death knights have broken free of the Lich King&#x27;s domination, and these liberated champions now fight for their own purposes, carrying the weight of what they once were.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/death_knight.webp\" alt=\"Death Knight\"><blockquote class=\"info\"><h3>@UUID[Item.p2qUveF2aGom0pOU]{Death Knight's Rebirth}</h3><p><strong>Requirement:</strong> Axes, Hammers, or Swords 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.ttKCQkUBUcINj3Od]{Death Grip}</h3><p><strong>Requirement:</strong> Death Knight&#x27;s Rebirth</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.B9grTl5KOi08GNba]{Frostreaper}</h3><p><strong>Requirement:</strong> Death Knight&#x27;s Rebirth</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.Dn7a4K6UfKAfgek8]{Raise Ghoul}</h3><p><strong>Requirement:</strong> Death Knight&#x27;s Rebirth</p><p><strong>Willpower Points:</strong> 3</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-death-knight"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.0cdb8614e57ae1c3",
+      "sort": 320000,
+      "name": "Demon Hunter",
+      "type": "text",
+      "_id": "0cdb8614e57ae1c3",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The demon hunters of the Illidari are among the most extreme and controversial figures in Azeroth. Trained by Illidan Stormrage himself, they sacrificed their eyes and much of their identity to consume the essence of demons, turning the Burning Legion&#x27;s power against itself. They are elves, night elves and blood elves, who chose a path that most of their kin consider monstrous, and who carry that stigma alongside their extraordinary power.</p><p>Marked by their blindfolds, their tattoos, and the fel energy that burns within them, demon hunters are warriors walking a permanent razor&#x27;s edge between themselves and the void they consumed.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/demon_hunter.webp\" alt=\"Demon Hunter\"><blockquote class=\"info\"><h3>@UUID[Item.eG3wRvDISSUGLfnc]{Demon Hunter Initiation}</h3><p><strong>Requirement:</strong> Axes, Brawling, Knives, or Swords 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.2aVCfwfEPjZojAgI]{Eye Beam}</h3><p><strong>Requirement:</strong> Demon Hunter Initiation</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.LbTGlaive7wQ3xN2]{Live by the Glaive}</h3><p><strong>Requirement:</strong> Demon Hunter Initiation</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.SoulCleave4mR8kZ]{Soul Cleave}</h3><p><strong>Requirement:</strong> Demon Hunter Initiation</p><p><strong>Willpower Points:</strong> 2</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-demon-hunter"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.4431fdf454658d91",
+      "sort": 330000,
+      "name": "Druid",
+      "type": "text",
+      "_id": "4431fdf454658d91",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The druids of Azeroth are among its oldest and most mysterious guardians. Trained in the traditions passed down from Malfurion Stormrage and the Cenarion Circle, they draw power from the natural world and from the Emerald Dream, the spiritual reflection of Azeroth as it was meant to be. Druids are shapeshifters, healers, and spellcasters, equally at home in bear form defending their allies, in cat form stalking prey through the undergrowth, or calling down starfire from the sky in the form of the moonkin.</p><p>Their connection to nature runs deep, and their patience runs deeper still.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/druid.webp\" alt=\"Druid\"><blockquote class=\"info\"><h3>@UUID[Item.7XGIwTKnDqE3ZvhD]{Druidic Awakening}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.jSyoPlsXX9CcOBQi]{Chosen of Elune}</h3><p><strong>Requirement:</strong> Druidic Awakening</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.cy4TSMJQKlR1RG5w]{King of the Jungle}</h3><p><strong>Requirement:</strong> Druidic Awakening</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.1zM1M11RvPrqc6F7]{Tree of Life}</h3><p><strong>Requirement:</strong> Druidic Awakening</p><p><strong>Willpower Points:</strong> —</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-druid"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.090c783870452daa",
+      "sort": 340000,
+      "name": "Evoker",
+      "type": "text",
+      "_id": "090c783870452daa",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The dracthyr evokers are something unique in Azeroth: beings created specifically to wield the combined magical legacy of all five dragonflights. Born from Neltharion&#x27;s ambition, they were designed as weapons and then sealed away, only to awaken in a changed world. As evokers, they have learned to channel draconic magic through their breath, fire and frost and arcane and time and life, in ways no other spellcaster can match.</p><p>They are simultaneously ancient and new, carrying the power of dragonkind in mortal form.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/evoker.webp\" alt=\"Evoker\"><blockquote class=\"info\"><h3>@UUID[Item.bdF6vg1SjBITnwG5]{Evoker's Legacy}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.Sl2btNo06MMQTCQj]{Ebon Might}</h3><p><strong>Requirement:</strong> Evoker&#x27;s Legacy</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.ao1H1pN9eKBVLBON]{Rewind}</h3><p><strong>Requirement:</strong> Evoker&#x27;s Legacy</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.KbZ487TZTcV7Em9H]{Tailwind}</h3><p><strong>Requirement:</strong> Evoker&#x27;s Legacy</p><p><strong>Willpower Points:</strong> 1</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-evoker"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.e390904c7ad65044",
+      "sort": 350000,
+      "name": "Hunter",
+      "type": "text",
+      "_id": "e390904c7ad65044",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>Hunters are Azeroth&#x27;s masters of the wild. They are trackers and survivalists, archers and beast tamers, operating at the boundary between civilization and the untamed places of the world. What sets a hunter apart is the bond they form with their animal companions, a relationship built on trust, training, and something deeper that defies easy explanation.</p><p>Whether they prefer to fight alongside their beasts, pick off enemies from a distance, or lay traps and engage in close-quarters combat, hunters are among the most self-sufficient fighters in all of Azeroth.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/hunter.webp\" alt=\"Hunter\"><blockquote class=\"info\"><h3>@UUID[Item.blFEw7MLkYlNpsy4]{Hunter's Instincts}</h3><p><strong>Requirement:</strong> Companion Heroic Ability</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.wZM2eY9eN6xdqL5d]{Aimed Shot}</h3><p><strong>Requirement:</strong> Hunter&#x27;s Instincts</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.ANfryDC2vUzxKJz5]{Beast Master}</h3><p><strong>Requirement:</strong> Hunter&#x27;s Instincts</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.MbV2u8CdnDwZkyS6]{Superior Trapper}</h3><p><strong>Requirement:</strong> Hunter&#x27;s Instincts</p><p><strong>Willpower Points:</strong> 3</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-hunter"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.1d558bec0dec9733",
+      "sort": 360000,
+      "name": "Mage",
+      "type": "text",
+      "_id": "1d558bec0dec9733",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The mages of Azeroth are among the most powerful and most dangerous individuals in the world. Trained in the traditions of Dalaran and the arcane schools that predate it, they manipulate the raw fabric of reality through the force of intellect and will.</p><p>Azeroth&#x27;s mages come in many forms: frost mages who encrust their enemies in ice and slow time itself, fire mages who hurl blazing pyroblasts and ignite the air around their targets, and arcane mages who ride waves of pure magical force in surging blasts of focused power. What they share is a commitment to the study of magic as a discipline, and an awareness, sometimes ignored, of the danger that comes with wielding it.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/mage.webp\" alt=\"Mage\"><blockquote class=\"info\"><h3>@UUID[Item.f9Mta7M9w8ruZSL0]{Mage's Brilliance}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.2JTCWcZSE25ZK2wg]{Ice Block}</h3><p><strong>Requirement:</strong> Mage&#x27;s Brilliance</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.chlnu7rRBXdsaqRP]{Living Bomb}</h3><p><strong>Requirement:</strong> Mage&#x27;s Brilliance</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.MaZ4ltolYbPEVuJd]{Time Warp}</h3><p><strong>Requirement:</strong> Mage&#x27;s Brilliance</p><p><strong>Willpower Points:</strong> 2</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-mage"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.b27e8bdc82a0dfc3",
+      "sort": 370000,
+      "name": "Monk",
+      "type": "text",
+      "_id": "b27e8bdc82a0dfc3",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The monks of Azeroth walk the path of the Pandaren, a martial tradition that arrived with the opening of Pandaria and spread quickly to students across both the Horde and the Alliance. Monks blend physical discipline with the manipulation of chi, a spiritual life force that flows through all living things, to achieve extraordinary feats of combat, healing, and focus.</p><p>Brewmasters fight with an improbable combination of acrobatics and alcoholic combustion; mistweavers channel chi into restorative mists that mend wounds at a distance; windwalkers strike with devastating speed, turning the flow of a fight with a single perfectly placed blow.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/monk.webp\" alt=\"Monk\"><blockquote class=\"info\"><h3>@UUID[Item.5lf9dHIKVBA2AoGM]{Monk's Serenity}</h3><p><strong>Requirement:</strong> Brawling 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.Rt1ZUmUjltFEktWm]{Combo Strikes}</h3><p><strong>Requirement:</strong> Monk&#x27;s Serenity</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.gzlUuHeXUc6Hd7zV]{Soothing Mist}</h3><p><strong>Requirement:</strong> Monk&#x27;s Serenity</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.9P7deH0tDnisRMem]{Stagger}</h3><p><strong>Requirement:</strong> Monk&#x27;s Serenity</p><p><strong>Willpower Points:</strong> 1</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-monk"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.77ff82d50c218ea8",
+      "sort": 380000,
+      "name": "Paladin",
+      "type": "text",
+      "_id": "77ff82d50c218ea8",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The paladins of Azeroth are the champions of the Holy Light, warriors who have dedicated themselves to the service of faith and justice, and who wield divine power alongside their martial skill. The Light responds to belief rather than to any specific deity, making Azeroth&#x27;s paladin tradition broader and more varied than it might appear.</p><p>A dwarf Vindicator of the Alliance, a Sunwalker tauren who worships An&#x27;she the sun spirit, and a blood elf Blood Knight who once stole their power from a captive Naaru are all paladins, despite their very different relationships to faith. What they share is conviction, and the power that conviction generates.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/paladin.webp\" alt=\"Paladin\"><blockquote class=\"info\"><h3>@UUID[Item.uWDdnL6xNT6peQdh]{Paladin's Righteousness}</h3><p><strong>Requirement:</strong> Hammers, Spears, or Swords 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.SwcTAB0V7Kui8IDr]{Avenger's Shield}</h3><p><strong>Requirement:</strong> Paladin&#x27;s Righteousness</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.AndvvqU6bjH1YwZk]{Beacon of Light}</h3><p><strong>Requirement:</strong> Paladin&#x27;s Righteousness</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.2MvSQhUyotNYLFwy]{Blade of Justice}</h3><p><strong>Requirement:</strong> Paladin&#x27;s Righteousness</p><p><strong>Willpower Points:</strong> 3</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-paladin"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.8bab1f743c2cc083",
+      "sort": 390000,
+      "name": "Priest",
+      "type": "text",
+      "_id": "8bab1f743c2cc083",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The priests of Azeroth are channelers of divine power in all its forms, from the brilliant radiance of the Holy Light to the consuming shadows of the Void. Holy priests are beacons of hope on the battlefield, mending wounds and bolstering spirits with restorative magic. Discipline priests weave protective wards and sacred power words into their spellcasting, shielding allies as they fight.</p><p>Shadow priests abandon the light entirely, plumbing the depths of the Void for destructive psychic power that corrodes the minds and bodies of their enemies. All three traditions require profound faith, though the nature of what they have faith in differs considerably.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/priest.webp\" alt=\"Priest\"><blockquote class=\"info\"><h3>@UUID[Item.Ae6NFaTEysKIvBOO]{Priest's Zeal}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.B9kWg7ydZRZHLOOi]{Darkness}</h3><p><strong>Requirement:</strong> Priest&#x27;s Zeal</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.5neIjh4Z05m4hPQx]{Power Word: Shield}</h3><p><strong>Requirement:</strong> Priest&#x27;s Zeal</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.XiExl4bRbWhp28v6]{Sanctify}</h3><p><strong>Requirement:</strong> Priest&#x27;s Zeal</p><p><strong>Willpower Points:</strong> 3</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-priest"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.587a9acac8c9524e",
+      "sort": 400000,
+      "name": "Rogue",
+      "type": "text",
+      "_id": "587a9acac8c9524e",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>Azeroth&#x27;s rogues are a diverse and pragmatic lot. Whether they operate as assassins in the service of SI:7, as independent operators selling their skills to the highest bidder, or as agents of their own inscrutable agendas, rogues share a commitment to efficiency, precision, and the advantages that come from going unseen. They are the world&#x27;s poisoners, infiltrators, and opportunists, and occasionally its finest practitioners of the art of the perfectly placed blade.</p><p>In a world of armies and spellcasters and ancient powers, the rogue&#x27;s greatest asset is the one nobody ever expects: information.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/rogue.webp\" alt=\"Rogue\"><blockquote class=\"info\"><h3>@UUID[Item.YGbcsXdT61RYTpjT]{Roguish Cunning}</h3><p><strong>Requirement:</strong> Knives 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.Gey023AgZFHY2eWb]{Dirty Fighting}</h3><p><strong>Requirement:</strong> Roguish Cunning</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.lVzjJ1DfzMFTmOEs]{Envenom Weapons}</h3><p><strong>Requirement:</strong> Roguish Cunning</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.4ZvH6CerrczSUTeb]{Shadowstrike}</h3><p><strong>Requirement:</strong> Roguish Cunning</p><p><strong>Willpower Points:</strong> 2</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-rogue"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.6d3b1eabef4d9ca7",
+      "sort": 410000,
+      "name": "Shaman",
+      "type": "text",
+      "_id": "6d3b1eabef4d9ca7",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The shamans of Azeroth are intermediaries between the mortal world and the elemental spirits that pervade it. They do not command the elements so much as commune with them, entering into relationships of mutual respect with the spirits of fire, water, earth, and air. Elemental shamans channel this power into devastating offensive magic, calling down lightning and lava with the blessing of the spirits they serve. Enhancement shamans fight in close combat, their weapons empowered by elemental force.</p><p>Restoration shamans heal through cascading waves of spiritual energy that leap from ally to ally, their totem-anchored magic weaving a net of protection across the battlefield.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/shaman.webp\" alt=\"Shaman\"><blockquote class=\"info\"><h3>@UUID[Item.kSqCKYm8yIBWHo9Y]{Shamanic Calling}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.UfCB2AZHszINpPvJ]{Bloodlust}</h3><p><strong>Requirement:</strong> Shamanic Calling</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.bIsyeDm1X7z6Hdi0]{Chain Heal}</h3><p><strong>Requirement:</strong> Shamanic Calling</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.MSPREyfVTRi4uUh3]{Stormstrike}</h3><p><strong>Requirement:</strong> Shamanic Calling</p><p><strong>Willpower Points:</strong> 3</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-shaman"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.d49fe70f24331434",
+      "sort": 420000,
+      "name": "Warlock",
+      "type": "text",
+      "_id": "d49fe70f24331434",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The warlocks of Azeroth traffic in powers that most consider forbidden. Drawing on the energies of the Twisting Nether, the chaotic space between worlds where demons dwell, they bind demonic servants, curse their enemies with afflictions that fester and spread, and hurl bolts of pure fel energy with the casual confidence of those who have made their bargains and intend to collect. Warlocks are feared and distrusted across Azeroth, and for good reason.</p><p>The power they wield has a cost, though most warlocks will tell you the cost falls on someone else.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/warlock.webp\" alt=\"Warlock\"><blockquote class=\"info\"><h3>@UUID[Item.nLxCVDvXyvlLaXl1]{Warlock's Ambition}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.MASYIf5D89N2pbIt]{Demonologist}</h3><p><strong>Requirement:</strong> Warlock&#x27;s Ambition</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.7jAxtKXRL0m8wBHo]{Life Drain}</h3><p><strong>Requirement:</strong> Warlock&#x27;s Ambition</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.hozY0JyCJR0crKbK]{Souls Collector}</h3><p><strong>Requirement:</strong> Warlock&#x27;s Ambition</p><p><strong>Willpower Points:</strong> 1</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-warlock"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlPlayerOpt.29f4ad948094c915",
+      "sort": 430000,
+      "name": "Warrior",
+      "type": "text",
+      "_id": "29f4ad948094c915",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The warriors of Azeroth are its backbone. They are not defined by magic or by divine favor, but by the simple fact that they are better at fighting than almost anyone else alive. Arms warriors wield massive two-handed weapons with tactical precision, reading the flow of battle and delivering devastating strikes at exactly the right moment. Fury warriors enter a frenzy of dual-wielded aggression, taking hits without slowing and hitting harder for it.</p><p>Protection warriors stand like walls between their allies and whatever threatens them, using every technique in their considerable arsenal to keep enemies focused on them and away from everyone else.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/warrior.webp\" alt=\"Warrior\"><blockquote class=\"info\"><h3>@UUID[Item.Zm1EbxNW5SL20lma]{Warrior's Rage}</h3><p><strong>Requirement:</strong> Axes, Hammers, or Swords 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.JZPERHnYwztGbh5S]{Hamstring}</h3><p><strong>Requirement:</strong> Warrior&#x27;s Rage</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.69NxpqbxiReLf6zm]{Retaliation}</h3><p><strong>Requirement:</strong> Warrior&#x27;s Rage</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@UUID[Item.LMt2nYu0xILSRUJy]{Sunder Armor}</h3><p><strong>Requirement:</strong> Warrior&#x27;s Rage</p><p><strong>Willpower Points:</strong> 3</p></blockquote>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.player-options.class-warrior"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null
     }
   ],
   "ownership": {

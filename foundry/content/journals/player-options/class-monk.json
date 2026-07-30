@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-monk",
+  "id": "b27e8bdc82a0dfc3",
+  "name": "Monk",
+  "sort": 370000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The monks of Azeroth walk the path of the Pandaren, a martial tradition that arrived with the opening of Pandaria and spread quickly to students across both the Horde and the Alliance. Monks blend physical discipline with the manipulation of chi, a spiritual life force that flows through all living things, to achieve extraordinary feats of combat, healing, and focus.</p><p>Brewmasters fight with an improbable combination of acrobatics and alcoholic combustion; mistweavers channel chi into restorative mists that mend wounds at a distance; windwalkers strike with devastating speed, turning the flow of a fight with a single perfectly placed blow.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/monk.webp\" alt=\"Monk\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.monk.monks-serenity]{Monk's Serenity}</h3><p><strong>Requirement:</strong> Brawling 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.monk.combo-strikes]{Combo Strikes}</h3><p><strong>Requirement:</strong> Monk&#x27;s Serenity</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.monk.soothing-mist]{Soothing Mist}</h3><p><strong>Requirement:</strong> Monk&#x27;s Serenity</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.monk.stagger]{Stagger}</h3><p><strong>Requirement:</strong> Monk&#x27;s Serenity</p><p><strong>Willpower Points:</strong> 1</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Monk",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}

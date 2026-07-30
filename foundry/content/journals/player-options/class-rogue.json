@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-rogue",
+  "id": "587a9acac8c9524e",
+  "name": "Rogue",
+  "sort": 400000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>Azeroth&#x27;s rogues are a diverse and pragmatic lot. Whether they operate as assassins in the service of SI:7, as independent operators selling their skills to the highest bidder, or as agents of their own inscrutable agendas, rogues share a commitment to efficiency, precision, and the advantages that come from going unseen. They are the world&#x27;s poisoners, infiltrators, and opportunists, and occasionally its finest practitioners of the art of the perfectly placed blade.</p><p>In a world of armies and spellcasters and ancient powers, the rogue&#x27;s greatest asset is the one nobody ever expects: information.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/rogue.webp\" alt=\"Rogue\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.rogue.roguish-cunning]{Roguish Cunning}</h3><p><strong>Requirement:</strong> Knives 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.rogue.dirty-fighting]{Dirty Fighting}</h3><p><strong>Requirement:</strong> Roguish Cunning</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.rogue.envenom-weapons]{Envenom Weapons}</h3><p><strong>Requirement:</strong> Roguish Cunning</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.rogue.shadowstrike]{Shadowstrike}</h3><p><strong>Requirement:</strong> Roguish Cunning</p><p><strong>Willpower Points:</strong> 2</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Rogue",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}

@@ -224,7 +224,7 @@ describe("curated Player Options Journal", () => {
     }
   });
 
-  test("generates two pages and resolves every symbolic RollTable reference", () => {
+  test("generates Player Options pages and resolves every symbolic RollTable reference", () => {
     const kinSource =
       readJson(KIN_SOURCE);
     const derivedSource =
@@ -234,7 +234,7 @@ describe("curated Player Options Journal", () => {
     const journal =
       readJson(GENERATED);
 
-    expect(journal.pages).toHaveLength(2);
+    expect(journal.pages).toHaveLength(16);
 
     const kinPage =
       journal.pages.find(
@@ -250,7 +250,7 @@ describe("curated Player Options Journal", () => {
     expect(kinPage).toBeDefined();
     expect(derivedPage).toBeDefined();
     expect(
-      journal.pages.map(
+      journal.pages.slice(0, 2).map(
         page => page._id,
       ),
     ).toEqual([

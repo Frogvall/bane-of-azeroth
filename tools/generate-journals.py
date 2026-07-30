@@ -394,6 +394,74 @@ def build_internal_references(
     return references
 
 
+def load_internal_item_references(
+    adventure_directory: Path,
+) -> dict[str, dict[str, str]]:
+    item_root = adventure_directory / "Item"
+    if not item_root.is_dir():
+        raise GenerationError(
+            "Adventure Item directory is missing."
+        )
+
+    references: dict[str, dict[str, str]] = {}
+    ids: set[str] = set()
+
+    for path in sorted(item_root.rglob("*.json")):
+        if path.name == "_Folder.json":
+            continue
+
+        document = read_json(path)
+        if not isinstance(document, dict):
+            raise GenerationError(
+                f"Item source must be an object: {path}"
+            )
+
+        flags = document.get("flags")
+        module_flags = (
+            flags.get(MODULE_ID)
+            if isinstance(flags, dict)
+            else None
+        )
+        content_key = (
+            module_flags.get("contentKey")
+            if isinstance(module_flags, dict)
+            else None
+        )
+        if not isinstance(content_key, str):
+            continue
+
+        document_id = document.get("_id")
+        if (
+            not isinstance(document_id, str)
+            or not ID_PATTERN.fullmatch(document_id)
+        ):
+            raise GenerationError(
+                "Item with content key "
+                f"{content_key!r} has an invalid "
+                f"ID in {path}."
+            )
+
+        reference_key = f"boa:item.{content_key}"
+        if reference_key in references:
+            raise GenerationError(
+                "Duplicate internal Item reference: "
+                f"{reference_key}"
+            )
+        if document_id in ids:
+            raise GenerationError(
+                "Duplicate internal Item ID: "
+                f"{document_id}"
+            )
+
+        references[reference_key] = {
+            "uuid": f"Item.{document_id}",
+            "documentType": "Item",
+        }
+        ids.add(document_id)
+
+    return references
+
+
 def load_internal_roll_table_references(
     repo_root: Path,
 ) -> dict[str, dict[str, str]]:
@@ -969,6 +1037,11 @@ def expected_outputs(
     )
     references = build_internal_references(
         documents
+    )
+    references.update(
+        load_internal_item_references(
+            adventure_directory
+        )
     )
     references.update(
         load_internal_roll_table_references(

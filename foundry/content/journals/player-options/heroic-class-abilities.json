@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "key": "heroic-class-abilities",
+  "id": "4f7e06538e580623",
+  "name": "Heroic Class Abilities",
+  "sort": 300000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a profession when creating your player character, choose one heroic class ability from this chapter that you start the game with. You must fulfill the requirement for the heroic ability you choose. You are now part of the class from which you chose a heroic ability.</p><p>When you gain heroic abilities during play, you can also choose heroic abilities from your class. You can only ever be part of one class unless your GM says otherwise. World of Warcraft limits which kin can choose certain classes. Bane of Azeroth does not impose such limitations by default, but the GM may do so, for example by limiting Demon Hunters to Elf kin.</p><p>The heroic ability gained through this chapter makes a character somewhat more powerful than a character created using only the Dragonbane core rules. It is equivalent to granting one extra heroic ability at character creation. If a campaign combines characters created with and without Bane of Azeroth, grant the other characters one extra starting heroic ability to keep them equivalent.</p><h2>CLASSES</h2><p>@Ref[boa:journal-page.player-options.class-death-knight]{Death Knight}</p><p>@Ref[boa:journal-page.player-options.class-demon-hunter]{Demon Hunter}</p><p>@Ref[boa:journal-page.player-options.class-druid]{Druid}</p><p>@Ref[boa:journal-page.player-options.class-evoker]{Evoker}</p><p>@Ref[boa:journal-page.player-options.class-hunter]{Hunter}</p><p>@Ref[boa:journal-page.player-options.class-mage]{Mage}</p><p>@Ref[boa:journal-page.player-options.class-monk]{Monk}</p><p>@Ref[boa:journal-page.player-options.class-paladin]{Paladin}</p><p>@Ref[boa:journal-page.player-options.class-priest]{Priest}</p><p>@Ref[boa:journal-page.player-options.class-rogue]{Rogue}</p><p>@Ref[boa:journal-page.player-options.class-shaman]{Shaman}</p><p>@Ref[boa:journal-page.player-options.class-warlock]{Warlock}</p><p>@Ref[boa:journal-page.player-options.class-warrior]{Warrior}</p>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities",
+    "sync": "curated",
+    "presentation": "dragonbane-core-compatible"
+  }
+}

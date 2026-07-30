@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-warlock",
+  "id": "d49fe70f24331434",
+  "name": "Warlock",
+  "sort": 420000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The warlocks of Azeroth traffic in powers that most consider forbidden. Drawing on the energies of the Twisting Nether, the chaotic space between worlds where demons dwell, they bind demonic servants, curse their enemies with afflictions that fester and spread, and hurl bolts of pure fel energy with the casual confidence of those who have made their bargains and intend to collect. Warlocks are feared and distrusted across Azeroth, and for good reason.</p><p>The power they wield has a cost, though most warlocks will tell you the cost falls on someone else.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/warlock.webp\" alt=\"Warlock\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.warlock.warlocks-ambition]{Warlock's Ambition}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.warlock.demonologist]{Demonologist}</h3><p><strong>Requirement:</strong> Warlock&#x27;s Ambition</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.warlock.life-drain]{Life Drain}</h3><p><strong>Requirement:</strong> Warlock&#x27;s Ambition</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.warlock.souls-collector]{Souls Collector}</h3><p><strong>Requirement:</strong> Warlock&#x27;s Ambition</p><p><strong>Willpower Points:</strong> 1</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Warlock",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}

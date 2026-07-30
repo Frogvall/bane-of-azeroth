@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-paladin",
+  "id": "77ff82d50c218ea8",
+  "name": "Paladin",
+  "sort": 380000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The paladins of Azeroth are the champions of the Holy Light, warriors who have dedicated themselves to the service of faith and justice, and who wield divine power alongside their martial skill. The Light responds to belief rather than to any specific deity, making Azeroth&#x27;s paladin tradition broader and more varied than it might appear.</p><p>A dwarf Vindicator of the Alliance, a Sunwalker tauren who worships An&#x27;she the sun spirit, and a blood elf Blood Knight who once stole their power from a captive Naaru are all paladins, despite their very different relationships to faith. What they share is conviction, and the power that conviction generates.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/paladin.webp\" alt=\"Paladin\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.paladin.paladins-righteousness]{Paladin's Righteousness}</h3><p><strong>Requirement:</strong> Hammers, Spears, or Swords 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.paladin.avengers-shield]{Avenger's Shield}</h3><p><strong>Requirement:</strong> Paladin&#x27;s Righteousness</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.paladin.beacon-of-light]{Beacon of Light}</h3><p><strong>Requirement:</strong> Paladin&#x27;s Righteousness</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.paladin.blade-of-justice]{Blade of Justice}</h3><p><strong>Requirement:</strong> Paladin&#x27;s Righteousness</p><p><strong>Willpower Points:</strong> 3</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Paladin",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}

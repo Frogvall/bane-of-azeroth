@@ -13,6 +13,10 @@ const SYMBOLIC_REFERENCE_PREFIX = [
   "@Ref",
   "[",
 ].join("");
+const UUID_ITEM_PREFIX = [
+  "@UUID",
+  "[Item.",
+].join("");
 
 function occurrences(value, marker) {
   return String(value ?? "").split(marker).length - 1;
@@ -263,6 +267,97 @@ try {
     );
   }
 
+  const classesPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.heroic-class-abilities"
+  );
+
+  boaCheck(
+    checks,
+    "Player Options contains the Heroic Class Abilities page",
+    Boolean(classesPage)
+  );
+
+  const classPageProblems = [];
+  let classPageCount = 0;
+  let classAbilityLinkCount = 0;
+
+  for (const classEntry of classDefinitions) {
+    const page = journalPage(
+      playerOptions,
+      "journal-page.player-options."
+      + `class-${classEntry.key}`
+    );
+
+    if (!page) {
+      classPageProblems.push(
+        `${classEntry.name}: missing Journal page`
+      );
+      continue;
+    }
+
+    classPageCount += 1;
+    const html =
+      page.text?.content ?? "";
+    const imagePath =
+      "modules/bane-of-azeroth/"
+      + "assets/journals/classes/"
+      + `${classEntry.key.replaceAll("-", "_")}.webp`;
+
+    if (!html.includes(`src="${imagePath}"`)) {
+      classPageProblems.push(
+        `${classEntry.name}: missing class illustration`
+      );
+    }
+
+    for (const ability of classEntry.abilities ?? []) {
+      const contentKey =
+        "heroic-class-ability."
+        + `${classEntry.key}.${ability.key}`;
+      const item = boaFindWorldItem(
+        contentKey,
+        "ability"
+      );
+
+      if (!item) {
+        classPageProblems.push(
+          `${classEntry.name}: missing ${contentKey}`
+        );
+        continue;
+      }
+
+      const linkMarker =
+        `${UUID_ITEM_PREFIX}${item.id}]`;
+
+      if (!html.includes(linkMarker)) {
+        classPageProblems.push(
+          `${classEntry.name}: missing link to ${ability.name}`
+        );
+      } else {
+        classAbilityLinkCount += 1;
+      }
+    }
+  }
+
+  boaCheckEqual(
+    checks,
+    "Player Options contains 13 class pages",
+    classPageCount,
+    13
+  );
+  boaCheckEqual(
+    checks,
+    "Class pages contain 52 linked Heroic Class Abilities",
+    classAbilityLinkCount,
+    52
+  );
+  boaCheck(
+    checks,
+    "Class pages use their illustrations and linked Ability Items",
+    classPageProblems.length === 0,
+    classPageProblems.join("\n")
+  );
+
   if (creditsPage) {
     boaCheck(
       checks,
@@ -277,11 +372,11 @@ try {
   if (playerOptions) {
     boaCheckEqual(
       checks,
-      "Player Options has exactly two pages",
+      "Player Options has exactly sixteen pages",
       boaCollectionValues(
         playerOptions.pages
       ).length,
-      2
+      16
     );
     boaCheckEqual(
       checks,

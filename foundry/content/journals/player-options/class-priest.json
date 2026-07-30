@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-priest",
+  "id": "8bab1f743c2cc083",
+  "name": "Priest",
+  "sort": 390000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The priests of Azeroth are channelers of divine power in all its forms, from the brilliant radiance of the Holy Light to the consuming shadows of the Void. Holy priests are beacons of hope on the battlefield, mending wounds and bolstering spirits with restorative magic. Discipline priests weave protective wards and sacred power words into their spellcasting, shielding allies as they fight.</p><p>Shadow priests abandon the light entirely, plumbing the depths of the Void for destructive psychic power that corrodes the minds and bodies of their enemies. All three traditions require profound faith, though the nature of what they have faith in differs considerably.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/priest.webp\" alt=\"Priest\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.priest.priests-zeal]{Priest's Zeal}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.priest.darkness]{Darkness}</h3><p><strong>Requirement:</strong> Priest&#x27;s Zeal</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.priest.power-word-shield]{Power Word: Shield}</h3><p><strong>Requirement:</strong> Priest&#x27;s Zeal</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.priest.sanctify]{Sanctify}</h3><p><strong>Requirement:</strong> Priest&#x27;s Zeal</p><p><strong>Willpower Points:</strong> 3</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Priest",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}

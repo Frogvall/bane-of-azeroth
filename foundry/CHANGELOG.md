@@ -6,72 +6,42 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
-### Added
-- Added runtime developer-test coverage for module assets and imported Journals, including embedded Kin RollTables.
-
-- Added lossless WebP Journal assets generated from checked-in Homebrewery PNG masters.
-- Added a deterministic asset manifest and dependency-free CI verification for Journal artwork.
-
-- Added the curated Kin chapter to the Player Options Journal.
-- Added scoped Journal styling for Kin sections, ability boxes, and tables.
-
-### Changed
-- Added dedicated Kin and class icons to generated Foundry content, including linked Kin RollTable results.
-
-- Fixed Kin Journal RollTables to show linked Kin documents and visible name results.
-- Moved Derived Ratings to its own Player Options Journal page.
-- Packed the Adventure source directory directly to avoid an empty outer compendium folder.
-
-- Rebuilt the Kin Journal page using Dragonbane Core-compatible Journal structure.
-- Replaced static Kin choice and name tables with 19 generated RollTables and added all converted Kin artwork.
-- Removed the custom Kin Journal presentation CSS in favor of the Dragonbane system theme.
-
-- Split Journal sources into one directory per JournalEntry and one JSON file per page.
-- Converted Credits to curated HTML source and removed build-time Homebrewery extraction from Journal generation.
-
-- Moved development system-test reports into a dedicated flat Journal folder.
-- Renamed the development-only report folder to `Bane of Azeroth - System Tests`.
-
-### Fixed
-- Removed an empty folder that leaked into the Adventure compendium while keeping the Journal folder embedded in the Adventure.
-
-- Added LevelDB source keys to generated JournalEntry pages and folders.
+## [0.10.1] - 2026-07-30
 
 ### Added
 
-- Added generated JournalEntry infrastructure with Credits as the first curated pilot.
-- Reserved stable parent JournalEntry IDs for Player Options, Appendices, and Foundry VTT Guide.
-- Added symbolic `@Ref[...]` and `@DisplayRef[...]` resolution to the Journal generator.
-- Added Adventure and integration coverage for generated JournalEntries.
+- Added a curated Heroic Class Abilities parent page and thirteen class pages under Player Options.
+- Added all thirteen class illustrations to the generated Journal.
+- Added 52 symbolic links from class pages to the generated Heroic Class Ability Items.
+- Added generic internal Item reference discovery to Journal generation.
+- Expanded integration and Foundry system-test coverage for class pages, illustrations, and Ability links.
 
 ### Changed
 
-- Moved module compatibility and external reference registries from `foundry/content` to `foundry/config`.
-- Kept generated runtime reference data under `foundry/generated` and generated audit output under `generated`.
-- Made the external UUID Macro integration test source-based, without Python or `pack-src` assumptions.
+- Set the Foundry module content version to `0.10.1`.
+- Kept complete Heroic Class Ability rules authoritative in Item documents instead of duplicating them into Journal source.
+
+## [0.10.0] - 2026-07-30
 
 ### Added
 
-- Added generated external UUID verification to the Run All system-test suite.
-- Added an installable generated external-reference JavaScript module derived from the source registries.
-- Added literal UUID discovery to the reference inventory.
+- Added imported **Credits** and **Player Options** Journals to the Bane of Azeroth Adventure.
+- Added the complete **Kin** Journal page with illustrations for all sixteen playable kin.
+- Added **Derived Ratings** as a separate Player Options page.
+- Added three linked Kin selection RollTables and sixteen Kin name RollTables.
+- Added dedicated icons for all sixteen Kin Items.
+- Added class-specific icons to all fifty-two Heroic Class Ability Items.
+- Added internal Journal navigation and symbolic links to imported Foundry documents.
 
 ### Changed
 
-- Centralized the Dragonbane Core lethal-poison JournalEntryPage UUID for runtime, Common Animal generation, and system tests.
-- Limited the reference inventory to authoritative source areas instead of generated `pack-src` output.
+- Kin selection tables now link directly to the imported Kin Items and use the same icons as those documents.
+- Kin name tables now display their generated names correctly in embedded Journal tables.
+- Journal pages use Dragonbane-compatible presentation and styling.
 
-### Added
+### Testing
 
-- Added the central verified-environment manifest for Foundry, Dragonbane, Dragonbane Core Set, and YZE Combat.
-- Added an external-source registry where package ownership is separate from the module-wide verified version.
-- Added the shared `@Ref[...]` and `@DisplayRef[...]` symbolic-reference resolver.
-- Added a generated, deterministic inventory of existing `@UUID`, `@DisplayTable`, symbolic reference, and runtime UUID lookup usage.
-- Added integration contracts for the 0.10.0 reference foundation.
-
-### Changed
-
-- Started 0.10.0 development and set the Foundry module source version to `0.10.0`.
+- Added generator, integration, and Foundry developer-test coverage for Journals, assets, document links, and Kin RollTables.
 
 ## [0.9.2] - 2026-07-28
 

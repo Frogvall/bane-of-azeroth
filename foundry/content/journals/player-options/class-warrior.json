@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-warrior",
+  "id": "29f4ad948094c915",
+  "name": "Warrior",
+  "sort": 430000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The warriors of Azeroth are its backbone. They are not defined by magic or by divine favor, but by the simple fact that they are better at fighting than almost anyone else alive. Arms warriors wield massive two-handed weapons with tactical precision, reading the flow of battle and delivering devastating strikes at exactly the right moment. Fury warriors enter a frenzy of dual-wielded aggression, taking hits without slowing and hitting harder for it.</p><p>Protection warriors stand like walls between their allies and whatever threatens them, using every technique in their considerable arsenal to keep enemies focused on them and away from everyone else.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/warrior.webp\" alt=\"Warrior\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.warrior.warriors-rage]{Warrior's Rage}</h3><p><strong>Requirement:</strong> Axes, Hammers, or Swords 12</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.warrior.hamstring]{Hamstring}</h3><p><strong>Requirement:</strong> Warrior&#x27;s Rage</p><p><strong>Willpower Points:</strong> 2</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.warrior.retaliation]{Retaliation}</h3><p><strong>Requirement:</strong> Warrior&#x27;s Rage</p><p><strong>Willpower Points:</strong> 3</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.warrior.sunder-armor]{Sunder Armor}</h3><p><strong>Requirement:</strong> Warrior&#x27;s Rage</p><p><strong>Willpower Points:</strong> 3</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Warrior",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}

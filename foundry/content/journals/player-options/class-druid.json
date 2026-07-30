@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "key": "class-druid",
+  "id": "4431fdf454658d91",
+  "name": "Druid",
+  "sort": 330000,
+  "title": {
+    "show": true,
+    "level": 2
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The druids of Azeroth are among its oldest and most mysterious guardians. Trained in the traditions passed down from Malfurion Stormrage and the Cenarion Circle, they draw power from the natural world and from the Emerald Dream, the spiritual reflection of Azeroth as it was meant to be. Druids are shapeshifters, healers, and spellcasters, equally at home in bear form defending their allies, in cat form stalking prey through the undergrowth, or calling down starfire from the sky in the form of the moonkin.</p><p>Their connection to nature runs deep, and their patience runs deeper still.</p><img src=\"modules/bane-of-azeroth/assets/journals/classes/druid.webp\" alt=\"Druid\"><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.druid.druidic-awakening]{Druidic Awakening}</h3><p><strong>Requirement:</strong> One School of Magic</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.druid.chosen-of-elune]{Chosen of Elune}</h3><p><strong>Requirement:</strong> Druidic Awakening</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.druid.king-of-the-jungle]{King of the Jungle}</h3><p><strong>Requirement:</strong> Druidic Awakening</p><p><strong>Willpower Points:</strong> —</p></blockquote><blockquote class=\"info\"><h3>@Ref[boa:item.heroic-class-ability.druid.tree-of-life]{Tree of Life}</h3><p><strong>Requirement:</strong> Druidic Awakening</p><p><strong>Willpower Points:</strong> —</p></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Heroic Class Abilities / Druid",
+    "sync": "curated",
+    "artwork": "included-from-journal-assets",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-heroic-class-ability-items"
+  }
+}
