@@ -3,7 +3,7 @@
   "name": "Combo Strikes",
   "type": "ability",
   "_id": "Rt1ZUmUjltFEktWm",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/monk.webp",
   "system": {
     "itemDescription": "<p>You activate this ability on your turn in combat when performing an unarmed attack, and you can then perform two extra unarmed attacks. The second and third attacks are made with a bane. Finish the first attack, including damage, before rolling the second one, and finish the second attack, including damage, before rolling the third one.</p>",
     "gmDescription": "",

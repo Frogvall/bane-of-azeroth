@@ -3,7 +3,7 @@
   "name": "Hamstring",
   "type": "ability",
   "_id": "JZPERHnYwztGbh5S",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp",
   "system": {
     "itemDescription": "<p>If an enemy tries to move away from you, you can activate this ability to make the enemy automatically fail its EVADE roll. If your free attack then hits, the enemy's movement is reduced to 0 until your turn in the next round. Using this ability can be done out of turn and does not count as an action.</p>",
     "gmDescription": "",

@@ -3,7 +3,7 @@
   "name": "Sanctify",
   "type": "ability",
   "_id": "XiExl4bRbWhp28v6",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/priest.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability when casting a spell that heals a creature. You and all other creatures of your choice within 10 meters heal the same amount of HP.</p>",
     "gmDescription": "",

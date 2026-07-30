@@ -3,7 +3,7 @@
   "name": "Superior Trapper",
   "type": "ability",
   "_id": "MbV2u8CdnDwZkyS6",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes [[/roll 2d8]] damage as it burns or loses its actions and movement for the rest of the round as it is frozen in place (your choice).</p>",
     "gmDescription": "",

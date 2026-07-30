@@ -3,7 +3,7 @@
   "name": "Chain Heal",
   "type": "ability",
   "_id": "bIsyeDm1X7z6Hdi0",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp",
   "system": {
     "itemDescription": "<p>When you heal with a spell or this ability, you can choose an additional creature within 10 meters of the target that was not healed by that spell or this ability. That creature receives the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the Willpower Points for each use.</p>",
     "gmDescription": "",

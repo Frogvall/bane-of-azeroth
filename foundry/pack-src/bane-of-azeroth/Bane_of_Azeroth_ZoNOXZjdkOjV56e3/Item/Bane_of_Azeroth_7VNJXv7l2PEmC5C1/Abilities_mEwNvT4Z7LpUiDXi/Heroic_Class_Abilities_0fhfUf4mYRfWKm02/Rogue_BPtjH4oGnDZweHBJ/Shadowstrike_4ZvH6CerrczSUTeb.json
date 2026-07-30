@@ -3,7 +3,7 @@
   "name": "Shadowstrike",
   "type": "ability",
   "_id": "4ZvH6CerrczSUTeb",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp",
   "system": {
     "itemDescription": "<p>You teleport up to 20 meters to a spot that you can see and may immediately take an action. If the destination is covered in shade or darkness, the action is taken with a boon. You may then teleport back to your original spot.</p>",
     "gmDescription": "",

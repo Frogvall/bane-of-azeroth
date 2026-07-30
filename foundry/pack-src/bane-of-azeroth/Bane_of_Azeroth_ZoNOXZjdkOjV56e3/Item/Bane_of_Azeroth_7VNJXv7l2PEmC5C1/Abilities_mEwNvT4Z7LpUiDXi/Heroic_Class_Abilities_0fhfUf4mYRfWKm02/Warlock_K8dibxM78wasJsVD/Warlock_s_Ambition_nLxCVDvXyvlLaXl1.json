@@ -3,7 +3,7 @@
   "name": "Warlock's Ambition",
   "type": "ability",
   "_id": "nLxCVDvXyvlLaXl1",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp",
   "system": {
     "itemDescription": "<p>When you use POWER FROM THE BODY, you get to keep any excess WP you do not use when casting the spell, up to your maximum WP.</p>",
     "gmDescription": "",

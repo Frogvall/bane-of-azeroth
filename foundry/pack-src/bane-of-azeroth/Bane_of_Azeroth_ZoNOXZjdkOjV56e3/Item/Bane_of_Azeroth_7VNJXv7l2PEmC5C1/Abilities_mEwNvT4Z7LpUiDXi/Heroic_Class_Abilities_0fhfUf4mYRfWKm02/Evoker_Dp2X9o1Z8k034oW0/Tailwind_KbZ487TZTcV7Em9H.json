@@ -3,7 +3,7 @@
   "name": "Tailwind",
   "type": "ability",
   "_id": "KbZ487TZTcV7Em9H",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability on your turn to make the DASH action a free action during that turn.</p>",
     "gmDescription": "",

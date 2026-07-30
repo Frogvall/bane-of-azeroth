@@ -3,7 +3,7 @@
   "name": "Shamanic Calling",
   "type": "ability",
   "_id": "kSqCKYm8yIBWHo9Y",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp",
   "system": {
     "itemDescription": "<p>You know the general spell ELEMENTAL TOTEM. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p><p>You do not have to roll for LANGUAGES when communicating with or trying to understand elementals or their writing.</p>",
     "gmDescription": "",

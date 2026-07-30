@@ -3,7 +3,7 @@
   "name": "Death Grip",
   "type": "ability",
   "_id": "ttKCQkUBUcINj3Od",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
   "system": {
     "itemDescription": "<p>You harness the energy that surrounds and binds all matter. If an enemy and another player character are both within 10 meters of you and the enemy tries to attack the other character, you can activate this ability to pull the enemy toward you and make it attack you instead. Using this ability can be done out of turn and does not count as an action.</p>",
     "gmDescription": "",

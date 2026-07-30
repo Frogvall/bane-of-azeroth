@@ -3,7 +3,7 @@
   "name": "Darkness",
   "type": "ability",
   "_id": "B9kWg7ydZRZHLOOi",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/priest.webp",
   "system": {
     "itemDescription": "<p>You know the general spell SHADOWFORM. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
     "gmDescription": "",

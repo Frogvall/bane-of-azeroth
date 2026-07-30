@@ -3,7 +3,7 @@
   "name": "Ebon Might",
   "type": "ability",
   "_id": "Sl2btNo06MMQTCQj",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability when you cast a spell to give all allies within 10 meters a boon to all rolls. The boon lasts until your turn in the next round.</p>",
     "gmDescription": "",

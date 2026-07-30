@@ -3,7 +3,7 @@
   "name": "Mage's Brilliance",
   "type": "ability",
   "_id": "f9Mta7M9w8ruZSL0",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
   "system": {
     "itemDescription": "<p>You know the SENSE MAGIC magic trick and can cast it without spending Willpower Points. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.</p>",
     "gmDescription": "",

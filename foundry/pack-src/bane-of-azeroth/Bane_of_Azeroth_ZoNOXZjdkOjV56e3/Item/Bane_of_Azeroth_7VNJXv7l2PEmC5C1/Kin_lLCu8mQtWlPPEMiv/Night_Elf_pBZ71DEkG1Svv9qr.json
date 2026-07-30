@@ -3,7 +3,7 @@
   "name": "Night Elf",
   "type": "kin",
   "_id": "pBZ71DEkG1Svv9qr",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/night-elf.webp",
   "system": {
     "itemDescription": "<p>The elves of Azeroth trace their origins to the mystical Well of Eternity, a source of unimaginable arcane power that shaped their society and granted them unparalleled mastery of magic. Over time, their civilization flourished, becoming the dominant force on Azeroth. However, their society shattered during the Sundering, eventually leading to numerous diverse factions and heritages. Elves are typically tall and slender with long pointed ears, and are known for their incredible longevity, keen senses, and exceptional mastery of both war and magic. Elves now find themselves torn between their glorious past and an uncertain future.</p><p>Ten thousand years ago, the kaldorei, or night elves, founded a vast empire, but their reckless use of primal magic brought them to ruin. They retreated to the forests, isolated until the return of the Burning Legion forced them into action. Night elves are easily recognized by their purple or blue skin, and hair that can range from natural greens to twilight purples. With bow, blade, or claw, night elves are fierce defenders of the natural world, and unforgiving enemies of those that would abuse it.</p>",
     "gmDescription": "",

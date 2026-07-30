@@ -3,7 +3,7 @@
   "name": "Soothing Mist",
   "type": "ability",
   "_id": "gzlUuHeXUc6Hd7zV",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/monk.webp",
   "system": {
     "itemDescription": "<p>When you deal damage with an unarmed attack, you can activate this ability to heal another creature within 10 meters of you by the same amount.</p>",
     "gmDescription": "",

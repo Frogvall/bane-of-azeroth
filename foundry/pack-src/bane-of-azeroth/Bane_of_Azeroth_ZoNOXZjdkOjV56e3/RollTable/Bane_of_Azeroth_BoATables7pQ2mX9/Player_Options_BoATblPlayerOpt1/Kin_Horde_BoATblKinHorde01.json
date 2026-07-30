@@ -29,7 +29,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/dracthyr.webp",
       "name": "Dracthyr",
       "documentUuid": "Item.ztgKI970tp6QMho4",
       "description": ""
@@ -60,7 +60,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/blood-elf.webp",
       "name": "Blood Elf",
       "documentUuid": "Item.hFopLTbxckPl8yWG",
       "description": ""
@@ -91,7 +91,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/goblin.webp",
       "name": "Goblin",
       "documentUuid": "Item.A0qYIBYNyCb9QZ05",
       "description": ""
@@ -122,7 +122,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/orc.webp",
       "name": "Orc",
       "documentUuid": "Item.lShZWLHxGRFzTTP4",
       "description": ""
@@ -153,7 +153,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/pandaren.webp",
       "name": "Pandaren",
       "documentUuid": "Item.YB3QGvS8GlZ8AXX2",
       "description": ""
@@ -184,7 +184,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/tauren.webp",
       "name": "Tauren",
       "documentUuid": "Item.o8fnlZLmShMkBpcu",
       "description": ""
@@ -215,7 +215,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/troll.webp",
       "name": "Troll",
       "documentUuid": "Item.C7aZ9suxTaepzNzM",
       "description": ""
@@ -246,7 +246,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/undead.webp",
       "name": "Undead",
       "documentUuid": "Item.ly16IBRwWxSbSDwR",
       "description": ""
@@ -277,7 +277,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "img": "icons/svg/item-bag.svg",
+      "img": "modules/bane-of-azeroth/assets/icons/kin/vulpera.webp",
       "name": "Vulpera",
       "documentUuid": "Item.jjyOrp1GFOYiRqJn",
       "description": ""

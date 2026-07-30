@@ -3,7 +3,7 @@
   "name": "Blade of Justice",
   "type": "ability",
   "_id": "2MvSQhUyotNYLFwy",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability when you hit an enemy with a melee weapon, but before rolling for damage. The attack deals an extra D8 damage, or 2D8 damage to an undead target, and is considered magical.</p>",
     "gmDescription": "",

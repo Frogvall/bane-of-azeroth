@@ -3,7 +3,7 @@
   "name": "Avenger's Shield",
   "type": "ability",
   "_id": "SwcTAB0V7Kui8IDr",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability as an action if you are wielding a shield. You hurl your shield at a creature within 10 meters, and it then bounces to a creature of your choice within 10 meters of the first target, and again to a third creature within 10 meters of the second target. It then returns to your hand. Make separate attacks with your shield against all three targets with a bane. Finish the first attack, including damage, before rolling the second one, and finish the second one, including damage, before rolling the third one. Creatures that are hit have a bane when attacking any creature other than you until your turn in the next round.</p>",
     "gmDescription": "",

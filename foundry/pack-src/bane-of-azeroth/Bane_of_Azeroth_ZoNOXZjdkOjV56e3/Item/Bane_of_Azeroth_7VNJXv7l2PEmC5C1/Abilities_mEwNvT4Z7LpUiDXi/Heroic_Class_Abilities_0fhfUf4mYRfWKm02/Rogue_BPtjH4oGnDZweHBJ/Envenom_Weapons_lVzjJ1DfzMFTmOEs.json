@@ -3,7 +3,7 @@
   "name": "Envenom Weapons",
   "type": "ability",
   "_id": "lVzjJ1DfzMFTmOEs",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp",
   "system": {
     "itemDescription": "<p>When you hit with a piercing or slashing weapon, you can activate this ability to also apply one dose of poison that you are carrying, as if it was ingested by the target. You can activate this ability after the roll to hit.</p>",
     "gmDescription": "",

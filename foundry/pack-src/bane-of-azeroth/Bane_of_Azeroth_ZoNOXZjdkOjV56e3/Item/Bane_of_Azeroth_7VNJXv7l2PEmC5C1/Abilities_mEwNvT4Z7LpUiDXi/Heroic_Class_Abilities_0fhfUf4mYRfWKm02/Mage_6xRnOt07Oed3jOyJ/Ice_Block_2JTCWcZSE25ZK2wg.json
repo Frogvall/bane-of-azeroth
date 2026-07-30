@@ -3,7 +3,7 @@
   "name": "Ice Block",
   "type": "ability",
   "_id": "2JTCWcZSE25ZK2wg",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability when you are about to take damage (no action). You become immune to damage this round and the next, including the damage that triggered this ability. For this duration, you are frozen in place and cannot move or take any actions. You can activate this ability after it has been determined that you are hit, but before the roll for damage.</p>",
     "gmDescription": "",

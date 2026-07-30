@@ -3,7 +3,7 @@
   "name": "Vulpera",
   "type": "kin",
   "_id": "jjyOrp1GFOYiRqJn",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/vulpera.webp",
   "system": {
     "itemDescription": "<p>Native to the desolate sands of Vol'dun, vulpera are known for their resourcefulness, creativity, and cunning. With fox-like features and small but agile builds, they navigate the harsh desert terrain with ease. Skilled traders and negotiators, vulpera excel in finding solutions to problems and exploiting opportunities for profit. Their history is marked by a legacy of survival and adaptation, as they thrive amidst danger and uncertainty. Despite their diminutive size, vulpera possess a fierce determination to overcome challenges and safeguard their way of life.</p>",
     "gmDescription": "",

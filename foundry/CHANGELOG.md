@@ -15,6 +15,7 @@ The project is currently in early alpha. Rules, document structures, compendium 
 - Added scoped Journal styling for Kin sections, ability boxes, and tables.
 
 ### Changed
+- Added dedicated Kin and class icons to generated Foundry content, including linked Kin RollTable results.
 
 - Fixed Kin Journal RollTables to show linked Kin documents and visible name results.
 - Moved Derived Ratings to its own Player Options Journal page.

@@ -3,7 +3,7 @@
   "name": "Souls Collector",
   "type": "ability",
   "_id": "hozY0JyCJR0crKbK",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp",
   "system": {
     "itemDescription": "<p>When you or an ally deals damage that brings another non-monster creature to 0 HP, you can activate this ability (no action) to store the enemy's soul in a soul shard. You can consume a shard as an action to recover D3 WP. Any remaining soul shards are lost when you finish a shift rest.</p>",
     "gmDescription": "",

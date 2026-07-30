@@ -3,7 +3,7 @@
   "name": "Worgen",
   "type": "kin",
   "_id": "FAwIDwvx2p8t8MrK",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/worgen.webp",
   "system": {
     "itemDescription": "<p>Worgen are large, lupine humanoids that walk upright, hunt and howl like wolves, and can run on all fours. Their origins lie in an ancient curse born from a night elf druidic ritual seeking to harness the fury of the wolf. Thought lost, the curse resurfaced in Gilneas, transforming those bitten or who drink worgen blood. Without control, the afflicted may succumb to mindless ferocity, but with discipline, medication, and magic, some retain a semblance of their former selves.</p>",
     "gmDescription": "",

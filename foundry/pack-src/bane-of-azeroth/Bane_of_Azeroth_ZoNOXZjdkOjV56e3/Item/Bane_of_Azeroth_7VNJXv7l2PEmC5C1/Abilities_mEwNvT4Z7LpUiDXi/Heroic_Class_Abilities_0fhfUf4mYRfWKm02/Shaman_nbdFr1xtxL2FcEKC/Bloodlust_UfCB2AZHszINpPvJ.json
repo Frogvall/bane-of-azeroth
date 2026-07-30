@@ -3,7 +3,7 @@
   "name": "Bloodlust",
   "type": "ability",
   "_id": "UfCB2AZHszINpPvJ",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp",
   "system": {
     "itemDescription": "<p>Your howl makes your friends' blood boil. Activating this ability (an action in combat) gives all allies within 10 meters an extra action during their turn. The affected allies also become Angry, if they are not already. If an ally uses a reaction, or has already used one this round, they take their turn with no extra action, or may use another reaction. The effect lasts until your turn in the next round.</p>",
     "gmDescription": "",

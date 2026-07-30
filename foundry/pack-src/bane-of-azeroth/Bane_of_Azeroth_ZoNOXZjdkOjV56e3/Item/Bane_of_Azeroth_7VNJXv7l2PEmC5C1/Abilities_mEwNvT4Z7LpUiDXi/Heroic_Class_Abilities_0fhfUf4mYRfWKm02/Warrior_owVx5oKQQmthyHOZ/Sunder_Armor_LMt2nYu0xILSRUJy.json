@@ -3,7 +3,7 @@
   "name": "Sunder Armor",
   "type": "ability",
   "_id": "LMt2nYu0xILSRUJy",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability when you hit a creature with an attack to sunder its armor. For this attack and until your turn in the next round, the creature does not benefit from its armor rating.</p>",
     "gmDescription": "",

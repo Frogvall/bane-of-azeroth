@@ -3,7 +3,7 @@
   "name": "Priest's Zeal",
   "type": "ability",
   "_id": "Ae6NFaTEysKIvBOO",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/priest.webp",
   "system": {
     "itemDescription": "<p>Your mind fills you with inner fire. Whenever you cast a spell, your armor rating increases by one step for each WP you spend on casting the spell. The effect lasts until your turn in the next round.</p>",
     "gmDescription": "",

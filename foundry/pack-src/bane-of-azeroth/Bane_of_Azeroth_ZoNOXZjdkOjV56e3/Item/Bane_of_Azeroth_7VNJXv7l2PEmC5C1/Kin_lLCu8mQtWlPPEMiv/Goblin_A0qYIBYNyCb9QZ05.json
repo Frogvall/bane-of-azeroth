@@ -3,7 +3,7 @@
   "name": "Goblin",
   "type": "kin",
   "_id": "A0qYIBYNyCb9QZ05",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/goblin.webp",
   "system": {
     "itemDescription": "<p>Goblins are a cunning and entrepreneurial species, originating from the Isle of Kezan where they overthrew their troll overlords using their guile and genius. Physically, they are small, green-skinned creatures with sharp teeth and a hunched posture. Known for their resourcefulness and greed, goblins excel in trade, technology, and explosive inventions. Despite their mercenary nature, they have become valuable, if expensive allies to both the Horde and the Alliance during Azeroth's many conflicts.</p>",
     "gmDescription": "",

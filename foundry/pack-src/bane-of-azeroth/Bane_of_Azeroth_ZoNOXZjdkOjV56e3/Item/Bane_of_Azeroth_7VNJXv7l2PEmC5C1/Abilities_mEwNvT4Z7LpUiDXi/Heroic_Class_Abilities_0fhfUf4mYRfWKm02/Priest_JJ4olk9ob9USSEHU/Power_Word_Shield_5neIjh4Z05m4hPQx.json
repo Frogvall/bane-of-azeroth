@@ -3,7 +3,7 @@
   "name": "Power Word: Shield",
   "type": "ability",
   "_id": "5neIjh4Z05m4hPQx",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/priest.webp",
   "system": {
     "itemDescription": "<p>If you or a creature within 10 meters of you is hit by an attack, spell, or monster attack, you can activate this ability to shield the target. The damage the target takes from the attack or spell is reduced by [[/roll 2D6]]. Using this ability can be done out of turn and does not count as an action.</p>",
     "gmDescription": "",

@@ -3,7 +3,7 @@
   "name": "Druidic Awakening",
   "type": "ability",
   "_id": "7XGIwTKnDqE3ZvhD",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
   "system": {
     "itemDescription": "<p>You know the general spell SAVAGE INCARNATION. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p><p>When you sleep, you enter a dream state that allows you to stay alert to your surroundings during a shift rest, and you can awaken instantly and at will.</p>",
     "gmDescription": "",

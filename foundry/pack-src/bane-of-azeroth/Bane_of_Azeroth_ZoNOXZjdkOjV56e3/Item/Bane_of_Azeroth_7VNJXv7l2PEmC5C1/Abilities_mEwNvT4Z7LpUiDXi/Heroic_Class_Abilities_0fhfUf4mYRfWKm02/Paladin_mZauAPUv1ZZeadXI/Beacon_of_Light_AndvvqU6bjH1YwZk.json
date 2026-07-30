@@ -3,7 +3,7 @@
   "name": "Beacon of Light",
   "type": "ability",
   "_id": "AndvvqU6bjH1YwZk",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability as an action, making an allied creature within 10 meters a beacon of light. For a stretch of time, whenever you heal yourself or an ally, the beacon of light heals the same amount of HP. This ability also benefits from the HP restored by Paladin's Righteousness when activating this ability.</p>",
     "gmDescription": "",

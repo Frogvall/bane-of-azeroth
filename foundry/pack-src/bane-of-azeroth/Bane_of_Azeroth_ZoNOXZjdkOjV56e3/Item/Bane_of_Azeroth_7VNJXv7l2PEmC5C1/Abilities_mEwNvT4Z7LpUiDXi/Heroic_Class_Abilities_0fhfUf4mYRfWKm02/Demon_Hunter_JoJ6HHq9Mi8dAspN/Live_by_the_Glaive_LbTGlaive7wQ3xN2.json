@@ -3,7 +3,7 @@
   "name": "Live by the Glaive",
   "type": "ability",
   "_id": "LbTGlaive7wQ3xN2",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability (no action) when you make a successful parry to turn the roll into a dragon.</p>",
     "gmDescription": "",

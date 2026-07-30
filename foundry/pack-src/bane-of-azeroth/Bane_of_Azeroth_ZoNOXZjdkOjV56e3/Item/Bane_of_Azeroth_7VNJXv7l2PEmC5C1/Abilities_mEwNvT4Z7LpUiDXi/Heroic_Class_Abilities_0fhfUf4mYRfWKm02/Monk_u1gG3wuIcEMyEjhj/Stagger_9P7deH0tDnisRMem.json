@@ -3,7 +3,7 @@
   "name": "Stagger",
   "type": "ability",
   "_id": "9P7deH0tDnisRMem",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/monk.webp",
   "system": {
     "itemDescription": "<p>When you take damage in combat, you can activate this ability (no action). The damage is halved (rounded up). The next time you take damage in this round, you also take the damage that was reduced by this ability.</p>",
     "gmDescription": "",

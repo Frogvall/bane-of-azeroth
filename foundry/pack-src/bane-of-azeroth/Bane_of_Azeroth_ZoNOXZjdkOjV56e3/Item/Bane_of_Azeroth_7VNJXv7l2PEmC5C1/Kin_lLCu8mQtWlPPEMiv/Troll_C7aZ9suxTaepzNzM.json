@@ -3,7 +3,7 @@
   "name": "Troll",
   "type": "kin",
   "_id": "C7aZ9suxTaepzNzM",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/troll.webp",
   "system": {
     "itemDescription": "<p>Shrouded in ancient lore and mystique, trolls have a history as diverse as their many tribes scattered across Azeroth. With lithe frames, vividly colored skin, and elongated tusks, they exude a wild and primal aura. Trolls revere ancient gods and ancestral spirits, their culture steeped in tradition and spirituality. Fierce warriors and cunning hunters, they thrive in both shadow and sunlight, adapting to various environments with ease. Despite their tribal conflicts, trolls value unity and kinship within their clans. With a resilience honed through generations of survival, they remain formidable adversaries and steadfast allies in the ever-changing world of Azeroth.</p>",
     "gmDescription": "",

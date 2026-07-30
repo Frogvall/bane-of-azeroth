@@ -3,7 +3,7 @@
   "name": "Frostreaper",
   "type": "ability",
   "_id": "B9grTl5KOi08GNba",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
   "system": {
     "itemDescription": "<p>By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you has its movement rate halved, and if it ends its turn within the aura, it must roll BUSHCRAFT to resist cold.</p>",
     "gmDescription": "",

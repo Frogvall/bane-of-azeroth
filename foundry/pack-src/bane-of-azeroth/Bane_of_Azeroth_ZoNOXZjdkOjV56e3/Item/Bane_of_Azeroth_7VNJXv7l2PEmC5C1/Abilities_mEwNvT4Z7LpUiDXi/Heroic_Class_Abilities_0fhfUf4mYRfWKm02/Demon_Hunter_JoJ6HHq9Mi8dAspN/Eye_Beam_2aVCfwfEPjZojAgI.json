@@ -3,7 +3,7 @@
   "name": "Eye Beam",
   "type": "ability",
   "_id": "2aVCfwfEPjZojAgI",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability to make your eyes shoot laser beams at a creature within 20 meters. The attack automatically hits and cannot be parried. It deals 2D8 damage and is considered magical.</p>",
     "gmDescription": "",

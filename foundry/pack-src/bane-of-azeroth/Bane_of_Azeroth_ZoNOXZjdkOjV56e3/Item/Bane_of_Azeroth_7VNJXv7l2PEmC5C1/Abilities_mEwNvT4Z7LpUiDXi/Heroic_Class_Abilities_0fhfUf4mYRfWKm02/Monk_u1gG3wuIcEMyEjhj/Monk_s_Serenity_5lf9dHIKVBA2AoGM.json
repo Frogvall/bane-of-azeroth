@@ -3,7 +3,7 @@
   "name": "Monk's Serenity",
   "type": "ability",
   "_id": "5lf9dHIKVBA2AoGM",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/monk.webp",
   "system": {
     "itemDescription": "<p>The damage of your unarmed attacks increases to D10. If you use IRON FIST, the damage increases to 2D10 for that unarmed attack. You can also parry both melee and ranged attacks unarmed. When parrying, you roll against your skill level for BRAWLING.</p>",
     "gmDescription": "",

@@ -3,7 +3,7 @@
   "name": "Time Warp",
   "type": "ability",
   "_id": "MaZ4ltolYbPEVuJd",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability at the start of another player character's or NPC's turn. You swap initiative cards with that player character or NPC (or group of NPCs acting on the same turn), and it cannot refuse. A monster with multiple turns swaps only the card of the current turn with yours. You act immediately.</p>",
     "gmDescription": "",

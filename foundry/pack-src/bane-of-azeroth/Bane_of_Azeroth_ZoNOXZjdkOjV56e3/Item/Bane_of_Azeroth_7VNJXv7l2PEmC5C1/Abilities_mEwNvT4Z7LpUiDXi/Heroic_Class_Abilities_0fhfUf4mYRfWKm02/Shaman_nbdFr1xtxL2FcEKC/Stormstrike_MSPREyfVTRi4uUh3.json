@@ -3,7 +3,7 @@
   "name": "Stormstrike",
   "type": "ability",
   "_id": "MSPREyfVTRi4uUh3",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp",
   "system": {
     "itemDescription": "<p>You can activate this ability when you hit an enemy with a melee weapon, but before rolling for damage. The attack deals an extra D10 damage and is considered magical.</p>",
     "gmDescription": "",

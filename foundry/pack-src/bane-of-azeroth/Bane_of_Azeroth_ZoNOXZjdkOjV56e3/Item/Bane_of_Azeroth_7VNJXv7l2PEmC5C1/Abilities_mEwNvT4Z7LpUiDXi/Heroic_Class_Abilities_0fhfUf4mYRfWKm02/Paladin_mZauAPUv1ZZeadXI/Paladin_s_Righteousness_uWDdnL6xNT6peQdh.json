@@ -3,7 +3,7 @@
   "name": "Paladin's Righteousness",
   "type": "ability",
   "_id": "uWDdnL6xNT6peQdh",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp",
   "system": {
     "itemDescription": "<p>Whenever you spend WP, you heal yourself or an ally within 2 meters by the same amount. You also always know whether a creature you are looking at is undead.</p>",
     "gmDescription": "",

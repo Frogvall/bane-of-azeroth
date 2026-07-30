@@ -3,7 +3,7 @@
   "name": "Undead",
   "type": "kin",
   "_id": "ly16IBRwWxSbSDwR",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/undead.webp",
   "system": {
     "itemDescription": "<p>When the Scourge marched across Azeroth, it added to its ranks by raising many of its victims to undeath. Many are mindless husks of their former selves, some possess intelligence but are bound to the Scourge, while others have managed to free themselves from the Lich King's will. The Undead kin can be used for any intelligent creature that has been raised to undeath, whether they were animated by the Scourge or by other necromantic means.</p>",
     "gmDescription": "",

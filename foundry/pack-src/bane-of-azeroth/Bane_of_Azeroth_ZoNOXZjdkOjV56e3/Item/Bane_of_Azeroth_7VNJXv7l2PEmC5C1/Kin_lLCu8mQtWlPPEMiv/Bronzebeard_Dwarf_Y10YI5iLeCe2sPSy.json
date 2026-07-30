@@ -3,7 +3,7 @@
   "name": "Bronzebeard Dwarf",
   "type": "kin",
   "_id": "Y10YI5iLeCe2sPSy",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/bronzebeard-dwarf.webp",
   "system": {
     "itemDescription": "<p>Bold and adventurous, dwarves are a hardy people who relish battle, craftsmanship, and exploration. Dwarves are stocky and powerfully built despite their short stature, and often sport intricate, well-groomed beards. They have a rich cultural heritage steeped in tradition and craftsmanship, with a particular fondness for mining, smithing, and engineering. Dwarves value loyalty, courage, and honor above all else, and they are fiercely protective of their clans and homelands. Despite their gruff exterior, dwarves possess a deep sense of camaraderie and kinship, making them stalwart allies and formidable adversaries alike.</p><p>The Bronzebeard clan is preeminent among the various Ironforge dwarf clans of Khaz Modan. During the War of the Three Hammers, they led the dwarves of Ironforge against Thaurissan and the Dark Iron clan. Bronzebeard dwarves are accustomed to the icy climes of Khaz Modan, and are especially attuned to their Titan-forged history.</p>",
     "gmDescription": "",

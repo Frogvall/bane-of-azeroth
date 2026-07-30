@@ -3,7 +3,7 @@
   "name": "Warrior's Rage",
   "type": "ability",
   "_id": "Zm1EbxNW5SL20lma",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp",
   "system": {
     "itemDescription": "<p>You can wield a two-handed melee weapon in one hand. This can be combined with DUAL WIELD.</p>",
     "gmDescription": "",

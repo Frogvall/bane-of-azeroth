@@ -3,7 +3,7 @@
   "name": "Dirty Fighting",
   "type": "ability",
   "_id": "Gey023AgZFHY2eWb",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp",
   "system": {
     "itemDescription": "<p>This heroic ability can only be used if you wield a one-handed weapon in one hand and a one-handed ranged weapon in your other hand. The STR requirement of the weapon in your off hand (you decide whether it is right or left) increases by 3. You activate the ability on your turn in combat and can then perform an extra attack with your second weapon. The second attack is made with a bane. You decide in which order to use your two weapons. Finish the first attack, including damage, before rolling the second one.</p>",
     "gmDescription": "",

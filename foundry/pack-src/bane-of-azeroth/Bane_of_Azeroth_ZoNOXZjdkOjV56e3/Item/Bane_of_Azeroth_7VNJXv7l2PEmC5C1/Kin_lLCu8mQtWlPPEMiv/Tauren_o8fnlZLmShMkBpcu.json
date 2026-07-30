@@ -3,7 +3,7 @@
   "name": "Tauren",
   "type": "kin",
   "_id": "o8fnlZLmShMkBpcu",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/tauren.webp",
   "system": {
     "itemDescription": "<p>With a proud nomadic tradition, the mighty tauren have roamed across Azeroth. From the vast plains of Mulgore to the rugged peaks of Highmountain and beyond, they embody a reverence for nature and ancestral wisdom. Towering in stature with bovine features and tribal adornments, they evoke a primal aura. Tauren prioritize harmony and balance, serving as fierce defenders of nature and their kin. Despite their imposing presence, they possess a gentle spirit and deep connection to the Earth Mother. Their culture emphasizes wisdom, spirituality, and community, shaping them into compassionate allies and formidable foes alike.</p>",
     "gmDescription": "",

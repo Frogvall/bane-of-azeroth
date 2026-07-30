@@ -3,7 +3,7 @@
   "name": "Demon Hunter Initiation",
   "type": "ability",
   "_id": "eG3wRvDISSUGLfnc",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp",
   "system": {
     "itemDescription": "<p>Your infernal metamorphosis gives you advantages in your hunt for demons. Your demonic wings make you glide horizontally instead of falling. Subtract your movement rate from the falling distance before determining falling damage. Your glowing eyes let you ignore the effects of darkness, and you always know whether a creature you are looking at is a demon.</p>",
     "gmDescription": "",

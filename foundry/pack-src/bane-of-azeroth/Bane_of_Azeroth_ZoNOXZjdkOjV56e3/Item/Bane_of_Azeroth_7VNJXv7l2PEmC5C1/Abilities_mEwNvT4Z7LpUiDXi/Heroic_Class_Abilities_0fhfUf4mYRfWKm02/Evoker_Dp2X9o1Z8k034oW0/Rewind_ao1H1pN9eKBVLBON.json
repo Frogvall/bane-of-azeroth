@@ -3,7 +3,7 @@
   "name": "Rewind",
   "type": "ability",
   "_id": "ao1H1pN9eKBVLBON",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp",
   "system": {
     "itemDescription": "<p>You can use your action to restore your own health or an ally's health to the value it had at the start of the last round.</p>",
     "gmDescription": "",

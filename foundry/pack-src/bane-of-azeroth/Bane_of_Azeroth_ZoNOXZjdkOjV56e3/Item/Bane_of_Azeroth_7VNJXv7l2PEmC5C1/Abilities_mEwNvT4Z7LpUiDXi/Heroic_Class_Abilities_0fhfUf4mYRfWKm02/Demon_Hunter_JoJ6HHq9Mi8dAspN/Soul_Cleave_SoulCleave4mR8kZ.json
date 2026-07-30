@@ -3,7 +3,7 @@
   "name": "Soul Cleave",
   "type": "ability",
   "_id": "SoulCleave4mR8kZ",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp",
   "system": {
     "itemDescription": "<p>If you deal damage with an attack to a living creature, you can activate this ability (no action) to heal yourself for the same amount of HP as the target takes in damage.</p>",
     "gmDescription": "",

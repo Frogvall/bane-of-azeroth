@@ -3,7 +3,7 @@
   "name": "Chosen of Elune",
   "type": "ability",
   "_id": "jSyoPlsXX9CcOBQi",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
   "system": {
     "itemDescription": "<p>You know the general spell INCARNATION OF THE STARS. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
     "gmDescription": "",

@@ -45,7 +45,8 @@
             "By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/dracthyr.webp"
     },
     {
       "key": "draenei",
@@ -65,7 +66,8 @@
             "Activating this ability (an action in combat) gives all allies within 10 meters a boon to all rolls and heals the Scared condition. The boon lasts until your turn in the next round."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/draenei.webp"
     },
     {
       "key": "bronzebeard-dwarf",
@@ -86,7 +88,8 @@
             "Your skin turns hard and gray, and any non-magical damage is halved (rounded up). The effect lasts until your turn in the next round. You can activate this ability as a reaction when you are hit by an attack."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/bronzebeard-dwarf.webp"
     },
     {
       "key": "dark-iron-dwarf",
@@ -107,7 +110,8 @@
             "You can activate this ability (no action) when making an attack roll and get a boon to the roll. You also heal a condition of your choice."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/dark-iron-dwarf.webp"
     },
     {
       "key": "blood-elf",
@@ -128,7 +132,8 @@
             "You cast one of the Magic Tricks listed under General Magic. To determine success, roll against any school of magic, or INT, whichever is higher."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/blood-elf.webp"
     },
     {
       "key": "night-elf",
@@ -149,7 +154,8 @@
             "Instead of making a SNEAKING roll you can activate this ability to automatically succeed as if you had rolled a dragon."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/night-elf.webp"
     },
     {
       "key": "gnome",
@@ -170,7 +176,8 @@
             "If the optional rules for grappling are not used, the gnome can use the Hard to Catch kin ability from the core rules instead."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/gnome.webp"
     },
     {
       "key": "goblin",
@@ -191,7 +198,8 @@
             "Alternatively, you can dash as a free action."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/goblin.webp"
     },
     {
       "key": "human",
@@ -211,7 +219,8 @@
             "When rolling for a skill, you can choose to make the roll using another skill of your choice. You must be able to justify how you use the selected skill instead of the normal one. The GM has the final word, but should be lenient."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/human.webp"
     },
     {
       "key": "orc",
@@ -231,7 +240,8 @@
             "If you have zero HP, you can activate this ability to automatically rally (no action), without rolling against WIL or being PERSUADED by someone else."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/orc.webp"
     },
     {
       "key": "pandaren",
@@ -251,7 +261,8 @@
             "You can meditate deeply during a stretch rest. You heal an additional D6 HP and a D6 extra WP, and can recover from an additional condition. You are completely unresponsive during your meditation and cannot be awakened."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/pandaren.webp"
     },
     {
       "key": "tauren",
@@ -271,7 +282,8 @@
             "You can, as an action in combat, slam your hooves into the ground. Make a BRAWLING attack with a bane against all creatures within 2 meters, rolling only once to hit. Each creature hit takes [[/roll D6]] damage and falls to the ground. Roll damage separately for each creature."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/tauren.webp"
     },
     {
       "key": "troll",
@@ -291,7 +303,8 @@
             "By activating this ability (a free action in combat) you recover [[/roll D6]] HP. This can be combined with FAST HEALER for [[/roll 2D6]] HP recovered."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/troll.webp"
     },
     {
       "key": "undead",
@@ -320,7 +333,8 @@
             "You don't need to eat, drink or breathe."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/undead.webp"
     },
     {
       "key": "vulpera",
@@ -340,7 +354,8 @@
             "You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/vulpera.webp"
     },
     {
       "key": "worgen",
@@ -369,7 +384,8 @@
             "By activating this ability (a free action in combat) you change between your humanoid and worgen forms. When in humanoid form, your movement and kin abilities other than this one are the same as if your kin was HUMAN."
           ]
         }
-      ]
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/worgen.webp"
     }
   ]
 }

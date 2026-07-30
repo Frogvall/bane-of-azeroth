@@ -3,7 +3,7 @@
   "name": "Death Knight's Rebirth",
   "type": "ability",
   "_id": "p2qUveF2aGom0pOU",
-  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
   "system": {
     "itemDescription": "<p>You don't need to eat, drink, or breathe. You know how to engrave necromantic runes into a melee weapon. Engraving a rune takes a stretch and replaces any runes you have already engraved, in the same weapon or a different one. You gain the benefits of your chosen rune listed below.</p><ul><li><strong>Fallen Crusader:</strong> Whenever you deal damage to a living creature with the weapon, you heal 1 HP.</li><li><strong>Razorice:</strong> The weapon is cold to the touch, and attacks with it count as magical.</li><li><strong>Unending Thirst:</strong> While wielding the weapon, your movement rate increases by 2.</li></ul>",
     "gmDescription": "",

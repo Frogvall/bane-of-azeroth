@@ -3,7 +3,7 @@
   "name": "Human",
   "type": "kin",
   "_id": "4RlOlXyZbbuTEk0w",
-  "img": "icons/svg/item-bag.svg",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/human.webp",
   "system": {
     "itemDescription": "<p>The young humans have a rich history marked by resilience and adaptability. Emerging from scattered tribes, they founded mighty kingdoms like Stormwind and Kul Tiras. Their appearance varies widely, with diverse skin tones, hair colors, and heights. Humans are driven by community, ambition, and values of courage and honor. Despite internal conflicts, they often unite against common threats, displaying acts of bravery and heroism in the face of adversity. Their ability to adapt and thrive in changing circumstances has made them a vital force in shaping the destiny of Azeroth.</p>",
     "gmDescription": "",
