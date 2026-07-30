@@ -209,7 +209,7 @@ describe("generated Journal infrastructure", () => {
     expect(html).not.toContain("\\page");
   });
 
-  test("emits fvtt-cli LevelDB keys for the generated Journal hierarchy", () => {
+  test("emits fvtt-cli LevelDB keys for Journal documents but not the embedded folder", () => {
     const credits =
       generatedJournalDocuments().find(
         document =>
@@ -226,8 +226,8 @@ describe("generated Journal infrastructure", () => {
     expect(credits._key).toBe(
       "!journal!BoAJrnlCredits01",
     );
-    expect(folder._key).toBe(
-      "!folders!BoAJournals00001",
+    expect(folder).not.toHaveProperty(
+      "_key",
     );
 
     for (const page of credits.pages) {

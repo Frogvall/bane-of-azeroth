@@ -168,6 +168,15 @@ MACROS = [
         "img": "icons/svg/book.svg",
     },
 
+    {
+        "key": "assets-journals",
+        "id": "BoaDevAssetsJrnl",
+        "name": "BOA DEV – Verify Assets and Journals",
+        "file": "verify-assets-and-journals.js",
+        "order": 17,
+        "suiteMember": True,
+        "img": "icons/svg/book.svg",
+    },
 ]
 
 

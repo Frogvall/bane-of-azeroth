@@ -7,6 +7,7 @@ The project is currently in early alpha. Rules, document structures, compendium 
 ## [Unreleased]
 
 ### Added
+- Added runtime developer-test coverage for module assets and imported Journals, including embedded Kin RollTables.
 
 - Added lossless WebP Journal assets generated from checked-in Homebrewery PNG masters.
 - Added a deterministic asset manifest and dependency-free CI verification for Journal artwork.
@@ -32,6 +33,7 @@ The project is currently in early alpha. Rules, document structures, compendium 
 - Renamed the development-only report folder to `Bane of Azeroth - System Tests`.
 
 ### Fixed
+- Removed an empty folder that leaked into the Adventure compendium while keeping the Journal folder embedded in the Adventure.
 
 - Added LevelDB source keys to generated JournalEntry pages and folders.
 

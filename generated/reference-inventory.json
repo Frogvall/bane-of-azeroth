@@ -10,7 +10,7 @@
     "tools"
   ],
   "counts": {
-    "runtime-uuid-lookup": 5,
+    "runtime-uuid-lookup": 6,
     "symbolic-display-reference": 19,
     "uuid-link": 9,
     "uuid-literal": 21
@@ -339,7 +339,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/run-all.js",
-      "line": 267,
+      "line": 268,
       "column": 8,
       "target": "${report.uuid}",
       "classification": "unclassified",
@@ -354,6 +354,15 @@
       "target": "${summonAbility.uuid}",
       "classification": "unclassified",
       "snippet": "`@UUID[${summonAbility.uuid}]`"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 424,
+      "column": 30,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "const document = await fromUuid("
     },
     {
       "kind": "uuid-literal",

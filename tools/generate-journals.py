@@ -733,7 +733,6 @@ def render_document(
 
 def render_folder() -> dict[str, object]:
     return {
-        "_key": f"!folders!{JOURNAL_FOLDER_ID}",
         "type": "JournalEntry",
         "folder": None,
         "name": JOURNAL_FOLDER_NAME,

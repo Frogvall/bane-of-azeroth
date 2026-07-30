@@ -39,6 +39,7 @@ const orderedKeys = [
   "smoke",
   "external-uuids",
   "generated-content",
+  "assets-journals",
   "common-animals",
   "common-animal-attack-messages",
   "common-animal-movement",
