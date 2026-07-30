@@ -12,7 +12,6 @@
       ],
       "drawn": false,
       "_id": "5976c8e7d3ce2c2b",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -30,8 +29,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Blacksteel"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Blacksteel",
+      "name": ""
     },
     {
       "type": "text",
@@ -42,7 +42,6 @@
       ],
       "drawn": false,
       "_id": "c665386513c275c3",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -60,8 +59,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Flamehearth"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Flamehearth",
+      "name": ""
     },
     {
       "type": "text",
@@ -72,7 +72,6 @@
       ],
       "drawn": false,
       "_id": "af8d0a9ad2604fb6",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -90,8 +89,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Hearthkiln"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Hearthkiln",
+      "name": ""
     },
     {
       "type": "text",
@@ -102,7 +102,6 @@
       ],
       "drawn": false,
       "_id": "e756cc3064a0e24e",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -120,8 +119,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Oreknuckle"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Oreknuckle",
+      "name": ""
     },
     {
       "type": "text",
@@ -132,7 +132,6 @@
       ],
       "drawn": false,
       "_id": "c12f8134ba18a924",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -150,8 +149,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Sootsmoker"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Sootsmoker",
+      "name": ""
     },
     {
       "type": "text",
@@ -162,7 +162,6 @@
       ],
       "drawn": false,
       "_id": "ea1d14b5c061ff9b",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -180,8 +179,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Stoutbrow"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Stoutbrow",
+      "name": ""
     }
   ],
   "formula": "1d6",

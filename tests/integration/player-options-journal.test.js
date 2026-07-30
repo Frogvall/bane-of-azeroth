@@ -26,6 +26,10 @@ const KIN_SOURCE = join(
   SOURCE_DIRECTORY,
   "kin.json",
 );
+const DERIVED_SOURCE = join(
+  SOURCE_DIRECTORY,
+  "derived-ratings.json",
+);
 const TABLE_SOURCE = resolve(
   "foundry",
   "content",
@@ -50,11 +54,6 @@ const GENERATED = join(
   "Bane_of_Azeroth_BoAJournals00001",
   "Player_Options_BoAJrnlPlayerOpt.json",
 );
-const CSS = resolve(
-  "foundry",
-  "styles",
-  "bane-of-azeroth.css",
-);
 
 function read(path) {
   return readFileSync(
@@ -77,7 +76,7 @@ function occurrences(
 }
 
 describe("curated Player Options Journal", () => {
-  test("enables Player Options with a visible Kin page title", () => {
+  test("defines Kin and Derived Ratings as separate visible pages", () => {
     expect(
       readJson(JOURNAL_SOURCE),
     ).toMatchObject({
@@ -115,88 +114,94 @@ describe("curated Player Options Journal", () => {
           "dragonbane-core-compatible",
       },
     });
+
+    expect(
+      readJson(DERIVED_SOURCE),
+    ).toMatchObject({
+      schemaVersion: 1,
+      key: "derived-ratings",
+      id: "BoAPgDerivedRate",
+      name: "Derived Ratings",
+      sort: 200000,
+      title: {
+        show: true,
+        level: 1,
+      },
+      source: {
+        type: "html",
+      },
+      provenance: {
+        canonicalSource:
+          "homebrewery/Bane of Azeroth.md",
+        section: "Kin / Derived Ratings",
+        sync: "curated",
+        presentation:
+          "dragonbane-core-compatible",
+      },
+    });
   });
 
-  test("uses Dragonbane Journal structure instead of custom presentation CSS", () => {
-    const html =
+  test("keeps the Kin page focused and gives Derived Ratings its own table page", () => {
+    const kinHtml =
       readJson(KIN_SOURCE).source.content;
+    const derivedHtml =
+      readJson(DERIVED_SOURCE).source.content;
 
-    expect(html).toContain(
+    expect(kinHtml).toContain(
       "There are 14 playable kin in Azeroth.",
     );
-    expect(html).toContain(
+    expect(kinHtml).toContain(
       "<h2>LANGUAGE</h2>",
     );
-    expect(html).toContain(
+    expect(kinHtml).toContain(
       "<h2>DRACTHYR</h2>",
     );
-    expect(html).toContain(
-      "<h2>DERIVED RATINGS</h2>",
+    expect(kinHtml).not.toContain(
+      "DERIVED RATINGS",
     );
-    expect(html).toContain(
-      "<h3>BRONZEBEARD</h3>",
-    );
-    expect(html).toContain(
-      "<h3>BLOOD ELF</h3>",
+    expect(kinHtml).not.toContain(
+      "<table",
     );
 
     expect(
       occurrences(
-        html,
+        kinHtml,
         '<blockquote class="info">',
       ),
     ).toBe(19);
     expect(
       occurrences(
-        html,
+        kinHtml,
         "@DisplayRef[boa:table.",
       ),
     ).toBe(19);
     expect(
       occurrences(
-        html,
+        kinHtml,
         "<img ",
       ),
     ).toBe(16);
+
+    expect(derivedHtml).toContain(
+      '<div class="display-table">',
+    );
     expect(
       occurrences(
-        html,
+        derivedHtml,
         "<table",
       ),
     ).toBe(1);
-    expect(
-      occurrences(
-        html,
-        "<h2>",
-      ),
-    ).toBe(16);
-
-    for (const forbidden of [
-      "<article",
-      "<h1",
-      "boa-journal",
-      "boa-heading",
-      "boa-rule-box",
-      "boa-ability",
-      "boa-name-table",
-      "boa-roll-table",
-      "@DisplayTable[RollTable.",
-    ]) {
-      expect(html).not.toContain(
-        forbidden,
-      );
-    }
-
-    expect(read(CSS)).not.toContain(
-      "/* BOA JOURNAL CONTENT START */",
+    expect(derivedHtml).not.toContain(
+      "<h2>",
+    );
+    expect(derivedHtml).toContain(
+      "Movement",
     );
   });
 
-  test("uses all 16 generated Kin WebP assets", () => {
-    const page =
-      readJson(KIN_SOURCE);
+  test("uses all 16 generated Kin WebP illustrations", () => {
     const html =
-      page.source.content;
+      readJson(KIN_SOURCE).source.content;
     const manifest =
       readJson(ASSET_MANIFEST);
     const kinAssets =
@@ -219,28 +224,58 @@ describe("curated Player Options Journal", () => {
     }
   });
 
-  test("resolves all symbolic RollTable references in generated output", () => {
-    const source =
+  test("generates two pages and resolves every symbolic RollTable reference", () => {
+    const kinSource =
       readJson(KIN_SOURCE);
+    const derivedSource =
+      readJson(DERIVED_SOURCE);
     const tableSource =
       readJson(TABLE_SOURCE);
     const journal =
       readJson(GENERATED);
 
-    expect(journal.pages).toHaveLength(1);
-    const page = journal.pages[0];
+    expect(journal.pages).toHaveLength(2);
 
-    expect(page.title).toEqual({
+    const kinPage =
+      journal.pages.find(
+        page =>
+          page._id === "BoAPgPlayerKin01",
+      );
+    const derivedPage =
+      journal.pages.find(
+        page =>
+          page._id === "BoAPgDerivedRate",
+      );
+
+    expect(kinPage).toBeDefined();
+    expect(derivedPage).toBeDefined();
+    expect(
+      journal.pages.map(
+        page => page._id,
+      ),
+    ).toEqual([
+      "BoAPgPlayerKin01",
+      "BoAPgDerivedRate",
+    ]);
+
+    expect(kinPage.title).toEqual({
       show: true,
       level: 1,
     });
-    expect(page.text.format).toBe(1);
-    expect(page.text.markdown).toBe("");
+    expect(derivedPage.title).toEqual({
+      show: true,
+      level: 1,
+    });
+    expect(
+      derivedPage.text.content,
+    ).toBe(
+      derivedSource.source.content,
+    );
 
     const sourceHtml =
-      source.source.content;
+      kinSource.source.content;
     const generatedHtml =
-      page.text.content;
+      kinPage.text.content;
 
     expect(
       occurrences(

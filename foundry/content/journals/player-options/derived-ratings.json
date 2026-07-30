@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "key": "derived-ratings",
+  "id": "BoAPgDerivedRate",
+  "name": "Derived Ratings",
+  "sort": 200000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<div class=\"display-table\"><table style=\"width:50%\"><tbody><tr><th>Kin</th><th>Movement</th></tr><tr><td>Dracthyr</td><td>10</td></tr><tr><td>Draenei</td><td>10</td></tr><tr><td>Dwarf</td><td>8</td></tr><tr><td>Elf</td><td>10</td></tr><tr><td>Gnome</td><td>8</td></tr><tr><td>Goblin</td><td>8</td></tr><tr><td>Human</td><td>10</td></tr><tr><td>Orc</td><td>10</td></tr><tr><td>Pandaren</td><td>10</td></tr><tr><td>Tauren</td><td>10</td></tr><tr><td>Troll</td><td>12</td></tr><tr><td>Undead</td><td>10</td></tr><tr><td>Vulpera</td><td>10</td></tr><tr><td>Worgen</td><td>12</td></tr></tbody></table></div>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Kin / Derived Ratings",
+    "sync": "curated",
+    "presentation": "dragonbane-core-compatible"
+  }
+}

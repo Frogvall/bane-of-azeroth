@@ -12,7 +12,6 @@
       ],
       "drawn": false,
       "_id": "e68f1a62a3942b7f",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -30,8 +29,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Bwu'ja"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Bwu'ja",
+      "name": ""
     },
     {
       "type": "text",
@@ -42,7 +42,6 @@
       ],
       "drawn": false,
       "_id": "bc3b94967249d0fd",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -60,8 +59,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Gri'lek"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Gri'lek",
+      "name": ""
     },
     {
       "type": "text",
@@ -72,7 +72,6 @@
       ],
       "drawn": false,
       "_id": "ea39cf0be050bdfd",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -90,8 +89,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Hae'wilani"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Hae'wilani",
+      "name": ""
     },
     {
       "type": "text",
@@ -102,7 +102,6 @@
       ],
       "drawn": false,
       "_id": "304eeb9db4549cad",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -120,8 +119,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Jin'diza"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Jin'diza",
+      "name": ""
     },
     {
       "type": "text",
@@ -132,7 +132,6 @@
       ],
       "drawn": false,
       "_id": "c4eaf126cb213474",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -150,8 +149,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Ske'rit"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Ske'rit",
+      "name": ""
     },
     {
       "type": "text",
@@ -162,7 +162,6 @@
       ],
       "drawn": false,
       "_id": "e77652fbbb24b37a",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -180,8 +179,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "You'jin"
+      "img": "icons/svg/d20-black.svg",
+      "description": "You'jin",
+      "name": ""
     }
   ],
   "formula": "1d6",

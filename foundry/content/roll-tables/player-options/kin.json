@@ -24,7 +24,8 @@
             1,
             1
           ],
-          "name": "Dracthyr"
+          "name": "Dracthyr",
+          "documentKey": "kin.dracthyr"
         },
         {
           "id": "23b687088fdf5f7c",
@@ -32,7 +33,8 @@
             2,
             2
           ],
-          "name": "Draenei"
+          "name": "Draenei",
+          "documentKey": "kin.draenei"
         },
         {
           "id": "bf4989f54dbcb355",
@@ -40,7 +42,8 @@
             3,
             3
           ],
-          "name": "Dwarf: Bronzebeard"
+          "name": "Dwarf: Bronzebeard",
+          "documentKey": "kin.bronzebeard-dwarf"
         },
         {
           "id": "a008d18eaf2672f9",
@@ -48,7 +51,8 @@
             4,
             4
           ],
-          "name": "Dwarf: Dark Iron"
+          "name": "Dwarf: Dark Iron",
+          "documentKey": "kin.dark-iron-dwarf"
         },
         {
           "id": "4b85109548b8bc77",
@@ -56,7 +60,8 @@
             5,
             5
           ],
-          "name": "Elf: Blood Elf"
+          "name": "Elf: Blood Elf",
+          "documentKey": "kin.blood-elf"
         },
         {
           "id": "522afbc6b11e65b2",
@@ -64,7 +69,8 @@
             6,
             6
           ],
-          "name": "Elf: Night Elf"
+          "name": "Elf: Night Elf",
+          "documentKey": "kin.night-elf"
         },
         {
           "id": "7bec86637398acf7",
@@ -72,7 +78,8 @@
             7,
             7
           ],
-          "name": "Gnome"
+          "name": "Gnome",
+          "documentKey": "kin.gnome"
         },
         {
           "id": "db20674868a3b01e",
@@ -80,7 +87,8 @@
             8,
             8
           ],
-          "name": "Goblin"
+          "name": "Goblin",
+          "documentKey": "kin.goblin"
         },
         {
           "id": "32f03291070ea70e",
@@ -88,7 +96,8 @@
             9,
             11
           ],
-          "name": "Human"
+          "name": "Human",
+          "documentKey": "kin.human"
         },
         {
           "id": "f9cc18a2e217dac5",
@@ -96,7 +105,8 @@
             12,
             14
           ],
-          "name": "Orc"
+          "name": "Orc",
+          "documentKey": "kin.orc"
         },
         {
           "id": "62033862b453a5ae",
@@ -104,7 +114,8 @@
             15,
             15
           ],
-          "name": "Pandaren"
+          "name": "Pandaren",
+          "documentKey": "kin.pandaren"
         },
         {
           "id": "f1c4616bd9aea1ce",
@@ -112,7 +123,8 @@
             16,
             16
           ],
-          "name": "Tauren"
+          "name": "Tauren",
+          "documentKey": "kin.tauren"
         },
         {
           "id": "24670de826d63468",
@@ -120,7 +132,8 @@
             17,
             17
           ],
-          "name": "Troll"
+          "name": "Troll",
+          "documentKey": "kin.troll"
         },
         {
           "id": "ea8fdb41f4f406b4",
@@ -128,7 +141,8 @@
             18,
             18
           ],
-          "name": "Undead"
+          "name": "Undead",
+          "documentKey": "kin.undead"
         },
         {
           "id": "54166dbfd4ea3cb5",
@@ -136,7 +150,8 @@
             19,
             19
           ],
-          "name": "Vulpera"
+          "name": "Vulpera",
+          "documentKey": "kin.vulpera"
         },
         {
           "id": "2e3773cee7fabe09",
@@ -144,9 +159,11 @@
             20,
             20
           ],
-          "name": "Worgen"
+          "name": "Worgen",
+          "documentKey": "kin.worgen"
         }
-      ]
+      ],
+      "resultType": "document"
     },
     {
       "key": "kin.alliance",
@@ -162,7 +179,8 @@
             1,
             1
           ],
-          "name": "Dracthyr"
+          "name": "Dracthyr",
+          "documentKey": "kin.dracthyr"
         },
         {
           "id": "94e8dc7f691810ec",
@@ -170,7 +188,8 @@
             2,
             2
           ],
-          "name": "Draenei"
+          "name": "Draenei",
+          "documentKey": "kin.draenei"
         },
         {
           "id": "975f913ae00c96b0",
@@ -178,7 +197,8 @@
             3,
             3
           ],
-          "name": "Dwarf: Bronzebeard"
+          "name": "Dwarf: Bronzebeard",
+          "documentKey": "kin.bronzebeard-dwarf"
         },
         {
           "id": "2f31bb5371630f92",
@@ -186,7 +206,8 @@
             4,
             4
           ],
-          "name": "Dwarf: Dark Iron"
+          "name": "Dwarf: Dark Iron",
+          "documentKey": "kin.dark-iron-dwarf"
         },
         {
           "id": "a2a13145775a11af",
@@ -194,7 +215,8 @@
             5,
             5
           ],
-          "name": "Elf: Night Elf"
+          "name": "Elf: Night Elf",
+          "documentKey": "kin.night-elf"
         },
         {
           "id": "1941e5ce7ba5ce72",
@@ -202,7 +224,8 @@
             6,
             6
           ],
-          "name": "Gnome"
+          "name": "Gnome",
+          "documentKey": "kin.gnome"
         },
         {
           "id": "7be4004b40c3d0a1",
@@ -210,7 +233,8 @@
             7,
             8
           ],
-          "name": "Human"
+          "name": "Human",
+          "documentKey": "kin.human"
         },
         {
           "id": "0aed0cfec7762a7d",
@@ -218,7 +242,8 @@
             9,
             9
           ],
-          "name": "Pandaren"
+          "name": "Pandaren",
+          "documentKey": "kin.pandaren"
         },
         {
           "id": "f969246970b71334",
@@ -226,9 +251,11 @@
             10,
             10
           ],
-          "name": "Worgen"
+          "name": "Worgen",
+          "documentKey": "kin.worgen"
         }
-      ]
+      ],
+      "resultType": "document"
     },
     {
       "key": "kin.horde",
@@ -244,7 +271,8 @@
             1,
             1
           ],
-          "name": "Dracthyr"
+          "name": "Dracthyr",
+          "documentKey": "kin.dracthyr"
         },
         {
           "id": "70c857da640d2b94",
@@ -252,7 +280,8 @@
             2,
             2
           ],
-          "name": "Elf: Blood Elf"
+          "name": "Elf: Blood Elf",
+          "documentKey": "kin.blood-elf"
         },
         {
           "id": "92eff30250e62b5d",
@@ -260,7 +289,8 @@
             3,
             3
           ],
-          "name": "Goblin"
+          "name": "Goblin",
+          "documentKey": "kin.goblin"
         },
         {
           "id": "b94dee1ae3d7a28d",
@@ -268,7 +298,8 @@
             4,
             5
           ],
-          "name": "Orc"
+          "name": "Orc",
+          "documentKey": "kin.orc"
         },
         {
           "id": "d5d275b621cf0cd1",
@@ -276,7 +307,8 @@
             6,
             6
           ],
-          "name": "Pandaren"
+          "name": "Pandaren",
+          "documentKey": "kin.pandaren"
         },
         {
           "id": "facbfd72d0f24c23",
@@ -284,7 +316,8 @@
             7,
             7
           ],
-          "name": "Tauren"
+          "name": "Tauren",
+          "documentKey": "kin.tauren"
         },
         {
           "id": "07a1fc6fa8b68c93",
@@ -292,7 +325,8 @@
             8,
             8
           ],
-          "name": "Troll"
+          "name": "Troll",
+          "documentKey": "kin.troll"
         },
         {
           "id": "9106e8aae99d58b6",
@@ -300,7 +334,8 @@
             9,
             9
           ],
-          "name": "Undead"
+          "name": "Undead",
+          "documentKey": "kin.undead"
         },
         {
           "id": "75dad178ecc9fe27",
@@ -308,9 +343,11 @@
             10,
             10
           ],
-          "name": "Vulpera"
+          "name": "Vulpera",
+          "documentKey": "kin.vulpera"
         }
-      ]
+      ],
+      "resultType": "document"
     },
     {
       "key": "kin.name.dracthyr",
@@ -368,7 +405,8 @@
           ],
           "name": "Yzin"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.draenei",
@@ -426,7 +464,8 @@
           ],
           "name": "Tysha"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.bronzebeard",
@@ -484,7 +523,8 @@
           ],
           "name": "Taga"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.dark-iron",
@@ -542,7 +582,8 @@
           ],
           "name": "Stoutbrow"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.blood-elf",
@@ -600,7 +641,8 @@
           ],
           "name": "Torvos"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.night-elf",
@@ -658,7 +700,8 @@
           ],
           "name": "Vandel"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.gnome",
@@ -716,7 +759,8 @@
           ],
           "name": "Vallo"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.goblin",
@@ -774,7 +818,8 @@
           ],
           "name": "Ziz"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.human",
@@ -832,7 +877,8 @@
           ],
           "name": "Stephen"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.orc",
@@ -890,7 +936,8 @@
           ],
           "name": "Yelnagi"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.pandaren",
@@ -948,7 +995,8 @@
           ],
           "name": "Wei"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.tauren",
@@ -1006,7 +1054,8 @@
           ],
           "name": "Umber"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.troll",
@@ -1064,7 +1113,8 @@
           ],
           "name": "You'jin"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.undead",
@@ -1122,7 +1172,8 @@
           ],
           "name": "Xavier"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.vulpera",
@@ -1180,7 +1231,8 @@
           ],
           "name": "Zikkori"
         }
-      ]
+      ],
+      "resultType": "text"
     },
     {
       "key": "kin.name.worgen",
@@ -1238,7 +1290,8 @@
           ],
           "name": "Raul"
         }
-      ]
+      ],
+      "resultType": "text"
     }
   ]
 }

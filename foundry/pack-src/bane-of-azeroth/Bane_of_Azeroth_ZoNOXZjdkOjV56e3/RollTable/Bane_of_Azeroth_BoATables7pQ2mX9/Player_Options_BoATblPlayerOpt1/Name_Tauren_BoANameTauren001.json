@@ -12,7 +12,6 @@
       ],
       "drawn": false,
       "_id": "7aebd00d94f384d6",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -30,8 +29,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Garn"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Garn",
+      "name": ""
     },
     {
       "type": "text",
@@ -42,7 +42,6 @@
       ],
       "drawn": false,
       "_id": "e399da250de582c3",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -60,8 +59,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Jahan"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Jahan",
+      "name": ""
     },
     {
       "type": "text",
@@ -72,7 +72,6 @@
       ],
       "drawn": false,
       "_id": "b1010a6237d65fa8",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -90,8 +89,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Kaasa"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Kaasa",
+      "name": ""
     },
     {
       "type": "text",
@@ -102,7 +102,6 @@
       ],
       "drawn": false,
       "_id": "3c08393ebac4921d",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -120,8 +119,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Rantuko"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Rantuko",
+      "name": ""
     },
     {
       "type": "text",
@@ -132,7 +132,6 @@
       ],
       "drawn": false,
       "_id": "72c8a7914e7f5b98",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -150,8 +149,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Sagorne"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Sagorne",
+      "name": ""
     },
     {
       "type": "text",
@@ -162,7 +162,6 @@
       ],
       "drawn": false,
       "_id": "1c40f9d5271ce4e0",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -180,8 +179,9 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Umber"
+      "img": "icons/svg/d20-black.svg",
+      "description": "Umber",
+      "name": ""
     }
   ],
   "formula": "1d6",

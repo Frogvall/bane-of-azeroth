@@ -28,6 +28,7 @@ TABLE_ROOT_DIRECTORY = (
     "Bane_of_Azeroth_BoATables7pQ2mX9"
 )
 TABLE_ROOT_ID = "BoATables7pQ2mX9"
+ITEM_DIRECTORY = "Item"
 ID_PATTERN = re.compile(
     r"^[A-Za-z0-9]{16}$"
 )
@@ -170,6 +171,98 @@ def folder_directory(
     )[:-5]
 
 
+def load_kin_documents(
+    adventure_directory: Path,
+) -> dict[str, dict[str, str]]:
+    item_directory = (
+        adventure_directory
+        / ITEM_DIRECTORY
+    )
+    if not item_directory.is_dir():
+        raise GenerationError(
+            "Adventure Item directory is missing."
+        )
+
+    documents: dict[
+        str,
+        dict[str, str],
+    ] = {}
+
+    for path in sorted(
+        item_directory.rglob("*.json")
+    ):
+        if path.name == "_Folder.json":
+            continue
+
+        document = read_json(path)
+        if not isinstance(document, dict):
+            raise GenerationError(
+                f"Item document must be an object: "
+                f"{path}"
+            )
+        if document.get("type") != "kin":
+            continue
+
+        flags = document.get("flags")
+        module_flags = (
+            flags.get(MODULE_ID)
+            if isinstance(flags, dict)
+            else None
+        )
+        content_key = (
+            module_flags.get("contentKey")
+            if isinstance(
+                module_flags,
+                dict,
+            )
+            else None
+        )
+        if (
+            not isinstance(content_key, str)
+            or not re.fullmatch(
+                r"kin\.[a-z0-9]+"
+                r"(?:-[a-z0-9]+)*",
+                content_key,
+            )
+        ):
+            raise GenerationError(
+                "Generated Kin Item has no valid "
+                f"content key: {path}"
+            )
+
+        document_id = require_id(
+            document.get("_id"),
+            f"{path}._id",
+        )
+        name = require_string(
+            document.get("name"),
+            f"{path}.name",
+        )
+        image = require_string(
+            document.get("img"),
+            f"{path}.img",
+        )
+
+        if content_key in documents:
+            raise GenerationError(
+                "Duplicate generated Kin Item "
+                f"content key: {content_key}"
+            )
+
+        documents[content_key] = {
+            "id": document_id,
+            "name": name,
+            "img": image,
+        }
+
+    if not documents:
+        raise GenerationError(
+            "No generated Kin Items were found."
+        )
+
+    return documents
+
+
 def validate_source(
     source: object,
 ) -> tuple[
@@ -290,6 +383,17 @@ def validate_source(
             table.get("displayName"),
             f"table {key}.displayName",
         )
+        result_type = table.get(
+            "resultType"
+        )
+        if result_type not in {
+            "document",
+            "text",
+        }:
+            raise GenerationError(
+                f"table {key}.resultType must be "
+                "document or text."
+            )
         formula = require_string(
             table.get("formula"),
             f"table {key}.formula",
@@ -388,6 +492,34 @@ def validate_source(
                     f"{result_index}.name"
                 ),
             )
+
+            document_key = result.get(
+                "documentKey"
+            )
+            if result_type == "document":
+                if (
+                    not isinstance(
+                        document_key,
+                        str,
+                    )
+                    or not re.fullmatch(
+                        r"kin\.[a-z0-9]+"
+                        r"(?:-[a-z0-9]+)*",
+                        document_key,
+                    )
+                ):
+                    raise GenerationError(
+                        f"table {key} result "
+                        f"{result_index}.documentKey "
+                        "must identify a Kin Item."
+                    )
+            elif document_key is not None:
+                raise GenerationError(
+                    f"text table {key} result "
+                    f"{result_index} must not have "
+                    "documentKey."
+                )
+
             results.append(result)
 
         if expected - 1 != sides:
@@ -398,6 +530,26 @@ def validate_source(
 
         table["results"] = results
         tables.append(table)
+
+    document_tables = [
+        table
+        for table in tables
+        if table["resultType"]
+        == "document"
+    ]
+    text_tables = [
+        table
+        for table in tables
+        if table["resultType"] == "text"
+    ]
+    if (
+        len(document_tables) != 3
+        or len(text_tables) != 16
+    ):
+        raise GenerationError(
+            "Kin RollTable source must contain "
+            "3 document tables and 16 text tables."
+        )
 
     return folder, tables
 
@@ -428,27 +580,63 @@ def build_folder(
 
 def build_result(
     *,
-    table_id: str,
-    table_key: str,
+    table: dict[str, object],
     result: dict[str, object],
+    kin_documents: dict[
+        str,
+        dict[str, str],
+    ],
 ) -> dict[str, object]:
-    del table_id
-
-    return {
-        "type": "text",
-        "weight": 1,
-        "range": result["range"],
+    table_key = str(table["key"])
+    result_range = result["range"]
+    weight = (
+        int(result_range[1])
+        - int(result_range[0])
+        + 1
+    )
+    common = {
+        "weight": weight,
+        "range": result_range,
         "drawn": False,
         "_id": result["id"],
-        "img": "icons/svg/d20-grey.svg",
         "flags": generated_flags(
             "tables."
             f"{table_key}."
             f"result.{result['id']}"
         ),
         "_stats": base_stats(),
+    }
+
+    if table["resultType"] == "text":
+        return {
+            "type": "text",
+            **common,
+            "img": "icons/svg/d20-black.svg",
+            "description": result["name"],
+            "name": "",
+        }
+
+    document_key = str(
+        result["documentKey"]
+    )
+    document = kin_documents.get(
+        document_key
+    )
+    if document is None:
+        raise GenerationError(
+            f"Missing generated Kin Item: "
+            f"{document_key}"
+        )
+
+    return {
+        "type": "document",
+        **common,
+        "img": document["img"],
+        "name": document["name"],
+        "documentUuid": (
+            f"Item.{document['id']}"
+        ),
         "description": "",
-        "name": result["name"],
     }
 
 
@@ -456,6 +644,10 @@ def build_table(
     *,
     table: dict[str, object],
     folder_id: str,
+    kin_documents: dict[
+        str,
+        dict[str, str],
+    ],
 ) -> dict[str, object]:
     table_id = str(table["id"])
     table_key = str(table["key"])
@@ -465,9 +657,9 @@ def build_table(
         "description": "",
         "results": [
             build_result(
-                table_id=table_id,
-                table_key=table_key,
+                table=table,
                 result=result,
+                kin_documents=kin_documents,
             )
             for result in table["results"]
         ],
@@ -625,6 +817,29 @@ def expected_outputs(
 ]:
     source = read_json(source_path)
     folder, tables = validate_source(source)
+    kin_documents = load_kin_documents(
+        adventure_directory
+    )
+
+    referenced_document_keys = {
+        str(result["documentKey"])
+        for table in tables
+        if table["resultType"]
+        == "document"
+        for result in table["results"]
+    }
+    missing_document_keys = sorted(
+        referenced_document_keys
+        - set(kin_documents)
+    )
+    if missing_document_keys:
+        raise GenerationError(
+            "Kin RollTables reference missing "
+            "generated Kin Items:\n  "
+            + "\n  ".join(
+                missing_document_keys
+            )
+        )
 
     root = (
         adventure_directory
@@ -672,6 +887,7 @@ def expected_outputs(
             build_table(
                 table=table,
                 folder_id=str(folder["id"]),
+                kin_documents=kin_documents,
             )
         )
         table_paths.append(

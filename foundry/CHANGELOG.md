@@ -16,6 +16,10 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ### Changed
 
+- Fixed Kin Journal RollTables to show linked Kin documents and visible name results.
+- Moved Derived Ratings to its own Player Options Journal page.
+- Packed the Adventure source directory directly to avoid an empty outer compendium folder.
+
 - Rebuilt the Kin Journal page using Dragonbane Core-compatible Journal structure.
 - Replaced static Kin choice and name tables with 19 generated RollTables and added all converted Kin artwork.
 - Removed the custom Kin Journal presentation CSS in favor of the Dragonbane system theme.

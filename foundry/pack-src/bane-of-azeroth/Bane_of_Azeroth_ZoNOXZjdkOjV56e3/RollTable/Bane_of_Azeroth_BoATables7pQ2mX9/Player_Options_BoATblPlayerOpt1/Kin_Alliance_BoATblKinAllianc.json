@@ -4,7 +4,7 @@
   "description": "",
   "results": [
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         1,
@@ -12,7 +12,6 @@
       ],
       "drawn": false,
       "_id": "2824f060132ebc11",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -30,11 +29,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Dracthyr"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Dracthyr",
+      "documentUuid": "Item.ztgKI970tp6QMho4",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         2,
@@ -42,7 +43,6 @@
       ],
       "drawn": false,
       "_id": "94e8dc7f691810ec",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -60,11 +60,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Draenei"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Draenei",
+      "documentUuid": "Item.Bm0RcdSR4HnqJG22",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         3,
@@ -72,7 +74,6 @@
       ],
       "drawn": false,
       "_id": "975f913ae00c96b0",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -90,11 +91,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Dwarf: Bronzebeard"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Bronzebeard Dwarf",
+      "documentUuid": "Item.Y10YI5iLeCe2sPSy",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         4,
@@ -102,7 +105,6 @@
       ],
       "drawn": false,
       "_id": "2f31bb5371630f92",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -120,11 +122,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Dwarf: Dark Iron"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Dark Iron Dwarf",
+      "documentUuid": "Item.rxUdqVGNVlZowCYg",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         5,
@@ -132,7 +136,6 @@
       ],
       "drawn": false,
       "_id": "a2a13145775a11af",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -150,11 +153,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Elf: Night Elf"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Night Elf",
+      "documentUuid": "Item.pBZ71DEkG1Svv9qr",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         6,
@@ -162,7 +167,6 @@
       ],
       "drawn": false,
       "_id": "1941e5ce7ba5ce72",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -180,19 +184,20 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Gnome"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Gnome",
+      "documentUuid": "Item.NOOtyvgvgBlWKdeC",
+      "description": ""
     },
     {
-      "type": "text",
-      "weight": 1,
+      "type": "document",
+      "weight": 2,
       "range": [
         7,
         8
       ],
       "drawn": false,
       "_id": "7be4004b40c3d0a1",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -210,11 +215,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Human"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Human",
+      "documentUuid": "Item.4RlOlXyZbbuTEk0w",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         9,
@@ -222,7 +229,6 @@
       ],
       "drawn": false,
       "_id": "0aed0cfec7762a7d",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -240,11 +246,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Pandaren"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Pandaren",
+      "documentUuid": "Item.YB3QGvS8GlZ8AXX2",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         10,
@@ -252,7 +260,6 @@
       ],
       "drawn": false,
       "_id": "f969246970b71334",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -270,8 +277,10 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Worgen"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Worgen",
+      "documentUuid": "Item.FAwIDwvx2p8t8MrK",
+      "description": ""
     }
   ],
   "formula": "1d10",

@@ -7,7 +7,8 @@ ROOT_DIR="$(
 )"
 
 MODULE_DIR="${ROOT_DIR}/foundry"
-PACK_SOURCE="${MODULE_DIR}/pack-src/bane-of-azeroth"
+PACK_SOURCE_RELATIVE="foundry/pack-src/bane-of-azeroth/Bane_of_Azeroth_ZoNOXZjdkOjV56e3"
+PACK_SOURCE="${ROOT_DIR}/${PACK_SOURCE_RELATIVE}"
 DIST_DIR="${ROOT_DIR}/dist"
 STAGE_DIR="${DIST_DIR}/stage/bane-of-azeroth"
 
@@ -68,7 +69,7 @@ docker run --rm \
   -w /work \
   "$IMAGE" \
   package pack bane-of-azeroth \
-  --inputDirectory /work/foundry/pack-src/bane-of-azeroth \
+  --inputDirectory "/work/${PACK_SOURCE_RELATIVE}" \
   --outputDirectory /build/packs \
   --recursive
 

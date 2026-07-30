@@ -1,6 +1,8 @@
 import {
   existsSync,
   readFileSync,
+  readdirSync,
+  statSync,
 } from "node:fs";
 import {
   join,
@@ -34,6 +36,10 @@ const ROOT_DIRECTORY = join(
   "RollTable",
   "Bane_of_Azeroth_BoATables7pQ2mX9",
 );
+const ITEM_DIRECTORY = join(
+  ADVENTURE_DIRECTORY,
+  "Item",
+);
 const GENERATOR = resolve(
   "tools",
   "generate-kin-roll-tables.py",
@@ -66,8 +72,70 @@ function safeFilename(
   return `${stem}_${id}.json`;
 }
 
+function filesBelow(directory) {
+  const result = [];
+
+  function visit(current) {
+    for (
+      const entry
+      of readdirSync(current).sort()
+    ) {
+      const path = join(
+        current,
+        entry,
+      );
+      const stats = statSync(path);
+
+      if (stats.isDirectory()) {
+        visit(path);
+      } else if (stats.isFile()) {
+        result.push(path);
+      }
+    }
+  }
+
+  visit(directory);
+  return result;
+}
+
+function kinDocuments() {
+  const documents = new Map();
+
+  for (
+    const path
+    of filesBelow(ITEM_DIRECTORY)
+  ) {
+    if (
+      !path.endsWith(".json")
+      || path.endsWith("_Folder.json")
+    ) {
+      continue;
+    }
+
+    const document = readJson(path);
+    if (document.type !== "kin") {
+      continue;
+    }
+
+    const key =
+      document.flags?.["bane-of-azeroth"]
+        ?.contentKey;
+    expect(key).toMatch(
+      /^kin\.[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    );
+    expect(documents.has(key)).toBe(false);
+
+    documents.set(
+      key,
+      document,
+    );
+  }
+
+  return documents;
+}
+
 describe("generated Kin RollTables", () => {
-  test("defines 19 deterministic rollable tables", () => {
+  test("defines three document tables and sixteen text tables", () => {
     const source =
       readJson(SOURCE);
 
@@ -84,41 +152,65 @@ describe("generated Kin RollTables", () => {
     });
     expect(source.tables).toHaveLength(19);
 
-    const ids = new Set([
-      source.folder.id,
-    ]);
-    const keys = new Set();
+    const documentTables =
+      source.tables.filter(
+        table =>
+          table.resultType
+          === "document",
+      );
+    const textTables =
+      source.tables.filter(
+        table =>
+          table.resultType
+          === "text",
+      );
+
+    expect(documentTables).toHaveLength(3);
+    expect(textTables).toHaveLength(16);
+    expect(
+      textTables.every(
+        table =>
+          table.key.startsWith(
+            "kin.name.",
+          )
+      ),
+    ).toBe(true);
+
+    const documentKeys = new Set();
 
     for (const table of source.tables) {
-      expect(table.id).toMatch(
-        /^[A-Za-z0-9]{16}$/,
-      );
-      expect(ids.has(table.id)).toBe(false);
-      ids.add(table.id);
-
-      expect(keys.has(table.key)).toBe(false);
-      keys.add(table.key);
-
       expect(table.formula).toMatch(
         /^1d\d+$/,
       );
-      expect(table.results.length)
-        .toBeGreaterThan(0);
 
       let expected = 1;
       for (const result of table.results) {
         expect(result.id).toMatch(
           /^[A-Za-z0-9]{16}$/,
         );
-        expect(ids.has(result.id))
-          .toBe(false);
-        ids.add(result.id);
-
         expect(result.range[0]).toBe(
           expected,
         );
         expected =
           result.range[1] + 1;
+
+        if (
+          table.resultType
+          === "document"
+        ) {
+          expect(
+            result.documentKey,
+          ).toMatch(
+            /^kin\.[a-z0-9]+(?:-[a-z0-9]+)*$/,
+          );
+          documentKeys.add(
+            result.documentKey,
+          );
+        } else {
+          expect(result).not.toHaveProperty(
+            "documentKey",
+          );
+        }
       }
 
       const sides = Number(
@@ -127,39 +219,21 @@ describe("generated Kin RollTables", () => {
       expect(expected - 1).toBe(sides);
     }
 
-    expect(
-      source.tables.filter(
-        table =>
-          table.key.startsWith(
-            "kin.name.",
-          )
-      ),
-    ).toHaveLength(16);
+    expect(documentKeys.size).toBe(16);
   });
 
-  test("generates packable RollTables in the Player Options folder", () => {
+  test("generates linked kin results and visible name results", () => {
     const source =
       readJson(SOURCE);
+    const documents =
+      kinDocuments();
     const directory = join(
       ROOT_DIRECTORY,
       "Player_Options_"
       + source.folder.id,
     );
-    const folder = readJson(
-      join(
-        directory,
-        "_Folder.json",
-      ),
-    );
 
-    expect(folder).toMatchObject({
-      type: "RollTable",
-      folder: "BoATables7pQ2mX9",
-      name: "Player Options",
-      color: null,
-      sorting: "a",
-      _id: "BoATblPlayerOpt1",
-    });
+    expect(documents.size).toBe(16);
 
     for (const table of source.tables) {
       const path = join(
@@ -180,23 +254,64 @@ describe("generated Kin RollTables", () => {
         folder: "BoATblPlayerOpt1",
         _id: table.id,
       });
-      expect(
-        generated.results.map(
-          result => ({
-            id: result._id,
-            range: result.range,
-            name: result.name,
-          }),
-        ),
-      ).toEqual(
-        table.results.map(
-          result => ({
-            id: result.id,
-            range: result.range,
-            name: result.name,
-          }),
-        ),
+
+      expect(generated.results).toHaveLength(
+        table.results.length,
       );
+
+      for (
+        let index = 0;
+        index < table.results.length;
+        index += 1
+      ) {
+        const sourceResult =
+          table.results[index];
+        const result =
+          generated.results[index];
+
+        expect(result._id).toBe(
+          sourceResult.id,
+        );
+        expect(result.range).toEqual(
+          sourceResult.range,
+        );
+        expect(result.weight).toBe(
+          sourceResult.range[1]
+          - sourceResult.range[0]
+          + 1,
+        );
+
+        if (
+          table.resultType
+          === "document"
+        ) {
+          const document =
+            documents.get(
+              sourceResult.documentKey,
+            );
+          expect(document).toBeDefined();
+          expect(result).toMatchObject({
+            type: "document",
+            name: document.name,
+            description: "",
+            img: document.img,
+            documentUuid:
+              `Item.${document._id}`,
+          });
+        } else {
+          expect(result).toMatchObject({
+            type: "text",
+            name: "",
+            description:
+              sourceResult.name,
+            img:
+              "icons/svg/d20-black.svg",
+          });
+          expect(result).not.toHaveProperty(
+            "documentUuid",
+          );
+        }
+      }
     }
   });
 
@@ -248,10 +363,16 @@ describe("generated Kin RollTables", () => {
       /"Checked 19 generated Kin "\s*"RollTables\."/,
     );
     expect(generator).toContain(
-      "displayRoll",
+      "load_kin_documents",
     );
     expect(generator).toContain(
-      "replace_json_array",
+      '"documentUuid"',
+    );
+    expect(generator).toContain(
+      '"icons/svg/d20-black.svg"',
+    );
+    expect(generator).toContain(
+      "merge_managed_paths",
     );
   });
 });

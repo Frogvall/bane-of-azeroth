@@ -4,7 +4,7 @@
   "description": "",
   "results": [
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         1,
@@ -12,7 +12,6 @@
       ],
       "drawn": false,
       "_id": "98b89cb998607cba",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -30,11 +29,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Dracthyr"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Dracthyr",
+      "documentUuid": "Item.ztgKI970tp6QMho4",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         2,
@@ -42,7 +43,6 @@
       ],
       "drawn": false,
       "_id": "70c857da640d2b94",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -60,11 +60,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Elf: Blood Elf"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Blood Elf",
+      "documentUuid": "Item.hFopLTbxckPl8yWG",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         3,
@@ -72,7 +74,6 @@
       ],
       "drawn": false,
       "_id": "92eff30250e62b5d",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -90,19 +91,20 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Goblin"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Goblin",
+      "documentUuid": "Item.A0qYIBYNyCb9QZ05",
+      "description": ""
     },
     {
-      "type": "text",
-      "weight": 1,
+      "type": "document",
+      "weight": 2,
       "range": [
         4,
         5
       ],
       "drawn": false,
       "_id": "b94dee1ae3d7a28d",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -120,11 +122,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Orc"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Orc",
+      "documentUuid": "Item.lShZWLHxGRFzTTP4",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         6,
@@ -132,7 +136,6 @@
       ],
       "drawn": false,
       "_id": "d5d275b621cf0cd1",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -150,11 +153,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Pandaren"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Pandaren",
+      "documentUuid": "Item.YB3QGvS8GlZ8AXX2",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         7,
@@ -162,7 +167,6 @@
       ],
       "drawn": false,
       "_id": "facbfd72d0f24c23",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -180,11 +184,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Tauren"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Tauren",
+      "documentUuid": "Item.o8fnlZLmShMkBpcu",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         8,
@@ -192,7 +198,6 @@
       ],
       "drawn": false,
       "_id": "07a1fc6fa8b68c93",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -210,11 +215,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Troll"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Troll",
+      "documentUuid": "Item.C7aZ9suxTaepzNzM",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         9,
@@ -222,7 +229,6 @@
       ],
       "drawn": false,
       "_id": "9106e8aae99d58b6",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -240,11 +246,13 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Undead"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Undead",
+      "documentUuid": "Item.ly16IBRwWxSbSDwR",
+      "description": ""
     },
     {
-      "type": "text",
+      "type": "document",
       "weight": 1,
       "range": [
         10,
@@ -252,7 +260,6 @@
       ],
       "drawn": false,
       "_id": "75dad178ecc9fe27",
-      "img": "icons/svg/d20-grey.svg",
       "flags": {
         "bane-of-azeroth": {
           "generatedBy": "tools/generate-kin-roll-tables.py",
@@ -270,8 +277,10 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "",
-      "name": "Vulpera"
+      "img": "icons/svg/item-bag.svg",
+      "name": "Vulpera",
+      "documentUuid": "Item.jjyOrp1GFOYiRqJn",
+      "description": ""
     }
   ],
   "formula": "1d10",
