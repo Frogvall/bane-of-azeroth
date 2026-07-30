@@ -116,10 +116,23 @@ function occurrences(value, marker) {
   return value.split(marker).length - 1;
 }
 
-describe("Heroic Class Abilities Journal pages", () => {
-  test("defines one parent page and thirteen class pages", () => {
+function abilityDescriptionMarker(ability) {
+  const source =
+    typeof ability.descriptionHtml === "string"
+      ? ability.descriptionHtml
+      : (ability.description ?? []).join(" ");
+
+  return source
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 50);
+}
+
+describe("Heroic Class Abilities Journal page", () => {
+  test("keeps all thirteen classes on one professions-style page", () => {
     const heroic = readJson(HEROIC_SOURCE);
-    const intro = readJson(
+    const page = readJson(
       join(
         SOURCE_DIRECTORY,
         "heroic-class-abilities.json",
@@ -133,7 +146,7 @@ describe("Heroic Class Abilities Journal pages", () => {
       ),
     ).toHaveLength(52);
 
-    expect(intro).toMatchObject({
+    expect(page).toMatchObject({
       schemaVersion: 1,
       key: "heroic-class-abilities",
       name: "Heroic Class Abilities",
@@ -150,70 +163,38 @@ describe("Heroic Class Abilities Journal pages", () => {
           "homebrewery/Bane of Azeroth.md",
         section: "Heroic Class Abilities",
         sync: "curated",
+        artwork:
+          "included-from-journal-assets",
         presentation:
           "dragonbane-core-compatible",
+        links:
+          "generated-heroic-class-ability-items",
       },
     });
 
     expect(
       occurrences(
-        intro.source.content,
-        "@Ref[boa:journal-page."
-        + "player-options.class-",
+        page.source.content,
+        "<h2>",
       ),
     ).toBe(13);
+    expect(
+      occurrences(
+        page.source.content,
+        '<blockquote class="info">',
+      ),
+    ).toBe(52);
 
-    for (
-      let index = 0;
-      index < heroic.classes.length;
-      index += 1
-    ) {
-      const classEntry =
-        heroic.classes[index];
-      const path = join(
+    for (const classEntry of heroic.classes) {
+      expect(page.source.content).toContain(
+        `<h2>${classEntry.name}</h2>`,
+      );
+
+      const legacyPath = join(
         SOURCE_DIRECTORY,
         `class-${classEntry.key}.json`,
       );
-
-      expect(existsSync(path)).toBe(true);
-
-      const page = readJson(path);
-      expect(page).toMatchObject({
-        schemaVersion: 1,
-        key: `class-${classEntry.key}`,
-        name: classEntry.name,
-        sort: 310000 + index * 10000,
-        title: {
-          show: true,
-          level: 2,
-        },
-        source: {
-          type: "html",
-        },
-        provenance: {
-          canonicalSource:
-            "homebrewery/Bane of Azeroth.md",
-          section:
-            `Heroic Class Abilities / ${classEntry.name}`,
-          sync: "curated",
-          artwork:
-            "included-from-journal-assets",
-          presentation:
-            "dragonbane-core-compatible",
-          links:
-            "generated-heroic-class-ability-items",
-        },
-      });
-
-      expect(page.id).toMatch(
-        /^[A-Za-z0-9]{16}$/,
-      );
-      expect(
-        occurrences(
-          page.source.content,
-          '<blockquote class="info">',
-        ),
-      ).toBe(4);
+      expect(existsSync(legacyPath)).toBe(false);
 
       for (const ability of classEntry.abilities) {
         expect(page.source.content).toContain(
@@ -222,13 +203,26 @@ describe("Heroic Class Abilities Journal pages", () => {
           + `${classEntry.key}.${ability.key}]`
           + `{${ability.name}}`,
         );
+
+        const marker =
+          abilityDescriptionMarker(ability);
+        expect(marker).not.toBe("");
+        expect(page.source.content).toContain(
+          marker,
+        );
       }
     }
   });
 
-  test("uses all thirteen generated class illustrations", () => {
+  test("uses all thirteen class illustrations on the same page", () => {
     const heroic = readJson(HEROIC_SOURCE);
     const manifest = readJson(ASSET_MANIFEST);
+    const page = readJson(
+      join(
+        SOURCE_DIRECTORY,
+        "heroic-class-abilities.json",
+      ),
+    );
 
     for (const classEntry of heroic.classes) {
       const sourcePath =
@@ -240,28 +234,20 @@ describe("Heroic Class Abilities Journal pages", () => {
 
       expect(asset).toBeDefined();
       expect(existsSync(asset.asset)).toBe(true);
-
-      const page = readJson(
-        join(
-          SOURCE_DIRECTORY,
-          `class-${classEntry.key}.json`,
-        ),
-      );
-
       expect(page.source.content).toContain(
         `src="${asset.modulePath}"`,
       );
     }
   });
 
-  test("generates sixteen ordered pages and resolves all Item links", () => {
+  test("generates exactly three Player Options pages", () => {
     const heroic = readJson(HEROIC_SOURCE);
     const items = generatedItemsByContentKey();
     const journal = readJson(GENERATED);
 
-    expect(journal.pages).toHaveLength(16);
+    expect(journal.pages).toHaveLength(3);
     expect(
-      journal.pages.slice(0, 3).map(
+      journal.pages.map(
         page => page.name,
       ),
     ).toEqual([
@@ -270,51 +256,31 @@ describe("Heroic Class Abilities Journal pages", () => {
       "Heroic Class Abilities",
     ]);
 
-    const intro = journal.pages.find(
-      page =>
-        page.flags?.[MODULE_ID]?.contentKey
-        === (
-          "journal-page.player-options."
-          + "heroic-class-abilities"
-        ),
-    );
+    const page = journal.pages[2];
 
-    expect(intro).toBeDefined();
-    expect(intro.title).toEqual({
+    expect(page.title).toEqual({
       show: true,
       level: 1,
     });
-    expect(
-      occurrences(
-        intro.text.content,
-        "@UUID[JournalEntry.",
-      ),
-    ).toBe(13);
-    expect(intro.text.content).not.toContain(
+    expect(page.text.content).not.toContain(
       "@Ref[",
     );
+    expect(
+      occurrences(
+        page.text.content,
+        "<h2>",
+      ),
+    ).toBe(13);
+    expect(
+      occurrences(
+        page.text.content,
+        '<blockquote class="info">',
+      ),
+    ).toBe(52);
 
     let linkedAbilities = 0;
 
     for (const classEntry of heroic.classes) {
-      const page = journal.pages.find(
-        candidate =>
-          candidate.flags?.[MODULE_ID]?.contentKey
-          === (
-            "journal-page.player-options."
-            + `class-${classEntry.key}`
-          ),
-      );
-
-      expect(page).toBeDefined();
-      expect(page.title).toEqual({
-        show: true,
-        level: 2,
-      });
-      expect(page.text.content).not.toContain(
-        "@Ref[",
-      );
-
       for (const ability of classEntry.abilities) {
         const contentKey =
           "heroic-class-ability."
@@ -325,6 +291,9 @@ describe("Heroic Class Abilities Journal pages", () => {
         expect(page.text.content).toContain(
           `@UUID[Item.${item._id}]`
           + `{${ability.name}}`,
+        );
+        expect(page.text.content).toContain(
+          abilityDescriptionMarker(ability),
         );
         linkedAbilities += 1;
       }
@@ -345,23 +314,23 @@ describe("Heroic Class Abilities Journal pages", () => {
     expect(source).toContain(
       '"documentType": "Item"',
     );
-    expect(source).toContain(
-      "load_internal_item_references("
-      + "\n            adventure_directory",
-    );
   });
 
-  test("extends the runtime Assets and Journals Macro", () => {
+  test("extends runtime verification for the one-page layout", () => {
     const source = read(SYSTEM_MACRO);
 
     for (const marker of [
-      "UUID_ITEM_PREFIX",
-      "journal-page.player-options.heroic-class-abilities",
-      "Player Options contains 13 class pages",
-      "Class pages contain 52 linked Heroic Class Abilities",
-      "Player Options has exactly sixteen pages",
+      "Player Options has exactly three pages",
+      "Heroic Class Abilities contains 13 class headings",
+      "Heroic Class Abilities contains 52 overview boxes",
+      "Ability box titles link to all 52 Ability Items",
+      "Ability boxes contain all 52 descriptions",
     ]) {
       expect(source).toContain(marker);
     }
+
+    expect(source).not.toContain(
+      "Player Options contains 13 class pages",
+    );
   });
 });

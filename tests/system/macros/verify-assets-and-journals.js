@@ -278,39 +278,84 @@ try {
     Boolean(classesPage)
   );
 
-  const classPageProblems = [];
-  let classPageCount = 0;
-  let classAbilityLinkCount = 0;
+  function normalizedText(value) {
+    return String(value ?? "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
-  for (const classEntry of classDefinitions) {
-    const page = journalPage(
-      playerOptions,
-      "journal-page.player-options."
-      + `class-${classEntry.key}`
+  function textFromHtml(value) {
+    const element = document.createElement("div");
+    element.innerHTML = String(value ?? "");
+    return normalizedText(
+      element.textContent ?? ""
     );
+  }
 
-    if (!page) {
-      classPageProblems.push(
-        `${classEntry.name}: missing Journal page`
+  function abilityDescriptionText(ability) {
+    if (
+      typeof ability.descriptionHtml === "string"
+      && ability.descriptionHtml.trim() !== ""
+    ) {
+      return textFromHtml(
+        ability.descriptionHtml
       );
-      continue;
     }
 
-    classPageCount += 1;
-    const html =
-      page.text?.content ?? "";
+    if (Array.isArray(ability.description)) {
+      return normalizedText(
+        ability.description.join(" ")
+      );
+    }
+
+    return "";
+  }
+
+  const classPageProblems = [];
+  let classHeadingCount = 0;
+  let classIllustrationCount = 0;
+  let classAbilityBoxCount = 0;
+  let classAbilityLinkCount = 0;
+  let classAbilityDescriptionCount = 0;
+
+  const classesHtml =
+    classesPage?.text?.content ?? "";
+  const classesText = classesPage
+    ? textFromHtml(classesHtml)
+    : "";
+
+  for (const classEntry of classDefinitions) {
+    const heading =
+      `<h2>${classEntry.name}</h2>`;
+
+    if (classesHtml.includes(heading)) {
+      classHeadingCount += 1;
+    } else {
+      classPageProblems.push(
+        `${classEntry.name}: missing class heading`
+      );
+    }
+
     const imagePath =
       "modules/bane-of-azeroth/"
       + "assets/journals/classes/"
       + `${classEntry.key.replaceAll("-", "_")}.webp`;
 
-    if (!html.includes(`src="${imagePath}"`)) {
+    if (
+      classesHtml.includes(
+        `src="${imagePath}"`
+      )
+    ) {
+      classIllustrationCount += 1;
+    } else {
       classPageProblems.push(
         `${classEntry.name}: missing class illustration`
       );
     }
 
     for (const ability of classEntry.abilities ?? []) {
+      classAbilityBoxCount += 1;
+
       const contentKey =
         "heroic-class-ability."
         + `${classEntry.key}.${ability.key}`;
@@ -329,31 +374,70 @@ try {
       const linkMarker =
         `${UUID_ITEM_PREFIX}${item.id}]`;
 
-      if (!html.includes(linkMarker)) {
+      if (classesHtml.includes(linkMarker)) {
+        classAbilityLinkCount += 1;
+      } else {
         classPageProblems.push(
           `${classEntry.name}: missing link to ${ability.name}`
         );
+      }
+
+      const description =
+        abilityDescriptionText(ability);
+      const descriptionMarker =
+        description.slice(0, 80);
+
+      if (
+        descriptionMarker !== ""
+        && classesText.includes(
+          descriptionMarker
+        )
+      ) {
+        classAbilityDescriptionCount += 1;
       } else {
-        classAbilityLinkCount += 1;
+        classPageProblems.push(
+          `${classEntry.name}: missing description for ${ability.name}`
+        );
       }
     }
   }
 
   boaCheckEqual(
     checks,
-    "Player Options contains 13 class pages",
-    classPageCount,
+    "Heroic Class Abilities contains 13 class headings",
+    classHeadingCount,
     13
   );
   boaCheckEqual(
     checks,
-    "Class pages contain 52 linked Heroic Class Abilities",
+    "Heroic Class Abilities contains 13 class illustrations",
+    classIllustrationCount,
+    13
+  );
+  boaCheckEqual(
+    checks,
+    "Heroic Class Abilities contains 52 overview boxes",
+    occurrences(
+      classesHtml,
+      '<blockquote class="info">'
+    ),
+    classAbilityBoxCount
+  );
+  boaCheckEqual(
+    checks,
+    "Ability box titles link to all 52 Ability Items",
     classAbilityLinkCount,
+    52
+  );
+  boaCheckEqual(
+    checks,
+    "Ability boxes contain all 52 descriptions",
+    classAbilityDescriptionCount,
     52
   );
   boaCheck(
     checks,
-    "Class pages use their illustrations and linked Ability Items",
+    "Classes are readable on one page with complete linked Ability boxes",
     classPageProblems.length === 0,
     classPageProblems.join("\n")
   );
@@ -372,11 +456,11 @@ try {
   if (playerOptions) {
     boaCheckEqual(
       checks,
-      "Player Options has exactly sixteen pages",
+      "Player Options has exactly three pages",
       boaCollectionValues(
         playerOptions.pages
       ).length,
-      16
+      3
     );
     boaCheckEqual(
       checks,

@@ -10,16 +10,16 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ### Added
 
-- Added a curated Heroic Class Abilities parent page and thirteen class pages under Player Options.
+- Added one curated Heroic Class Abilities page under Player Options, with all thirteen classes organized as readable sections.
 - Added all thirteen class illustrations to the generated Journal.
-- Added 52 symbolic links from class pages to the generated Heroic Class Ability Items.
+- Added 52 complete Ability overview boxes whose linked titles can be dragged directly to character sheets.
 - Added generic internal Item reference discovery to Journal generation.
-- Expanded integration and Foundry system-test coverage for class pages, illustrations, and Ability links.
+- Expanded integration and Foundry system-test coverage for class sections, illustrations, complete Ability descriptions, and Item links.
 
 ### Changed
 
 - Set the Foundry module content version to `0.10.1`.
-- Kept complete Heroic Class Ability rules authoritative in Item documents instead of duplicating them into Journal source.
+- Included complete Ability descriptions in the Journal overview while keeping the generated Items linked and draggable.
 
 ## [0.10.0] - 2026-07-30
 
