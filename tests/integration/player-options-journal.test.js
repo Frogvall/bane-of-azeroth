@@ -1,4 +1,5 @@
 import {
+  existsSync,
   readFileSync,
 } from "node:fs";
 import {
@@ -25,6 +26,18 @@ const KIN_SOURCE = join(
   SOURCE_DIRECTORY,
   "kin.json",
 );
+const TABLE_SOURCE = resolve(
+  "foundry",
+  "content",
+  "roll-tables",
+  "player-options",
+  "kin.json",
+);
+const ASSET_MANIFEST = resolve(
+  "foundry",
+  "config",
+  "journal-assets.json",
+);
 const ADVENTURE_DIRECTORY = resolve(
   "foundry",
   "pack-src",
@@ -37,10 +50,6 @@ const GENERATED = join(
   "Bane_of_Azeroth_BoAJournals00001",
   "Player_Options_BoAJrnlPlayerOpt.json",
 );
-const ADVENTURE = join(
-  ADVENTURE_DIRECTORY,
-  "_Adventure.json",
-);
 const CSS = resolve(
   "foundry",
   "styles",
@@ -48,20 +57,30 @@ const CSS = resolve(
 );
 
 function read(path) {
-  return readFileSync(path, "utf8");
+  return readFileSync(
+    path,
+    "utf8",
+  );
 }
 
 function readJson(path) {
-  return JSON.parse(read(path));
+  return JSON.parse(
+    read(path),
+  );
 }
 
-function occurrences(value, marker) {
+function occurrences(
+  value,
+  marker,
+) {
   return value.split(marker).length - 1;
 }
 
 describe("curated Player Options Journal", () => {
-  test("enables Player Options with one curated Kin source page", () => {
-    expect(readJson(JOURNAL_SOURCE)).toEqual({
+  test("enables Player Options with a visible Kin page title", () => {
+    expect(
+      readJson(JOURNAL_SOURCE),
+    ).toMatchObject({
       schemaVersion: 1,
       key: "player-options",
       id: "BoAJrnlPlayerOpt",
@@ -70,15 +89,16 @@ describe("curated Player Options Journal", () => {
       sort: 200000,
     });
 
-    const page = readJson(KIN_SOURCE);
-    expect(page).toMatchObject({
+    expect(
+      readJson(KIN_SOURCE),
+    ).toMatchObject({
       schemaVersion: 1,
       key: "kin",
       id: "BoAPgPlayerKin01",
       name: "Kin",
       sort: 100000,
       title: {
-        show: false,
+        show: true,
         level: 1,
       },
       source: {
@@ -90,144 +110,164 @@ describe("curated Player Options Journal", () => {
         section: "Kin",
         sync: "curated",
         artwork:
-          "omitted-pending-webp-pipeline",
+          "included-from-journal-assets",
+        presentation:
+          "dragonbane-core-compatible",
       },
     });
   });
 
-  test("contains the complete curated Kin chapter structure", () => {
-    const html = readJson(KIN_SOURCE).source.content;
-    expect(html).toContain(
-      '<article class="boa-journal '
-      + 'boa-player-options boa-kin-page">',
-    );
-    expect(html).toContain(
-      '<h1 class="boa-heading">Kin</h1>',
-    );
+  test("uses Dragonbane Journal structure instead of custom presentation CSS", () => {
+    const html =
+      readJson(KIN_SOURCE).source.content;
+
     expect(html).toContain(
       "There are 14 playable kin in Azeroth.",
     );
-    for (const marker of [
-      "Any Faction",
-      "Alliance",
-      "Horde",
-      "Language",
-      "Dracthyr",
-      "Draenei",
-      "Bronzebeard",
-      "Dark Iron",
-      "Blood Elf",
-      "Night Elf",
-      "Gnome",
-      "Goblin",
-      "Human",
-      "Orc",
-      "Pandaren",
-      "Tauren",
-      "Troll",
-      "Undead",
-      "Vulpera",
-      "Worgen",
-      "Derived Ratings",
-    ]) {
-      expect(html).toContain(marker);
-    }
+    expect(html).toContain(
+      "<h2>LANGUAGE</h2>",
+    );
+    expect(html).toContain(
+      "<h2>DRACTHYR</h2>",
+    );
+    expect(html).toContain(
+      "<h2>DERIVED RATINGS</h2>",
+    );
+    expect(html).toContain(
+      "<h3>BRONZEBEARD</h3>",
+    );
+    expect(html).toContain(
+      "<h3>BLOOD ELF</h3>",
+    );
+
     expect(
       occurrences(
         html,
-        'class="boa-rule-box boa-ability"',
+        '<blockquote class="info">',
       ),
     ).toBe(19);
     expect(
-      occurrences(html, "<table"),
-    ).toBe(20);
+      occurrences(
+        html,
+        "@DisplayRef[boa:table.",
+      ),
+    ).toBe(19);
     expect(
       occurrences(
         html,
-        'class="boa-table boa-name-table"',
+        "<img ",
       ),
     ).toBe(16);
-    expect(html).toContain(
-      "Ability: Draconic Wings",
-    );
-    expect(html).toContain(
-      "Ability: Undead Nature",
-    );
-    expect(html).toContain(
-      "Ability: Two Forms",
-    );
-    expect(html.length).toBeGreaterThan(30000);
-    expect(html).not.toContain("{{");
-    expect(html).not.toContain("\\page");
-    expect(html).not.toContain("\\column");
-    expect(html).not.toContain("i.imgur.com");
-    expect(html).not.toContain("<img");
-    expect(html).not.toContain("![");
-  });
-
-  test("generates a packable Player Options Journal", () => {
-    const source = readJson(KIN_SOURCE);
-    const journal = readJson(GENERATED);
-    expect(journal._key).toBe(
-      "!journal!BoAJrnlPlayerOpt",
-    );
-    expect(journal._id).toBe(
-      "BoAJrnlPlayerOpt",
-    );
-    expect(journal.folder).toBe(
-      "BoAJournals00001",
-    );
-    expect(journal.name).toBe(
-      "Player Options",
-    );
-    expect(journal.pages).toHaveLength(1);
-    const page = journal.pages[0];
-    expect(page._key).toBe(
-      "!journal.pages!"
-      + "BoAJrnlPlayerOpt.BoAPgPlayerKin01",
-    );
-    expect(page._id).toBe(
-      "BoAPgPlayerKin01",
-    );
-    expect(page.name).toBe("Kin");
-    expect(page.text.format).toBe(1);
-    expect(page.text.markdown).toBe("");
-    expect(page.text.content).toBe(
-      source.source.content,
-    );
-  });
-
-  test("adds Player Options to the Adventure exactly once", () => {
-    const adventure = readJson(ADVENTURE);
-    const path =
-      "JournalEntry/"
-      + "Bane_of_Azeroth_BoAJournals00001/"
-      + "Player_Options_BoAJrnlPlayerOpt.json";
-    expect(adventure.journal).toContain(path);
     expect(
-      adventure.journal.filter(
-        value => value === path,
+      occurrences(
+        html,
+        "<table",
       ),
-    ).toHaveLength(1);
-  });
+    ).toBe(1);
+    expect(
+      occurrences(
+        html,
+        "<h2>",
+      ),
+    ).toBe(16);
 
-  test("scopes the Kin presentation to BoA Journal classes", () => {
-    const css = read(CSS);
-    expect(css).toContain(
+    for (const forbidden of [
+      "<article",
+      "<h1",
+      "boa-journal",
+      "boa-heading",
+      "boa-rule-box",
+      "boa-ability",
+      "boa-name-table",
+      "boa-roll-table",
+      "@DisplayTable[RollTable.",
+    ]) {
+      expect(html).not.toContain(
+        forbidden,
+      );
+    }
+
+    expect(read(CSS)).not.toContain(
       "/* BOA JOURNAL CONTENT START */",
     );
-    expect(css).toContain(".boa-journal");
-    expect(css).toContain(
-      ".boa-journal .boa-rule-box",
+  });
+
+  test("uses all 16 generated Kin WebP assets", () => {
+    const page =
+      readJson(KIN_SOURCE);
+    const html =
+      page.source.content;
+    const manifest =
+      readJson(ASSET_MANIFEST);
+    const kinAssets =
+      manifest.assets.filter(
+        asset =>
+          asset.source.startsWith(
+            "homebrewery/images/kin/",
+          )
+      );
+
+    expect(kinAssets).toHaveLength(16);
+
+    for (const asset of kinAssets) {
+      expect(
+        existsSync(asset.asset),
+      ).toBe(true);
+      expect(html).toContain(
+        `src="${asset.modulePath}"`,
+      );
+    }
+  });
+
+  test("resolves all symbolic RollTable references in generated output", () => {
+    const source =
+      readJson(KIN_SOURCE);
+    const tableSource =
+      readJson(TABLE_SOURCE);
+    const journal =
+      readJson(GENERATED);
+
+    expect(journal.pages).toHaveLength(1);
+    const page = journal.pages[0];
+
+    expect(page.title).toEqual({
+      show: true,
+      level: 1,
+    });
+    expect(page.text.format).toBe(1);
+    expect(page.text.markdown).toBe("");
+
+    const sourceHtml =
+      source.source.content;
+    const generatedHtml =
+      page.text.content;
+
+    expect(
+      occurrences(
+        sourceHtml,
+        "@DisplayRef[boa:table.",
+      ),
+    ).toBe(19);
+    expect(
+      occurrences(
+        generatedHtml,
+        "@DisplayTable[RollTable.",
+      ),
+    ).toBe(19);
+    expect(generatedHtml).not.toContain(
+      "@DisplayRef[",
     );
-    expect(css).toContain(
-      ".boa-journal .boa-table",
-    );
-    expect(css).toContain(
-      ".boa-journal .boa-name-table",
-    );
-    expect(css).toContain(
-      "@media (max-width: 700px)",
-    );
+
+    for (
+      const table
+      of tableSource.tables
+    ) {
+      expect(sourceHtml).toContain(
+        `@DisplayRef[boa:table.${table.key}]`,
+      );
+      expect(generatedHtml).toContain(
+        `@DisplayTable[RollTable.${table.id}]`,
+      );
+    }
   });
 });

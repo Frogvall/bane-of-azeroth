@@ -1,0 +1,1244 @@
+{
+  "schemaVersion": 1,
+  "folder": {
+    "key": "player-options",
+    "id": "BoATblPlayerOpt1",
+    "name": "Player Options",
+    "parentId": "BoATables7pQ2mX9",
+    "color": null,
+    "sorting": "a",
+    "sort": 200000
+  },
+  "tables": [
+    {
+      "key": "kin.any-faction",
+      "id": "BoATblKinAnyFac1",
+      "name": "Kin – Any Faction",
+      "displayName": "Any Faction",
+      "formula": "1d20",
+      "sort": 100000,
+      "results": [
+        {
+          "id": "3c9aa4ac9cd8bfba",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Dracthyr"
+        },
+        {
+          "id": "23b687088fdf5f7c",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Draenei"
+        },
+        {
+          "id": "bf4989f54dbcb355",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Dwarf: Bronzebeard"
+        },
+        {
+          "id": "a008d18eaf2672f9",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Dwarf: Dark Iron"
+        },
+        {
+          "id": "4b85109548b8bc77",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Elf: Blood Elf"
+        },
+        {
+          "id": "522afbc6b11e65b2",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Elf: Night Elf"
+        },
+        {
+          "id": "7bec86637398acf7",
+          "range": [
+            7,
+            7
+          ],
+          "name": "Gnome"
+        },
+        {
+          "id": "db20674868a3b01e",
+          "range": [
+            8,
+            8
+          ],
+          "name": "Goblin"
+        },
+        {
+          "id": "32f03291070ea70e",
+          "range": [
+            9,
+            11
+          ],
+          "name": "Human"
+        },
+        {
+          "id": "f9cc18a2e217dac5",
+          "range": [
+            12,
+            14
+          ],
+          "name": "Orc"
+        },
+        {
+          "id": "62033862b453a5ae",
+          "range": [
+            15,
+            15
+          ],
+          "name": "Pandaren"
+        },
+        {
+          "id": "f1c4616bd9aea1ce",
+          "range": [
+            16,
+            16
+          ],
+          "name": "Tauren"
+        },
+        {
+          "id": "24670de826d63468",
+          "range": [
+            17,
+            17
+          ],
+          "name": "Troll"
+        },
+        {
+          "id": "ea8fdb41f4f406b4",
+          "range": [
+            18,
+            18
+          ],
+          "name": "Undead"
+        },
+        {
+          "id": "54166dbfd4ea3cb5",
+          "range": [
+            19,
+            19
+          ],
+          "name": "Vulpera"
+        },
+        {
+          "id": "2e3773cee7fabe09",
+          "range": [
+            20,
+            20
+          ],
+          "name": "Worgen"
+        }
+      ]
+    },
+    {
+      "key": "kin.alliance",
+      "id": "BoATblKinAllianc",
+      "name": "Kin – Alliance",
+      "displayName": "Alliance",
+      "formula": "1d10",
+      "sort": 200000,
+      "results": [
+        {
+          "id": "2824f060132ebc11",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Dracthyr"
+        },
+        {
+          "id": "94e8dc7f691810ec",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Draenei"
+        },
+        {
+          "id": "975f913ae00c96b0",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Dwarf: Bronzebeard"
+        },
+        {
+          "id": "2f31bb5371630f92",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Dwarf: Dark Iron"
+        },
+        {
+          "id": "a2a13145775a11af",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Elf: Night Elf"
+        },
+        {
+          "id": "1941e5ce7ba5ce72",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Gnome"
+        },
+        {
+          "id": "7be4004b40c3d0a1",
+          "range": [
+            7,
+            8
+          ],
+          "name": "Human"
+        },
+        {
+          "id": "0aed0cfec7762a7d",
+          "range": [
+            9,
+            9
+          ],
+          "name": "Pandaren"
+        },
+        {
+          "id": "f969246970b71334",
+          "range": [
+            10,
+            10
+          ],
+          "name": "Worgen"
+        }
+      ]
+    },
+    {
+      "key": "kin.horde",
+      "id": "BoATblKinHorde01",
+      "name": "Kin – Horde",
+      "displayName": "Horde",
+      "formula": "1d10",
+      "sort": 300000,
+      "results": [
+        {
+          "id": "98b89cb998607cba",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Dracthyr"
+        },
+        {
+          "id": "70c857da640d2b94",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Elf: Blood Elf"
+        },
+        {
+          "id": "92eff30250e62b5d",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Goblin"
+        },
+        {
+          "id": "b94dee1ae3d7a28d",
+          "range": [
+            4,
+            5
+          ],
+          "name": "Orc"
+        },
+        {
+          "id": "d5d275b621cf0cd1",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Pandaren"
+        },
+        {
+          "id": "facbfd72d0f24c23",
+          "range": [
+            7,
+            7
+          ],
+          "name": "Tauren"
+        },
+        {
+          "id": "07a1fc6fa8b68c93",
+          "range": [
+            8,
+            8
+          ],
+          "name": "Troll"
+        },
+        {
+          "id": "9106e8aae99d58b6",
+          "range": [
+            9,
+            9
+          ],
+          "name": "Undead"
+        },
+        {
+          "id": "75dad178ecc9fe27",
+          "range": [
+            10,
+            10
+          ],
+          "name": "Vulpera"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.dracthyr",
+      "id": "BoANameDracthyr1",
+      "name": "Name - Dracthyr",
+      "displayName": "Name - Dracthyr",
+      "formula": "1d6",
+      "sort": 400000,
+      "results": [
+        {
+          "id": "935a74ce2492902f",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Alzinathel"
+        },
+        {
+          "id": "29405c96736c4441",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Krenzenia"
+        },
+        {
+          "id": "c3624e65adc00f56",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Nalyx"
+        },
+        {
+          "id": "eb5168eb05aaa055",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Rei"
+        },
+        {
+          "id": "d386d151697c8ec1",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Siaszerathel"
+        },
+        {
+          "id": "a1a7cc6121b647ab",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Yzin"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.draenei",
+      "id": "BoANameDraenei01",
+      "name": "Name - Draenei",
+      "displayName": "Name - Draenei",
+      "formula": "1d6",
+      "sort": 500000,
+      "results": [
+        {
+          "id": "7725a3130e6293b0",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Aarko"
+        },
+        {
+          "id": "33529735e5a89de0",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Denath"
+        },
+        {
+          "id": "91f98846454812e2",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Ha'lei"
+        },
+        {
+          "id": "3de15da18bc9164a",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Mendorn"
+        },
+        {
+          "id": "547d52bd823ba374",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Nuraa"
+        },
+        {
+          "id": "f719f1087655d8ea",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Tysha"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.bronzebeard",
+      "id": "BoANameBronzebrd",
+      "name": "Name - Bronzebeard",
+      "displayName": "Name - Bronzebeard",
+      "formula": "1d6",
+      "sort": 600000,
+      "results": [
+        {
+          "id": "21ca558170967edb",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Berta"
+        },
+        {
+          "id": "4e1a8c22033d36df",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Golad"
+        },
+        {
+          "id": "71f81e68095e3431",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Harkon"
+        },
+        {
+          "id": "1f9099c1b59a93c2",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Klemmy"
+        },
+        {
+          "id": "088009f8a8f54f41",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Rugan"
+        },
+        {
+          "id": "7a60492db81b85b3",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Taga"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.dark-iron",
+      "id": "BoANameDarkIron1",
+      "name": "Name - Dark Iron",
+      "displayName": "Name - Dark Iron",
+      "formula": "1d6",
+      "sort": 700000,
+      "results": [
+        {
+          "id": "5976c8e7d3ce2c2b",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Blacksteel"
+        },
+        {
+          "id": "c665386513c275c3",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Flamehearth"
+        },
+        {
+          "id": "af8d0a9ad2604fb6",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Hearthkiln"
+        },
+        {
+          "id": "e756cc3064a0e24e",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Oreknuckle"
+        },
+        {
+          "id": "c12f8134ba18a924",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Sootsmoker"
+        },
+        {
+          "id": "ea1d14b5c061ff9b",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Stoutbrow"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.blood-elf",
+      "id": "BoANameBloodElf1",
+      "name": "Name - Blood Elf",
+      "displayName": "Name - Blood Elf",
+      "formula": "1d6",
+      "sort": 800000,
+      "results": [
+        {
+          "id": "f47d2c6b56d73f3d",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Argaron"
+        },
+        {
+          "id": "019fa5c9f92c5b95",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Cara"
+        },
+        {
+          "id": "2c07ac0eb673b831",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Idonis"
+        },
+        {
+          "id": "cb2dbfa587a593fa",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Kileana"
+        },
+        {
+          "id": "b3052e2cb2494596",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Nova"
+        },
+        {
+          "id": "4e1e5a206fe05797",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Torvos"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.night-elf",
+      "id": "BoANameNightElf1",
+      "name": "Name - Night Elf",
+      "displayName": "Name - Night Elf",
+      "formula": "1d6",
+      "sort": 900000,
+      "results": [
+        {
+          "id": "445868fff191a17a",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Allyndia"
+        },
+        {
+          "id": "e02651104b443bec",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Dargon"
+        },
+        {
+          "id": "909c9abcca557ad3",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Kyla"
+        },
+        {
+          "id": "55050e4f365a1f3c",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Melinde"
+        },
+        {
+          "id": "4dc4b2b5f93ff042",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Ravael"
+        },
+        {
+          "id": "8d3df90a6252f44d",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Vandel"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.gnome",
+      "id": "BoANameGnome0001",
+      "name": "Name - Gnome",
+      "displayName": "Name - Gnome",
+      "formula": "1d6",
+      "sort": 1000000,
+      "results": [
+        {
+          "id": "dad066de58c98a93",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Bink"
+        },
+        {
+          "id": "0bbb208e2a2093de",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Cog"
+        },
+        {
+          "id": "a2e3f1f9ed4699ab",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Gleep"
+        },
+        {
+          "id": "2b28867c4875fd8b",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Kiki"
+        },
+        {
+          "id": "fc3c65e1d6e166ce",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Lazlo"
+        },
+        {
+          "id": "33e7c8d117525e77",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Vallo"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.goblin",
+      "id": "BoANameGoblin001",
+      "name": "Name - Goblin",
+      "displayName": "Name - Goblin",
+      "formula": "1d6",
+      "sort": 1100000,
+      "results": [
+        {
+          "id": "3378708217748a08",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Bezok"
+        },
+        {
+          "id": "510927fa7ffb4f20",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Crank"
+        },
+        {
+          "id": "aa38ec25e87ed1de",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Nixxrax"
+        },
+        {
+          "id": "7882fd60380f8126",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Lux"
+        },
+        {
+          "id": "a6db7dd87463c443",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Speegle"
+        },
+        {
+          "id": "efe5a2bc3c7c840d",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Ziz"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.human",
+      "id": "BoANameHuman0001",
+      "name": "Name - Human",
+      "displayName": "Name - Human",
+      "formula": "1d6",
+      "sort": 1200000,
+      "results": [
+        {
+          "id": "6b5e48bfe5ce4bdd",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Alfred"
+        },
+        {
+          "id": "406ed5c619b71c2f",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Finn"
+        },
+        {
+          "id": "84020391dbcf8c42",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Matthew"
+        },
+        {
+          "id": "cca1481c477006ac",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Rachel"
+        },
+        {
+          "id": "a0b521662fa2e5ed",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Rosha"
+        },
+        {
+          "id": "f5fb5849f1bf03fc",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Stephen"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.orc",
+      "id": "BoANameOrc000001",
+      "name": "Name - Orc",
+      "displayName": "Name - Orc",
+      "formula": "1d6",
+      "sort": 1300000,
+      "results": [
+        {
+          "id": "731053ed66804de5",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Favra"
+        },
+        {
+          "id": "7b19466f97d4d83f",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Gaula"
+        },
+        {
+          "id": "09fe45913b04dde2",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Kelgruk"
+        },
+        {
+          "id": "c0bf3c32a1c3d5a8",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Thega"
+        },
+        {
+          "id": "0218757599f73f69",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Togoth"
+        },
+        {
+          "id": "4c76b7b993ea490c",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Yelnagi"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.pandaren",
+      "id": "BoANamePandaren1",
+      "name": "Name - Pandaren",
+      "displayName": "Name - Pandaren",
+      "formula": "1d6",
+      "sort": 1400000,
+      "results": [
+        {
+          "id": "89fd338ca99b5965",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Aysa"
+        },
+        {
+          "id": "2f8dd0251c73fd7e",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Bao"
+        },
+        {
+          "id": "fe2426cf3cb9e777",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Lo"
+        },
+        {
+          "id": "415ad71f47c5a974",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Mai"
+        },
+        {
+          "id": "46960279ea9c2881",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Rin"
+        },
+        {
+          "id": "f2e9e105b79c1973",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Wei"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.tauren",
+      "id": "BoANameTauren001",
+      "name": "Name - Tauren",
+      "displayName": "Name - Tauren",
+      "formula": "1d6",
+      "sort": 1500000,
+      "results": [
+        {
+          "id": "7aebd00d94f384d6",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Garn"
+        },
+        {
+          "id": "e399da250de582c3",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Jahan"
+        },
+        {
+          "id": "b1010a6237d65fa8",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Kaasa"
+        },
+        {
+          "id": "3c08393ebac4921d",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Rantuko"
+        },
+        {
+          "id": "72c8a7914e7f5b98",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Sagorne"
+        },
+        {
+          "id": "1c40f9d5271ce4e0",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Umber"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.troll",
+      "id": "BoANameTroll0001",
+      "name": "Name - Troll",
+      "displayName": "Name - Troll",
+      "formula": "1d6",
+      "sort": 1600000,
+      "results": [
+        {
+          "id": "e68f1a62a3942b7f",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Bwu'ja"
+        },
+        {
+          "id": "bc3b94967249d0fd",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Gri'lek"
+        },
+        {
+          "id": "ea39cf0be050bdfd",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Hae'wilani"
+        },
+        {
+          "id": "304eeb9db4549cad",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Jin'diza"
+        },
+        {
+          "id": "c4eaf126cb213474",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Ske'rit"
+        },
+        {
+          "id": "e77652fbbb24b37a",
+          "range": [
+            6,
+            6
+          ],
+          "name": "You'jin"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.undead",
+      "id": "BoANameUndead001",
+      "name": "Name - Undead",
+      "displayName": "Name - Undead",
+      "formula": "1d6",
+      "sort": 1700000,
+      "results": [
+        {
+          "id": "a8511cb11a8832d1",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Anton"
+        },
+        {
+          "id": "795acd4f1cec20dc",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Lucas"
+        },
+        {
+          "id": "4d87d4675725e3b3",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Martina"
+        },
+        {
+          "id": "4105023c3b866829",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Renee"
+        },
+        {
+          "id": "678440bdf8436e04",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Timothy"
+        },
+        {
+          "id": "de13e46cdec59065",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Xavier"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.vulpera",
+      "id": "BoANameVulpera01",
+      "name": "Name - Vulpera",
+      "displayName": "Name - Vulpera",
+      "formula": "1d6",
+      "sort": 1800000,
+      "results": [
+        {
+          "id": "067895f87f0452af",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Eudora"
+        },
+        {
+          "id": "dce7a994e69cb3e6",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Haniko"
+        },
+        {
+          "id": "8a499162201952aa",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Lugo"
+        },
+        {
+          "id": "908847274c102b06",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Neri"
+        },
+        {
+          "id": "157123e82a6ccf94",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Omi"
+        },
+        {
+          "id": "9b0235240f5f86a5",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Zikkori"
+        }
+      ]
+    },
+    {
+      "key": "kin.name.worgen",
+      "id": "BoANameWorgen001",
+      "name": "Name - Worgen",
+      "displayName": "Name - Worgen",
+      "formula": "1d6",
+      "sort": 1900000,
+      "results": [
+        {
+          "id": "dba8af59ee3c4de0",
+          "range": [
+            1,
+            1
+          ],
+          "name": "Abigail"
+        },
+        {
+          "id": "a33e9e21ba871533",
+          "range": [
+            2,
+            2
+          ],
+          "name": "Jacob"
+        },
+        {
+          "id": "69817505ced60cbb",
+          "range": [
+            3,
+            3
+          ],
+          "name": "Jeanette"
+        },
+        {
+          "id": "c87ad98cdce41484",
+          "range": [
+            4,
+            4
+          ],
+          "name": "Katja"
+        },
+        {
+          "id": "dd62a8bcfea6d355",
+          "range": [
+            5,
+            5
+          ],
+          "name": "Sabina"
+        },
+        {
+          "id": "3d2ecc2595e8f932",
+          "range": [
+            6,
+            6
+          ],
+          "name": "Raul"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1183 @@
+
+added 65 packages, and audited 66 packages in 2s
+
+20 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice
+
+> test:coverage
+> vitest run --coverage
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/workspace[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m tests/integration/player-test-harness-registration.test.js [2m([22m[2m17 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/integration/hunter-companions.test.js [2m([22m[2m8 tests[22m[2m)[22m[32m 70[2mms[22m[39m
+ [32m✓[39m tests/integration/journal-infrastructure.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/integration/summoned-monsters.test.js [2m([22m[2m9 tests[22m[2m)[22m[32m 132[2mms[22m[39m
+ [32m✓[39m tests/unit/common-animal-movement.test.js [2m([22m[2m16 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/summon-duration-lifecycle.test.js [2m([22m[2m13 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/unit/monster-command-control.test.js [2m([22m[2m11 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m tests/unit/warlock-demon-suffering.test.js [2m([22m[2m30 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m tests/unit/common-animal-effect-only-attacks.test.js [2m([22m[2m19 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m tests/unit/monster-attack-control.test.js [2m([22m[2m20 tests[22m[2m)[22m[32m 64[2mms[22m[39m
+ [32m✓[39m tests/integration/warlock-demons.test.js [2m([22m[2m19 tests[22m[2m)[22m[32m 190[2mms[22m[39m
+ [32m✓[39m tests/unit/token-placement.test.js [2m([22m[2m7 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/spell-grants.test.js [2m([22m[2m16 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m tests/integration/adventure-presentation.test.js [2m([22m[2m8 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/common-animal-attack-adapter.test.js [2m([22m[2m9 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/elemental-totems.test.js [2m([22m[2m19 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/integration/reference-foundation.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m tests/unit/common-animal-attack-effects.test.js [2m([22m[2m9 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/integration/player-options-journal.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/unit/elemental-totem-validation.test.js [2m([22m[2m34 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m tests/integration/elemental-totem-creation.test.js [2m([22m[2m16 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m tests/unit/elemental-totem-automation-setting.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/unit/weapon-patches.test.js [2m([22m[2m13 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/unit/common-animal-status-effects.test.js [2m([22m[2m6 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [31m❯[39m tests/integration/kin-roll-tables.test.js [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 77[2mms[22m[39m
+     [32m✓[39m defines 19 deterministic rollable tables[32m 35[2mms[22m[39m
+     [32m✓[39m generates packable RollTables in the Player Options folder[32m 14[2mms[22m[39m
+     [32m✓[39m adds every generated table and folder to the Adventure once[32m 4[2mms[22m[39m
+[31m     [31m×[31m is covered by the central generator checker[39m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/integration/external-uuid-system-test.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/unit/elemental-totem-aura.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/integration/homebrewery-clarifications-a873192.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/integration/warlock-demon-automation-system-test.test.js [2m([22m[2m8 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/integration/warlock-demon-system-test-registration.test.js [2m([22m[2m5 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/unit/common-animal-status-effect-origin.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/unit/warlock-demon-automation-setting.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/integration/journal-assets.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32m✓[39m tests/unit/warlock-demon-defense-banes.test.js [2m([22m[2m8 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/unit/weapon-features.test.js [2m([22m[2m13 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/integration/hook-registration.test.js [2m([22m[2m4 tests[22m[2m)[22m[33m 688[2mms[22m[39m
+     [33m[2m✓[22m[39m registers one init hook and one ready hook [33m 614[2mms[22m[39m
+ [32m✓[39m tests/integration/warlock-demon-summoning.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/unit/elemental-totem-definitions.test.js [2m([22m[2m13 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m tests/integration/automation-settings-presentation.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/unit/warlock-demon-placement.test.js [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/unit/automation-settings.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/unit/adventure-import.test.js [2m([22m[2m7 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/unit/common-animal-status-source-sheet.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/unit/scattershot-damage.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 169[2mms[22m[39m
+ [32m✓[39m tests/integration/token-placement-refactor.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/integration/ghoul-system-test-registration.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/integration/elemental-totem-automation-system-test.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/integration/automation-settings-registration.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/integration/warlock-demon-command-control.test.js [2m([22m[2m8 tests[22m[2m)[22m[32m 97[2mms[22m[39m
+ [32m✓[39m tests/unit/spell-preparation.test.js [2m([22m[2m6 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/integration/foundry-generator-checks.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/unit/system-test-color-normalization.test.js [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/integration/system-test-macro-icons.test.js [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m tests/unit/elemental-totem-controls.test.js [2m([22m[2m4 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m tests/unit/elemental-totem-ownership.test.js [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/integration/common-animal-effect-only-hooks.test.js [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m tests/integration/system-test-report-folder.test.js [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/integration/kin-roll-tables.test.js[2m > [22mgenerated Kin RollTables[2m > [22mis covered by the central generator checker
+[31m[1mAssertionError[22m: expected '#!/usr/bin/env python3\n"""Generate t…' to contain 'Checked 19 generated Kin RollTables'[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Checked 19 generated Kin RollTables[39m
+[31m+ #!/usr/bin/env python3[39m
+[31m+ """Generate the Player Options RollTables used by curated Journals."""[39m
+[31m+[39m
+[31m+ from __future__ import annotations[39m
+[31m+[39m
+[31m+ import argparse[39m
+[31m+ from difflib import unified_diff[39m
+[31m+ import json[39m
+[31m+ from pathlib import Path[39m
+[31m+ import re[39m
+[31m+ import shutil[39m
+[31m+ import sys[39m
+[31m+ import tempfile[39m
+[31m+[39m
+[31m+[39m
+[31m+ MODULE_ID = "bane-of-azeroth"[39m
+[31m+ GENERATOR_NAME = ([39m
+[31m+     "tools/generate-kin-roll-tables.py"[39m
+[31m+ )[39m
+[31m+ SOURCE_PATH = Path([39m
+[31m+     "foundry/content/roll-tables/"[39m
+[31m+     "player-options/kin.json"[39m
+[31m+ )[39m
+[31m+ ADVENTURE_DIRECTORY_NAME = ([39m
+[31m+     "Bane_of_Azeroth_ZoNOXZjdkOjV56e3"[39m
+[31m+ )[39m
+[31m+ TABLE_ROOT_DIRECTORY = ([39m
+[31m+     "Bane_of_Azeroth_BoATables7pQ2mX9"[39m
+[31m+ )[39m
+[31m+ TABLE_ROOT_ID = "BoATables7pQ2mX9"[39m
+[31m+ ID_PATTERN = re.compile([39m
+[31m+     r"^[A-Za-z0-9]{16}$"[39m
+[31m+ )[39m
+[31m+[39m
+[31m+[39m
+[31m+ class GenerationError(RuntimeError):[39m
+[31m+     pass[39m
+[31m+[39m
+[31m+[39m
+[31m+ def parse_args() -> argparse.Namespace:[39m
+[31m+     root = Path(__file__).resolve().parents[1][39m
+[31m+     parser = argparse.ArgumentParser()[39m
+[31m+     parser.add_argument([39m
+[31m+         "--source",[39m
+[31m+         type=Path,[39m
+[31m+         default=root / SOURCE_PATH,[39m
+[31m+     )[39m
+[31m+     parser.add_argument([39m
+[31m+         "--adventure-directory",[39m
+[31m+         type=Path,[39m
+[31m+         default=([39m
+[31m+             root[39m
+[31m+             / "foundry"[39m
+[31m+             / "pack-src"[39m
+[31m+             / "bane-of-azeroth"[39m
+[31m+             / ADVENTURE_DIRECTORY_NAME[39m
+[31m+         ),[39m
+[31m+     )[39m
+[31m+     parser.add_argument([39m
+[31m+         "--check",[39m
+[31m+         action="store_true",[39m
+[31m+     )[39m
+[31m+     return parser.parse_args()[39m
+[31m+[39m
+[31m+[39m
+[31m+ def read_json(path: Path) -> object:[39m
+[31m+     try:[39m
+[31m+         return json.loads([39m
+[31m+             path.read_text([39m
+[31m+                 encoding="utf-8",[39m
+[31m+             )[39m
+[31m+         )[39m
+[31m+     except FileNotFoundError as error:[39m
+[31m+         raise GenerationError([39m
+[31m+             f"Missing JSON source: {path}"[39m
+[31m+         ) from error[39m
+[31m+     except json.JSONDecodeError as error:[39m
+[31m+         raise GenerationError([39m
+[31m+             f"Invalid JSON in {path}: {error}"[39m
+[31m+         ) from error[39m
+[31m+[39m
+[31m+[39m
+[31m+ def dump_json(value: object) -> str:[39m
+[31m+     return ([39m
+[31m+         json.dumps([39m
+[31m+             value,[39m
+[31m+             ensure_ascii=False,[39m
+[31m+             indent=2,[39m
+[31m+         )[39m
+[31m+         + "\n"[39m
+[31m+     )[39m
+[31m+[39m
+[31m+[39m
+[31m+ def require_id([39m
+[31m+     value: object,[39m
+[31m+     label: str,[39m
+[31m+ ) -> str:[39m
+[31m+     if ([39m
+[31m+         not isinstance(value, str)[39m
+[31m+         or not ID_PATTERN.fullmatch(value)[39m
+[31m+     ):[39m
+[31m+         raise GenerationError([39m
+[31m+             f"{label} must be a 16-character "[39m
+[31m+             "alphanumeric Foundry ID."[39m
+[31m+         )[39m
+[31m+     return value[39m
+[31m+[39m
+[31m+[39m
+[31m+ def require_string([39m
+[31m+     value: object,[39m
+[31m+     label: str,[39m
+[31m+ ) -> str:[39m
+[31m+     if ([39m
+[31m+         not isinstance(value, str)[39m
+[31m+         or not value[39m
+[31m+     ):[39m
+[31m+         raise GenerationError([39m
+[31m+             f"{label} must be a non-empty string."[39m
+[31m+         )[39m
+[31m+     return value[39m
+[31m+[39m
+[31m+[39m
+[31m+ def base_stats([39m
+[31m+     *,[39m
+[31m+     duplicate_source: str | None = None,[39m
+[31m+ ) -> dict[str, object]:[39m
+[31m+     return {[39m
+[31m+         "coreVersion": "14.365",[39m
+[31m+         "systemId": "dragonbane",[39m
+[31m+         "systemVersion": "4.0.1",[39m
+[31m+         "createdTime": None,[39m
+[31m+         "modifiedTime": None,[39m
+[31m+         "lastModifiedBy": None,[39m
+[31m+         "compendiumSource": None,[39m
+[31m+         "duplicateSource": duplicate_source,[39m
+[31m+         "exportSource": None,[39m
+[31m+     }[39m
+[31m+[39m
+[31m+[39m
+[31m+ def generated_flags([39m
+[31m+     content_key: str,[39m
+[31m+ ) -> dict[str, object]:[39m
+[31m+     return {[39m
+[31m+         MODULE_ID: {[39m
+[31m+             "generatedBy": GENERATOR_NAME,[39m
+[31m+             "contentKey": content_key,[39m
+[31m+         },[39m
+[31m+     }[39m
+[31m+[39m
+[31m+[39m
+[31m+ def safe_filename([39m
+[31m+     name: str,[39m
+[31m+     document_id: str,[39m
+[31m+ ) -> str:[39m
+[31m+     stem = re.sub([39m
+[31m+         r"[^A-Za-z0-9]+",[39m
+[31m+         "_",[39m
+[31m+         name,[39m
+[31m+     ).strip("_")[39m
+[31m+     return f"{stem}_{document_id}.json"[39m
+[31m+[39m
+[31m+[39m
+[31m+ def folder_directory([39m
+[31m+     name: str,[39m
+[31m+     folder_id: str,[39m
+[31m+ ) -> str:[39m
+[31m+     return safe_filename([39m
+[31m+         name,[39m
+[31m+         folder_id,[39m
+[31m+     )[:-5][39m
+[31m+[39m
+[31m+[39m
+[31m+ def validate_source([39m
+[31m+     source: object,[39m
+[31m+ ) -> tuple[[39m
+[31m+     dict[str, object],[39m
+[31m+     list[dict[str, object]],[39m
+[31m+ ]:[39m
+[31m+     if not isinstance(source, dict):[39m
+[31m+         raise GenerationError([39m
+[31m+             "Kin RollTable source must be an object."[39m
+[31m+         )[39m
+[31m+     if source.get("schemaVersion") != 1:[39m
+[31m+         raise GenerationError([39m
+[31m+             "Kin RollTable schemaVersion must be 1."[39m
+[31m+         )[39m
+[31m+[39m
+[31m+     folder = source.get("folder")[39m
+[31m+     if not isinstance(folder, dict):[39m
+[31m+         raise GenerationError([39m
+[31m+             "Kin RollTable source has no folder."[39m
+[31m+         )[39m
+[31m+     folder_id = require_id([39m
+[31m+         folder.get("id"),[39m
+[31m+         "folder.id",[39m
+[31m+     )[39m
+[31m+     require_string([39m
+[31m+         folder.get("key"),[39m
+[31m+         "folder.key",[39m
+[31m+     )[39m
+[31m+     require_string([39m
+[31m+         folder.get("name"),[39m
+[31m+         "folder.name",[39m
+[31m+     )[39m
+[31m+     if folder.get("parentId") != TABLE_ROOT_ID:[39m
+[31m+         raise GenerationError([39m
+[31m+             f"folder.parentId must be {TABLE_ROOT_ID}."[39m
+[31m+         )[39m
+[31m+     if folder.get("color") is not None:[39m
+[31m+         raise GenerationError([39m
+[31m+             "folder.color must be null."[39m
+[31m+         )[39m
+[31m+     if folder.get("sorting") not in {"a", "m"}:[39m
+[31m+         raise GenerationError([39m
+[31m+             "folder.sorting must be a or m."[39m
+[31m+         )[39m
+[31m+     if ([39m
+[31m+         isinstance([39m
+[31m+             folder.get("sort"),[39m
+[31m+             bool,[39m
+[31m+         )[39m
+[31m+         or not isinstance([39m
+[31m+             folder.get("sort"),[39m
+[31m+             int,[39m
+[31m+         )[39m
+[31m+     ):[39m
+[31m+         raise GenerationError([39m
+[31m+             "folder.sort must be an integer."[39m
+[31m+         )[39m
+[31m+[39m
+[31m+     raw_tables = source.get("tables")[39m
+[31m+     if ([39m
+[31m+         not isinstance(raw_tables, list)[39m
+[31m+         or len(raw_tables) != 19[39m
+[31m+     ):[39m
+[31m+         raise GenerationError([39m
+[31m+             "Kin RollTable source must contain "[39m
+[31m+             "exactly 19 tables."[39m
+[31m+         )[39m
+[31m+[39m
+[31m+     ids = {folder_id}[39m
+[31m+     keys: set[str] = set()[39m
+[31m+     tables: list[dict[str, object]] = [][39m
+[31m+[39m
+[31m+     for table_index, raw_table in enumerate([39m
+[31m+         raw_tables[39m
+[31m+     ):[39m
+[31m+         if not isinstance([39m
+[31m+             raw_table,[39m
+[31m+             dict,[39m
+[31m+         ):[39m
+[31m+             raise GenerationError([39m
+[31m+                 f"tables[{table_index}] must be "[39m
+[31m+                 "an object."[39m
+[31m+             )[39m
+[31m+         table = dict(raw_table)[39m
+[31m+         key = require_string([39m
+[31m+             table.get("key"),[39m
+[31m+             f"tables[{table_index}].key",[39m
+[31m+         )[39m
+[31m+         if not re.fullmatch([39m
+[31m+             r"[a-z0-9]+"[39m
+[31m+             r"(?:[.-][a-z0-9]+)*",[39m
+[31m+             key,[39m
+[31m+         ):[39m
+[31m+             raise GenerationError([39m
+[31m+                 f"Invalid RollTable key: {key}"[39m
+[31m+             )[39m
+[31m+         if key in keys:[39m
+[31m+             raise GenerationError([39m
+[31m+                 f"Duplicate RollTable key: {key}"[39m
+[31m+             )[39m
+[31m+         keys.add(key)[39m
+[31m+[39m
+[31m+         table_id = require_id([39m
+[31m+             table.get("id"),[39m
+[31m+             f"table {key}.id",[39m
+[31m+         )[39m
+[31m+         if table_id in ids:[39m
+[31m+             raise GenerationError([39m
+[31m+                 f"Duplicate Foundry ID: {table_id}"[39m
+[31m+             )[39m
+[31m+         ids.add(table_id)[39m
+[31m+[39m
+[31m+         require_string([39m
+[31m+             table.get("name"),[39m
+[31m+             f"table {key}.name",[39m
+[31m+         )[39m
+[31m+         require_string([39m
+[31m+             table.get("displayName"),[39m
+[31m+             f"table {key}.displayName",[39m
+[31m+         )[39m
+[31m+         formula = require_string([39m
+[31m+             table.get("formula"),[39m
+[31m+             f"table {key}.formula",[39m
+[31m+         )[39m
+[31m+         formula_match = re.fullmatch([39m
+[31m+             r"1d(\d+)",[39m
+[31m+             formula,[39m
+[31m+             re.IGNORECASE,[39m
+[31m+         )[39m
+[31m+         if formula_match is None:[39m
+[31m+             raise GenerationError([39m
+[31m+                 f"table {key}.formula must be 1dN."[39m
+[31m+             )[39m
+[31m+         sides = int(formula_match.group(1))[39m
+[31m+[39m
+[31m+         if ([39m
+[31m+             isinstance([39m
+[31m+                 table.get("sort"),[39m
+[31m+                 bool,[39m
+[31m+             )[39m
+[31m+             or not isinstance([39m
+[31m+                 table.get("sort"),[39m
+[31m+                 int,[39m
+[31m+             )[39m
+[31m+         ):[39m
+[31m+             raise GenerationError([39m
+[31m+                 f"table {key}.sort must be an "[39m
+[31m+                 "integer."[39m
+[31m+             )[39m
+[31m+[39m
+[31m+         raw_results = table.get("results")[39m
+[31m+         if ([39m
+[31m+             not isinstance(raw_results, list)[39m
+[31m+             or not raw_results[39m
+[31m+         ):[39m
+[31m+             raise GenerationError([39m
+[31m+                 f"table {key} has no results."[39m
+[31m+             )[39m
+[31m+[39m
+[31m+         expected = 1[39m
+[31m+         results: list[dict[str, object]] = [][39m
+[31m+         for result_index, raw_result in enumerate([39m
+[31m+             raw_results[39m
+[31m+         ):[39m
+[31m+             if not isinstance([39m
+[31m+                 raw_result,[39m
+[31m+                 dict,[39m
+[31m+             ):[39m
+[31m+                 raise GenerationError([39m
+[31m+                     f"table {key} result "[39m
+[31m+                     f"{result_index} is not an object."[39m
+[31m+                 )[39m
+[31m+             result = dict(raw_result)[39m
+[31m+             result_id = require_id([39m
+[31m+                 result.get("id"),[39m
+[31m+                 ([39m
+[31m+                     f"table {key} result "[39m
+[31m+                     f"{result_index}.id"[39m
+[31m+                 ),[39m
+[31m+             )[39m
+[31m+             if result_id in ids:[39m
+[31m+                 raise GenerationError([39m
+[31m+                     f"Duplicate Foundry ID: "[39m
+[31m+                     f"{result_id}"[39m
+[31m+                 )[39m
+[31m+             ids.add(result_id)[39m
+[31m+[39m
+[31m+             result_range = result.get("range")[39m
+[31m+             if ([39m
+[31m+                 not isinstance([39m
+[31m+                     result_range,[39m
+[31m+                     list,[39m
+[31m+                 )[39m
+[31m+                 or len(result_range) != 2[39m
+[31m+                 or any([39m
+[31m+                     isinstance(value, bool)[39m
+[31m+                     or not isinstance(value, int)[39m
+[31m+                     for value in result_range[39m
+[31m+                 )[39m
+[31m+             ):[39m
+[31m+                 raise GenerationError([39m
+[31m+                     f"table {key} result range "[39m
+[31m+                     "must contain two integers."[39m
+[31m+                 )[39m
+[31m+             start, end = result_range[39m
+[31m+             if start != expected or end < start:[39m
+[31m+                 raise GenerationError([39m
+[31m+                     f"table {key} result ranges "[39m
+[31m+                     "must be contiguous."[39m
+[31m+                 )[39m
+[31m+             expected = end + 1[39m
+[31m+             require_string([39m
+[31m+                 result.get("name"),[39m
+[31m+                 ([39m
+[31m+                     f"table {key} result "[39m
+[31m+                     f"{result_index}.name"[39m
+[31m+                 ),[39m
+[31m+             )[39m
+[31m+             results.append(result)[39m
+[31m+[39m
+[31m+         if expected - 1 != sides:[39m
+[31m+             raise GenerationError([39m
+[31m+                 f"table {key} does not cover "[39m
+[31m+                 f"1 through {sides}."[39m
+[31m+             )[39m
+[31m+[39m
+[31m+         table["results"] = results[39m
+[31m+         tables.append(table)[39m
+[31m+[39m
+[31m+     return folder, tables[39m
+[31m+[39m
+[31m+[39m
+[31m+ def build_folder([39m
+[31m+     folder: dict[str, object],[39m
+[31m+ ) -> dict[str, object]:[39m
+[31m+     folder_id = str(folder["id"])[39m
+[31m+     return {[39m
+[31m+         "type": "RollTable",[39m
+[31m+         "folder": folder["parentId"],[39m
+[31m+         "name": folder["name"],[39m
+[31m+         "color": folder["color"],[39m
+[31m+         "sorting": folder["sorting"],[39m
+[31m+         "_id": folder_id,[39m
+[31m+         "description": "",[39m
+[31m+         "sort": folder["sort"],[39m
+[31m+         "flags": generated_flags([39m
+[31m+             "tables.folder.player-options"[39m
+[31m+         ),[39m
+[31m+         "_stats": base_stats([39m
+[31m+             duplicate_source=([39m
+[31m+                 f"Folder.{folder_id}"[39m
+[31m+             ),[39m
+[31m+         ),[39m
+[31m+     }[39m
+[31m+[39m
+[31m+[39m
+[31m+ def build_result([39m
+[31m+     *,[39m
+[31m+     table_id: str,[39m
+[31m+     table_key: str,[39m
+[31m+     result: dict[str, object],[39m
+[31m+ ) -> dict[str, object]:[39m
+[31m+     del table_id[39m
+[31m+[39m
+[31m+     return {[39m
+[31m+         "type": "text",[39m
+[31m+         "weight": 1,[39m
+[31m+         "range": result["range"],[39m
+[31m+         "drawn": False,[39m
+[31m+         "_id": result["id"],[39m
+[31m+         "img": "icons/svg/d20-grey.svg",[39m
+[31m+         "flags": generated_flags([39m
+[31m+             "tables."[39m
+[31m+             f"{table_key}."[39m
+[31m+             f"result.{result['id']}"[39m
+[31m+         ),[39m
+[31m+         "_stats": base_stats(),[39m
+[31m+         "description": "",[39m
+[31m+         "name": result["name"],[39m
+[31m+     }[39m
+[31m+[39m
+[31m+[39m
+[31m+ def build_table([39m
+[31m+     *,[39m
+[31m+     table: dict[str, object],[39m
+[31m+     folder_id: str,[39m
+[31m+ ) -> dict[str, object]:[39m
+[31m+     table_id = str(table["id"])[39m
+[31m+     table_key = str(table["key"])[39m
+[31m+     return {[39m
+[31m+         "name": table["name"],[39m
+[31m+         "img": "icons/svg/d20-grey.svg",[39m
+[31m+         "description": "",[39m
+[31m+         "results": [[39m
+[31m+             build_result([39m
+[31m+                 table_id=table_id,[39m
+[31m+                 table_key=table_key,[39m
+[31m+                 result=result,[39m
+[31m+             )[39m
+[31m+             for result in table["results"][39m
+[31m+         ],[39m
+[31m+         "formula": table["formula"],[39m
+[31m+         "replacement": True,[39m
+[31m+         "displayRoll": True,[39m
+[31m+         "folder": folder_id,[39m
+[31m+         "ownership": {[39m
+[31m+             "default": 0,[39m
+[31m+         },[39m
+[31m+         "flags": {[39m
+[31m+             "core": {},[39m
+[31m+             **generated_flags([39m
+[31m+                 f"tables.{table_key}"[39m
+[31m+             ),[39m
+[31m+         },[39m
+[31m+         "_stats": base_stats([39m
+[31m+             duplicate_source=([39m
+[31m+                 f"RollTable.{table_id}"[39m
+[31m+             ),[39m
+[31m+         ),[39m
+[31m+         "_id": table_id,[39m
+[31m+     }[39m
+[31m+[39m
+[31m+[39m
+[31m+ def locate_json_array([39m
+[31m+     source: str,[39m
+[31m+     key: str,[39m
+[31m+ ) -> tuple[int, int, str]:[39m
+[31m+     match = re.search([39m
+[31m+         rf'(?m)^(?P<indent>\s*)'[39m
+[31m+         rf'"{re.escape(key)}"\s*:\s*\[',[39m
+[31m+         source,[39m
+[31m+     )[39m
+[31m+     if match is None:[39m
+[31m+         raise GenerationError([39m
+[31m+             f"Adventure has no {key!r} array."[39m
+[31m+         )[39m
+[31m+[39m
+[31m+     open_index = source.find([39m
+[31m+         "[",[39m
+[31m+         match.start(),[39m
+[31m+     )[39m
+[31m+     depth = 0[39m
+[31m+     in_string = False[39m
+[31m+     escaped = False[39m
+[31m+[39m
+[31m+     for index in range([39m
+[31m+         open_index,[39m
+[31m+         len(source),[39m
+[31m+     ):[39m
+[31m+         character = source[index][39m
+[31m+         if in_string:[39m
+[31m+             if escaped:[39m
+[31m+                 escaped = False[39m
+[31m+             elif character == "\\":[39m
+[31m+                 escaped = True[39m
+[31m+             elif character == '"':[39m
+[31m+                 in_string = False[39m
+[31m+             continue[39m
+[31m+[39m
+[31m+         if character == '"':[39m
+[31m+             in_string = True[39m
+[31m+         elif character == "[":[39m
+[31m+             depth += 1[39m
+[31m+         elif character == "]":[39m
+[31m+             depth -= 1[39m
+[31m+             if depth == 0:[39m
+[31m+                 return ([39m
+[31m+                     open_index,[39m
+[31m+                     index + 1,[39m
+[31m+                     match.group("indent"),[39m
+[31m+                 )[39m
+[31m+[39m
+[31m+     raise GenerationError([39m
+[31m+         f"Adventure {key!r} array is not closed."[39m
+[31m+     )[39m
+[31m+[39m
+[31m+[39m
+[31m+ def replace_json_array([39m
+[31m+     source: str,[39m
+[31m+     key: str,[39m
+[31m+     values: list[str],[39m
+[31m+ ) -> str:[39m
+[31m+     start, end, indent = ([39m
+[31m+         locate_json_array([39m
+[31m+             source,[39m
+[31m+             key,[39m
+[31m+         )[39m
+[31m+     )[39m
+[31m+     child_indent = indent + "  "[39m
+[31m+     if values:[39m
+[31m+         rendered = ([39m
+[31m+             "[\n"[39m
+[31m+             + ",\n".join([39m
+[31m+                 child_indent[39m
+[31m+                 + json.dumps([39m
+[31m+                     value,[39m
+[31m+                     ensure_ascii=False,[39m
+[31m+                 )[39m
+[31m+                 for value in values[39m
+[31m+             )[39m
+[31m+             + "\n"[39m
+[31m+             + indent[39m
+[31m+             + "]"[39m
+[31m+         )[39m
+[31m+     else:[39m
+[31m+         rendered = "[]"[39m
+[31m+[39m
+[31m+     return ([39m
+[31m+         source[:start][39m
+[31m+         + rendered[39m
+[31m+         + source[end:][39m
+[31m+     )[39m
+[31m+[39m
+[31m+[39m
+[31m+ def merge_managed_paths([39m
+[31m+     *,[39m
+[31m+     existing: list[str],[39m
+[31m+     replacements: list[str],[39m
+[31m+     is_managed,[39m
+[31m+ ) -> list[str]:[39m
+[31m+     """Replace managed paths without reordering unrelated entries.[39m
+[31m+[39m
+[31m+     The current managed block is inserted where its first existing entry[39m
+[31m+     appeared. If the block did not exist yet, it is appended. Duplicate and[39m
+[31m+     stale managed entries are removed.[39m
+[31m+     """[39m
+[31m+[39m
+[31m+     merged: list[str] = [][39m
+[31m+     inserted = False[39m
+[31m+[39m
+[31m+     for value in existing:[39m
+[31m+         if is_managed(value):[39m
+[31m+             if not inserted:[39m
+[31m+                 merged.extend(replacements)[39m
+[31m+                 inserted = True[39m
+[31m+             continue[39m
+[31m+[39m
+[31m+         merged.append(value)[39m
+[31m+[39m
+[31m+     if not inserted:[39m
+[31m+         merged.extend(replacements)[39m
+[31m+[39m
+[31m+     return merged[39m
+[31m+[39m
+[31m+[39m
+[31m+ def expected_outputs([39m
+[31m+     *,[39m
+[31m+     source_path: Path,[39m
+[31m+     adventure_directory: Path,[39m
+[31m+ ) -> tuple[[39m
+[31m+     dict[Path, str],[39m
+[31m+     str,[39m
+[31m+ ]:[39m
+[31m+     source = read_json(source_path)[39m
+[31m+     folder, tables = validate_source(source)[39m
+[31m+[39m
+[31m+     root = ([39m
+[31m+         adventure_directory[39m
+[31m+         / "RollTable"[39m
+[31m+         / TABLE_ROOT_DIRECTORY[39m
+[31m+     )[39m
+[31m+     if not ([39m
+[31m+         root / "_Folder.json"[39m
+[31m+     ).is_file():[39m
+[31m+         raise GenerationError([39m
+[31m+             "Bane of Azeroth RollTable root folder "[39m
+[31m+             "is missing."[39m
+[31m+         )[39m
+[31m+[39m
+[31m+     folder_name = folder_directory([39m
+[31m+         str(folder["name"]),[39m
+[31m+         str(folder["id"]),[39m
+[31m+     )[39m
+[31m+     output_directory = root / folder_name[39m
+[31m+[39m
+[31m+     outputs: dict[Path, str] = {[39m
+[31m+         output_directory / "_Folder.json":[39m
+[31m+             dump_json([39m
+[31m+                 build_folder(folder)[39m
+[31m+             ),[39m
+[31m+     }[39m
+[31m+[39m
+[31m+     table_paths: list[str] = [][39m
+[31m+     for table in sorted([39m
+[31m+         tables,[39m
+[31m+         key=lambda value: ([39m
+[31m+             int(value["sort"]),[39m
+[31m+             str(value["key"]),[39m
+[31m+         ),[39m
+[31m+     ):[39m
+[31m+         filename = safe_filename([39m
+[31m+             str(table["name"]),[39m
+[31m+             str(table["id"]),[39m
+[31m+         )[39m
+[31m+         path = ([39m
+[31m+             output_directory[39m
+[31m+             / filename[39m
+[31m+         )[39m
+[31m+         outputs[path] = dump_json([39m
+[31m+             build_table([39m
+[31m+                 table=table,[39m
+[31m+                 folder_id=str(folder["id"]),[39m
+[31m+             )[39m
+[31m+         )[39m
+[31m+         table_paths.append([39m
+[31m+             path.relative_to([39m
+[31m+                 adventure_directory[39m
+[31m+             ).as_posix()[39m
+[31m+         )[39m
+[31m+[39m
+[31m+     folder_path = ([39m
+[31m+         output_directory[39m
+[31m+         / "_Folder.json"[39m
+[31m+     ).relative_to([39m
+[31m+         adventure_directory[39m
+[31m+     ).as_posix()[39m
+[31m+[39m
+[31m+     adventure_path = ([39m
+[31m+         adventure_directory[39m
+[31m+         / "_Adventure.json"[39m
+[31m+     )[39m
+[31m+     try:[39m
+[31m+         adventure_source = ([39m
+[31m+             adventure_path.read_text([39m
+[31m+                 encoding="utf-8",[39m
+[31m+             )[39m
+[31m+         )[39m
+[31m+     except FileNotFoundError as error:[39m
+[31m+         raise GenerationError([39m
+[31m+             f"Missing Adventure: {adventure_path}"[39m
+[31m+         ) from error[39m
+[31m+[39m
+[31m+     adventure = json.loads([39m
+[31m+         adventure_source[39m
+[31m+     )[39m
+[31m+     raw_tables = adventure.get("tables")[39m
+[31m+     raw_folders = adventure.get("folders")[39m
+[31m+     if ([39m
+[31m+         not isinstance(raw_tables, list)[39m
+[31m+         or not all([39m
+[31m+             isinstance(value, str)[39m
+[31m+             for value in raw_tables[39m
+[31m+         )[39m
+[31m+         or not isinstance(raw_folders, list)[39m
+[31m+         or not all([39m
+[31m+             isinstance(value, str)[39m
+[31m+             for value in raw_folders[39m
+[31m+         )[39m
+[31m+     ):[39m
+[31m+         raise GenerationError([39m
+[31m+             "Adventure tables/folders arrays are "[39m
+[31m+             "invalid."[39m
+[31m+         )[39m
+[31m+[39m
+[31m+     managed_prefix = ([39m
+[31m+         "RollTable/"[39m
+[31m+         f"{TABLE_ROOT_DIRECTORY}/"[39m
+[31m+         f"{folder_name}/"[39m
+[31m+     )[39m
+[31m+[39m
+[31m+     expected_tables = merge_managed_paths([39m
+[31m+         existing=raw_tables,[39m
+[31m+         replacements=table_paths,[39m
+[31m+         is_managed=lambda value: ([39m
+[31m+             value.startswith([39m
+[31m+                 managed_prefix[39m
+[31m+             )[39m
+[31m+         ),[39m
+[31m+     )[39m
+[31m+[39m
+[31m+     expected_folders = merge_managed_paths([39m
+[31m+         existing=raw_folders,[39m
+[31m+         replacements=[[39m
+[31m+             folder_path,[39m
+[31m+         ],[39m
+[31m+         is_managed=lambda value: ([39m
+[31m+             value == folder_path[39m
+[31m+         ),[39m
+[31m+     )[39m
+[31m+[39m
+[31m+     expected_adventure = ([39m
+[31m+         replace_json_array([39m
+[31m+             adventure_source,[39m
+[31m+             "tables",[39m
+[31m+             expected_tables,[39m
+[31m+         )[39m
+[31m+     )[39m
+[31m+     expected_adventure = ([39m
+[31m+         replace_json_array([39m
+[31m+             expected_adventure,[39m
+[31m+             "folders",[39m
+[31m+             expected_folders,[39m
+[31m+         )[39m
+[31m+     )[39m
+[31m+[39m
+[31m+     json.loads([39m
+[31m+         expected_adventure[39m
+[31m+     )[39m
+[31m+     return outputs, expected_adventure[39m
+[31m+[39m
+[31m+[39m
+[31m+ def check([39m
+[31m+     *,[39m
+[31m+     outputs: dict[Path, str],[39m
+[31m+     adventure_path: Path,[39m
+[31m+     expected_adventure: str,[39m
+[31m+ ) -> None:[39m
+[31m+     failures: list[str] = [][39m
+[31m+[39m
+[31m+     for path, expected in outputs.items():[39m
+[31m+         try:[39m
+[31m+             actual = path.read_text([39m
+[31m+                 encoding="utf-8",[39m
+[31m+             )[39m
+[31m+         except FileNotFoundError:[39m
+[31m+             failures.append([39m
+[31m+                 f"Missing generated file: {path}"[39m
+[31m+             )[39m
+[31m+             continue[39m
+[31m+         if actual != expected:[39m
+[31m+             diff = "".join([39m
+[31m+                 unified_diff([39m
+[31m+                     actual.splitlines([39m
+[31m+                         keepends=True[39m
+[31m+                     ),[39m
+[31m+                     expected.splitlines([39m
+[31m+                         keepends=True[39m
+[31m+                     ),[39m
+[31m+                     fromfile=str(path),[39m
+[31m+                     tofile=([39m
+[31m+                         f"{path} (expected)"[39m
+[31m+                     ),[39m
+[31m+                 )[39m
+[31m+             )[39m
+[31m+             failures.append(diff)[39m
+[31m+[39m
+[31m+     output_directories = {[39m
+[31m+         path.parent[39m
+[31m+         for path in outputs[39m
+[31m+     }[39m
+[31m+     expected_paths = set(outputs)[39m
+[31m+     for directory in output_directories:[39m
+[31m+         if not directory.is_dir():[39m
+[31m+             continue[39m
+[31m+         actual_paths = {[39m
+[31m+             path[39m
+[31m+             for path in directory.glob([39m
+[31m+                 "*.json"[39m
+[31m+             )[39m
+[31m+         }[39m
+[31m+         stale = sorted([39m
+[31m+             actual_paths - expected_paths[39m
+[31m+         )[39m
+[31m+         for path in stale:[39m
+[31m+             failures.append([39m
+[31m+                 f"Stale generated file: {path}"[39m
+[31m+             )[39m
+[31m+[39m
+[31m+     try:[39m
+[31m+         actual_adventure = ([39m
+[31m+             adventure_path.read_text([39m
+[31m+                 encoding="utf-8",[39m
+[31m+             )[39m
+[31m+         )[39m
+[31m+     except FileNotFoundError:[39m
+[31m+         failures.append([39m
+[31m+             f"Missing Adventure: {adventure_path}"[39m
+[31m+         )[39m
+[31m+     else:[39m
+[31m+         if ([39m
+[31m+             actual_adventure[39m
+[31m+             != expected_adventure[39m
+[31m+         ):[39m
+[31m+             failures.append([39m
+[31m+                 "".join([39m
+[31m+                     unified_diff([39m
+[31m+                         actual_adventure.splitlines([39m
+[31m+                             keepends=True[39m
+[31m+                         ),[39m
+[31m+                         expected_adventure.splitlines([39m
+[31m+                             keepends=True[39m
+[31m+                         ),[39m
+[31m+                         fromfile=str([39m
+[31m+                             adventure_path[39m
+[31m+                         ),[39m
+[31m+                         tofile=([39m
+[31m+                             f"{adventure_path} "[39m
+[31m+                             "(expected)"[39m
+[31m+                         ),[39m
+[31m+                     )[39m
+[31m+                 )[39m
+[31m+             )[39m
+[31m+[39m
+[31m+     if failures:[39m
+[31m+         raise GenerationError([39m
+[31m+             "Kin RollTables are out of sync:\n"[39m
+[31m+             + "\n".join(failures)[39m
+[31m+         )[39m
+[31m+[39m
+[31m+[39m
+[31m+ def write_outputs([39m
+[31m+     *,[39m
+[31m+     outputs: dict[Path, str],[39m
+[31m+     adventure_path: Path,[39m
+[31m+     expected_adventure: str,[39m
+[31m+ ) -> None:[39m
+[31m+     directories = {[39m
+[31m+         path.parent[39m
+[31m+         for path in outputs[39m
+[31m+     }[39m
+[31m+     if len(directories) != 1:[39m
+[31m+         raise GenerationError([39m
+[31m+             "Expected one generated output "[39m
+[31m+             "directory."[39m
+[31m+         )[39m
+[31m+     destination = next([39m
+[31m+         iter(directories)[39m
+[31m+     )[39m
+[31m+     destination.parent.mkdir([39m
+[31m+         parents=True,[39m
+[31m+         exist_ok=True,[39m
+[31m+     )[39m
+[31m+[39m
+[31m+     with tempfile.TemporaryDirectory([39m
+[31m+         prefix="boa-kin-tables-",[39m
+[31m+         dir=destination.parent,[39m
+[31m+     ) as temporary:[39m
+[31m+         temporary_root = Path(temporary)[39m
+[31m+         staged = ([39m
+[31m+             temporary_root[39m
+[31m+             / destination.name[39m
+[31m+         )[39m
+[31m+         staged.mkdir()[39m
+[31m+[39m
+[31m+         for path, content in outputs.items():[39m
+[31m+             ([39m
+[31m+                 staged / path.name[39m
+[31m+             ).write_text([39m
+[31m+                 content,[39m
+[31m+                 encoding="utf-8",[39m
+[31m+             )[39m
+[31m+[39m
+[31m+         backup = ([39m
+[31m+             temporary_root[39m
+[31m+             / "previous"[39m
+[31m+         )[39m
+[31m+         if destination.exists():[39m
+[31m+             shutil.copytree([39m
+[31m+                 destination,[39m
+[31m+                 backup,[39m
+[31m+             )[39m
+[31m+[39m
+[31m+         adventure_original = ([39m
+[31m+             adventure_path.read_bytes()[39m
+[31m+         )[39m
+[31m+[39m
+[31m+         try:[39m
+[31m+             if destination.exists():[39m
+[31m+                 shutil.rmtree(destination)[39m
+[31m+             shutil.copytree([39m
+[31m+                 staged,[39m
+[31m+                 destination,[39m
+[31m+             )[39m
+[31m+[39m
+[31m+             temporary_adventure = ([39m
+[31m+                 adventure_path.with_name([39m
+[31m+                     f".{adventure_path.name}.tmp"[39m
+[31m+                 )[39m
+[31m+             )[39m
+[31m+             temporary_adventure.write_text([39m
+[31m+                 expected_adventure,[39m
+[31m+                 encoding="utf-8",[39m
+[31m+             )[39m
+[31m+             temporary_adventure.replace([39m
+[31m+                 adventure_path[39m
+[31m+             )[39m
+[31m+[39m
+[31m+         except Exception:[39m
+[31m+             if destination.exists():[39m
+[31m+                 shutil.rmtree(destination)[39m
+[31m+             if backup.exists():[39m
+[31m+                 shutil.copytree([39m
+[31m+                     backup,[39m
+[31m+                     destination,[39m
+[31m+                 )[39m
+[31m+             adventure_path.write_bytes([39m
+[31m+                 adventure_original[39m
+[31m+             )[39m
+[31m+             raise[39m
+[31m+[39m
+[31m+[39m
+[31m+ def main() -> int:[39m
+[31m+     args = parse_args()[39m
+[31m+     outputs, expected_adventure = ([39m
+[31m+         expected_outputs([39m
+[31m+             source_path=args.source,[39m
+[31m+             adventure_directory=([39m
+[31m+                 args.adventure_directory[39m
+[31m+             ),[39m
+[31m+         )[39m
+[31m+     )[39m
+[31m+     adventure_path = ([39m
+[31m+         args.adventure_directory[39m
+[31m+         / "_Adventure.json"[39m
+[31m+     )[39m
+[31m+[39m
+[31m+     if args.check:[39m
+[31m+         check([39m
+[31m+             outputs=outputs,[39m
+[31m+             adventure_path=adventure_path,[39m
+[31m+             expected_adventure=([39m
+[31m+                 expected_adventure[39m
+[31m+             ),[39m
+[31m+         )[39m
+[31m+         print([39m
+[31m+             "Checked 19 generated Kin "[39m
+[31m+             "RollTables."[39m
+[31m+         )[39m
+[31m+     else:[39m
+[31m+         write_outputs([39m
+[31m+             outputs=outputs,[39m
+[31m+             adventure_path=adventure_path,[39m
+[31m+             expected_adventure=([39m
+[31m+                 expected_adventure[39m
+[31m+             ),[39m
+[31m+         )[39m
+[31m+         check([39m
+[31m+             outputs=outputs,[39m
+[31m+             adventure_path=adventure_path,[39m
+[31m+             expected_adventure=([39m
+[31m+                 expected_adventure[39m
+[31m+             ),[39m
+[31m+         )[39m
+[31m+         print([39m
+[31m+             "Generated 19 Kin RollTables."[39m
+[31m+         )[39m
+[31m+[39m
+[31m+     return 0[39m
+[31m+[39m
+[31m+[39m
+[31m+ if __name__ == "__main__":[39m
+[31m+     try:[39m
+[31m+         raise SystemExit(main())[39m
+[31m+     except GenerationError as error:[39m
+[31m+         print([39m
+[31m+             f"ERROR: {error}",[39m
+[31m+             file=sys.stderr,[39m
+[31m+         )[39m
+[31m+         raise SystemExit(1)[39m
+[31m+[39m
+
+[36m [2m❯[22m tests/integration/kin-roll-tables.test.js:[2m247:23[22m[39m
+    [90m245|[39m       [32m'"--check"'[39m[33m,[39m
+    [90m246|[39m     )[33m;[39m
+    [90m247|[39m     [34mexpect[39m(generator)[33m.[39m[34mtoContain[39m(
+    [90m   |[39m                       [31m^[39m
+    [90m248|[39m       [32m"Checked 19 generated Kin "[39m
+    [90m249|[39m       [33m+[39m [32m"RollTables"[39m[33m,[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m56 passed[39m[22m[90m (57)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m458 passed[39m[22m[90m (459)[39m
+[2m   Start at [22m 05:33:14
+[2m   Duration [22m 2.36s[2m (transform 5.02s, setup 1.62s, import 6.56s, tests 2.44s, environment 10ms)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   61.85 |    55.23 |   68.51 |   63.93 |                   
+ scripts           |    70.5 |    61.92 |   79.55 |   73.36 |                   
+  ...ure-import.js |   91.66 |     87.5 |     100 |    91.3 | 59-62             
+  ...n-settings.js |   94.11 |    66.66 |     100 |     100 | 11-35,160-162,190 
+  ...of-azeroth.js |   66.66 |       50 |      50 |    67.3 | 153-156,171-204   
+  ...ck-effects.js |   36.66 |    39.02 |      44 |   36.66 | ...34,567-573,601 
+  ...ly-attacks.js |   84.82 |     69.6 |     100 |   84.68 | ...50,391,408,430 
+  ...l-movement.js |    92.1 |    91.66 |     100 |    92.1 | 69,122,144        
+  ...us-effects.js |   77.84 |    63.12 |   93.33 |   77.84 | ...49,471,479,491 
+  ...tal-totems.js |       0 |        0 |       0 |       0 |                   
+  ...ck-control.js |   74.52 |    64.25 |   81.63 |   81.25 | ...30-631,649-659 
+  ...nd-control.js |   63.22 |     56.8 |   75.67 |    69.1 | ...57-559,567-595 
+  spell-grants.js  |   64.94 |     58.1 |   56.52 |   67.39 | 42,50,154,192-265 
+  ...reparation.js |   53.84 |       60 |   83.33 |   59.09 | 28-42             
+  ...ock-demons.js |       0 |        0 |       0 |       0 |                   
+  ...n-features.js |   89.69 |    78.48 |     100 |   92.47 | ...83,296-299,349 
+ scripts/core      |   73.35 |    62.31 |   80.48 |   75.66 |                   
+  colors.js        |      75 |       80 |     100 |     100 | 2                 
+  constants.js     |     100 |      100 |     100 |     100 |                   
+  documents.js     |     100 |      100 |     100 |     100 |                   
+  ...-lifecycle.js |   53.33 |    46.61 |      60 |   54.54 | ...65-472,501,571 
+  ...-placement.js |   93.38 |    82.43 |     100 |   96.55 | 81,123,185,188    
+  users.js         |   85.71 |     87.5 |     100 |     100 | 2                 
+ ...emental-totems |   62.97 |    60.34 |   67.94 |   65.33 |                   
+  aura.js          |    87.5 |    71.05 |    87.5 |   93.18 | 27,130-131        
+  constants.js     |     100 |      100 |     100 |     100 |                   
+  creation.js      |   93.57 |    81.94 |     100 |   94.33 | ...90,101,205-207 
+  definitions.js   |   94.11 |    96.42 |    90.9 |   93.93 | 96-97             
+  dialogs.js       |      10 |    15.25 |    7.69 |   10.95 | 26-369,404-427    
+  messages.js      |      60 |       75 |     100 |      60 | 11-16             
+  placement.js     |      25 |       30 |   33.33 |   26.66 | 46-116            
+  planning.js      |     100 |    86.04 |     100 |     100 | 19-24             
+  socket.js        |     9.3 |        0 |       0 |   10.52 | 16-120            
+  ...n-controls.js |     100 |    83.33 |     100 |     100 | 12-13             
+  workflow.js      |   85.71 |    67.44 |     100 |   85.71 | ...05,167-173,192 
+ ...warlock-demons |    38.2 |    37.51 |   41.12 |   38.78 |                   
+  constants.js     |     100 |      100 |     100 |     100 |                   
+  creation.js      |   26.04 |    16.43 |      75 |   26.59 | ...33-334,358-439 
+  defenses.js      |   96.66 |    96.15 |     100 |     100 | 56                
+  definitions.js   |      20 |     8.33 |   33.33 |   22.22 | 17-43             
+  dialogs.js       |    7.69 |        0 |       0 |    8.33 | 21-151            
+  messages.js      |       0 |        0 |       0 |       0 | 10-100            
+  placement.js     |   28.57 |    32.55 |      50 |   28.57 | 86-190            
+  planning.js      |       0 |        0 |       0 |       0 | 12-80             
+  socket.js        |     9.3 |        0 |       0 |      10 | 16-152            
+  suffering.js     |    42.5 |    45.29 |    37.5 |   43.75 | ...1326,1342,1363 
+  workflow.js      |   84.37 |    66.66 |     100 |   84.37 | ...02,194-201,234 
+-------------------|---------|----------|---------|---------|-------------------

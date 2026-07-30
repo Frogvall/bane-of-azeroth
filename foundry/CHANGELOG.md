@@ -16,6 +16,10 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ### Changed
 
+- Rebuilt the Kin Journal page using Dragonbane Core-compatible Journal structure.
+- Replaced static Kin choice and name tables with 19 generated RollTables and added all converted Kin artwork.
+- Removed the custom Kin Journal presentation CSS in favor of the Dragonbane system theme.
+
 - Split Journal sources into one directory per JournalEntry and one JSON file per page.
 - Converted Credits to curated HTML source and removed build-time Homebrewery extraction from Journal generation.
 

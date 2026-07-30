@@ -394,6 +394,95 @@ def build_internal_references(
     return references
 
 
+def load_internal_roll_table_references(
+    repo_root: Path,
+) -> dict[str, dict[str, str]]:
+    source_root = (
+        repo_root
+        / "foundry"
+        / "content"
+        / "roll-tables"
+    )
+    if not source_root.is_dir():
+        return {}
+
+    references: dict[
+        str,
+        dict[str, str],
+    ] = {}
+    ids: set[str] = set()
+
+    for path in sorted(
+        source_root.rglob("*.json")
+    ):
+        source = read_json(path)
+        if not isinstance(source, dict):
+            raise GenerationError(
+                "RollTable reference source must "
+                f"be an object: {path}"
+            )
+        if source.get("schemaVersion") != 1:
+            raise GenerationError(
+                "Unsupported RollTable reference "
+                f"schema: {path}"
+            )
+
+        tables = source.get("tables")
+        if not isinstance(tables, list):
+            raise GenerationError(
+                "RollTable reference source has no "
+                f"tables array: {path}"
+            )
+
+        for table in tables:
+            if not isinstance(table, dict):
+                raise GenerationError(
+                    "RollTable definition must be "
+                    f"an object: {path}"
+                )
+            key = table.get("key")
+            table_id = table.get("id")
+            if (
+                not isinstance(key, str)
+                or not key
+                or not isinstance(
+                    table_id,
+                    str,
+                )
+                or not ID_PATTERN.fullmatch(
+                    table_id
+                )
+            ):
+                raise GenerationError(
+                    "RollTable reference is "
+                    f"incomplete: {path}"
+                )
+
+            reference_key = (
+                f"boa:table.{key}"
+            )
+            if reference_key in references:
+                raise GenerationError(
+                    "Duplicate internal RollTable "
+                    f"reference: {reference_key}"
+                )
+            if table_id in ids:
+                raise GenerationError(
+                    "Duplicate internal RollTable "
+                    f"ID: {table_id}"
+                )
+
+            references[reference_key] = {
+                "uuid": (
+                    f"RollTable.{table_id}"
+                ),
+                "documentType": "RollTable",
+            }
+            ids.add(table_id)
+
+    return references
+
+
 def load_external_references(
     repo_root: Path,
 ) -> dict[str, dict[str, str]]:
@@ -881,6 +970,11 @@ def expected_outputs(
     )
     references = build_internal_references(
         documents
+    )
+    references.update(
+        load_internal_roll_table_references(
+            repo_root
+        )
     )
     references.update(
         load_external_references(
