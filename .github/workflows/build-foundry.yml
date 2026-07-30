@@ -6,6 +6,7 @@ on:
       - "**"
     paths:
       - "foundry/**"
+      - "generated/**"
       - "tests/**"
       - "package.json"
       - "package-lock.json"
