@@ -119,20 +119,24 @@ function occurrences(value, marker) {
 const REFERENCE_LABEL_PATTERN =
   /@(?:UUID|Ref)\[[^\]]+\]\{([^{}]+)\}/g;
 
-function abilityDescriptionMarker(ability) {
-  const source =
-    typeof ability.descriptionHtml === "string"
-      ? ability.descriptionHtml
-      : (ability.description ?? []).join(" ");
-
-  return source
+function readableText(value) {
+  return String(value ?? "")
     .replace(
       REFERENCE_LABEL_PATTERN,
       "$1",
     )
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
-    .trim()
+    .trim();
+}
+
+function abilityDescriptionMarker(ability) {
+  const source =
+    typeof ability.descriptionHtml === "string"
+      ? ability.descriptionHtml
+      : (ability.description ?? []).join(" ");
+
+  return readableText(source)
     .slice(0, 50);
 }
 
@@ -214,9 +218,11 @@ describe("Heroic Class Abilities Journal page", () => {
         const marker =
           abilityDescriptionMarker(ability);
         expect(marker).not.toBe("");
-        expect(page.source.content).toContain(
-          marker,
-        );
+        expect(
+          readableText(
+            page.source.content,
+          ),
+        ).toContain(marker);
       }
     }
   });
@@ -299,7 +305,11 @@ describe("Heroic Class Abilities Journal page", () => {
           `@UUID[Item.${item._id}]`
           + `{${ability.name}}`,
         );
-        expect(page.text.content).toContain(
+        expect(
+          readableText(
+            page.text.content,
+          ),
+        ).toContain(
           abilityDescriptionMarker(ability),
         );
         linkedAbilities += 1;
