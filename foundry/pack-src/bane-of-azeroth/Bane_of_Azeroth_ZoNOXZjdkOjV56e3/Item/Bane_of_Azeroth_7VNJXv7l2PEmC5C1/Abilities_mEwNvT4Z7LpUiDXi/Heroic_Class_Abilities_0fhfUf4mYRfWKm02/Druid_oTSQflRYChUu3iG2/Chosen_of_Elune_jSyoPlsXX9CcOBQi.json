@@ -5,7 +5,7 @@
   "_id": "jSyoPlsXX9CcOBQi",
   "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
   "system": {
-    "itemDescription": "<p>You know the general spell INCARNATION OF THE STARS. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
+    "itemDescription": "<p>You know the general spell @UUID[Item.StarsInc6AbCdE7f]{Incarnation of the Stars}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Druidic Awakening",

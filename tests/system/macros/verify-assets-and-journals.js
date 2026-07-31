@@ -22,6 +22,18 @@ function occurrences(value, marker) {
   return String(value ?? "").split(marker).length - 1;
 }
 
+const REFERENCE_LABEL_PATTERN = new RegExp(
+  "@(?:UUID|Ref)\\[[^\\]]+\\]\\{([^{}]+)\\}",
+  "g"
+);
+
+function referenceLabels(value) {
+  return String(value ?? "").replace(
+    REFERENCE_LABEL_PATTERN,
+    "$1"
+  );
+}
+
 function worldJournal(contentKey) {
   return boaCollectionValues(game.journal).find(
     journal => boaContentKey(journal) === contentKey
@@ -279,7 +291,7 @@ try {
   );
 
   function normalizedText(value) {
-    return String(value ?? "")
+    return referenceLabels(value)
       .replace(/\s+/g, " ")
       .trim();
   }
@@ -317,6 +329,9 @@ try {
   let classAbilityBoxCount = 0;
   let classAbilityLinkCount = 0;
   let classAbilityDescriptionCount = 0;
+  let grantedSpellCount = 0;
+  let abilitySpellLinkCount = 0;
+  let journalSpellLinkCount = 0;
 
   const classesHtml =
     classesPage?.text?.content ?? "";
@@ -399,6 +414,53 @@ try {
           `${classEntry.name}: missing description for ${ability.name}`
         );
       }
+
+      if (
+        typeof ability.grantsSpell === "string"
+      ) {
+        grantedSpellCount += 1;
+
+        const spellContentKey =
+          `spells.${ability.grantsSpell}`;
+        const spell = boaFindWorldItem(
+          spellContentKey,
+          "spell"
+        );
+
+        if (!spell) {
+          classPageProblems.push(
+            `${ability.name}: missing ${spellContentKey}`
+          );
+          continue;
+        }
+
+        const spellLinkMarker =
+          `${UUID_ITEM_PREFIX}${spell.id}]`;
+
+        if (
+          String(
+            item.system?.itemDescription ?? ""
+          ).includes(spellLinkMarker)
+        ) {
+          abilitySpellLinkCount += 1;
+        } else {
+          classPageProblems.push(
+            `${ability.name}: Ability description does not link ${spell.name}`
+          );
+        }
+
+        if (
+          classesHtml.includes(
+            spellLinkMarker
+          )
+        ) {
+          journalSpellLinkCount += 1;
+        } else {
+          classPageProblems.push(
+            `${ability.name}: Journal box does not link ${spell.name}`
+          );
+        }
+      }
     }
   }
 
@@ -434,6 +496,24 @@ try {
     "Ability boxes contain all 52 descriptions",
     classAbilityDescriptionCount,
     52
+  );
+  boaCheckEqual(
+    checks,
+    "Heroic Class Ability source grants six Spells",
+    grantedSpellCount,
+    6
+  );
+  boaCheckEqual(
+    checks,
+    "Spell-granting Ability descriptions link all six Spell Items",
+    abilitySpellLinkCount,
+    grantedSpellCount
+  );
+  boaCheckEqual(
+    checks,
+    "Spell-granting Journal boxes link all six Spell Items",
+    journalSpellLinkCount,
+    grantedSpellCount
   );
   boaCheck(
     checks,

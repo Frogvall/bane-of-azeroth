@@ -28,6 +28,10 @@ from typing import Any, Callable, Sequence
 MODULE_ID = "bane-of-azeroth"
 GENERATOR_NAME = "tools/generate-heroic-class-abilities.py"
 ID_PATTERN = re.compile(r"^[A-Za-z0-9]{16}$")
+REF_PATTERN = re.compile(
+    r"@Ref\[(?P<key>[^\]]+)\]"
+    r"\{(?P<label>[^{}]+)\}"
+)
 
 
 class GenerationError(RuntimeError):
@@ -56,6 +60,17 @@ def parse_args() -> argparse.Namespace:
             / "heroic-class-abilities.json"
         ),
         help="Structured Heroic Class Ability content JSON.",
+    )
+    parser.add_argument(
+        "--spells-content",
+        type=Path,
+        default=(
+            repo_root
+            / "foundry"
+            / "content"
+            / "spells.json"
+        ),
+        help="Structured Spell content JSON.",
     )
     parser.add_argument(
         "--pack-root",
@@ -190,6 +205,156 @@ def paragraphs_to_html(paragraphs: Sequence[str]) -> str:
     )
 
 
+def load_spell_references(
+    path: Path,
+) -> dict[str, dict[str, str]]:
+    content = load_json(path)
+    spells = content.get("spells")
+
+    if not isinstance(spells, list):
+        raise GenerationError(
+            "spells.json spells must be an array."
+        )
+
+    references: dict[str, dict[str, str]] = {}
+    ids: set[str] = set()
+
+    for index, spell in enumerate(spells):
+        if not isinstance(spell, dict):
+            raise GenerationError(
+                f"spells[{index}] must be a JSON object."
+            )
+
+        key = require_string(
+            spell.get("key"),
+            f"spells[{index}].key",
+        )
+        document_id = require_id(
+            spell.get("id"),
+            f"spell {key!r}.id",
+        )
+        name = require_string(
+            spell.get("name"),
+            f"spell {key!r}.name",
+        )
+        reference_key = (
+            f"boa:item.spells.{key}"
+        )
+
+        if reference_key in references:
+            raise GenerationError(
+                "Duplicate Spell reference: "
+                f"{reference_key}"
+            )
+        if document_id in ids:
+            raise GenerationError(
+                "Duplicate Spell Foundry ID: "
+                f"{document_id}"
+            )
+
+        references[reference_key] = {
+            "uuid": f"Item.{document_id}",
+            "name": name,
+        }
+        ids.add(document_id)
+
+    return references
+
+
+def resolve_spell_references(
+    content: str,
+    references: dict[str, dict[str, str]],
+) -> str:
+    def replacement(
+        match: re.Match[str],
+    ) -> str:
+        key = match.group("key")
+        label = match.group("label")
+        reference = references.get(key)
+
+        if reference is None:
+            raise GenerationError(
+                "Unknown Spell reference in Heroic "
+                f"Class Ability description: {key}"
+            )
+
+        return (
+            f"@UUID[{reference['uuid']}]"
+            f"{{{label}}}"
+        )
+
+    rendered = REF_PATTERN.sub(
+        replacement,
+        content,
+    )
+
+    if "@Ref[" in rendered:
+        raise GenerationError(
+            "Unresolved symbolic reference remains "
+            "in Heroic Class Ability description."
+        )
+
+    return rendered
+
+
+def resolve_granted_spell_description(
+    ability: dict[str, Any],
+    description_html: str,
+    references: dict[str, dict[str, str]],
+) -> str:
+    grants_spell = ability.get("grantsSpell")
+    matches = list(
+        REF_PATTERN.finditer(
+            description_html
+        )
+    )
+
+    if grants_spell is None:
+        if matches:
+            raise GenerationError(
+                f"ability {ability.get('name')!r} "
+                "contains a Spell reference but "
+                "does not define grantsSpell."
+            )
+        return description_html
+
+    spell_key = require_string(
+        grants_spell,
+        f"ability {ability.get('name')!r}.grantsSpell",
+    )
+    expected_reference = (
+        f"boa:item.spells.{spell_key}"
+    )
+
+    if expected_reference not in references:
+        raise GenerationError(
+            f"ability {ability.get('name')!r} "
+            f"grants unknown Spell {spell_key!r}."
+        )
+
+    matching = [
+        match
+        for match in matches
+        if match.group("key")
+        == expected_reference
+    ]
+
+    if (
+        len(matches) != 1
+        or len(matching) != 1
+    ):
+        raise GenerationError(
+            f"ability {ability.get('name')!r} "
+            "must contain exactly one symbolic "
+            f"reference to {expected_reference}."
+        )
+
+    return resolve_spell_references(
+        description_html,
+        references,
+    )
+
+
 def safe_stem(name: str) -> str:
     stem = re.sub(r"[^A-Za-z0-9]+", "_", name).strip("_")
     return stem or "Document"
@@ -260,6 +425,10 @@ def build_ability_document(
     ability: dict[str, Any],
     folder_id: str,
     default_image: str,
+    spell_references: dict[
+        str,
+        dict[str, str],
+    ],
     sort: int,
 ) -> dict[str, Any]:
     class_key = require_string(class_entry.get("key"), "class.key")
@@ -304,6 +473,14 @@ def build_ability_document(
             f"ability {name!r}.description",
         )
         description_html = paragraphs_to_html(paragraphs)
+
+    description_html = (
+        resolve_granted_spell_description(
+            ability,
+            description_html,
+            spell_references,
+        )
+    )
 
     image = require_string(
         ability.get("image", default_image),
@@ -734,6 +911,9 @@ def main() -> int:
     try:
         content = load_json(args.content)
         classes, ability_image = validate_content(content)
+        spell_references = load_spell_references(
+            args.spells_content
+        )
 
         adventure_file = find_single_file(
             args.pack_root,
@@ -785,6 +965,7 @@ def main() -> int:
                     ability,
                     class_folder["_id"],
                     ability_image,
+                    spell_references,
                     (ability_index + 1) * 100000,
                 )
                 ability_path = class_dir / document_filename(

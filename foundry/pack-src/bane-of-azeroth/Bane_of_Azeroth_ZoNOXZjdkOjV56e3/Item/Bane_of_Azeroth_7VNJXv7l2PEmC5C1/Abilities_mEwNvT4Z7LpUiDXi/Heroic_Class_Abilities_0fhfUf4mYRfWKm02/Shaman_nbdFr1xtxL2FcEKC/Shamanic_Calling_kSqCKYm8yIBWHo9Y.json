@@ -5,7 +5,7 @@
   "_id": "kSqCKYm8yIBWHo9Y",
   "img": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp",
   "system": {
-    "itemDescription": "<p>You know the general spell ELEMENTAL TOTEM. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p><p>You do not have to roll for LANGUAGES when communicating with or trying to understand elementals or their writing.</p>",
+    "itemDescription": "<p>You know the general spell @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p><p>You do not have to roll for LANGUAGES when communicating with or trying to understand elementals or their writing.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "One School of Magic",

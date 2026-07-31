@@ -116,6 +116,9 @@ function occurrences(value, marker) {
   return value.split(marker).length - 1;
 }
 
+const REFERENCE_LABEL_PATTERN =
+  /@(?:UUID|Ref)\[[^\]]+\]\{([^{}]+)\}/g;
+
 function abilityDescriptionMarker(ability) {
   const source =
     typeof ability.descriptionHtml === "string"
@@ -123,6 +126,10 @@ function abilityDescriptionMarker(ability) {
       : (ability.description ?? []).join(" ");
 
   return source
+    .replace(
+      REFERENCE_LABEL_PATTERN,
+      "$1",
+    )
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim()
@@ -325,6 +332,8 @@ describe("Heroic Class Abilities Journal page", () => {
       "Heroic Class Abilities contains 52 overview boxes",
       "Ability box titles link to all 52 Ability Items",
       "Ability boxes contain all 52 descriptions",
+      "Spell-granting Ability descriptions link all six Spell Items",
+      "Spell-granting Journal boxes link all six Spell Items",
     ]) {
       expect(source).toContain(marker);
     }

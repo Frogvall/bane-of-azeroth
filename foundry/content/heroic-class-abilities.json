@@ -122,7 +122,7 @@
           "requirement": "One School of Magic",
           "wp": "",
           "description": [
-            "You know the general spell SAVAGE INCARNATION. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.",
+            "You know the general spell @Ref[boa:item.spells.savage-incarnation]{Savage Incarnation}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.",
             "When you sleep, you enter a dream state that allows you to stay alert to your surroundings during a shift rest, and you can awaken instantly and at will."
           ],
           "grantsSpell": "savage-incarnation",
@@ -135,7 +135,7 @@
           "requirement": "Druidic Awakening",
           "wp": "",
           "description": [
-            "You know the general spell INCARNATION OF THE STARS. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
+            "You know the general spell @Ref[boa:item.spells.incarnation-of-the-stars]{Incarnation of the Stars}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
           ],
           "grantsSpell": "incarnation-of-the-stars",
           "image": "modules/bane-of-azeroth/assets/icons/classes/druid.webp"
@@ -147,7 +147,7 @@
           "requirement": "Druidic Awakening",
           "wp": "",
           "description": [
-            "You know the general spell FERAL INCARNATION. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
+            "You know the general spell @Ref[boa:item.spells.feral-incarnation]{Feral Incarnation}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
           ],
           "grantsSpell": "feral-incarnation",
           "image": "modules/bane-of-azeroth/assets/icons/classes/druid.webp"
@@ -159,7 +159,7 @@
           "requirement": "Druidic Awakening",
           "wp": "",
           "description": [
-            "You know the general spell INCARNATION OF HARMONY. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
+            "You know the general spell @Ref[boa:item.spells.incarnation-of-harmony]{Incarnation of Harmony}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
           ],
           "grantsSpell": "incarnation-of-harmony",
           "image": "modules/bane-of-azeroth/assets/icons/classes/druid.webp"
@@ -451,7 +451,7 @@
           "requirement": "Priest's Zeal",
           "wp": "",
           "description": [
-            "You know the general spell SHADOWFORM. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
+            "You know the general spell @Ref[boa:item.spells.shadowform]{Shadowform}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
           ],
           "grantsSpell": "shadowform",
           "image": "modules/bane-of-azeroth/assets/icons/classes/priest.webp"
@@ -545,7 +545,7 @@
           "requirement": "One School of Magic",
           "wp": "",
           "description": [
-            "You know the general spell ELEMENTAL TOTEM. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.",
+            "You know the general spell @Ref[boa:item.spells.elemental-totem]{Elemental Totem}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.",
             "You do not have to roll for LANGUAGES when communicating with or trying to understand elementals or their writing."
           ],
           "grantsSpell": "elemental-totem",

@@ -5,7 +5,7 @@
   "_id": "B9kWg7ydZRZHLOOi",
   "img": "modules/bane-of-azeroth/assets/icons/classes/priest.webp",
   "system": {
-    "itemDescription": "<p>You know the general spell SHADOWFORM. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
+    "itemDescription": "<p>You know the general spell @UUID[Item.Shadowform0JkLmN]{Shadowform}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Priest's Zeal",
