@@ -107,12 +107,14 @@ try {
   const [
     kinContent,
     abilityContent,
+    spellContent,
     journalAssets,
   ] = await Promise.all([
     boaFetchJson("content/kin.json"),
     boaFetchJson(
       "content/heroic-class-abilities.json"
     ),
+    boaFetchJson("content/spells.json"),
     boaFetchJson(
       "config/journal-assets.json"
     ),
@@ -122,6 +124,8 @@ try {
     kinContent.kin ?? [];
   const classDefinitions =
     abilityContent.classes ?? [];
+  const spellDefinitions =
+    spellContent.spells ?? [];
   const manifestAssets =
     journalAssets.assets ?? [];
 
@@ -136,6 +140,12 @@ try {
     "Heroic Class Ability source contains 13 classes",
     classDefinitions.length,
     13
+  );
+  boaCheckEqual(
+    checks,
+    "Spell source contains six entries",
+    spellDefinitions.length,
+    6
   );
   boaCheck(
     checks,
@@ -227,6 +237,10 @@ try {
     playerOptions,
     "journal-page.player-options.gear"
   );
+  const spellsPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.spells"
+  );
 
   boaCheck(
     checks,
@@ -260,6 +274,11 @@ try {
   );
   boaCheck(
     checks,
+    "Player Options contains the Spells page",
+    Boolean(spellsPage)
+  );
+  boaCheck(
+    checks,
     "Credits contains its generated page",
     Boolean(creditsPage)
   );
@@ -274,6 +293,8 @@ try {
     creditsPage?.text?.content ?? "";
   const gearHtml =
     gearPage?.text?.content ?? "";
+  const spellsHtml =
+    spellsPage?.text?.content ?? "";
 
   if (illustrationPage) {
     boaCheckEqual(
@@ -586,6 +607,80 @@ try {
     );
   }
 
+  if (spellsPage) {
+    const spellProblems = [];
+    let previousSpellIndex = -1;
+
+    boaCheckEqual(
+      checks,
+      "Spells page contains six DisplaySpell directives",
+      occurrences(
+        spellsHtml,
+        "@DisplaySpell[Item."
+      ),
+      spellDefinitions.length
+    );
+
+    for (const spell of spellDefinitions) {
+      const marker =
+        `@DisplaySpell[Item.${spell.id}]`
+        + `{${spell.name}}`;
+      const markerCount =
+        occurrences(spellsHtml, marker);
+      const markerIndex =
+        spellsHtml.indexOf(marker);
+      const item = boaFindWorldItem(
+        `spells.${spell.key}`,
+        "spell"
+      );
+
+      if (markerCount !== 1) {
+        spellProblems.push(
+          `${spell.name}: DisplaySpell count `
+          + `${markerCount}`
+        );
+      }
+
+      if (markerIndex <= previousSpellIndex) {
+        spellProblems.push(
+          `${spell.name}: wrong book order`
+        );
+      }
+      previousSpellIndex = markerIndex;
+
+      if (!item) {
+        spellProblems.push(
+          `spells.${spell.key}: missing Item`
+        );
+      } else if (
+        item.id !== spell.id
+        || item.name !== spell.name
+      ) {
+        spellProblems.push(
+          `spells.${spell.key}: `
+          + `${item.id}/${item.name}`
+        );
+      }
+    }
+
+    boaCheck(
+      checks,
+      "Spells page displays all six generated Spell Items in book order",
+      spellProblems.length === 0,
+      spellProblems.join("\n")
+    );
+    boaCheck(
+      checks,
+      "Spells page follows the book title",
+      spellsPage.name === "Spells"
+      && !spellsHtml.includes("Spell List")
+      && !spellsHtml.includes(
+        "<h2>General Magic</h2>"
+      )
+      && !spellsHtml.includes("<h3>Rank ")
+    );
+  }
+
   function normalizedText(value) {
     return referenceLabels(value)
       .replace(/\s+/g, " ")
@@ -832,11 +927,11 @@ try {
   if (playerOptions) {
     boaCheckEqual(
       checks,
-      "Player Options has exactly six pages",
+      "Player Options has exactly seven pages",
       boaCollectionValues(
         playerOptions.pages
       ).length,
-      6
+      7
     );
     const orderedPageNames =
       boaCollectionValues(
@@ -863,6 +958,7 @@ try {
         "Derived Ratings",
         "Heroic Class Abilities",
         "Gear",
+        "Spells",
       ]
     );
     boaCheckEqual(

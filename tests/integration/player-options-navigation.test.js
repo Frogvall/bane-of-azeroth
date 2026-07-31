@@ -77,6 +77,7 @@ describe("Player Options opening and navigation", () => {
     const classes =
       sourcePage("heroic-class-abilities");
     const gear = sourcePage("gear");
+    const spells = sourcePage("spells");
 
     expect(illustration).toMatchObject({
       schemaVersion: 1,
@@ -115,6 +116,7 @@ describe("Player Options opening and navigation", () => {
     expect(derived.sort).toBe(400000);
     expect(classes.sort).toBe(500000);
     expect(gear.sort).toBe(600000);
+    expect(spells.sort).toBe(700000);
     expect(existsSync(COVER_ASSET)).toBe(true);
 
     const introductionHtml =
@@ -181,6 +183,7 @@ describe("Player Options opening and navigation", () => {
       "Derived Ratings",
       "Heroic Class Abilities",
       "Gear",
+      "Spells",
     ]);
 
     const illustration = journal.pages[0];

@@ -247,12 +247,12 @@ describe("Player Options Gear Journal page", () => {
     }
   });
 
-  test("generates the sixth page and preserves every Gear directive", () => {
+  test("generates Gear as the sixth page and preserves every Gear directive", () => {
     const pageSource = readJson(PAGE_SOURCE);
     const journal =
       readJson(GENERATED_JOURNAL);
 
-    expect(journal.pages).toHaveLength(6);
+    expect(journal.pages).toHaveLength(7);
     expect(
       journal.pages.map(page => page.name),
     ).toEqual([
@@ -262,6 +262,7 @@ describe("Player Options Gear Journal page", () => {
       "Derived Ratings",
       "Heroic Class Abilities",
       "Gear",
+      "Spells",
     ]);
 
     const page = journal.pages[5];
@@ -325,7 +326,7 @@ describe("Player Options Gear Journal page", () => {
       "Gear page links all eight generated Gear Items",
       "Gear page includes the 500 meter firearm report",
       "Armor Piercing links Find Weak Spot",
-      "Player Options has exactly six pages",
+      "Player Options has exactly seven pages",
     ]) {
       expect(macro).toContain(marker);
     }

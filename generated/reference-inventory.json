@@ -14,7 +14,7 @@
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
     "uuid-link": 62,
-    "uuid-literal": 29
+    "uuid-literal": 35
   },
   "entries": [
     {
@@ -1209,6 +1209,60 @@
       "label": "Name - Worgen"
     },
     {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 458,
+      "target": "Item.ElTotem1a2b3c4d5",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 518,
+      "target": "Item.SavIncarn6e7f8g9",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 581,
+      "target": "Item.Shadowform0JkLmN",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 636,
+      "target": "Item.FeralInc2OpQrS3t",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 698,
+      "target": "Item.Harmony4UvWxY5zQ",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 765,
+      "target": "Item.StarsInc6AbCdE7f",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D"
+    },
+    {
       "kind": "uuid-link",
       "path": "foundry/content/kin.json",
       "line": 36,
@@ -1421,7 +1475,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 582,
+      "line": 603,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KAxnhLbO8N7kcvMl\"\n        + \"#special-attacks",
       "classification": "unclassified",
@@ -1431,7 +1485,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 974,
+      "line": 1070,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#falling",
       "classification": "unclassified",
@@ -1441,7 +1495,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 982,
+      "line": 1078,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.cvFSLoFtdJOQcxtU\"\n        + \"#magic-tricks",
       "classification": "unclassified",
@@ -1451,7 +1505,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 990,
+      "line": 1086,
       "column": 10,
       "target": "Item.GiE0TwixaYnxFT6i",
       "classification": "unclassified",
@@ -1460,7 +1514,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 997,
+      "line": 1093,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1470,7 +1524,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1005,
+      "line": 1101,
       "column": 10,
       "target": "Item.SY62xmX9uBVml786",
       "classification": "unclassified",
@@ -1479,7 +1533,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1013,
+      "line": 1109,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1489,7 +1543,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1021,
+      "line": 1117,
       "column": 10,
       "target": "JournalEntry.V4R4dCuKSK2mi8RF.\"\n        + \"JournalEntryPage.eIQgHhYPUczg7kbZ\"\n        + \"#pushing-your-roll",
       "classification": "unclassified",
@@ -1498,7 +1552,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1030,
+      "line": 1126,
       "column": 10,
       "target": "JournalEntry.BoAJrnlPlayerOpt.\"\n        + \"JournalEntryPage.BoAPgPlayerKin01\"\n        + \"#human",
       "classification": "unclassified",
@@ -1508,7 +1562,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1040,
+      "line": 1136,
       "column": 10,
       "target": "Actor.GhoulAct6Kp9T2xP",
       "classification": "unclassified",
@@ -1517,7 +1571,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1048,
+      "line": 1144,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#movement",
       "classification": "unclassified",
@@ -1527,7 +1581,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1058,
+      "line": 1154,
       "column": 10,
       "target": "Item.J6l8QwCJhBirvg03",
       "classification": "unclassified",
@@ -1536,7 +1590,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1067,
+      "line": 1163,
       "column": 10,
       "target": "Item.RPnxXYVb8z7EG5Wl",
       "classification": "unclassified",
@@ -1545,7 +1599,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1076,
+      "line": 1172,
       "column": 10,
       "target": "Item.O7p7ZWnZNgxP8PFw",
       "classification": "unclassified",
@@ -1554,7 +1608,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1085,
+      "line": 1181,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#sneak-attack",
       "classification": "unclassified",
@@ -1564,7 +1618,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1095,
+      "line": 1191,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#poison",
       "classification": "unclassified",
@@ -1574,7 +1628,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1105,
+      "line": 1201,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.C0stUmhj95JFgL4f\"\n        + \"#power-level",
       "classification": "unclassified",
@@ -1583,7 +1637,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1116,
+      "line": 1212,
       "column": 10,
       "target": "Item.JrQqkQrSOFJzR7H9",
       "classification": "unclassified",
@@ -1592,7 +1646,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1300,
+      "line": 1396,
       "column": 30,
       "function": "fromUuid",
       "classification": "runtime",
