@@ -31,7 +31,7 @@ v1.0
 
 ### CREDITS:
 
-This is a Dragonbane conversion of the amazing [Champions of Azeroth](https://drive.google.com/drive/folders/1BSit21xGH7yRdWRO95lvrsbxvYi5IwlY) by [Silverblade](https://www.reddit.com/user/Silverblade1234). A lot of the body text in this book is written by Silverblade and republished with permission.
+This is a Dragonbane supplement heavily inspired by the amazing [Champions of Azeroth](https://drive.google.com/drive/folders/1BSit21xGH7yRdWRO95lvrsbxvYi5IwlY) by [Silverblade](https://www.reddit.com/user/Silverblade1234). A lot of the body text in this book is written by Silverblade and republished with permission.
 
 This game supplement was created using the [DragonBrew](https://homebrewery.naturalcrit.com/share/IOEuWz2v8FFi) template by Sibling Dex.
 
