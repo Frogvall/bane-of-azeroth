@@ -1183,7 +1183,7 @@ You can activate this ability as an action, making an ally creature within 10 me
 You can activate this ability when you hit an enemy with a melee weapon (but before rolling for damage). The attack deals an extra D8 , or 2D8 damage to an undead target, and is considered magical.
 
 {{wide
-![draenei paladin](https://i.imgur.com/ZbajQTc.png) {height:500px,mix-blend-mode:multiply,margin-left:-1.5cm,margin-top:-1.2cm}
+![draenei paladin](https://i.imgur.com/nLVqjM2.png) {height:500px,mix-blend-mode:multiply,margin-left:3cm,margin-top:-1.2cm}
 }}
 
 \page
