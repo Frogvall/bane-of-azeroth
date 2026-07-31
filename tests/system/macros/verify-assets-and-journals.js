@@ -290,34 +290,68 @@ try {
 
   if (introductionPage) {
     const introductionProblems = [];
-    for (const pageId of [
-      "BoAPgPlayerKin01",
-      "BoAPgDerivedRate",
-      "4f7e06538e580623",
+
+    for (const marker of [
+      "Warcraft is one of the most beloved "
+        + "and enduring fantasy franchises",
+      "Why Azeroth?",
+      "What is this book?",
+      "Design Goals",
+      "Buy-In and Creativity",
+      "Contact and More",
+      "The goal is a game that feels like "
+        + "Warcraft in the ways that matter "
+        + "most to your table.",
     ]) {
-      const marker =
-        "JournalEntryPage."
-        + `${pageId}]`;
       if (!introductionHtml.includes(marker)) {
         introductionProblems.push(
-          `missing ${pageId} link`
+          `missing ${marker}`
         );
       }
     }
+
     if (
       introductionHtml.includes(
-        SYMBOLIC_REFERENCE_PREFIX
+        "Creating a Hero of Azeroth"
       )
     ) {
       introductionProblems.push(
-        "unresolved symbolic reference"
+        "temporary custom introduction remains"
       );
     }
+
     boaCheck(
       checks,
-      "Introduction links the three Player Options rules pages",
+      "Introduction mirrors the book chapter",
       introductionProblems.length === 0,
       introductionProblems.join("\n")
+    );
+  }
+
+  if (creditsPage) {
+    const headingElement =
+      document.createElement("div");
+    headingElement.innerHTML = creditsHtml;
+
+    const creditsHeadings = [
+      ...headingElement.querySelectorAll("h4"),
+    ].map(
+      heading =>
+        String(heading.textContent ?? "")
+          .trim()
+    );
+
+    boaCheckEqual(
+      checks,
+      "Credits uses readable heading capitalization",
+      creditsHeadings,
+      [
+        "Author",
+        "Version",
+        "Credits",
+        "Artwork",
+        "Made With",
+      ]
     );
   }
 

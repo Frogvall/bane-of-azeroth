@@ -115,19 +115,29 @@ describe("Player Options opening and navigation", () => {
     expect(classes.sort).toBe(500000);
     expect(existsSync(COVER_ASSET)).toBe(true);
 
-    for (const reference of [
-      "kin",
-      "derived-ratings",
-      "heroic-class-abilities",
+    const introductionHtml =
+      introduction.source.content;
+
+    for (const marker of [
+      "Warcraft is one of the most beloved "
+        + "and enduring fantasy franchises",
+      "<h3>Why Azeroth?</h3>",
+      "<h3>What is this book?</h3>",
+      "<h3>Design Goals</h3>",
+      "<h3>Buy-In and Creativity</h3>",
+      "<h3>Contact and More</h3>",
+      "The goal is a game that feels like "
+        + "Warcraft in the ways that matter "
+        + "most to your table.",
     ]) {
-      expect(
-        introduction.source.content,
-      ).toContain(
-        SYMBOLIC_REFERENCE_PREFIX
-          + "boa:journal-page."
-          + `player-options.${reference}]`,
+      expect(introductionHtml).toContain(
+        marker,
       );
     }
+
+    expect(introductionHtml).not.toContain(
+      "Creating a Hero of Azeroth",
+    );
   });
 
   test("uses readable source capitalization for every Kin heading", () => {
@@ -203,27 +213,30 @@ describe("Player Options opening and navigation", () => {
       "journal-page.player-options."
         + "introduction",
     );
-    expect(
-      introduction.text.content,
-    ).not.toContain(
+    const generatedIntroduction =
+      introduction.text.content;
+
+    expect(generatedIntroduction).not.toContain(
       SYMBOLIC_REFERENCE_PREFIX,
     );
+    expect(generatedIntroduction).not.toContain(
+      "Creating a Hero of Azeroth",
+    );
 
-    for (const [id, label] of [
-      ["BoAPgPlayerKin01", "Kin"],
-      ["BoAPgDerivedRate", "Derived Ratings"],
-      [
-        "4f7e06538e580623",
-        "Heroic Class Abilities",
-      ],
+    for (const marker of [
+      "Warcraft is one of the most beloved "
+        + "and enduring fantasy franchises",
+      "<h3>Why Azeroth?</h3>",
+      "<h3>What is this book?</h3>",
+      "<h3>Design Goals</h3>",
+      "<h3>Buy-In and Creativity</h3>",
+      "<h3>Contact and More</h3>",
+      "The goal is a game that feels like "
+        + "Warcraft in the ways that matter "
+        + "most to your table.",
     ]) {
-      expect(
-        introduction.text.content,
-      ).toContain(
-        "@UUID[JournalEntry."
-          + "BoAJrnlPlayerOpt."
-          + `JournalEntryPage.${id}]`
-          + `{${label}}`,
+      expect(generatedIntroduction).toContain(
+        marker,
       );
     }
   });

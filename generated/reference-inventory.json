@@ -12,7 +12,7 @@
   "counts": {
     "runtime-uuid-lookup": 6,
     "symbolic-display-reference": 19,
-    "symbolic-reference": 67,
+    "symbolic-reference": 64,
     "uuid-link": 9,
     "uuid-literal": 21
   },
@@ -677,36 +677,6 @@
       "label": "Sunder Armor"
     },
     {
-      "kind": "symbolic-reference",
-      "path": "foundry/content/journals/player-options/introduction.json",
-      "line": 13,
-      "column": 439,
-      "target": "boa:journal-page.player-options.kin",
-      "classification": "unclassified",
-      "snippet": "\"content\": \"<p><em>Bane of Azeroth</em> brings the kin, classes, magic, equipment, companions, and summoned creatures of Azeroth to <em>Dragonbane</em>. These options extend character creation without replacing the rules in the Dragonbane c",
-      "label": "Kin"
-    },
-    {
-      "kind": "symbolic-reference",
-      "path": "foundry/content/journals/player-options/introduction.json",
-      "line": 13,
-      "column": 534,
-      "target": "boa:journal-page.player-options.derived-ratings",
-      "classification": "unclassified",
-      "snippet": "\"content\": \"<p><em>Bane of Azeroth</em> brings the kin, classes, magic, equipment, companions, and summoned creatures of Azeroth to <em>Dragonbane</em>. These options extend character creation without replacing the rules in the Dragonbane c",
-      "label": "Derived Ratings"
-    },
-    {
-      "kind": "symbolic-reference",
-      "path": "foundry/content/journals/player-options/introduction.json",
-      "line": 13,
-      "column": 646,
-      "target": "boa:journal-page.player-options.heroic-class-abilities",
-      "classification": "unclassified",
-      "snippet": "\"content\": \"<p><em>Bane of Azeroth</em> brings the kin, classes, magic, equipment, companions, and summoned creatures of Azeroth to <em>Dragonbane</em>. These options extend character creation without replacing the rules in the Dragonbane c",
-      "label": "Heroic Class Abilities"
-    },
-    {
       "kind": "symbolic-display-reference",
       "path": "foundry/content/journals/player-options/kin.json",
       "line": 13,
@@ -1029,7 +999,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 816,
+      "line": 850,
       "column": 30,
       "function": "fromUuid",
       "classification": "runtime",

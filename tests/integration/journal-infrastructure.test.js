@@ -205,6 +205,21 @@ describe("generated Journal infrastructure", () => {
     );
     expect(html).toContain("Alex Horley");
     expect(html).toContain("Zoltan Boros");
+
+    for (const heading of [
+      "Author",
+      "Version",
+      "Credits",
+      "Artwork",
+      "Made With",
+    ]) {
+      expect(html).toContain(
+        `<h4>${heading}</h4>`,
+      );
+    }
+    expect(html).not.toMatch(
+      /<h4>[A-Z][A-Z ]+<\/h4>/,
+    );
     expect(html).not.toContain("{{");
     expect(html).not.toContain("\\page");
   });
