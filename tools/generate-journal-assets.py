@@ -3,6 +3,8 @@
 
 Usage:
     python3 tools/generate-journal-assets.py
+    python3 tools/generate-journal-assets.py \
+        --source homebrewery/images/classes/paladin.png
     python3 tools/generate-journal-assets.py --check
 
 Source:
@@ -24,6 +26,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import shlex
 import struct
 import subprocess
 import sys
@@ -617,7 +620,74 @@ def atomic_write_json(
     os.replace(temporary, path)
 
 
-def convert_with_pillow(root: Path) -> None:
+def resolve_selected_sources(
+    root: Path,
+    requested: list[Path],
+) -> list[Path]:
+    all_sources = discover_sources(root)
+    sources_by_relative = {
+        relative_source_path(root, source):
+            source
+        for source in all_sources
+    }
+    selected: dict[str, Path] = {}
+
+    for requested_path in requested:
+        candidate = (
+            requested_path
+            if requested_path.is_absolute()
+            else root / requested_path
+        )
+
+        if candidate.is_symlink():
+            raise GenerationError(
+                "Selected Journal image source "
+                "must not be a symlink: "
+                f"{requested_path}"
+            )
+
+        try:
+            resolved = candidate.resolve(
+                strict=True
+            )
+            relative = resolved.relative_to(
+                root.resolve()
+            ).as_posix()
+        except (
+            FileNotFoundError,
+            ValueError,
+        ) as error:
+            raise GenerationError(
+                "Selected Journal image source "
+                "must be an existing PNG below "
+                f"{SOURCE_ROOT}: {requested_path}"
+            ) from error
+
+        source = sources_by_relative.get(
+            relative
+        )
+        if source is None:
+            raise GenerationError(
+                "Selected Journal image source "
+                "must be a checked-in PNG below "
+                f"{SOURCE_ROOT}: {requested_path}"
+            )
+
+        selected[relative] = source
+
+    return [
+        selected[key]
+        for key in sorted(
+            selected,
+            key=lambda value: (
+                value.casefold(),
+                value,
+            ),
+        )
+    ]
+
+
+def require_pillow():
     try:
         import PIL
         from PIL import Image
@@ -630,13 +700,366 @@ def convert_with_pillow(root: Path) -> None:
     if PIL.__version__ != PILLOW_VERSION:
         raise GenerationError(
             "Expected Pillow "
-            f"{PILLOW_VERSION}, found {PIL.__version__}."
+            f"{PILLOW_VERSION}, found "
+            f"{PIL.__version__}."
         )
+
     if not features.check("webp"):
         raise GenerationError(
             "Pillow has no WebP encoder support."
         )
 
+    return Image
+
+
+def convert_source(
+    root: Path,
+    source: Path,
+    destination: Path,
+    Image,
+) -> dict[str, object]:
+    destination.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    png_info = parse_png(source)
+
+    with Image.open(source) as image:
+        image.load()
+
+        if getattr(image, "n_frames", 1) != 1:
+            raise GenerationError(
+                "Animated PNG is not supported: "
+                f"{source.relative_to(root)}"
+            )
+
+        has_alpha_channel = (
+            "A" in image.getbands()
+            or "transparency" in image.info
+        )
+        converted = (
+            image.convert("RGBA")
+            if has_alpha_channel
+            else image.convert("RGB")
+        )
+
+        has_transparency = False
+        if "A" in converted.getbands():
+            alpha_min, _ = (
+                converted
+                .getchannel("A")
+                .getextrema()
+            )
+            has_transparency = (
+                alpha_min < 255
+            )
+
+        converted.save(
+            destination,
+            format="WEBP",
+            lossless=True,
+            quality=100,
+            method=6,
+            exact=True,
+        )
+
+        source_mode = image.mode
+
+    webp_info = parse_webp(destination)
+
+    if (
+        webp_info["width"]
+        != png_info["width"]
+        or webp_info["height"]
+        != png_info["height"]
+    ):
+        raise GenerationError(
+            "Converted image dimensions changed: "
+            f"{source.relative_to(root)}"
+        )
+
+    if webp_info["lossless"] is not True:
+        raise GenerationError(
+            "Converted asset is not lossless: "
+            f"{destination.relative_to(root)}"
+        )
+
+    if (
+        has_transparency
+        and webp_info["hasAlpha"] is not True
+    ):
+        raise GenerationError(
+            "Converted asset lost transparency: "
+            f"{destination.relative_to(root)}"
+        )
+
+    relative = (
+        source.relative_to(root / SOURCE_ROOT)
+        .with_suffix(".webp")
+    )
+    source_relative = relative_source_path(
+        root,
+        source,
+    )
+    asset_relative = (
+        OUTPUT_ROOT / relative
+    ).as_posix()
+
+    return {
+        "source": source_relative,
+        "asset": asset_relative,
+        "modulePath": (
+            f"{MODULE_PREFIX}/"
+            f"{relative.as_posix()}"
+        ),
+        "sourceSha256": sha256(source),
+        "assetSha256": sha256(destination),
+        "sourceBytes": source.stat().st_size,
+        "assetBytes":
+            destination.stat().st_size,
+        "width": png_info["width"],
+        "height": png_info["height"],
+        "sourceMode": source_mode,
+        "sourceHasAlphaChannel": (
+            png_info["hasAlphaChannel"]
+        ),
+        "hasTransparency": has_transparency,
+        "assetHasAlpha": (
+            webp_info["hasAlpha"]
+        ),
+    }
+
+
+def validate_manifest_for_update(
+    manifest: dict[str, object],
+) -> list[dict[str, object]]:
+    for key, value in (
+        expected_manifest_header().items()
+    ):
+        if manifest.get(key) != value:
+            raise GenerationError(
+                f"{MANIFEST_PATH}: unexpected "
+                f"{key}."
+            )
+
+    entries = manifest.get("assets")
+    if not isinstance(entries, list):
+        raise GenerationError(
+            f"{MANIFEST_PATH}: assets must be "
+            "a list."
+        )
+
+    for entry in entries:
+        if not isinstance(entry, dict):
+            raise GenerationError(
+                "Asset manifest entry must be "
+                "an object."
+            )
+
+    return entries
+
+
+def merge_manifest_entries(
+    manifest: dict[str, object],
+    replacements: list[dict[str, object]],
+) -> dict[str, object]:
+    entries = validate_manifest_for_update(
+        manifest
+    )
+    entries_by_source = {}
+
+    for entry in entries:
+        source = entry.get("source")
+        if not isinstance(source, str):
+            raise GenerationError(
+                "Asset manifest entry has no "
+                "source."
+            )
+        if source in entries_by_source:
+            raise GenerationError(
+                "Duplicate manifest source: "
+                f"{source}"
+            )
+        entries_by_source[source] = dict(
+            entry
+        )
+
+    for replacement in replacements:
+        source = replacement.get("source")
+        if not isinstance(source, str):
+            raise GenerationError(
+                "Generated manifest entry has "
+                "no source."
+            )
+        entries_by_source[source] = (
+            replacement
+        )
+
+    changed = dict(manifest)
+    changed["assets"] = [
+        entries_by_source[source]
+        for source in sorted(
+            entries_by_source,
+            key=lambda value: (
+                value.casefold(),
+                value,
+            ),
+        )
+    ]
+    return changed
+
+
+def backup_file(
+    path: Path,
+) -> tuple[bytes, int] | None:
+    if not path.exists():
+        return None
+
+    if not path.is_file():
+        raise GenerationError(
+            f"Cannot back up non-file: {path}"
+        )
+
+    return (
+        path.read_bytes(),
+        path.stat().st_mode,
+    )
+
+
+def restore_file(
+    path: Path,
+    backup: tuple[bytes, int] | None,
+) -> None:
+    if backup is None:
+        try:
+            path.unlink()
+        except FileNotFoundError:
+            pass
+        return
+
+    data, mode = backup
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+    path.write_bytes(data)
+    os.chmod(path, mode)
+
+
+def convert_selected_with_pillow(
+    root: Path,
+    sources: list[Path],
+) -> None:
+    if not sources:
+        raise GenerationError(
+            "Focused Journal asset generation "
+            "requires at least one --source."
+        )
+
+    Image = require_pillow()
+    output_root = root / OUTPUT_ROOT
+    output_root.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+    manifest_path = root / MANIFEST_PATH
+    manifest = read_manifest(root)
+
+    with tempfile.TemporaryDirectory(
+        prefix=".journals-focused-",
+        dir=output_root.parent,
+    ) as temporary:
+        temporary_root = Path(temporary)
+        replacements = []
+        destinations = []
+
+        for source in sources:
+            relative = (
+                source.relative_to(
+                    root / SOURCE_ROOT
+                )
+                .with_suffix(".webp")
+            )
+            temporary_asset = (
+                temporary_root / relative
+            )
+            replacements.append(
+                convert_source(
+                    root,
+                    source,
+                    temporary_asset,
+                    Image,
+                )
+            )
+            destinations.append(
+                (
+                    temporary_asset,
+                    output_root / relative,
+                )
+            )
+
+        changed_manifest = (
+            merge_manifest_entries(
+                manifest,
+                replacements,
+            )
+        )
+        backups = {
+            destination: backup_file(
+                destination
+            )
+            for _, destination
+            in destinations
+        }
+        manifest_backup = backup_file(
+            manifest_path
+        )
+
+        try:
+            for (
+                temporary_asset,
+                destination,
+            ) in destinations:
+                destination.parent.mkdir(
+                    parents=True,
+                    exist_ok=True,
+                )
+                os.replace(
+                    temporary_asset,
+                    destination,
+                )
+
+            atomic_write_json(
+                manifest_path,
+                changed_manifest,
+            )
+            check_generated(root)
+
+        except BaseException:
+            for destination, backup in (
+                backups.items()
+            ):
+                restore_file(
+                    destination,
+                    backup,
+                )
+            restore_file(
+                manifest_path,
+                manifest_backup,
+            )
+            raise
+
+    print(
+        f"Generated {len(sources)} focused "
+        "Journal WebP asset"
+        + ("" if len(sources) == 1 else "s")
+        + "."
+    )
+
+
+def convert_with_pillow(root: Path) -> None:
+    Image = require_pillow()
     sources = discover_sources(root)
     output_root = root / OUTPUT_ROOT
     output_parent = output_root.parent
@@ -644,7 +1067,6 @@ def convert_with_pillow(root: Path) -> None:
         parents=True,
         exist_ok=True,
     )
-
     temporary = Path(
         tempfile.mkdtemp(
             prefix=".journals-webp-",
@@ -662,119 +1084,29 @@ def convert_with_pillow(root: Path) -> None:
     try:
         for source in sources:
             relative = (
-                source.relative_to(root / SOURCE_ROOT)
+                source.relative_to(
+                    root / SOURCE_ROOT
+                )
                 .with_suffix(".webp")
             )
             destination = temporary / relative
-            destination.parent.mkdir(
-                parents=True,
-                exist_ok=True,
-            )
-
-            png_info = parse_png(source)
-
-            with Image.open(source) as image:
-                image.load()
-                if getattr(image, "n_frames", 1) != 1:
-                    raise GenerationError(
-                        "Animated PNG is not supported: "
-                        f"{source.relative_to(root)}"
-                    )
-
-                has_alpha_channel = (
-                    "A" in image.getbands()
-                    or "transparency" in image.info
-                )
-                converted = (
-                    image.convert("RGBA")
-                    if has_alpha_channel
-                    else image.convert("RGB")
-                )
-
-                has_transparency = False
-                if "A" in converted.getbands():
-                    alpha_min, _ = (
-                        converted
-                        .getchannel("A")
-                        .getextrema()
-                    )
-                    has_transparency = (
-                        alpha_min < 255
-                    )
-
-                converted.save(
+            entries.append(
+                convert_source(
+                    root,
+                    source,
                     destination,
-                    format="WEBP",
-                    lossless=True,
-                    quality=100,
-                    method=6,
-                    exact=True,
+                    Image,
                 )
-
-                source_mode = image.mode
-
-            webp_info = parse_webp(destination)
-            if (
-                webp_info["width"]
-                != png_info["width"]
-                or webp_info["height"]
-                != png_info["height"]
-            ):
-                raise GenerationError(
-                    "Converted image dimensions changed: "
-                    f"{source.relative_to(root)}"
-                )
-            if webp_info["lossless"] is not True:
-                raise GenerationError(
-                    "Converted asset is not lossless: "
-                    f"{destination.relative_to(root)}"
-                )
-            if (
-                has_transparency
-                and webp_info["hasAlpha"] is not True
-            ):
-                raise GenerationError(
-                    "Converted asset lost transparency: "
-                    f"{destination.relative_to(root)}"
-                )
-
-            source_relative = relative_source_path(
-                root,
-                source,
             )
-            asset_relative = (
-                OUTPUT_ROOT / relative
-            ).as_posix()
-
-            entries.append({
-                "source": source_relative,
-                "asset": asset_relative,
-                "modulePath": (
-                    f"{MODULE_PREFIX}/"
-                    f"{relative.as_posix()}"
-                ),
-                "sourceSha256": sha256(source),
-                "assetSha256": sha256(destination),
-                "sourceBytes": source.stat().st_size,
-                "assetBytes": destination.stat().st_size,
-                "width": png_info["width"],
-                "height": png_info["height"],
-                "sourceMode": source_mode,
-                "sourceHasAlphaChannel": (
-                    png_info["hasAlphaChannel"]
-                ),
-                "hasTransparency": has_transparency,
-                "assetHasAlpha": (
-                    webp_info["hasAlpha"]
-                ),
-            })
 
         manifest = expected_manifest_header()
         manifest["assets"] = entries
-
         temporary_manifest = (
             manifest_path.parent
-            / f".{manifest_path.name}.{os.getpid()}.tmp"
+            / (
+                f".{manifest_path.name}."
+                f"{os.getpid()}.tmp"
+            )
         )
         temporary_manifest.parent.mkdir(
             parents=True,
@@ -824,7 +1156,7 @@ def convert_with_pillow(root: Path) -> None:
                 manifest_path,
             )
 
-        except Exception:
+        except BaseException:
             if output_root.exists():
                 shutil.rmtree(output_root)
             if backup.exists():
@@ -843,6 +1175,7 @@ def convert_with_pillow(root: Path) -> None:
 
         if backup.exists():
             shutil.rmtree(backup)
+
         if (
             manifest_backup is not None
             and manifest_backup.exists()
@@ -854,6 +1187,7 @@ def convert_with_pillow(root: Path) -> None:
     finally:
         if temporary and temporary.exists():
             shutil.rmtree(temporary)
+
         if backup.exists():
             if not output_root.exists():
                 os.replace(
@@ -864,17 +1198,41 @@ def convert_with_pillow(root: Path) -> None:
                 shutil.rmtree(backup)
 
 
-def run_docker_worker(root: Path) -> None:
+def run_docker_worker(
+    root: Path,
+    sources: list[Path] | None = None,
+) -> None:
     docker = shutil.which("docker")
     if docker is None:
         raise GenerationError(
-            "Docker is required to generate Journal "
-            "WebP assets. The --check mode does not "
-            "require Docker."
+            "Docker is required to generate "
+            "Journal WebP assets. The --check "
+            "mode does not require Docker."
         )
 
     uid = os.getuid()
     gid = os.getgid()
+    worker_arguments = [
+        "--source "
+        + shlex.quote(
+            relative_source_path(
+                root,
+                source,
+            )
+        )
+        for source in (sources or [])
+    ]
+    worker_command = (
+        "python tools/"
+        "generate-journal-assets.py "
+        "--pillow-worker"
+    )
+    if worker_arguments:
+        worker_command += (
+            " "
+            + " ".join(worker_arguments)
+        )
+
     command = [
         docker,
         "run",
@@ -891,16 +1249,14 @@ def run_docker_worker(root: Path) -> None:
         "sh",
         "-lc",
         (
-            'mkdir -p "$HOME" /tmp/pillow && '
-            "python -m pip install "
+            'mkdir -p "$HOME" /tmp/pillow '
+            "&& python -m pip install "
             "--disable-pip-version-check "
             "--no-cache-dir "
             "--target /tmp/pillow "
-            f"Pillow=={PILLOW_VERSION} && "
-            "PYTHONPATH=/tmp/pillow "
-            "python tools/"
-            "generate-journal-assets.py "
-            "--pillow-worker"
+            f"Pillow=={PILLOW_VERSION} "
+            "&& PYTHONPATH=/tmp/pillow "
+            + worker_command
         ),
     ]
 
@@ -927,6 +1283,20 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--source",
+        action="append",
+        type=Path,
+        default=[],
+        help=(
+            "Convert only this repository-relative "
+            "PNG source and update only its WebP "
+            "and manifest entry. Repeat for "
+            "multiple sources. Without this "
+            "option, regenerate all Journal "
+            "assets."
+        ),
+    )
+    parser.add_argument(
         "--pillow-worker",
         action="store_true",
         help=argparse.SUPPRESS,
@@ -941,12 +1311,37 @@ def main() -> int:
             "mutually exclusive."
         )
 
+    if args.check and args.source:
+        raise GenerationError(
+            "--source cannot be combined with "
+            "--check. The check always verifies "
+            "the complete Journal asset set."
+        )
+
+    selected_sources = (
+        resolve_selected_sources(
+            root,
+            args.source,
+        )
+        if args.source
+        else []
+    )
+
     if args.check:
         check_generated(root)
     elif args.pillow_worker:
-        convert_with_pillow(root)
+        if selected_sources:
+            convert_selected_with_pillow(
+                root,
+                selected_sources,
+            )
+        else:
+            convert_with_pillow(root)
     else:
-        run_docker_worker(root)
+        run_docker_worker(
+            root,
+            selected_sources or None,
+        )
 
     return 0
 

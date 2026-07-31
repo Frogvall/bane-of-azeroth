@@ -8,6 +8,9 @@ import {
   resolve,
 } from "node:path";
 import {
+  spawnSync,
+} from "node:child_process";
+import {
   describe,
   expect,
   test,
@@ -175,6 +178,109 @@ describe("generated Journal image assets", () => {
       expect(asset.height).toBeGreaterThan(0);
       expect(asset.sourceBytes).toBeGreaterThan(0);
       expect(asset.assetBytes).toBeGreaterThan(0);
+    }
+  });
+
+  test("supports repeatable focused source generation", () => {
+    const help = spawnSync(
+      "python3",
+      [
+        GENERATOR,
+        "--help",
+      ],
+      {
+        encoding: "utf8",
+      },
+    );
+
+    expect(help.status).toBe(0);
+    expect(help.stdout).toContain(
+      "--source SOURCE",
+    );
+
+    const resolveSources = spawnSync(
+      "python3",
+      [
+        "-c",
+        [
+          "from pathlib import Path",
+          "import runpy",
+          "module = runpy.run_path("
+            + "r'" + GENERATOR + "'"
+            + ", run_name='journal_assets_test')",
+          "root = module['repo_root']()",
+          "sources = module"
+            + "['resolve_selected_sources'](",
+          "    root,",
+          "    [",
+          "        Path("
+            + "'homebrewery/images/classes/"
+            + "paladin.png'"
+            + "),",
+          "        Path("
+            + "'homebrewery/images/classes/"
+            + "paladin.png'"
+            + "),",
+          "    ],",
+          ")",
+          "print(len(sources))",
+          "print(sources[0].relative_to(root)"
+            + ".as_posix())",
+        ].join("\\n"),
+      ],
+      {
+        encoding: "utf8",
+      },
+    );
+
+    expect(resolveSources.status).toBe(0);
+    expect(
+      resolveSources.stdout.trim().split(
+        /\\r?\\n/,
+      ),
+    ).toEqual([
+      "1",
+      "homebrewery/images/classes/"
+        + "paladin.png",
+    ]);
+  });
+
+  test("keeps --check global when focused generation exists", () => {
+    const result = spawnSync(
+      "python3",
+      [
+        GENERATOR,
+        "--check",
+        "--source",
+        "homebrewery/images/classes/"
+          + "paladin.png",
+      ],
+      {
+        encoding: "utf8",
+      },
+    );
+
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(
+      "--source cannot be combined with "
+        + "--check",
+    );
+  });
+
+  test("updates focused assets transactionally", () => {
+    const generator = read(
+      GENERATOR,
+    );
+
+    for (const marker of [
+      "def convert_selected_with_pillow(",
+      "def merge_manifest_entries(",
+      "resolve_selected_sources(",
+      "except BaseException:",
+      "check_generated(root)",
+      "selected_sources or None",
+    ]) {
+      expect(generator).toContain(marker);
     }
   });
 
