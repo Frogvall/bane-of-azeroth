@@ -234,7 +234,7 @@ describe("curated Player Options Journal", () => {
     const journal =
       readJson(GENERATED);
 
-    expect(journal.pages).toHaveLength(5);
+    expect(journal.pages).toHaveLength(6);
 
     const kinPage =
       journal.pages.find(

@@ -223,6 +223,10 @@ try {
     playerOptions,
     "journal-page.player-options.heroic-class-abilities"
   );
+  const gearPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.gear"
+  );
 
   boaCheck(
     checks,
@@ -251,6 +255,11 @@ try {
   );
   boaCheck(
     checks,
+    "Player Options contains the Gear page",
+    Boolean(gearPage)
+  );
+  boaCheck(
+    checks,
     "Credits contains its generated page",
     Boolean(creditsPage)
   );
@@ -263,6 +272,8 @@ try {
     derivedPage?.text?.content ?? "";
   const creditsHtml =
     creditsPage?.text?.content ?? "";
+  const gearHtml =
+    gearPage?.text?.content ?? "";
 
   if (illustrationPage) {
     boaCheckEqual(
@@ -427,6 +438,141 @@ try {
       "Derived Ratings uses display-table markup",
       derivedHtml.includes(
         '<div class="display-table">'
+      )
+    );
+  }
+
+  if (gearPage) {
+    const gearSpecs = [
+      {
+        table: "melee",
+        contentKey: "gear.fist-weapon",
+        id: "FistWpnA7k2P9xQZ",
+        name: "Fist Weapon",
+        type: "weapon",
+      },
+      {
+        table: "melee",
+        contentKey: "gear.throwing-glaive",
+        id: "ThrowGlvB4m8R2zQ",
+        name: "Throwing Glaive",
+        type: "weapon",
+      },
+      {
+        table: "melee",
+        contentKey: "gear.warglaive",
+        id: "Mtrym5LUbMbXISlI",
+        name: "Warglaive",
+        type: "weapon",
+      },
+      {
+        table: "ranged",
+        contentKey: "gear.blunderbuss",
+        id: "4pgpXANRnIBz5nNF",
+        name: "Blunderbuss",
+        type: "weapon",
+      },
+      {
+        table: "ranged",
+        contentKey: "gear.pistol",
+        id: "3xoYCFEAWm88zRQq",
+        name: "Pistol",
+        type: "weapon",
+      },
+      {
+        table: "ranged",
+        contentKey: "gear.rifle",
+        id: "RifleC6n3T9vK2xP",
+        name: "Rifle",
+        type: "weapon",
+      },
+      {
+        table: "trade",
+        contentKey: "gear.ammo-pouch",
+        id: "n0yAAcVxspJur19y",
+        name: "Ammo Pouch",
+        type: "item",
+      },
+      {
+        table: "trade",
+        contentKey: "gear.sniper-scope",
+        id: "SniperScp7kQ2mPx",
+        name: "Sniper Scope",
+        type: "item",
+      },
+    ];
+    const gearProblems = [];
+
+    boaCheckEqual(
+      checks,
+      "Gear page contains three Gear tables",
+      occurrences(
+        gearHtml,
+        "@GearTableStart["
+      ),
+      3
+    );
+
+    for (const tableType of [
+      "melee",
+      "ranged",
+      "trade",
+    ]) {
+      if (
+        !gearHtml.includes(
+          `@GearTableStart[${tableType}]`
+        )
+      ) {
+        gearProblems.push(
+          `missing ${tableType} Gear table`
+        );
+      }
+    }
+
+    for (const spec of gearSpecs) {
+      const marker =
+        `@Gear[Item.${spec.id}]`
+        + `{${spec.name}}`;
+      const item = boaFindWorldItem(
+        spec.contentKey,
+        spec.type
+      );
+
+      if (
+        occurrences(gearHtml, marker) !== 1
+      ) {
+        gearProblems.push(
+          `${spec.name}: Gear link count `
+          + `${occurrences(gearHtml, marker)}`
+        );
+      }
+
+      if (!item) {
+        gearProblems.push(
+          `${spec.contentKey}: missing Item`
+        );
+      } else if (
+        item.id !== spec.id
+        || item.name !== spec.name
+      ) {
+        gearProblems.push(
+          `${spec.contentKey}: `
+          + `${item.id}/${item.name}`
+        );
+      }
+    }
+
+    boaCheck(
+      checks,
+      "Gear page links all eight generated Gear Items",
+      gearProblems.length === 0,
+      gearProblems.join("\n")
+    );
+    boaCheck(
+      checks,
+      "Gear page includes the 500 meter firearm report",
+      gearHtml.includes(
+        "audible out to 500 meters."
       )
     );
   }
@@ -677,11 +823,11 @@ try {
   if (playerOptions) {
     boaCheckEqual(
       checks,
-      "Player Options has exactly five pages",
+      "Player Options has exactly six pages",
       boaCollectionValues(
         playerOptions.pages
       ).length,
-      5
+      6
     );
     const orderedPageNames =
       boaCollectionValues(
@@ -707,6 +853,7 @@ try {
         "Kin",
         "Derived Ratings",
         "Heroic Class Abilities",
+        "Gear",
       ]
     );
     boaCheckEqual(

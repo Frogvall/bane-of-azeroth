@@ -14,7 +14,7 @@
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
     "uuid-link": 60,
-    "uuid-literal": 21
+    "uuid-literal": 29
   },
   "entries": [
     {
@@ -185,6 +185,78 @@
       "classification": "unclassified",
       "snippet": "\"You can wield a two-handed melee weapon in one hand. This can be combined with @UUID[Item.JrQqkQrSOFJzR7H9]{Dual Wield}.\"",
       "label": "Dual Wield"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 1563,
+      "target": "Item.FistWpnA7k2P9xQZ",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 1605,
+      "target": "Item.ThrowGlvB4m8R2zQ",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 1651,
+      "target": "Item.Mtrym5LUbMbXISlI",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 2095,
+      "target": "Item.4pgpXANRnIBz5nNF",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 2137,
+      "target": "Item.3xoYCFEAWm88zRQq",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 2174,
+      "target": "Item.RifleC6n3T9vK2xP",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 2585,
+      "target": "Item.n0yAAcVxspJur19y",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 2626,
+      "target": "Item.SniperScp7kQ2mPx",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
     },
     {
       "kind": "symbolic-reference",
@@ -1339,7 +1411,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 778,
+      "line": 925,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#falling",
       "classification": "unclassified",
@@ -1349,7 +1421,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 786,
+      "line": 933,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.cvFSLoFtdJOQcxtU\"\n        + \"#magic-tricks",
       "classification": "unclassified",
@@ -1359,7 +1431,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 794,
+      "line": 941,
       "column": 10,
       "target": "Item.GiE0TwixaYnxFT6i",
       "classification": "unclassified",
@@ -1368,7 +1440,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 801,
+      "line": 948,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1378,7 +1450,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 809,
+      "line": 956,
       "column": 10,
       "target": "Item.SY62xmX9uBVml786",
       "classification": "unclassified",
@@ -1387,7 +1459,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 817,
+      "line": 964,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1397,7 +1469,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 825,
+      "line": 972,
       "column": 10,
       "target": "JournalEntry.V4R4dCuKSK2mi8RF.\"\n        + \"JournalEntryPage.eIQgHhYPUczg7kbZ\"\n        + \"#pushing-your-roll",
       "classification": "unclassified",
@@ -1406,7 +1478,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 834,
+      "line": 981,
       "column": 10,
       "target": "JournalEntry.BoAJrnlPlayerOpt.\"\n        + \"JournalEntryPage.BoAPgPlayerKin01\"\n        + \"#human",
       "classification": "unclassified",
@@ -1416,7 +1488,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 844,
+      "line": 991,
       "column": 10,
       "target": "Actor.GhoulAct6Kp9T2xP",
       "classification": "unclassified",
@@ -1425,7 +1497,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 852,
+      "line": 999,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#movement",
       "classification": "unclassified",
@@ -1435,7 +1507,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 862,
+      "line": 1009,
       "column": 10,
       "target": "Item.J6l8QwCJhBirvg03",
       "classification": "unclassified",
@@ -1444,7 +1516,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 871,
+      "line": 1018,
       "column": 10,
       "target": "Item.RPnxXYVb8z7EG5Wl",
       "classification": "unclassified",
@@ -1453,7 +1525,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 880,
+      "line": 1027,
       "column": 10,
       "target": "Item.O7p7ZWnZNgxP8PFw",
       "classification": "unclassified",
@@ -1462,7 +1534,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 889,
+      "line": 1036,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#sneak-attack",
       "classification": "unclassified",
@@ -1472,7 +1544,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 899,
+      "line": 1046,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#poison",
       "classification": "unclassified",
@@ -1482,7 +1554,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 909,
+      "line": 1056,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.C0stUmhj95JFgL4f\"\n        + \"#power-level",
       "classification": "unclassified",
@@ -1491,7 +1563,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 920,
+      "line": 1067,
       "column": 10,
       "target": "Item.JrQqkQrSOFJzR7H9",
       "classification": "unclassified",
@@ -1500,7 +1572,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1104,
+      "line": 1251,
       "column": 30,
       "function": "fromUuid",
       "classification": "runtime",

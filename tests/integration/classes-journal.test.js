@@ -253,12 +253,12 @@ describe("Heroic Class Abilities Journal page", () => {
     }
   });
 
-  test("generates exactly five Player Options pages", () => {
+  test("generates exactly six Player Options pages", () => {
     const heroic = readJson(HEROIC_SOURCE);
     const items = generatedItemsByContentKey();
     const journal = readJson(GENERATED);
 
-    expect(journal.pages).toHaveLength(5);
+    expect(journal.pages).toHaveLength(6);
     expect(
       journal.pages.map(
         page => page.name,
@@ -269,6 +269,7 @@ describe("Heroic Class Abilities Journal page", () => {
       "Kin",
       "Derived Ratings",
       "Heroic Class Abilities",
+      "Gear",
     ]);
 
     const page = journal.pages[4];
@@ -339,7 +340,7 @@ describe("Heroic Class Abilities Journal page", () => {
     const source = read(SYSTEM_MACRO);
 
     for (const marker of [
-      "Player Options has exactly five pages",
+      "Player Options has exactly six pages",
       "Heroic Class Abilities contains 13 class headings",
       "Heroic Class Abilities contains 52 overview boxes",
       "Ability box titles link to all 52 Ability Items",
