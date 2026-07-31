@@ -446,6 +446,7 @@ async function createRollDamageMessage({
   weapon,
   targetActor = null,
   formula,
+  expectedEffectText,
 }) {
   const Model =
     rollDamageModelClass();
@@ -476,19 +477,21 @@ async function createRollDamageMessage({
   const message =
     await ChatMessage.create(messageData);
 
-  await waitFor(() => {
+  const enriched = await waitFor(() => {
     const current =
       game.messages.get(message.id);
 
-    return Boolean(
-      current &&
-      current.content !== messageData.content
-    );
-  });
+    return normalizedText(
+      messageContent(current)
+    ).includes(expectedEffectText);
+  }, 3000);
 
-  await new Promise(resolve =>
-    setTimeout(resolve, 50)
-  );
+  if (!enriched) {
+    throw new Error(
+      "Timed out waiting for Common Animal "
+      + `effect text: ${expectedEffectText}`
+    );
+  }
 
   const created =
     messagesCreatedSince(beforeIds);
@@ -711,6 +714,8 @@ try {
       weapon: bite,
       targetActor: target,
       formula: "11",
+      expectedEffectText:
+        `${serpent.name} exposes ${target.name}`,
     });
 
   checkSingleEnrichedMessage({
@@ -757,6 +762,8 @@ try {
       weapon: bite,
       targetActor: null,
       formula: "4",
+      expectedEffectText:
+        `${serpent.name} exposes the target`,
     });
 
   checkSingleEnrichedMessage({
@@ -795,6 +802,8 @@ try {
       weapon: constriction,
       targetActor: target,
       formula: "6",
+      expectedEffectText:
+        `${serpent.name} restrains ${target.name}`,
     });
 
   checkSingleEnrichedMessage({
