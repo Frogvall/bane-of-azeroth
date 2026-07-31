@@ -109,5 +109,19 @@
     "notifications": {
       "summonCleanupFailed": "The rest completed, but one or more summoned tokens could not be removed. Ask a GM to remove them manually."
     }
+  },
+  "DoD": {
+    "weaponFeatureTypes": {
+      "freehanded": "Freehanded",
+      "freehandedTooltip": "Freehanded",
+      "returning": "Returning",
+      "returningTooltip": "Returning",
+      "ammunition": "Ammunition",
+      "ammunitionTooltip": "Ammunition",
+      "armorPiercing": "Armor Piercing",
+      "armorPiercingTooltip": "Armor Piercing",
+      "scattershot": "Scattershot",
+      "scattershotTooltip": "Scattershot"
+    }
   }
 }

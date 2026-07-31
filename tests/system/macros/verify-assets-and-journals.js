@@ -872,6 +872,46 @@ try {
     );
   }
 
+  const customWeaponFeatureLabels = {
+    freehanded: "Freehanded",
+    returning: "Returning",
+    ammunition: "Ammunition",
+    armorPiercing: "Armor Piercing",
+    scattershot: "Scattershot",
+  };
+  const featureLocalizationProblems = [];
+
+  for (
+    const [feature, expectedLabel]
+    of Object.entries(
+      customWeaponFeatureLabels
+    )
+  ) {
+    for (const namespace of [
+      "BOA",
+      "DoD",
+    ]) {
+      const key =
+        `${namespace}.weaponFeatureTypes.`
+        + feature;
+      const actual =
+        game.i18n.localize(key);
+
+      if (actual !== expectedLabel) {
+        featureLocalizationProblems.push(
+          `${key}: ${actual}`
+        );
+      }
+    }
+  }
+
+  boaCheck(
+    checks,
+    "Custom weapon features localize in Gear tables",
+    featureLocalizationProblems.length === 0,
+    featureLocalizationProblems.join("\n")
+  );
+
   const itemProblems = [];
 
   for (const kin of kinDefinitions) {
