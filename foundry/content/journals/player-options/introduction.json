@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "key": "introduction",
+  "id": "BoAPgPlayerIntro",
+  "name": "Introduction",
+  "sort": 200000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<p><em>Bane of Azeroth</em> brings the kin, classes, magic, equipment, companions, and summoned creatures of Azeroth to <em>Dragonbane</em>. These options extend character creation without replacing the rules in the Dragonbane core set.</p><p>This journal collects the options used when creating and advancing a hero of Azeroth.</p><blockquote class=\"info\"><h3>Creating a Hero of Azeroth</h3><ol><li>Choose or roll your @Ref[boa:journal-page.player-options.kin]{Kin}.</li><li>Record the movement for your kin under @Ref[boa:journal-page.player-options.derived-ratings]{Derived Ratings}.</li><li>Choose one starting option from @Ref[boa:journal-page.player-options.heroic-class-abilities]{Heroic Class Abilities}, following the requirements on that page.</li><li>Complete the remaining character creation steps using the Dragonbane core rules.</li></ol></blockquote>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Player Options",
+    "sync": "curated",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-player-options-pages"
+  }
+}

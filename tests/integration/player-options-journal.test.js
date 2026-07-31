@@ -95,7 +95,7 @@ describe("curated Player Options Journal", () => {
       key: "kin",
       id: "BoAPgPlayerKin01",
       name: "Kin",
-      sort: 100000,
+      sort: 300000,
       title: {
         show: true,
         level: 1,
@@ -122,7 +122,7 @@ describe("curated Player Options Journal", () => {
       key: "derived-ratings",
       id: "BoAPgDerivedRate",
       name: "Derived Ratings",
-      sort: 200000,
+      sort: 400000,
       title: {
         show: true,
         level: 1,
@@ -151,10 +151,10 @@ describe("curated Player Options Journal", () => {
       "There are 14 playable kin in Azeroth.",
     );
     expect(kinHtml).toContain(
-      "<h2>LANGUAGE</h2>",
+      "<h2>Language</h2>",
     );
     expect(kinHtml).toContain(
-      "<h2>DRACTHYR</h2>",
+      "<h2>Dracthyr</h2>",
     );
     expect(kinHtml).not.toContain(
       "DERIVED RATINGS",
@@ -234,7 +234,7 @@ describe("curated Player Options Journal", () => {
     const journal =
       readJson(GENERATED);
 
-    expect(journal.pages).toHaveLength(3);
+    expect(journal.pages).toHaveLength(5);
 
     const kinPage =
       journal.pages.find(
@@ -250,7 +250,7 @@ describe("curated Player Options Journal", () => {
     expect(kinPage).toBeDefined();
     expect(derivedPage).toBeDefined();
     expect(
-      journal.pages.slice(0, 2).map(
+      journal.pages.slice(2, 4).map(
         page => page._id,
       ),
     ).toEqual([

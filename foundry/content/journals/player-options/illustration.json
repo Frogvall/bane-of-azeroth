@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "key": "illustration",
+  "id": "BoAPgPlayerIllus",
+  "name": "Illustration",
+  "sort": 100000,
+  "title": {
+    "show": false,
+    "level": 1
+  },
+  "source": {
+    "type": "image",
+    "src": "modules/bane-of-azeroth/assets/journals/cover/bane_of_azeroth_cover.webp",
+    "caption": ""
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/images/cover/bane_of_azeroth_cover.png",
+    "sync": "generated-asset",
+    "presentation": "dragonbane-core-image-page"
+  }
+}

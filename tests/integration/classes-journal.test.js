@@ -161,7 +161,7 @@ describe("Heroic Class Abilities Journal page", () => {
       schemaVersion: 1,
       key: "heroic-class-abilities",
       name: "Heroic Class Abilities",
-      sort: 300000,
+      sort: 500000,
       title: {
         show: true,
         level: 1,
@@ -253,23 +253,25 @@ describe("Heroic Class Abilities Journal page", () => {
     }
   });
 
-  test("generates exactly three Player Options pages", () => {
+  test("generates exactly five Player Options pages", () => {
     const heroic = readJson(HEROIC_SOURCE);
     const items = generatedItemsByContentKey();
     const journal = readJson(GENERATED);
 
-    expect(journal.pages).toHaveLength(3);
+    expect(journal.pages).toHaveLength(5);
     expect(
       journal.pages.map(
         page => page.name,
       ),
     ).toEqual([
+      "Illustration",
+      "Introduction",
       "Kin",
       "Derived Ratings",
       "Heroic Class Abilities",
     ]);
 
-    const page = journal.pages[2];
+    const page = journal.pages[4];
 
     expect(page.title).toEqual({
       show: true,
@@ -337,7 +339,7 @@ describe("Heroic Class Abilities Journal page", () => {
     const source = read(SYSTEM_MACRO);
 
     for (const marker of [
-      "Player Options has exactly three pages",
+      "Player Options has exactly five pages",
       "Heroic Class Abilities contains 13 class headings",
       "Heroic Class Abilities contains 52 overview boxes",
       "Ability box titles link to all 52 Ability Items",

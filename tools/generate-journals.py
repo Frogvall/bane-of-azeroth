@@ -304,19 +304,40 @@ def source_documents(
                     f"{page_path}: source must be an "
                     "object."
                 )
-            if page_source.get("type") != "html":
+            source_type = page_source.get("type")
+            if source_type not in {"html", "image"}:
                 raise GenerationError(
-                    f"{page_path}: curated pages "
-                    "must use source.type \"html\"."
+                    f"{page_path}: source.type must "
+                    "be \"html\" or \"image\"."
                 )
-            if not isinstance(
-                page_source.get("content"),
-                str,
-            ):
-                raise GenerationError(
-                    f"{page_path}: source.content "
-                    "must be a string."
+            if source_type == "html":
+                if not isinstance(
+                    page_source.get("content"),
+                    str,
+                ):
+                    raise GenerationError(
+                        f"{page_path}: source.content "
+                        "must be a string."
+                    )
+            if source_type == "image":
+                image_src = page_source.get("src")
+                caption = page_source.get(
+                    "caption",
+                    "",
                 )
+                if (
+                    not isinstance(image_src, str)
+                    or not image_src
+                ):
+                    raise GenerationError(
+                        f"{page_path}: image source "
+                        "must have a non-empty src."
+                    )
+                if not isinstance(caption, str):
+                    raise GenerationError(
+                        f"{page_path}: image source "
+                        "caption must be a string."
+                    )
 
             qualified_page_key = (
                 f"{key}.{page_key}"
@@ -652,7 +673,6 @@ def render_page_content(
     references: dict[str, dict[str, str]],
 ) -> str:
     del repo_root
-
     source = page.get("source")
     if not isinstance(source, dict):
         raise GenerationError(
@@ -661,10 +681,9 @@ def render_page_content(
     source_type = source.get("type")
     if source_type != "html":
         raise GenerationError(
-            "Curated Journal pages must use HTML "
+            "Text Journal pages must use HTML "
             f"source, found {source_type!r}."
         )
-
     content = source.get("content")
     if not isinstance(content, str):
         raise GenerationError(
@@ -676,6 +695,7 @@ def render_page_content(
         content,
         references,
     )
+
 
 def render_page(
     repo_root: Path,
@@ -699,38 +719,31 @@ def render_page(
             "Page title.level must be 1 through 6."
         )
 
+    source = page.get("source")
+    if not isinstance(source, dict):
+        raise GenerationError(
+            f"Page {page.get('key')} has no source."
+        )
+    source_type = source.get("type")
+
     page_id = str(page["id"])
     document_id = str(document["id"])
-    content = render_page_content(
-        repo_root,
-        page,
-        references,
-    )
-
-    return {
+    rendered = {
         "_key": (
             "!journal.pages!"
             f"{document_id}.{page_id}"
         ),
         "sort": int(page.get("sort", 0)),
         "name": str(page["name"]),
-        "type": "text",
         "_id": page_id,
         "title": {
             "show": show,
             "level": level,
         },
-        "image": {},
-        "text": {
-            "format": 1,
-            "content": content,
-            "markdown": "",
-        },
         "video": {
             "controls": True,
             "volume": 0.5,
         },
-        "src": None,
         "system": {},
         "ownership": {
             "default": -1,
@@ -748,6 +761,57 @@ def render_page(
         "_stats": base_stats(),
         "category": None,
     }
+
+    if source_type == "html":
+        content = render_page_content(
+            repo_root,
+            page,
+            references,
+        )
+        rendered.update({
+            "type": "text",
+            "image": {},
+            "text": {
+                "format": 1,
+                "content": content,
+                "markdown": "",
+            },
+            "src": None,
+        })
+        return rendered
+
+    if source_type == "image":
+        image_src = source.get("src")
+        caption = source.get("caption", "")
+        if (
+            not isinstance(image_src, str)
+            or not image_src
+        ):
+            raise GenerationError(
+                "Image page source must have a "
+                "non-empty src."
+            )
+        if not isinstance(caption, str):
+            raise GenerationError(
+                "Image page source caption must "
+                "be a string."
+            )
+        rendered.update({
+            "type": "image",
+            "image": {
+                "caption": caption,
+            },
+            "text": {
+                "format": 1,
+            },
+            "src": image_src,
+        })
+        return rendered
+
+    raise GenerationError(
+        "Curated Journal page has unsupported "
+        f"source type {source_type!r}."
+    )
 
 
 def render_document(

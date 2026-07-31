@@ -3,7 +3,7 @@
   "key": "derived-ratings",
   "id": "BoAPgDerivedRate",
   "name": "Derived Ratings",
-  "sort": 200000,
+  "sort": 400000,
   "title": {
     "show": true,
     "level": 1

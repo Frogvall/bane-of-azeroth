@@ -199,6 +199,14 @@ try {
     "journal.credits"
   );
 
+  const illustrationPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.illustration"
+  );
+  const introductionPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.introduction"
+  );
   const kinPage = journalPage(
     playerOptions,
     "journal-page.player-options.kin"
@@ -211,7 +219,21 @@ try {
     credits,
     "journal-page.credits.credits"
   );
+  const classesPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.heroic-class-abilities"
+  );
 
+  boaCheck(
+    checks,
+    "Player Options contains the Illustration page",
+    Boolean(illustrationPage)
+  );
+  boaCheck(
+    checks,
+    "Player Options contains the Introduction page",
+    Boolean(introductionPage)
+  );
   boaCheck(
     checks,
     "Player Options contains the Kin page",
@@ -224,16 +246,80 @@ try {
   );
   boaCheck(
     checks,
+    "Player Options contains the Heroic Class Abilities page",
+    Boolean(classesPage)
+  );
+  boaCheck(
+    checks,
     "Credits contains its generated page",
     Boolean(creditsPage)
   );
 
+  const introductionHtml =
+    introductionPage?.text?.content ?? "";
   const kinHtml =
     kinPage?.text?.content ?? "";
   const derivedHtml =
     derivedPage?.text?.content ?? "";
   const creditsHtml =
     creditsPage?.text?.content ?? "";
+
+  if (illustrationPage) {
+    boaCheckEqual(
+      checks,
+      "Player Options opens with the cover Illustration",
+      {
+        type: illustrationPage.type,
+        titleShown:
+          illustrationPage.title?.show,
+        src: illustrationPage.src,
+        caption:
+          illustrationPage.image?.caption ?? "",
+      },
+      {
+        type: "image",
+        titleShown: false,
+        src:
+          "modules/bane-of-azeroth/"
+          + "assets/journals/cover/"
+          + "bane_of_azeroth_cover.webp",
+        caption: "",
+      }
+    );
+  }
+
+  if (introductionPage) {
+    const introductionProblems = [];
+    for (const pageId of [
+      "BoAPgPlayerKin01",
+      "BoAPgDerivedRate",
+      "4f7e06538e580623",
+    ]) {
+      const marker =
+        "JournalEntryPage."
+        + `${pageId}]`;
+      if (!introductionHtml.includes(marker)) {
+        introductionProblems.push(
+          `missing ${pageId} link`
+        );
+      }
+    }
+    if (
+      introductionHtml.includes(
+        SYMBOLIC_REFERENCE_PREFIX
+      )
+    ) {
+      introductionProblems.push(
+        "unresolved symbolic reference"
+      );
+    }
+    boaCheck(
+      checks,
+      "Introduction links the three Player Options rules pages",
+      introductionProblems.length === 0,
+      introductionProblems.join("\n")
+    );
+  }
 
   if (kinPage) {
     boaCheckEqual(
@@ -261,6 +347,38 @@ try {
         SYMBOLIC_REFERENCE_PREFIX
       )
     );
+
+    const headingElement =
+      document.createElement("div");
+    headingElement.innerHTML = kinHtml;
+    const kinHeadings = [
+      ...headingElement.querySelectorAll(
+        "h2, h3"
+      ),
+    ].map(
+      heading =>
+        String(heading.textContent ?? "")
+          .trim()
+    );
+    const allCapsHeadings =
+      kinHeadings.filter(
+        heading =>
+          /[A-Za-z]/.test(heading)
+          && heading === heading.toUpperCase()
+      );
+
+    boaCheckEqual(
+      checks,
+      "Kin page contains 38 readable headings",
+      kinHeadings.length,
+      38
+    );
+    boaCheck(
+      checks,
+      "Kin source headings use normal capitalization",
+      allCapsHeadings.length === 0,
+      allCapsHeadings.join("\n")
+    );
   }
 
   if (derivedPage) {
@@ -278,17 +396,6 @@ try {
       )
     );
   }
-
-  const classesPage = journalPage(
-    playerOptions,
-    "journal-page.player-options.heroic-class-abilities"
-  );
-
-  boaCheck(
-    checks,
-    "Player Options contains the Heroic Class Abilities page",
-    Boolean(classesPage)
-  );
 
   function normalizedText(value) {
     return referenceLabels(value)
@@ -536,11 +643,37 @@ try {
   if (playerOptions) {
     boaCheckEqual(
       checks,
-      "Player Options has exactly three pages",
+      "Player Options has exactly five pages",
       boaCollectionValues(
         playerOptions.pages
       ).length,
-      3
+      5
+    );
+    const orderedPageNames =
+      boaCollectionValues(
+        playerOptions.pages
+      )
+        .sort(
+          (left, right) =>
+            Number(left.sort ?? 0)
+            - Number(right.sort ?? 0)
+            || String(left.name ?? "")
+              .localeCompare(
+                String(right.name ?? "")
+              )
+        )
+        .map(page => page.name);
+    boaCheckEqual(
+      checks,
+      "Player Options page order starts with cover and introduction",
+      orderedPageNames,
+      [
+        "Illustration",
+        "Introduction",
+        "Kin",
+        "Derived Ratings",
+        "Heroic Class Abilities",
+      ]
     );
     boaCheckEqual(
       checks,
