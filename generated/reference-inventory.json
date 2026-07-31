@@ -13,7 +13,7 @@
     "runtime-uuid-lookup": 6,
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
-    "uuid-link": 60,
+    "uuid-link": 62,
     "uuid-literal": 29
   },
   "entries": [
@@ -241,10 +241,20 @@
       "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
     },
     {
+      "kind": "uuid-link",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 2302,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KAxnhLbO8N7kcvMl#special-attacks",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis",
+      "label": "Find Weak Spot"
+    },
+    {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/player-options/gear.json",
       "line": 13,
-      "column": 2585,
+      "column": 2673,
       "target": "Item.n0yAAcVxspJur19y",
       "classification": "unclassified",
       "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
@@ -253,7 +263,7 @@
       "kind": "uuid-literal",
       "path": "foundry/content/journals/player-options/gear.json",
       "line": 13,
-      "column": 2626,
+      "column": 2714,
       "target": "Item.SniperScp7kQ2mPx",
       "classification": "unclassified",
       "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis"
@@ -1411,7 +1421,17 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 965,
+      "line": 582,
+      "column": 10,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KAxnhLbO8N7kcvMl\"\n        + \"#special-attacks",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.SbbSMsuvWeo3HaID.\"",
+      "label": "Find Weak Spot"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 974,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#falling",
       "classification": "unclassified",
@@ -1421,7 +1441,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 973,
+      "line": 982,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.cvFSLoFtdJOQcxtU\"\n        + \"#magic-tricks",
       "classification": "unclassified",
@@ -1431,7 +1451,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 981,
+      "line": 990,
       "column": 10,
       "target": "Item.GiE0TwixaYnxFT6i",
       "classification": "unclassified",
@@ -1440,7 +1460,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 988,
+      "line": 997,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1450,7 +1470,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 996,
+      "line": 1005,
       "column": 10,
       "target": "Item.SY62xmX9uBVml786",
       "classification": "unclassified",
@@ -1459,7 +1479,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1004,
+      "line": 1013,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1469,7 +1489,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1012,
+      "line": 1021,
       "column": 10,
       "target": "JournalEntry.V4R4dCuKSK2mi8RF.\"\n        + \"JournalEntryPage.eIQgHhYPUczg7kbZ\"\n        + \"#pushing-your-roll",
       "classification": "unclassified",
@@ -1478,7 +1498,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1021,
+      "line": 1030,
       "column": 10,
       "target": "JournalEntry.BoAJrnlPlayerOpt.\"\n        + \"JournalEntryPage.BoAPgPlayerKin01\"\n        + \"#human",
       "classification": "unclassified",
@@ -1488,7 +1508,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1031,
+      "line": 1040,
       "column": 10,
       "target": "Actor.GhoulAct6Kp9T2xP",
       "classification": "unclassified",
@@ -1497,7 +1517,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1039,
+      "line": 1048,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#movement",
       "classification": "unclassified",
@@ -1507,7 +1527,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1049,
+      "line": 1058,
       "column": 10,
       "target": "Item.J6l8QwCJhBirvg03",
       "classification": "unclassified",
@@ -1516,7 +1536,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1058,
+      "line": 1067,
       "column": 10,
       "target": "Item.RPnxXYVb8z7EG5Wl",
       "classification": "unclassified",
@@ -1525,7 +1545,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1067,
+      "line": 1076,
       "column": 10,
       "target": "Item.O7p7ZWnZNgxP8PFw",
       "classification": "unclassified",
@@ -1534,7 +1554,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1076,
+      "line": 1085,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#sneak-attack",
       "classification": "unclassified",
@@ -1544,7 +1564,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1086,
+      "line": 1095,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#poison",
       "classification": "unclassified",
@@ -1554,7 +1574,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1096,
+      "line": 1105,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.C0stUmhj95JFgL4f\"\n        + \"#power-level",
       "classification": "unclassified",
@@ -1563,7 +1583,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1107,
+      "line": 1116,
       "column": 10,
       "target": "Item.JrQqkQrSOFJzR7H9",
       "classification": "unclassified",
@@ -1572,7 +1592,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1291,
+      "line": 1300,
       "column": 30,
       "function": "fromUuid",
       "classification": "runtime",

@@ -575,6 +575,15 @@ try {
         "audible out to 500 meters."
       )
     );
+    boaCheck(
+      checks,
+      "Armor Piercing links Find Weak Spot",
+      gearHtml.includes(
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.KAxnhLbO8N7kcvMl"
+        + "#special-attacks]{Find Weak Spot}"
+      )
+    );
   }
 
   function normalizedText(value) {

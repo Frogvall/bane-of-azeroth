@@ -55,6 +55,11 @@ const TABLE_TYPES = new Map([
   ["trade-goods", "trade"],
 ]);
 
+const FIND_WEAK_SPOT_LINK =
+  "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+  + "JournalEntryPage.KAxnhLbO8N7kcvMl"
+  + "#special-attacks]{Find Weak Spot}";
+
 function read(path) {
   return readFileSync(path, "utf8");
 }
@@ -235,6 +240,7 @@ describe("Player Options Gear Journal page", () => {
       "<strong>Freehanded:</strong>",
       "<strong>Returning:</strong>",
       "<strong>Armor Piercing:</strong>",
+      FIND_WEAK_SPOT_LINK,
       "<strong>Scattershot:</strong>",
     ]) {
       expect(html).toContain(marker);
@@ -279,6 +285,9 @@ describe("Player Options Gear Journal page", () => {
       pageSource.source.content,
     );
     expect(
+      page.text.content,
+    ).toContain(FIND_WEAK_SPOT_LINK);
+    expect(
       occurrences(
         page.text.content,
         "@Gear[Item.",
@@ -315,6 +324,7 @@ describe("Player Options Gear Journal page", () => {
       "Gear page contains three Gear tables",
       "Gear page links all eight generated Gear Items",
       "Gear page includes the 500 meter firearm report",
+      "Armor Piercing links Find Weak Spot",
       "Player Options has exactly six pages",
     ]) {
       expect(macro).toContain(marker);
