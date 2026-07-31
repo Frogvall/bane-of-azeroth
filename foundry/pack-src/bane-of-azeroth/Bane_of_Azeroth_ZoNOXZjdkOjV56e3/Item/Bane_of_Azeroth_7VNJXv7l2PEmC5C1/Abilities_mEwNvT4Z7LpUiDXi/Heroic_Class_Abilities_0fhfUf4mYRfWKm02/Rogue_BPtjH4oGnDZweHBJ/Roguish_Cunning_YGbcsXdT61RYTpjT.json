@@ -5,7 +5,7 @@
   "_id": "YGbcsXdT61RYTpjT",
   "img": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp",
   "system": {
-    "itemDescription": "<p>Whenever you deal sneak attack damage to a target, the dice increase for damage is increased by two dice instead of one (for example, 3D8 instead of 2D8 for a weapon that deals D8 damage).</p>",
+    "itemDescription": "<p>Whenever you deal @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#sneak-attack]{sneak attack} damage to a target, the dice increase for damage is increased by two dice instead of one (for example, 3D8 instead of 2D8 for a weapon that deals D8 damage).</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Knives 12",

@@ -5,7 +5,7 @@
   "_id": "ycJicrhscZAw7bOZ",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>If you have zero HP, you can activate this ability to automatically rally (no action), without rolling against WIL or being PERSUADED by someone else.</p>",
+    "itemDescription": "<p>If you have zero HP, you can activate this ability to automatically @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.CJjqkHzpow39ViUi#death]{rally} (no action), without rolling against WIL or being PERSUADED by someone else.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Orc",

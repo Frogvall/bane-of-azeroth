@@ -5,7 +5,7 @@
   "_id": "9lZJWda5B6Z5Jb82",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice.</p>",
+    "itemDescription": "<p>You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with @UUID[JournalEntry.V4R4dCuKSK2mi8RF.JournalEntryPage.eIQgHhYPUczg7kbZ#pushing-your-roll]{Pushing your Roll}, potentially re-rolling the same roll twice.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Vulpera",

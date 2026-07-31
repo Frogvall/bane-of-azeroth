@@ -5,7 +5,7 @@
   "_id": "f9Mta7M9w8ruZSL0",
   "img": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
   "system": {
-    "itemDescription": "<p>You know the SENSE MAGIC magic trick and can cast it without spending Willpower Points. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.</p>",
+    "itemDescription": "<p>You know the @UUID[Item.RPnxXYVb8z7EG5Wl]{Sense Magic} magic trick and can cast it without spending Willpower Points. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "One School of Magic",

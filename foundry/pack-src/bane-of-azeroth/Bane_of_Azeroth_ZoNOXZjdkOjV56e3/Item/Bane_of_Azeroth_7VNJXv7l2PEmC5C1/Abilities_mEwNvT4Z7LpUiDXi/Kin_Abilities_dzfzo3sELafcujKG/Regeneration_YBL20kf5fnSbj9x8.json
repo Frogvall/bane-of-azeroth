@@ -5,7 +5,7 @@
   "_id": "YBL20kf5fnSbj9x8",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you recover [[/roll D6]] HP. This can be combined with FAST HEALER for [[/roll 2D6]] HP recovered.</p>",
+    "itemDescription": "<p>By activating this ability (a free action in combat) you recover [[/roll D6]] HP. This can be combined with @UUID[Item.SY62xmX9uBVml786]{Fast Healer} for [[/roll 2D6]] HP recovered.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Troll",

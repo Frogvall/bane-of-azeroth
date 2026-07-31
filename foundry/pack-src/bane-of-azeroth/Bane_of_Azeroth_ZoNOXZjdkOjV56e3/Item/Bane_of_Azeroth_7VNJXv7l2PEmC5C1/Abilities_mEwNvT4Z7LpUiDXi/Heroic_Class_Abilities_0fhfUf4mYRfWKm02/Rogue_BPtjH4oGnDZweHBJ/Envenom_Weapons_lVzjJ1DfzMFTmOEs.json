@@ -5,7 +5,7 @@
   "_id": "lVzjJ1DfzMFTmOEs",
   "img": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp",
   "system": {
-    "itemDescription": "<p>When you hit with a piercing or slashing weapon, you can activate this ability to also apply one dose of poison that you are carrying, as if it was ingested by the target. You can activate this ability after the roll to hit.</p>",
+    "itemDescription": "<p>When you hit with a piercing or slashing weapon, you can activate this ability to also apply one dose of @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{poison} that you are carrying, as if it was ingested by the target. You can activate this ability after the roll to hit.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Roguish Cunning",

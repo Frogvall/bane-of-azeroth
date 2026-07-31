@@ -5,7 +5,7 @@
   "_id": "KbZ487TZTcV7Em9H",
   "img": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp",
   "system": {
-    "itemDescription": "<p>You can activate this ability on your turn to make the DASH action a free action during that turn.</p>",
+    "itemDescription": "<p>You can activate this ability on your turn to make the @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#movement]{dash} action a free action during that turn.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Evoker's Legacy",

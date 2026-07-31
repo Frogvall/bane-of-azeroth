@@ -5,7 +5,7 @@
   "_id": "qJagCdgeTgGIRVyi",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your humanoid and worgen forms. When in humanoid form, your movement and kin abilities other than this one are the same as if your kin was HUMAN.</p>",
+    "itemDescription": "<p>By activating this ability (a free action in combat) you change between your humanoid and worgen forms. When in humanoid form, your movement and kin abilities other than this one are the same as if your kin was @UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.BoAPgPlayerKin01#human]{Human}.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Worgen",

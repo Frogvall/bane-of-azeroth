@@ -5,7 +5,7 @@
   "_id": "5ktc1XvM1fvMP08e",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>When falling, you can spend 1 willpower to slow your fall and land as light as a feather, no matter the height.</p>",
+    "itemDescription": "<p>When @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling]{falling}, you can spend 1 willpower to slow your fall and land as light as a feather, no matter the height.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Dracthyr",

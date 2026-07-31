@@ -769,6 +769,260 @@ try {
     itemProblems.join("\n")
   );
 
+  const rulesReferenceSpecs = [
+    {
+      contentKey:
+        "ability.draconic-wings-falling",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.6WPxPxUjh4W80RNy"
+        + "#falling]{falling}",
+    },
+    {
+      contentKey: "ability.arcane-affinity",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.BHzSGEPaCGVadFsb."
+        + "JournalEntryPage.cvFSLoFtdJOQcxtU"
+        + "#magic-tricks]{Magic Tricks}",
+    },
+    {
+      contentKey: "ability.escape-artist",
+      page: "kin",
+      link:
+        "@UUID[Item.GiE0TwixaYnxFT6i]"
+        + "{Hard to Catch}",
+    },
+    {
+      contentKey: "ability.relentless",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.CJjqkHzpow39ViUi"
+        + "#death]{rally}",
+    },
+    {
+      contentKey: "ability.regeneration",
+      page: "kin",
+      link:
+        "@UUID[Item.SY62xmX9uBVml786]"
+        + "{Fast Healer}",
+    },
+    {
+      contentKey:
+        "ability.touch-of-the-grave",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.CJjqkHzpow39ViUi"
+        + "#death]{Death Roll}",
+    },
+    {
+      contentKey: "ability.luck",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.V4R4dCuKSK2mi8RF."
+        + "JournalEntryPage.eIQgHhYPUczg7kbZ"
+        + "#pushing-your-roll]"
+        + "{Pushing your Roll}",
+    },
+    {
+      contentKey: "ability.two-forms",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.BoAJrnlPlayerOpt."
+        + "JournalEntryPage.BoAPgPlayerKin01"
+        + "#human]{Human}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "death-knight.summon-ghoul",
+      page: "classes",
+      link:
+        "@UUID[Actor.GhoulAct6Kp9T2xP]"
+        + "{ghoul}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability.evoker.tailwind",
+      page: "classes",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.KrSXg7HKmfo7xRcI"
+        + "#movement]{dash}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "hunter.aimed-shot",
+      page: "classes",
+      link:
+        "@UUID[Item.J6l8QwCJhBirvg03]"
+        + "{Twin Shot}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "mage.mages-brilliance",
+      page: "classes",
+      link:
+        "@UUID[Item.RPnxXYVb8z7EG5Wl]"
+        + "{Sense Magic}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "monk.monks-serenity",
+      page: "classes",
+      link:
+        "@UUID[Item.O7p7ZWnZNgxP8PFw]"
+        + "{Iron Fist}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "rogue.roguish-cunning",
+      page: "classes",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.KrSXg7HKmfo7xRcI"
+        + "#sneak-attack]{sneak attack}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "rogue.envenom-weapons",
+      page: "classes",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.6WPxPxUjh4W80RNy"
+        + "#poison]{poison}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "warlock.warlocks-ambition",
+      page: "classes",
+      link:
+        "@UUID[JournalEntry.BHzSGEPaCGVadFsb."
+        + "JournalEntryPage.C0stUmhj95JFgL4f"
+        + "#power-level]"
+        + "{Power from the Body}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "warrior.warriors-rage",
+      page: "classes",
+      link:
+        "@UUID[Item.JrQqkQrSOFJzR7H9]"
+        + "{Dual Wield}",
+    },
+  ];
+
+  const ruleLinkProblems = [];
+
+  for (const spec of rulesReferenceSpecs) {
+    const item = boaFindWorldItem(
+      spec.contentKey,
+      "ability"
+    );
+    const itemHtml =
+      item?.system?.itemDescription ?? "";
+    const pageHtml =
+      spec.page === "kin"
+        ? kinHtml
+        : classesHtml;
+
+    if (!item) {
+      ruleLinkProblems.push(
+        `${spec.contentKey}: missing Item`
+      );
+    } else if (
+      occurrences(itemHtml, spec.link) !== 1
+    ) {
+      ruleLinkProblems.push(
+        `${spec.contentKey}: Item link count `
+        + `${occurrences(itemHtml, spec.link)}`
+      );
+    }
+
+    if (
+      occurrences(pageHtml, spec.link) !== 1
+    ) {
+      ruleLinkProblems.push(
+        `${spec.contentKey}: Journal link count `
+        + `${occurrences(pageHtml, spec.link)}`
+      );
+    }
+  }
+
+  boaCheck(
+    checks,
+    "Ability and Journal rule links are present",
+    ruleLinkProblems.length === 0,
+    ruleLinkProblems.join("\n")
+  );
+
+  const ghoulActor =
+    game.actors.get("GhoulAct6Kp9T2xP");
+  boaCheck(
+    checks,
+    "Ghoul rule link targets the imported Actor",
+    Boolean(
+      ghoulActor
+      && ghoulActor.name === "Ghoul"
+    ),
+    ghoulActor?.name ?? "missing"
+  );
+
+  const soulsCollector =
+    boaFindWorldItem(
+      "heroic-class-ability."
+      + "warlock.souls-collector",
+      "ability"
+    );
+  const soulsHtml =
+    soulsCollector?.system
+      ?.itemDescription ?? "";
+  boaCheck(
+    checks,
+    "Souls Collector uses an inline D3 roll",
+    soulsHtml.includes(
+      "recover [[/roll D3]] WP"
+    )
+    && classesHtml.includes(
+      "recover [[/roll D3]] WP"
+    ),
+    soulsHtml
+  );
+
+  const demonologist =
+    boaFindWorldItem(
+      "heroic-class-ability."
+      + "warlock.demonologist",
+      "ability"
+    );
+  const demonologistHtml =
+    demonologist?.system
+      ?.itemDescription ?? "";
+  boaCheck(
+    checks,
+    "Demonologist no longer references a missing appendix",
+    demonologistHtml.includes(
+      "summon a demon into an empty space"
+    )
+    && !demonologistHtml.includes(
+      "Appendix B in this book"
+    )
+    && !classesHtml.includes(
+      "Appendix B in this book"
+    ),
+    demonologistHtml
+  );
+
   const kinTables = boaCollectionValues(
     game.tables
   ).filter(

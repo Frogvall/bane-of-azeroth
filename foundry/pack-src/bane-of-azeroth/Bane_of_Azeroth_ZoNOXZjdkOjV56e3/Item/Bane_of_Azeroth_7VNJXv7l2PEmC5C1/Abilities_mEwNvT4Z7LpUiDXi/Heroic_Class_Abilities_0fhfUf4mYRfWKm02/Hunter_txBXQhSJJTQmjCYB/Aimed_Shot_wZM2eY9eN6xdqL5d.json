@@ -5,7 +5,7 @@
   "_id": "wZM2eY9eN6xdqL5d",
   "img": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp",
   "system": {
-    "itemDescription": "<p>A strike with a two-handed ranged weapon inflicts D8 additional points of damage, but you cannot move in the same round. You can activate this ability after the roll to hit, but not if you moved. This can be combined with TWIN SHOT.</p>",
+    "itemDescription": "<p>A strike with a two-handed ranged weapon inflicts D8 additional points of damage, but you cannot move in the same round. You can activate this ability after the roll to hit, but not if you moved. This can be combined with @UUID[Item.J6l8QwCJhBirvg03]{Twin Shot}.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Hunter's Instincts",

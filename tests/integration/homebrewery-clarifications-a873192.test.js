@@ -42,9 +42,19 @@ const EXPECTED = {
     "You re-roll one D20 roll, that did not result in a "
     + "demon, and must use the new result. If you have boons "
     + "or banes, you must re-roll all dice. This can be used "
-    + "in combination with PUSHING YOUR ROLL, potentially "
+    + "in combination with Pushing your Roll, potentially "
     + "re-rolling the same roll twice.",
 };
+
+const REFERENCE_LABEL_PATTERN =
+  /@(?:UUID|Ref)\[[^\]]+\]\{([^{}]+)\}/g;
+
+function referenceLabels(value) {
+  return String(value).replace(
+    REFERENCE_LABEL_PATTERN,
+    "$1",
+  );
+}
 
 function readJson(path) {
   return JSON.parse(
@@ -146,7 +156,7 @@ describe("Homebrewery clarifications from a873192", () => {
         kin,
         "vulpera",
         "luck",
-      ).description,
+      ).description.map(referenceLabels),
     ).toEqual([EXPECTED.luck]);
 
     expect(
@@ -206,7 +216,9 @@ describe("Homebrewery clarifications from a873192", () => {
         expected.id,
       );
       expect(
-        JSON.stringify(document),
+        referenceLabels(
+          JSON.stringify(document),
+        ),
       ).toContain(expected.text);
     }
   });

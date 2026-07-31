@@ -5,7 +5,7 @@
   "_id": "Zm1EbxNW5SL20lma",
   "img": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp",
   "system": {
-    "itemDescription": "<p>You can wield a two-handed melee weapon in one hand. This can be combined with DUAL WIELD.</p>",
+    "itemDescription": "<p>You can wield a two-handed melee weapon in one hand. This can be combined with @UUID[Item.JrQqkQrSOFJzR7H9]{Dual Wield}.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Axes, Hammers, or Swords 12",

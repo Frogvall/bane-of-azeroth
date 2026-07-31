@@ -5,7 +5,7 @@
   "_id": "MASYIf5D89N2pbIt",
   "img": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp",
   "system": {
-    "itemDescription": "<p>You can use your action to activate this ability to instantly summon a demon (from Appendix B in this book) into an empty space within 10 meters of you. Any demon you have already summoned using this heroic ability instantly disappears. The demon follows you for a shift at no additional WP cost. You can use its action in combat by paying the WP listed in its stat block (a free action for you). The demon can communicate with you in its demonic language, and you can both understand and speak it. The summoned demon is not necessarily the same individual you summoned previously. It is up to the GM whether the demon remembers encountering you before.</p>",
+    "itemDescription": "<p>You can use your action to activate this ability to instantly summon a demon into an empty space within 10 meters of you. Any demon you have already summoned using this heroic ability instantly disappears. The demon follows you for a shift at no additional WP cost. You can use its action in combat by paying the WP listed in its stat block (a free action for you). The demon can communicate with you in its demonic language, and you can both understand and speak it. The summoned demon is not necessarily the same individual you summoned previously. It is up to the GM whether the demon remembers encountering you before.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Warlock's Ambition",
