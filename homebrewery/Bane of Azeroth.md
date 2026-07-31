@@ -1386,7 +1386,7 @@ All standard Dragonbane equipment remains available in Azeroth. A longsword is a
 
 ### Firearms
 
-Firearms are commonly available weapons, attributed to be originally crafted by the dwarves of Ironforge. In *Bane of Azeroth* it is represented by the secondary skill FIREARMS (AGL), which is available to anyone from start with a base chance like any other skill. Firing a firearm produces a loud boom, audible out to .
+Firearms are commonly available weapons, attributed to be originally crafted by the dwarves of Ironforge. In *Bane of Azeroth* it is represented by the secondary skill FIREARMS (AGL), which is available to anyone from start with a base chance like any other skill. Firing a firearm produces a loud boom, audible out to 500 meters.
 
 ### Glaives
 
