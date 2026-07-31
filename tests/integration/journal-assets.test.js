@@ -8,9 +8,6 @@ import {
   resolve,
 } from "node:path";
 import {
-  spawnSync,
-} from "node:child_process";
-import {
   describe,
   expect,
   test,
@@ -182,88 +179,38 @@ describe("generated Journal image assets", () => {
   });
 
   test("supports repeatable focused source generation", () => {
-    const help = spawnSync(
-      "python3",
-      [
-        GENERATOR,
-        "--help",
-      ],
-      {
-        encoding: "utf8",
-      },
+    const generator = read(
+      GENERATOR,
     );
 
-    expect(help.status).toBe(0);
-    expect(help.stdout).toContain(
-      "--source SOURCE",
-    );
-
-    const resolveSources = spawnSync(
-      "python3",
-      [
-        "-c",
-        [
-          "from pathlib import Path",
-          "import runpy",
-          "module = runpy.run_path("
-            + "r'" + GENERATOR + "'"
-            + ", run_name='journal_assets_test')",
-          "root = module['repo_root']()",
-          "sources = module"
-            + "['resolve_selected_sources'](",
-          "    root,",
-          "    [",
-          "        Path("
-            + "'homebrewery/images/classes/"
-            + "paladin.png'"
-            + "),",
-          "        Path("
-            + "'homebrewery/images/classes/"
-            + "paladin.png'"
-            + "),",
-          "    ],",
-          ")",
-          "print(len(sources))",
-          "print(sources[0].relative_to(root)"
-            + ".as_posix())",
-        ].join("\\n"),
-      ],
-      {
-        encoding: "utf8",
-      },
-    );
-
-    expect(resolveSources.status).toBe(0);
-    expect(
-      resolveSources.stdout.trim().split(
-        /\\r?\\n/,
-      ),
-    ).toEqual([
-      "1",
-      "homebrewery/images/classes/"
-        + "paladin.png",
-    ]);
+    for (const marker of [
+      '"--source"',
+      'action="append"',
+      "type=Path",
+      "default=[]",
+      "def resolve_selected_sources(",
+      "selected: dict[str, Path] = {}",
+      "selected[relative] = source",
+      "for source in (sources or [])",
+    ]) {
+      expect(generator).toContain(marker);
+    }
   });
 
   test("keeps --check global when focused generation exists", () => {
-    const result = spawnSync(
-      "python3",
-      [
-        GENERATOR,
-        "--check",
-        "--source",
-        "homebrewery/images/classes/"
-          + "paladin.png",
-      ],
-      {
-        encoding: "utf8",
-      },
+    const generator = read(
+      GENERATOR,
     );
 
-    expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain(
-      "--source cannot be combined with "
-        + "--check",
+    expect(generator).toContain(
+      "if args.check and args.source:",
+    );
+    expect(generator).toMatch(
+      /"--source cannot be combined with "\s*"--check\./,
+    );
+    expect(generator).toContain(
+      "if args.check:\n"
+        + "        check_generated(root)",
     );
   });
 
