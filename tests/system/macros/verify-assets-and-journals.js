@@ -109,6 +109,7 @@ try {
     abilityContent,
     spellContent,
     companionContent,
+    summonedMonsterContent,
     journalAssets,
   ] = await Promise.all([
     boaFetchJson("content/kin.json"),
@@ -118,6 +119,9 @@ try {
     boaFetchJson("content/spells.json"),
     boaFetchJson(
       "content/hunter-companions.json"
+    ),
+    boaFetchJson(
+      "content/summoned-monsters.json"
     ),
     boaFetchJson(
       "config/journal-assets.json"
@@ -132,6 +136,13 @@ try {
     spellContent.spells ?? [];
   const companionDefinitions =
     companionContent.companions ?? [];
+  const demonDefinitions =
+    (summonedMonsterContent.monsters ?? [])
+      .filter(
+        monster =>
+          monster.summonType
+          === "warlock-demon"
+      );
   const manifestAssets =
     journalAssets.assets ?? [];
 
@@ -158,6 +169,12 @@ try {
     "Companion source contains 14 entries",
     companionDefinitions.length,
     14
+  );
+  boaCheckEqual(
+    checks,
+    "Demon source contains four Warlock demons",
+    demonDefinitions.length,
+    4
   );
   boaCheck(
     checks,
@@ -322,6 +339,10 @@ try {
     appendices,
     "journal-page.appendices.companions"
   );
+  const demonsPage = journalPage(
+    appendices,
+    "journal-page.appendices.demons"
+  );
   boaCheck(
     checks,
     "Player Options contains the Illustration page",
@@ -368,6 +389,11 @@ try {
     "Appendices contains the Companions page",
     Boolean(companionsPage)
   );
+  boaCheck(
+    checks,
+    "Appendices contains the Demons page",
+    Boolean(demonsPage)
+  );
   const introductionHtml =
     introductionPage?.text?.content ?? "";
   const kinHtml =
@@ -383,6 +409,8 @@ try {
 
   const companionsHtml =
     companionsPage?.text?.content ?? "";
+  const demonsHtml =
+    demonsPage?.text?.content ?? "";
   if (illustrationPage) {
     boaCheckEqual(
       checks,
@@ -1214,6 +1242,174 @@ try {
       "Companions page follows Appendix A book order",
       companionProblems.length === 0,
       companionProblems.join("\n")
+    );
+  }
+
+  if (demonsPage) {
+    const demonProblems = [];
+    let previousDemonIndex = -1;
+
+    boaCheckEqual(
+      checks,
+      "Demons page contains four Monster blocks",
+      occurrences(
+        demonsHtml,
+        "@DisplayMonster[Actor."
+      ),
+      demonDefinitions.length
+    );
+    boaCheckEqual(
+      checks,
+      "Demons page contains four attack tables",
+      occurrences(
+        demonsHtml,
+        "@DisplayTable[RollTable."
+      ),
+      demonDefinitions.length
+    );
+    boaCheck(
+      checks,
+      "Demons page uses full-width blocks",
+      occurrences(
+        demonsHtml,
+        '<div class="flexrow">'
+      ) === 0
+      && occurrences(
+        demonsHtml,
+        '<div style="width:50%">'
+      ) === 0
+    );
+    boaCheck(
+      checks,
+      "Demons page includes the book illustration",
+      occurrences(
+        demonsHtml,
+        "modules/bane-of-azeroth/"
+        + "assets/journals/demons/demons.webp"
+      ) === 1
+    );
+
+    for (const spec of [
+      [
+        "felhunter",
+        "syJzyyJogXrRtT8q",
+        "Felhunter",
+        "Y6MEcCH35zRiBNUw",
+        "Monster Attacks – Felhunter",
+      ],
+      [
+        "imp",
+        "Qi1FF2P06TdSMzMK",
+        "Imp",
+        "jCvoh99OvzeHfaFv",
+        "Monster Attacks – Imp",
+      ],
+      [
+        "sayaad",
+        "864KRsH0wP5fqVFi",
+        "Sayaad",
+        "3ZfDwi2LubfhYg8O",
+        "Monster Attacks – Sayaad",
+      ],
+      [
+        "voidwalker",
+        "sarzEcMOkSvjbci2",
+        "Voidwalker",
+        "xzXFOx5qZnY3FTT4",
+        "Monster Attacks – Voidwalker",
+      ],
+    ]) {
+      const [
+        key,
+        actorId,
+        name,
+        tableId,
+        tableName,
+      ] = spec;
+      const monsterMarker =
+        `@DisplayMonster[Actor.${actorId}]`
+        + `{${name}}`;
+      const tableMarker =
+        `@DisplayTable[RollTable.${tableId}]`
+        + `{${tableName}}`;
+      const monsterIndex =
+        demonsHtml.indexOf(monsterMarker);
+      const tableIndex =
+        demonsHtml.indexOf(tableMarker);
+      const definition =
+        demonDefinitions.find(
+          monster => monster.key === key
+        );
+      const actor =
+        boaCollectionValues(game.actors).find(
+          candidate =>
+            boaContentKey(candidate)
+            === `actors.summoned-monsters.${key}`
+        );
+      const table =
+        boaCollectionValues(game.tables).find(
+          candidate =>
+            boaContentKey(candidate)
+            === `tables.monster-attacks.${key}`
+        );
+
+      if (
+        !definition
+        || definition.id !== actorId
+        || definition.name !== name
+        || definition.attackTable?.id !== tableId
+        || definition.attackTable?.name !== tableName
+      ) {
+        demonProblems.push(
+          `${key}: source mismatch`
+        );
+      }
+
+      if (monsterIndex <= previousDemonIndex) {
+        demonProblems.push(
+          `${name}: wrong Appendix B order`
+        );
+      }
+      if (tableIndex <= monsterIndex) {
+        demonProblems.push(
+          `${name}: attack table not after monster`
+        );
+      }
+      previousDemonIndex = tableIndex;
+
+      if (!actor) {
+        demonProblems.push(
+          `${key}: missing imported Actor`
+        );
+      } else if (
+        actor.id !== actorId
+        || actor.name !== name
+        || actor.type !== "monster"
+      ) {
+        demonProblems.push(
+          `${key}: ${actor.id}/${actor.name}/${actor.type}`
+        );
+      }
+
+      if (!table) {
+        demonProblems.push(
+          `${key}: missing imported attack table`
+        );
+      } else if (
+        table.id !== tableId
+        || table.name !== tableName
+      ) {
+        demonProblems.push(
+          `${key}: ${table.id}/${table.name}`
+        );
+      }
+    }
+
+    boaCheck(
+      checks,
+      "Demons page follows Appendix B book order",
+      demonProblems.length === 0,
+      demonProblems.join("\n")
     );
   }
 

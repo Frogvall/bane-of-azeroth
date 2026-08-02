@@ -10,11 +10,12 @@
     "tools"
   ],
   "counts": {
+    "display-table": 6,
     "runtime-uuid-lookup": 6,
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
     "uuid-link": 64,
-    "uuid-literal": 49
+    "uuid-literal": 53
   },
   "entries": [
     {
@@ -321,6 +322,82 @@
       "target": "Actor.be5c82639dabe7c1",
       "classification": "unclassified",
       "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 291,
+      "target": "Actor.syJzyyJogXrRtT8q",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i"
+    },
+    {
+      "kind": "display-table",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 332,
+      "target": "RollTable.Y6MEcCH35zRiBNUw",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
+      "label": "Monster Attacks – Felhunter"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 425,
+      "target": "Actor.Qi1FF2P06TdSMzMK",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i"
+    },
+    {
+      "kind": "display-table",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 460,
+      "target": "RollTable.jCvoh99OvzeHfaFv",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
+      "label": "Monster Attacks – Imp"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 547,
+      "target": "Actor.864KRsH0wP5fqVFi",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i"
+    },
+    {
+      "kind": "display-table",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 585,
+      "target": "RollTable.3ZfDwi2LubfhYg8O",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
+      "label": "Monster Attacks – Sayaad"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 675,
+      "target": "Actor.sarzEcMOkSvjbci2",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i"
+    },
+    {
+      "kind": "display-table",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 717,
+      "target": "RollTable.xzXFOx5qZnY3FTT4",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
+      "label": "Monster Attacks – Voidwalker"
     },
     {
       "kind": "uuid-literal",
@@ -1611,7 +1688,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 690,
+      "line": 718,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KAxnhLbO8N7kcvMl\"\n        + \"#special-attacks",
       "classification": "unclassified",
@@ -1621,16 +1698,34 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1136,
+      "line": 1164,
       "column": 10,
       "target": "JournalEntry.RSi75ZLYMyFhBqPi.\"\n        + \"JournalEntryPage.9gOpHO89C6YKsgH1",
       "classification": "unclassified",
       "snippet": "\"@UUID[JournalEntry.RSi75ZLYMyFhBqPi.\""
     },
     {
+      "kind": "display-table",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1266,
+      "column": 10,
+      "target": "RollTable.\"\n      ),\n      demonDefinitions.length\n    );\n    boaCheck(\n      checks,\n      \"Demons page uses full-width blocks\",\n      occurrences(\n        demonsHtml,\n        '<div class=\"flexrow\">'\n      ) === 0\n      && occurrences(\n        demonsHtml,\n        '<div style=\"width:50%\">'\n      ) === 0\n    );\n    boaCheck(\n      checks,\n      \"Demons page includes the book illustration\",\n      occurrences(\n        demonsHtml,\n        \"modules/bane-of-azeroth/\"\n        + \"assets/journals/demons/demons.webp\"\n      ) === 1\n    );\n\n    for (const spec of [\n      [\n        \"felhunter\",\n        \"syJzyyJogXrRtT8q\",\n        \"Felhunter\",\n        \"Y6MEcCH35zRiBNUw\",\n        \"Monster Attacks – Felhunter\",\n      ",
+      "classification": "unclassified",
+      "snippet": "\"@DisplayTable[RollTable.\""
+    },
+    {
+      "kind": "display-table",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1333,
+      "column": 10,
+      "target": "RollTable.${tableId}",
+      "classification": "unclassified",
+      "snippet": "`@DisplayTable[RollTable.${tableId}]`"
+    },
+    {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1270,
+      "line": 1466,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#falling",
       "classification": "unclassified",
@@ -1640,7 +1735,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1278,
+      "line": 1474,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.cvFSLoFtdJOQcxtU\"\n        + \"#magic-tricks",
       "classification": "unclassified",
@@ -1650,7 +1745,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1286,
+      "line": 1482,
       "column": 10,
       "target": "Item.GiE0TwixaYnxFT6i",
       "classification": "unclassified",
@@ -1659,7 +1754,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1293,
+      "line": 1489,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1669,7 +1764,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1301,
+      "line": 1497,
       "column": 10,
       "target": "Item.SY62xmX9uBVml786",
       "classification": "unclassified",
@@ -1678,7 +1773,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1309,
+      "line": 1505,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1688,7 +1783,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1317,
+      "line": 1513,
       "column": 10,
       "target": "JournalEntry.V4R4dCuKSK2mi8RF.\"\n        + \"JournalEntryPage.eIQgHhYPUczg7kbZ\"\n        + \"#pushing-your-roll",
       "classification": "unclassified",
@@ -1697,7 +1792,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1326,
+      "line": 1522,
       "column": 10,
       "target": "JournalEntry.BoAJrnlPlayerOpt.\"\n        + \"JournalEntryPage.BoAPgPlayerKin01\"\n        + \"#human",
       "classification": "unclassified",
@@ -1707,7 +1802,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1336,
+      "line": 1532,
       "column": 10,
       "target": "Actor.GhoulAct6Kp9T2xP",
       "classification": "unclassified",
@@ -1716,7 +1811,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1344,
+      "line": 1540,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#movement",
       "classification": "unclassified",
@@ -1726,7 +1821,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1354,
+      "line": 1550,
       "column": 10,
       "target": "Item.J6l8QwCJhBirvg03",
       "classification": "unclassified",
@@ -1735,7 +1830,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1363,
+      "line": 1559,
       "column": 10,
       "target": "Item.RPnxXYVb8z7EG5Wl",
       "classification": "unclassified",
@@ -1744,7 +1839,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1372,
+      "line": 1568,
       "column": 10,
       "target": "Item.O7p7ZWnZNgxP8PFw",
       "classification": "unclassified",
@@ -1753,7 +1848,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1381,
+      "line": 1577,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#sneak-attack",
       "classification": "unclassified",
@@ -1763,7 +1858,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1391,
+      "line": 1587,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#poison",
       "classification": "unclassified",
@@ -1773,7 +1868,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1401,
+      "line": 1597,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.C0stUmhj95JFgL4f\"\n        + \"#power-level",
       "classification": "unclassified",
@@ -1782,7 +1877,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1412,
+      "line": 1608,
       "column": 10,
       "target": "Item.JrQqkQrSOFJzR7H9",
       "classification": "unclassified",
@@ -1791,7 +1886,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1596,
+      "line": 1792,
       "column": 30,
       "function": "fromUuid",
       "classification": "runtime",

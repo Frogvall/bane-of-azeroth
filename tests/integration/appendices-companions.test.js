@@ -320,7 +320,7 @@ describe("Appendices Companions Journal page", () => {
     }
   });
 
-  test("generates Appendices with Companions as its only page", () => {
+  test("generates Appendices with Companions before Demons", () => {
     const sourcePage = readJson(PAGE_SOURCE);
     const journal =
       readJson(GENERATED_JOURNAL);
@@ -343,7 +343,13 @@ describe("Appendices Companions Journal page", () => {
         },
       },
     });
-    expect(journal.pages).toHaveLength(1);
+    expect(journal.pages).toHaveLength(2);
+    expect(
+      journal.pages.map(page => page.name),
+    ).toEqual([
+      "Companions",
+      "Demons",
+    ]);
     expect(journal.pages[0]).toMatchObject({
       _id: "BoAPgAppendComp1",
       name: "Companions",
