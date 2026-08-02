@@ -13,7 +13,7 @@
     "runtime-uuid-lookup": 6,
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
-    "uuid-link": 62,
+    "uuid-link": 64,
     "uuid-literal": 49
   },
   "entries": [
@@ -187,130 +187,140 @@
       "label": "Dual Wield"
     },
     {
+      "kind": "uuid-link",
+      "path": "foundry/content/journals/appendices/companions.json",
+      "line": 13,
+      "column": 157,
+      "target": "JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim",
+      "label": "list of such animals"
+    },
+    {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 505,
+      "column": 529,
       "target": "Actor.NH7xTDsdAaPgm0Xv",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 582,
+      "column": 575,
       "target": "Actor.W7alXfXLGiNx7s7E",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 688,
+      "column": 621,
       "target": "Actor.9da7224216cd2593",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 765,
+      "column": 667,
       "target": "Actor.7d6c7e2e4416f9a4",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 871,
+      "column": 713,
       "target": "Actor.8db68cb83b2f1331",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 948,
+      "column": 759,
       "target": "Actor.OelrGFsAvekzqSQi",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 1054,
+      "column": 805,
       "target": "Actor.d1067fe3dc538d79",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 1131,
+      "column": 851,
       "target": "Actor.um17JUy9CcBXlloq",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 1237,
+      "column": 897,
       "target": "Actor.49c462b6c495e4a9",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 1314,
+      "column": 943,
       "target": "Actor.9a7429aca7ad9296",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 1420,
+      "column": 989,
       "target": "Actor.0755558cf1561101",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 1497,
+      "column": 1035,
       "target": "Actor.adfc46dd0aa95902",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 1603,
+      "column": 1081,
       "target": "Actor.9ff4f73ac72b45c4",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/content/journals/appendices/companions.json",
       "line": 13,
-      "column": 1680,
+      "column": 1127,
       "target": "Actor.be5c82639dabe7c1",
       "classification": "unclassified",
-      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals i"
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such anim"
     },
     {
       "kind": "uuid-literal",
@@ -1601,7 +1611,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 635,
+      "line": 690,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KAxnhLbO8N7kcvMl\"\n        + \"#special-attacks",
       "classification": "unclassified",
@@ -1611,7 +1621,16 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1206,
+      "line": 1136,
+      "column": 10,
+      "target": "JournalEntry.RSi75ZLYMyFhBqPi.\"\n        + \"JournalEntryPage.9gOpHO89C6YKsgH1",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.RSi75ZLYMyFhBqPi.\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1270,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#falling",
       "classification": "unclassified",
@@ -1621,7 +1640,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1214,
+      "line": 1278,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.cvFSLoFtdJOQcxtU\"\n        + \"#magic-tricks",
       "classification": "unclassified",
@@ -1631,7 +1650,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1222,
+      "line": 1286,
       "column": 10,
       "target": "Item.GiE0TwixaYnxFT6i",
       "classification": "unclassified",
@@ -1640,7 +1659,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1229,
+      "line": 1293,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1650,7 +1669,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1237,
+      "line": 1301,
       "column": 10,
       "target": "Item.SY62xmX9uBVml786",
       "classification": "unclassified",
@@ -1659,7 +1678,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1245,
+      "line": 1309,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1669,7 +1688,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1253,
+      "line": 1317,
       "column": 10,
       "target": "JournalEntry.V4R4dCuKSK2mi8RF.\"\n        + \"JournalEntryPage.eIQgHhYPUczg7kbZ\"\n        + \"#pushing-your-roll",
       "classification": "unclassified",
@@ -1678,7 +1697,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1262,
+      "line": 1326,
       "column": 10,
       "target": "JournalEntry.BoAJrnlPlayerOpt.\"\n        + \"JournalEntryPage.BoAPgPlayerKin01\"\n        + \"#human",
       "classification": "unclassified",
@@ -1688,7 +1707,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1272,
+      "line": 1336,
       "column": 10,
       "target": "Actor.GhoulAct6Kp9T2xP",
       "classification": "unclassified",
@@ -1697,7 +1716,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1280,
+      "line": 1344,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#movement",
       "classification": "unclassified",
@@ -1707,7 +1726,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1290,
+      "line": 1354,
       "column": 10,
       "target": "Item.J6l8QwCJhBirvg03",
       "classification": "unclassified",
@@ -1716,7 +1735,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1299,
+      "line": 1363,
       "column": 10,
       "target": "Item.RPnxXYVb8z7EG5Wl",
       "classification": "unclassified",
@@ -1725,7 +1744,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1308,
+      "line": 1372,
       "column": 10,
       "target": "Item.O7p7ZWnZNgxP8PFw",
       "classification": "unclassified",
@@ -1734,7 +1753,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1317,
+      "line": 1381,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#sneak-attack",
       "classification": "unclassified",
@@ -1744,7 +1763,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1327,
+      "line": 1391,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#poison",
       "classification": "unclassified",
@@ -1754,7 +1773,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1337,
+      "line": 1401,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.C0stUmhj95JFgL4f\"\n        + \"#power-level",
       "classification": "unclassified",
@@ -1763,7 +1782,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1348,
+      "line": 1412,
       "column": 10,
       "target": "Item.JrQqkQrSOFJzR7H9",
       "classification": "unclassified",
@@ -1772,7 +1791,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1532,
+      "line": 1596,
       "column": 30,
       "function": "fromUuid",
       "classification": "runtime",

@@ -3,6 +3,7 @@
   "_id": "BoAJrnlCredits01",
   "folder": "BoAJournals00001",
   "name": "Credits",
+  "sort": 100000,
   "pages": [
     {
       "_key": "!journal.pages!BoAJrnlCredits01.BoAPgCredits0001",

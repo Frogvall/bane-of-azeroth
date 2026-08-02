@@ -201,6 +201,61 @@ try {
     29
   );
 
+  const journalFolder =
+    boaCollectionValues(game.folders).find(
+      folder =>
+        boaContentKey(folder)
+        === "journals.folder.bane-of-azeroth"
+    );
+
+  boaCheckEqual(
+    checks,
+    "Journal folder uses deterministic manual sorting",
+    journalFolder?.sorting,
+    "m"
+  );
+
+  const orderedGeneratedJournals =
+    boaCollectionValues(game.journal)
+      .filter(
+        journal =>
+          journal.folder?.id === journalFolder?.id
+          && [
+            "journal.credits",
+            "journal.player-options",
+            "journal.appendices",
+          ].includes(boaContentKey(journal))
+      )
+      .sort(
+        (left, right) =>
+          Number(left.sort ?? 0)
+          - Number(right.sort ?? 0)
+      )
+      .map(journal => ({
+        name: journal.name,
+        sort: Number(journal.sort ?? 0),
+      }));
+
+  boaCheckEqual(
+    checks,
+    "Generated Journals follow source sort order",
+    orderedGeneratedJournals,
+    [
+      {
+        name: "Credits",
+        sort: 100000,
+      },
+      {
+        name: "Player Options",
+        sort: 200000,
+      },
+      {
+        name: "Appendices",
+        sort: 300000,
+      },
+    ]
+  );
+
   const playerOptions = worldJournal(
     "journal.player-options"
   );
@@ -1064,15 +1119,24 @@ try {
     );
     boaCheck(
       checks,
-      "Companions page uses seven two-column rows",
+      "Companions page uses full-width NPC cards",
       occurrences(
         companionsHtml,
         '<div class="flexrow">'
-      ) === 7
+      ) === 0
       && occurrences(
         companionsHtml,
         '<div style="width:50%">'
-      ) === 14
+      ) === 0
+    );
+    boaCheck(
+      checks,
+      "Companions introduction links the core Common Animals list",
+      companionsHtml.includes(
+        "@UUID[JournalEntry.RSi75ZLYMyFhBqPi."
+        + "JournalEntryPage.9gOpHO89C6YKsgH1]"
+        + "{list of such animals}"
+      )
     );
 
     for (const spec of [

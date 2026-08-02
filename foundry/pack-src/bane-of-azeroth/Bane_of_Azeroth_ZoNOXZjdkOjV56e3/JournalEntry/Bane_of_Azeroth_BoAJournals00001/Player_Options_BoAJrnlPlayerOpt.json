@@ -3,6 +3,7 @@
   "_id": "BoAJrnlPlayerOpt",
   "folder": "BoAJournals00001",
   "name": "Player Options",
+  "sort": 200000,
   "pages": [
     {
       "_key": "!journal.pages!BoAJrnlPlayerOpt.BoAPgPlayerIllus",

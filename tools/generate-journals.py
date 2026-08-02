@@ -842,6 +842,7 @@ def render_document(
         "_id": document_id,
         "folder": JOURNAL_FOLDER_ID,
         "name": str(document["name"]),
+        "sort": int(document.get("sort", 0)),
         "pages": pages,
         "ownership": {
             "default": 0,
@@ -869,7 +870,7 @@ def render_folder() -> dict[str, object]:
         "folder": None,
         "name": JOURNAL_FOLDER_NAME,
         "color": JOURNAL_FOLDER_COLOR,
-        "sorting": "a",
+        "sorting": "m",
         "_id": JOURNAL_FOLDER_ID,
         "description": "",
         "sort": 0,

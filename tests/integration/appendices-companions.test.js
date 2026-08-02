@@ -241,13 +241,18 @@ describe("Appendices Companions Journal page", () => {
     });
   });
 
-  test("uses the book introduction and Common Animals two-column layout", () => {
+  test("uses the book introduction and full-width NPC cards", () => {
     const html =
       readJson(PAGE_SOURCE).source.content;
 
     expect(html).toContain(
       "Hunters on Azeroth tend to find "
       + "companions in a multitude of places.",
+    );
+    expect(html).toContain(
+      "@UUID[JournalEntry.RSi75ZLYMyFhBqPi."
+      + "JournalEntryPage.9gOpHO89C6YKsgH1]"
+      + "{list of such animals}",
     );
     expect(html).toContain(
       "If an animal has more than one attack "
@@ -259,13 +264,13 @@ describe("Appendices Companions Journal page", () => {
         html,
         '<div class="flexrow">',
       ),
-    ).toBe(7);
+    ).toBe(0);
     expect(
       occurrences(
         html,
         '<div style="width:50%">',
       ),
-    ).toBe(14);
+    ).toBe(0);
     expect(
       occurrences(
         html,
@@ -391,7 +396,8 @@ describe("Appendices Companions Journal page", () => {
       "Appendices contains the Companions page",
       "Companions page contains fourteen NPC cards",
       "Companions page follows Appendix A book order",
-      "Companions page uses seven two-column rows",
+      "Companions page uses full-width NPC cards",
+      "Companions introduction links the core Common Animals list",
     ]) {
       expect(macro).toContain(marker);
     }
