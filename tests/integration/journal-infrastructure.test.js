@@ -53,7 +53,7 @@ const EXPECTED_DOCUMENTS = {
   appendices: {
     id: "BoAJrnlAppendix1",
     name: "Appendices",
-    enabled: false,
+    enabled: true,
   },
   "foundry-vtt-guide": {
     id: "BoAJrnlFoundry01",
@@ -149,7 +149,7 @@ describe("generated Journal infrastructure", () => {
     const documents =
       generatedJournalDocuments();
 
-    expect(documents).toHaveLength(2);
+    expect(documents).toHaveLength(3);
 
     const credits = documents.find(
       document =>

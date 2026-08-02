@@ -108,6 +108,7 @@ try {
     kinContent,
     abilityContent,
     spellContent,
+    companionContent,
     journalAssets,
   ] = await Promise.all([
     boaFetchJson("content/kin.json"),
@@ -115,6 +116,9 @@ try {
       "content/heroic-class-abilities.json"
     ),
     boaFetchJson("content/spells.json"),
+    boaFetchJson(
+      "content/hunter-companions.json"
+    ),
     boaFetchJson(
       "config/journal-assets.json"
     ),
@@ -126,6 +130,8 @@ try {
     abilityContent.classes ?? [];
   const spellDefinitions =
     spellContent.spells ?? [];
+  const companionDefinitions =
+    companionContent.companions ?? [];
   const manifestAssets =
     journalAssets.assets ?? [];
 
@@ -146,6 +152,12 @@ try {
     "Spell source contains six entries",
     spellDefinitions.length,
     6
+  );
+  boaCheckEqual(
+    checks,
+    "Companion source contains 14 entries",
+    companionDefinitions.length,
+    14
   );
   boaCheck(
     checks,
@@ -196,6 +208,9 @@ try {
     "journal.credits"
   );
 
+  const appendices = worldJournal(
+    "journal.appendices"
+  );
   boaCheck(
     checks,
     "Imported Player Options Journal exists",
@@ -209,6 +224,12 @@ try {
     "journal.credits"
   );
 
+  boaCheck(
+    checks,
+    "Imported Appendices Journal exists",
+    Boolean(appendices),
+    "journal.appendices"
+  );
   const illustrationPage = journalPage(
     playerOptions,
     "journal-page.player-options.illustration"
@@ -242,6 +263,10 @@ try {
     "journal-page.player-options.spells"
   );
 
+  const companionsPage = journalPage(
+    appendices,
+    "journal-page.appendices.companions"
+  );
   boaCheck(
     checks,
     "Player Options contains the Illustration page",
@@ -283,6 +308,11 @@ try {
     Boolean(creditsPage)
   );
 
+  boaCheck(
+    checks,
+    "Appendices contains the Companions page",
+    Boolean(companionsPage)
+  );
   const introductionHtml =
     introductionPage?.text?.content ?? "";
   const kinHtml =
@@ -296,6 +326,8 @@ try {
   const spellsHtml =
     spellsPage?.text?.content ?? "";
 
+  const companionsHtml =
+    companionsPage?.text?.content ?? "";
   if (illustrationPage) {
     boaCheckEqual(
       checks,
@@ -1016,6 +1048,110 @@ try {
     featureLocalizationProblems.length === 0,
     featureLocalizationProblems.join("\n")
   );
+
+  if (companionsPage) {
+    const companionProblems = [];
+    let previousCompanionIndex = -1;
+
+    boaCheckEqual(
+      checks,
+      "Companions page contains fourteen NPC cards",
+      occurrences(
+        companionsHtml,
+        "@DisplayNpcCard[Actor."
+      ),
+      companionDefinitions.length
+    );
+    boaCheck(
+      checks,
+      "Companions page uses seven two-column rows",
+      occurrences(
+        companionsHtml,
+        '<div class="flexrow">'
+      ) === 7
+      && occurrences(
+        companionsHtml,
+        '<div style="width:50%">'
+      ) === 14
+    );
+
+    for (const spec of [
+      ["crocolisk", "NH7xTDsdAaPgm0Xv", "Crocolisk"],
+      ["dragonhawk", "W7alXfXLGiNx7s7E", "Dragonhawk"],
+      ["giant-bat", "9da7224216cd2593", "Giant Bat"],
+      ["giant-owl", "7d6c7e2e4416f9a4", "Giant Owl"],
+      ["giant-spider", "8db68cb83b2f1331", "Giant Spider"],
+      ["gorilla", "OelrGFsAvekzqSQi", "Gorilla"],
+      ["large-cat", "d1067fe3dc538d79", "Large Cat"],
+      ["large-serpent", "um17JUy9CcBXlloq", "Large Serpent"],
+      ["raptor", "49c462b6c495e4a9", "Raptor"],
+      ["ravager", "9a7429aca7ad9296", "Ravager"],
+      ["scorpid", "0755558cf1561101", "Scorpid"],
+      ["tallstrider", "adfc46dd0aa95902", "Tallstrider"],
+      ["turtle", "9ff4f73ac72b45c4", "Turtle"],
+      ["wind-serpent", "be5c82639dabe7c1", "Wind Serpent"],
+    ]) {
+      const [key, id, name] = spec;
+      const marker =
+        `@DisplayNpcCard[Actor.${id}]`;
+      const markerCount =
+        occurrences(companionsHtml, marker);
+      const markerIndex =
+        companionsHtml.indexOf(marker);
+      const definition =
+        companionDefinitions.find(
+          companion => companion.key === key
+        );
+      const actor =
+        boaCollectionValues(game.actors).find(
+          candidate =>
+            boaContentKey(candidate)
+            === `actors.common-animals.${key}`
+        );
+
+      if (
+        !definition
+        || definition.id !== id
+        || definition.name !== name
+      ) {
+        companionProblems.push(
+          `${key}: source mismatch`
+        );
+      }
+      if (markerCount !== 1) {
+        companionProblems.push(
+          `${name}: NPC card count ${markerCount}`
+        );
+      }
+      if (markerIndex <= previousCompanionIndex) {
+        companionProblems.push(
+          `${name}: wrong Appendix A order`
+        );
+      }
+      previousCompanionIndex = markerIndex;
+
+      if (!actor) {
+        companionProblems.push(
+          `${key}: missing imported Actor`
+        );
+      } else if (
+        actor.id !== id
+        || actor.name !== name
+        || actor.type !== "npc"
+      ) {
+        companionProblems.push(
+          `${key}: ${actor.id}/${actor.name}/${actor.type}`
+        );
+      }
+    }
+
+    boaCheck(
+      checks,
+      "Companions page follows Appendix A book order",
+      companionProblems.length === 0,
+      companionProblems.join("\n")
+    );
+  }
 
   const itemProblems = [];
 

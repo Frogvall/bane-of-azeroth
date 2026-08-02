@@ -3,6 +3,6 @@
   "key": "appendices",
   "id": "BoAJrnlAppendix1",
   "name": "Appendices",
-  "enabled": false,
+  "enabled": true,
   "sort": 300000
 }

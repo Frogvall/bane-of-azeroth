@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "key": "companions",
+  "id": "BoAPgAppendComp1",
+  "name": "Companions",
+  "sort": 100000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals is presented below. If an animal has more than one attack listed, the player choose which one to use when commanding their companion. What animals that are around in an area is up to the GM.</p><div class=\"flexrow\"><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.NH7xTDsdAaPgm0Xv]</p></div><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.W7alXfXLGiNx7s7E]</p></div></div><div class=\"flexrow\"><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.9da7224216cd2593]</p></div><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.7d6c7e2e4416f9a4]</p></div></div><div class=\"flexrow\"><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.8db68cb83b2f1331]</p></div><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.OelrGFsAvekzqSQi]</p></div></div><div class=\"flexrow\"><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.d1067fe3dc538d79]</p></div><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.um17JUy9CcBXlloq]</p></div></div><div class=\"flexrow\"><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.49c462b6c495e4a9]</p></div><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.9a7429aca7ad9296]</p></div></div><div class=\"flexrow\"><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.0755558cf1561101]</p></div><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.adfc46dd0aa95902]</p></div></div><div class=\"flexrow\"><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.9ff4f73ac72b45c4]</p></div><div style=\"width:50%\"><p>@DisplayNpcCard[Actor.be5c82639dabe7c1]</p></div></div>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Appendix A: Companions",
+    "sync": "curated",
+    "presentation": "dragonbane-core-common-animals",
+    "links": "generated-common-animal-actors"
+  }
+}
