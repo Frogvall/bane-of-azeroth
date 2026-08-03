@@ -15,7 +15,7 @@
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
     "uuid-link": 64,
-    "uuid-literal": 55
+    "uuid-literal": 56
   },
   "entries": [
     {
@@ -1646,6 +1646,15 @@
       "function": "fromUuid",
       "classification": "runtime",
       "snippet": "const actorDocument = await fromUuid(plan.actorUuid);"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/mage-brilliance.js",
+      "line": 12,
+      "column": 4,
+      "target": "Item.RPnxXYVb8z7EG5Wl",
+      "classification": "unclassified",
+      "snippet": "\"Item.RPnxXYVb8z7EG5Wl\";"
     },
     {
       "kind": "runtime-uuid-lookup",

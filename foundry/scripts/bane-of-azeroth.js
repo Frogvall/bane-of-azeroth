@@ -77,10 +77,14 @@ import {
 } from "./common-animal-movement.js";
 
 import { registerAutomationSettings } from "./automation-settings.js";
+import {
+  patchMageBrillianceSpellCost,
+} from "./mage-brilliance.js";
 Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
   registerAutomationSettings();
+  patchMageBrillianceSpellCost();
 
   Hooks.on("drawToken", drawElementalTotemAura);
   Hooks.on("updateToken", onUpdateElementalTotemAura);
