@@ -6,20 +6,44 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
-## [0.10.1] - 2026-07-30
+## [0.10.1] - 2026-08-02
 
 ### Added
 
-- Added one curated Heroic Class Abilities page under Player Options, with all thirteen classes organized as readable sections.
-- Added all thirteen class illustrations to the generated Journal.
-- Added 52 complete Ability overview boxes whose linked titles can be dragged directly to character sheets.
+- Added the curated **Introduction** page from the book to **Player Options**.
+- Added one curated **Heroic Class Abilities** page with all thirteen classes, all fifty-two complete Ability overview boxes, class illustrations, and draggable linked Items.
+- Added the **Gear** page using Dragonbane-native `@Gear` tables for all Bane of Azeroth weapons and trade goods.
+- Added the **Spells** page using Dragonbane-native `@DisplaySpell` blocks for all six generated Bane of Azeroth spells.
+- Added the **Appendices** Journal with **Companions** and **Demons** pages.
+- Added full-width `@DisplayNpcCard` blocks for all fourteen companion animals in Appendix A book order.
+- Added full-width `@DisplayMonster` blocks and linked attack tables for Felhunter, Imp, Sayaad, and Voidwalker in Appendix B book order.
+- Added the book's composite Warlock demon illustration to the Demons page.
 - Added generic internal Item reference discovery to Journal generation.
-- Expanded integration and Foundry system-test coverage for class sections, illustrations, complete Ability descriptions, and Item links.
+- Added rule-reference links from Journal content to Dragonbane rules, generated Bane of Azeroth Items, the Ghoul Actor, and the Dragonbane Common Animals list.
 
 ### Changed
 
 - Set the Foundry module content version to `0.10.1`.
-- Included complete Ability descriptions in the Journal overview while keeping the generated Items linked and draggable.
+- Player Options now follows the book-facing page order: Illustration, Introduction, Kin, Derived Ratings, Heroic Class Abilities, Gear, Spells.
+- The Bane of Azeroth Journal folder now uses deterministic manual sorting: Credits, Player Options, Appendices.
+- Credits headings use title case.
+- Custom Bane of Azeroth weapon-feature names now also localize correctly inside Dragonbane `@Gear` tables.
+- Armor Piercing Journal text now links directly to Dragonbane's **Find Weak Spot** rule.
+- Companion cards use full-width layout so animals with additional attributes remain readable.
+- Demons use the same full-width Journal presentation with their attack tables directly below each monster.
+
+### Fixed
+
+- Stabilized the Common Animal attack-message system test by waiting for the expected enriched chat content instead of relying on fixed timing.
+- Corrected Journal-reference integration expectations for Ghoul document type and the **Pushing your Roll** label.
+- Kept generated Journal reference inventory synchronized when system-test Macro references move.
+
+### Testing
+
+- Added focused Vitest coverage for Introduction navigation, rules references, Gear Journal rendering, custom weapon-feature localization, Spells, Companions, Demons, Journal ordering, and release metadata.
+- Expanded **BOA DEV – Verify Assets and Journals** to verify imported Journal presence, exact Player Options and Appendices page contracts, Journal ordering, source artwork, document links, Gear features, all six spells, all fourteen companions, and all four Warlock demons with their attack tables.
+- Kept generator `--check` validation centralized so new Foundry generators remain part of automated build and packaging verification.
+- Verified the 0.10.1 Journal vertical slice with Foundry Virtual Tabletop 14.365, Dragonbane 4.0.1, and Dragonbane Core Set 2.2.
 
 ## [0.10.0] - 2026-07-30
 

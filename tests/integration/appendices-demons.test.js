@@ -392,6 +392,8 @@ describe("Appendices Demons Journal page", () => {
     for (const marker of [
       "Demon source contains four Warlock demons",
       "Appendices contains the Demons page",
+      "Appendices has exactly two pages",
+      "Appendices page order follows the book",
       "Demons page contains four Monster blocks",
       "Demons page contains four attack tables",
       "Demons page follows Appendix B book order",

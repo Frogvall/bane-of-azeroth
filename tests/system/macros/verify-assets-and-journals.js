@@ -394,6 +394,47 @@ try {
     "Appendices contains the Demons page",
     Boolean(demonsPage)
   );
+  if (appendices) {
+    const orderedAppendixPages =
+      boaCollectionValues(appendices.pages)
+        .sort(
+          (left, right) =>
+            Number(left.sort ?? 0)
+            - Number(right.sort ?? 0)
+        )
+        .map(page => ({
+          name: page.name,
+          contentKey: boaContentKey(page),
+          sort: Number(page.sort ?? 0),
+        }));
+
+    boaCheckEqual(
+      checks,
+      "Appendices has exactly two pages",
+      orderedAppendixPages.length,
+      2
+    );
+    boaCheckEqual(
+      checks,
+      "Appendices page order follows the book",
+      orderedAppendixPages,
+      [
+        {
+          name: "Companions",
+          contentKey:
+            "journal-page.appendices.companions",
+          sort: 100000,
+        },
+        {
+          name: "Demons",
+          contentKey:
+            "journal-page.appendices.demons",
+          sort: 200000,
+        },
+      ]
+    );
+  }
+
   const introductionHtml =
     introductionPage?.text?.content ?? "";
   const kinHtml =
