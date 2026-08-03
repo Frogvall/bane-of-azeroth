@@ -46,7 +46,7 @@ const GENERATED_JOURNAL = join(
   ADVENTURE,
   "JournalEntry",
   "Bane_of_Azeroth_BoAJournals00001",
-  "Player_Options_BoAJrnlPlayerOpt.json",
+  "Character_Options_BoAJrnlPlayerOpt.json",
 );
 
 const TABLE_TYPES = new Map([
@@ -132,7 +132,7 @@ function gearEntries(source) {
   );
 }
 
-describe("Player Options Gear Journal page", () => {
+describe("Character Options Gear Journal page", () => {
   test("defines one visible page after Heroic Class Abilities", () => {
     const page = readJson(PAGE_SOURCE);
 
@@ -321,12 +321,12 @@ describe("Player Options Gear Journal page", () => {
     const macro = read(SYSTEM_MACRO);
 
     for (const marker of [
-      "Player Options contains the Gear page",
+      "Character Options contains the Gear page",
       "Gear page contains three Gear tables",
       "Gear page links all eight generated Gear Items",
       "Gear page includes the 500 meter firearm report",
       "Armor Piercing links Find Weak Spot",
-      "Player Options has exactly seven pages",
+      "Character Options has exactly seven pages",
     ]) {
       expect(macro).toContain(marker);
     }

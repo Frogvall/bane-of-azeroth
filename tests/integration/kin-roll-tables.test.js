@@ -144,7 +144,7 @@ describe("generated Kin RollTables", () => {
       folder: {
         key: "player-options",
         id: "BoATblPlayerOpt1",
-        name: "Player Options",
+        name: "Character Options",
         parentId: "BoATables7pQ2mX9",
         color: null,
         sorting: "a",
@@ -229,7 +229,7 @@ describe("generated Kin RollTables", () => {
       kinDocuments();
     const directory = join(
       ROOT_DIRECTORY,
-      "Player_Options_"
+      "Character_Options_"
       + source.folder.id,
     );
 
@@ -324,7 +324,7 @@ describe("generated Kin RollTables", () => {
       "RollTable/"
       + "Bane_of_Azeroth_"
       + "BoATables7pQ2mX9/"
-      + "Player_Options_"
+      + "Character_Options_"
       + source.folder.id;
 
     const folderPath =

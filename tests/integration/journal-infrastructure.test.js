@@ -47,7 +47,7 @@ const EXPECTED_DOCUMENTS = {
   },
   "player-options": {
     id: "BoAJrnlPlayerOpt",
-    name: "Player Options",
+    name: "Character Options",
     enabled: true,
   },
   appendices: {

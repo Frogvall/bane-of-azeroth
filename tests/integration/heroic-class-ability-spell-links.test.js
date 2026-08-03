@@ -50,7 +50,7 @@ const GENERATED_JOURNAL = join(
   ADVENTURE_DIRECTORY,
   "JournalEntry",
   "Bane_of_Azeroth_BoAJournals00001",
-  "Player_Options_BoAJrnlPlayerOpt.json",
+  "Character_Options_BoAJrnlPlayerOpt.json",
 );
 
 function read(path) {

@@ -110,7 +110,7 @@ describe("0.10.1 release closure", () => {
     const readme = read(README);
 
     for (const marker of [
-      "Generated **Player Options** Journal",
+      "Generated **Character Options** Journal",
       "Generated **Appendices** Journal",
       "deterministic Journal ordering",
       "| Foundry Virtual Tabletop | 14.365 |",

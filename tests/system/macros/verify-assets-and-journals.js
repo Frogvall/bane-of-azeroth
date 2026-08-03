@@ -218,6 +218,34 @@ try {
     29
   );
 
+  const characterOptionsTableFolder =
+    boaCollectionValues(game.folders).find(
+      folder =>
+        boaContentKey(folder)
+        === "tables.folder.player-options"
+    );
+
+  boaCheckEqual(
+    checks,
+    "Imported Character Options RollTable folder exists",
+    characterOptionsTableFolder
+      ? {
+          id: characterOptionsTableFolder.id,
+          name: characterOptionsTableFolder.name,
+          type: characterOptionsTableFolder.type,
+          sort: Number(
+            characterOptionsTableFolder.sort ?? 0
+          ),
+        }
+      : null,
+    {
+      id: "BoATblPlayerOpt1",
+      name: "Character Options",
+      type: "RollTable",
+      sort: 200000,
+    }
+  );
+
   const journalFolder =
     boaCollectionValues(game.folders).find(
       folder =>
@@ -263,7 +291,7 @@ try {
         sort: 100000,
       },
       {
-        name: "Player Options",
+        name: "Character Options",
         sort: 200000,
       },
       {
@@ -285,7 +313,7 @@ try {
   );
   boaCheck(
     checks,
-    "Imported Player Options Journal exists",
+    "Imported Character Options Journal exists",
     Boolean(playerOptions),
     "journal.player-options"
   );
@@ -345,37 +373,37 @@ try {
   );
   boaCheck(
     checks,
-    "Player Options contains the Illustration page",
+    "Character Options contains the Illustration page",
     Boolean(illustrationPage)
   );
   boaCheck(
     checks,
-    "Player Options contains the Introduction page",
+    "Character Options contains the Introduction page",
     Boolean(introductionPage)
   );
   boaCheck(
     checks,
-    "Player Options contains the Kin page",
+    "Character Options contains the Kin page",
     Boolean(kinPage)
   );
   boaCheck(
     checks,
-    "Player Options contains the Derived Ratings page",
+    "Character Options contains the Derived Ratings page",
     Boolean(derivedPage)
   );
   boaCheck(
     checks,
-    "Player Options contains the Heroic Class Abilities page",
+    "Character Options contains the Heroic Class Abilities page",
     Boolean(classesPage)
   );
   boaCheck(
     checks,
-    "Player Options contains the Gear page",
+    "Character Options contains the Gear page",
     Boolean(gearPage)
   );
   boaCheck(
     checks,
-    "Player Options contains the Spells page",
+    "Character Options contains the Spells page",
     Boolean(spellsPage)
   );
   boaCheck(
@@ -455,7 +483,7 @@ try {
   if (illustrationPage) {
     boaCheckEqual(
       checks,
-      "Player Options opens with the cover Illustration",
+      "Character Options opens with the cover Illustration",
       {
         type: illustrationPage.type,
         titleShown:
@@ -1083,7 +1111,7 @@ try {
   if (playerOptions) {
     boaCheckEqual(
       checks,
-      "Player Options has exactly seven pages",
+      "Character Options has exactly seven pages",
       boaCollectionValues(
         playerOptions.pages
       ).length,
@@ -1105,7 +1133,7 @@ try {
         .map(page => page.name);
     boaCheckEqual(
       checks,
-      "Player Options page order starts with cover and introduction",
+      "Character Options page order starts with cover and introduction",
       orderedPageNames,
       [
         "Illustration",
@@ -1119,7 +1147,7 @@ try {
     );
     boaCheckEqual(
       checks,
-      "Player Options is in the blue Bane of Azeroth Journal folder",
+      "Character Options is in the blue Bane of Azeroth Journal folder",
       {
         name: playerOptions.folder?.name,
         color: boaColorHex(

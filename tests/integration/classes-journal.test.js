@@ -56,7 +56,7 @@ const GENERATED = join(
   ADVENTURE_DIRECTORY,
   "JournalEntry",
   "Bane_of_Azeroth_BoAJournals00001",
-  "Player_Options_BoAJrnlPlayerOpt.json",
+  "Character_Options_BoAJrnlPlayerOpt.json",
 );
 
 function read(path) {
@@ -253,7 +253,7 @@ describe("Heroic Class Abilities Journal page", () => {
     }
   });
 
-  test("generates exactly seven Player Options pages", () => {
+  test("generates exactly seven Character Options pages", () => {
     const heroic = readJson(HEROIC_SOURCE);
     const items = generatedItemsByContentKey();
     const journal = readJson(GENERATED);
@@ -341,7 +341,7 @@ describe("Heroic Class Abilities Journal page", () => {
     const source = read(SYSTEM_MACRO);
 
     for (const marker of [
-      "Player Options has exactly seven pages",
+      "Character Options has exactly seven pages",
       "Heroic Class Abilities contains 13 class headings",
       "Heroic Class Abilities contains 52 overview boxes",
       "Ability box titles link to all 52 Ability Items",
@@ -353,7 +353,7 @@ describe("Heroic Class Abilities Journal page", () => {
     }
 
     expect(source).not.toContain(
-      "Player Options contains 13 class pages",
+      "Character Options contains 13 class pages",
     );
   });
 });

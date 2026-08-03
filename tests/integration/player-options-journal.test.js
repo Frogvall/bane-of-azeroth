@@ -52,7 +52,7 @@ const GENERATED = join(
   ADVENTURE_DIRECTORY,
   "JournalEntry",
   "Bane_of_Azeroth_BoAJournals00001",
-  "Player_Options_BoAJrnlPlayerOpt.json",
+  "Character_Options_BoAJrnlPlayerOpt.json",
 );
 
 function read(path) {
@@ -75,7 +75,7 @@ function occurrences(
   return value.split(marker).length - 1;
 }
 
-describe("curated Player Options Journal", () => {
+describe("curated Character Options Journal", () => {
   test("defines Kin and Derived Ratings as separate visible pages", () => {
     expect(
       readJson(JOURNAL_SOURCE),
@@ -83,7 +83,7 @@ describe("curated Player Options Journal", () => {
       schemaVersion: 1,
       key: "player-options",
       id: "BoAJrnlPlayerOpt",
-      name: "Player Options",
+      name: "Character Options",
       enabled: true,
       sort: 200000,
     });
@@ -224,7 +224,7 @@ describe("curated Player Options Journal", () => {
     }
   });
 
-  test("generates Player Options pages and resolves every symbolic RollTable reference", () => {
+  test("generates Character Options pages and resolves every symbolic RollTable reference", () => {
     const kinSource =
       readJson(KIN_SOURCE);
     const derivedSource =

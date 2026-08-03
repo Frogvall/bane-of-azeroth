@@ -26,7 +26,7 @@ const GENERATED = resolve(
   "Bane_of_Azeroth_ZoNOXZjdkOjV56e3",
   "JournalEntry",
   "Bane_of_Azeroth_BoAJournals00001",
-  "Player_Options_BoAJrnlPlayerOpt.json",
+  "Character_Options_BoAJrnlPlayerOpt.json",
 );
 const JOURNAL_GENERATOR = resolve(
   "tools",
@@ -65,7 +65,7 @@ function contentKey(page) {
   return page.flags?.[MODULE_ID]?.contentKey;
 }
 
-describe("Player Options opening and navigation", () => {
+describe("Character Options opening and navigation", () => {
   test("defines the official-style opening page order", () => {
     const illustration =
       sourcePage("illustration");

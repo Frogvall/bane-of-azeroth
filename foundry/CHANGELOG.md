@@ -10,7 +10,7 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ### Added
 
-- Added the curated **Introduction** page from the book to **Player Options**.
+- Added the curated **Introduction** page from the book to **Character Options**.
 - Added one curated **Heroic Class Abilities** page with all thirteen classes, all fifty-two complete Ability overview boxes, class illustrations, and draggable linked Items.
 - Added the **Gear** page using Dragonbane-native `@Gear` tables for all Bane of Azeroth weapons and trade goods.
 - Added the **Spells** page using Dragonbane-native `@DisplaySpell` blocks for all six generated Bane of Azeroth spells.
@@ -24,8 +24,8 @@ The project is currently in early alpha. Rules, document structures, compendium 
 ### Changed
 
 - Set the Foundry module content version to `0.10.1`.
-- Player Options now follows the book-facing page order: Illustration, Introduction, Kin, Derived Ratings, Heroic Class Abilities, Gear, Spells.
-- The Bane of Azeroth Journal folder now uses deterministic manual sorting: Credits, Player Options, Appendices.
+- Character Options now follows the book-facing page order: Illustration, Introduction, Kin, Derived Ratings, Heroic Class Abilities, Gear, Spells.
+- The Bane of Azeroth Journal folder now uses deterministic manual sorting: Credits, Character Options, Appendices.
 - Credits headings use title case.
 - Custom Bane of Azeroth weapon-feature names now also localize correctly inside Dragonbane `@Gear` tables.
 - Armor Piercing Journal text now links directly to Dragonbane's **Find Weak Spot** rule.
@@ -41,7 +41,7 @@ The project is currently in early alpha. Rules, document structures, compendium 
 ### Testing
 
 - Added focused Vitest coverage for Introduction navigation, rules references, Gear Journal rendering, custom weapon-feature localization, Spells, Companions, Demons, Journal ordering, and release metadata.
-- Expanded **BOA DEV – Verify Assets and Journals** to verify imported Journal presence, exact Player Options and Appendices page contracts, Journal ordering, source artwork, document links, Gear features, all six spells, all fourteen companions, and all four Warlock demons with their attack tables.
+- Expanded **BOA DEV – Verify Assets and Journals** to verify imported Journal presence, exact Character Options and Appendices page contracts, Journal ordering, source artwork, document links, Gear features, all six spells, all fourteen companions, and all four Warlock demons with their attack tables.
 - Kept generator `--check` validation centralized so new Foundry generators remain part of automated build and packaging verification.
 - Verified the 0.10.1 Journal vertical slice with Foundry Virtual Tabletop 14.365, Dragonbane 4.0.1, and Dragonbane Core Set 2.2.
 

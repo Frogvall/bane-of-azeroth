@@ -64,7 +64,7 @@ Implemented content and automation include:
 - Playable kin and kin abilities
 - Heroic Class Abilities and linked spell grants
 - Bane of Azeroth spells and equipment
-- Generated **Player Options** Journal covering Introduction, Kin, Derived Ratings, Heroic Class Abilities, Gear, and Spells
+- Generated **Character Options** Journal covering Introduction, Kin, Derived Ratings, Heroic Class Abilities, Gear, and Spells
 - Generated **Appendices** Journal with full-width Companion and Warlock Demon stat blocks, linked attack tables, and book artwork
 - Stable cross-document references and deterministic Journal ordering
 - Custom weapon features such as Ammunition, Armor Piercing, Freehanded, Returning, and Scattershot

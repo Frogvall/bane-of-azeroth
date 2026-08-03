@@ -46,7 +46,7 @@ const GENERATED_JOURNAL = join(
   ADVENTURE,
   "JournalEntry",
   "Bane_of_Azeroth_BoAJournals00001",
-  "Player_Options_BoAJrnlPlayerOpt.json",
+  "Character_Options_BoAJrnlPlayerOpt.json",
 );
 
 function read(path) {
@@ -116,7 +116,7 @@ function displayMarker(spell) {
   );
 }
 
-describe("Player Options Spells Journal page", () => {
+describe("Character Options Spells Journal page", () => {
   test("defines the book's Spells page without Spell List headings", () => {
     const page = readJson(PAGE_SOURCE);
 
@@ -221,7 +221,7 @@ describe("Player Options Spells Journal page", () => {
     }
   });
 
-  test("generates Spells as the seventh Player Options page", () => {
+  test("generates Spells as the seventh Character Options page", () => {
     const pageSource = readJson(PAGE_SOURCE);
     const journal =
       readJson(GENERATED_JOURNAL);
@@ -291,11 +291,11 @@ describe("Player Options Spells Journal page", () => {
 
     for (const marker of [
       "Spell source contains six entries",
-      "Player Options contains the Spells page",
+      "Character Options contains the Spells page",
       "Spells page contains six DisplaySpell directives",
       "Spells page displays all six generated Spell Items in book order",
       "Spells page follows the book title",
-      "Player Options has exactly seven pages",
+      "Character Options has exactly seven pages",
     ]) {
       expect(macro).toContain(marker);
     }

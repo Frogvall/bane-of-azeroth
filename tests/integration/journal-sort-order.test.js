@@ -48,7 +48,7 @@ const EXPECTED = [
   },
   {
     key: "player-options",
-    name: "Player Options",
+    name: "Character Options",
     sort: 200000,
   },
   {
@@ -144,7 +144,7 @@ describe("deterministic Journal folder order", () => {
         .map(journal => journal.name),
     ).toEqual([
       "Credits",
-      "Player Options",
+      "Character Options",
       "Appendices",
     ]);
   });
@@ -170,7 +170,7 @@ describe("deterministic Journal folder order", () => {
       "Journal folder uses deterministic manual sorting",
       "Generated Journals follow source sort order",
       "Credits",
-      "Player Options",
+      "Character Options",
       "Appendices",
     ]) {
       expect(macro).toContain(marker);
