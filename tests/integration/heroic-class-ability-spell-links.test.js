@@ -121,6 +121,20 @@ function occurrences(value, marker) {
 }
 
 describe("spell-granting Heroic Class Abilities", () => {
+  test("records the external Sense Magic grant for Mage's Brilliance", () => {
+    const heroic = readJson(HEROIC_SOURCE);
+    const mage = heroic.classes.find(
+      entry => entry.key === "mage",
+    );
+    const brilliance = mage?.abilities.find(
+      ability => ability.key === "mages-brilliance",
+    );
+
+    expect(brilliance?.grantsSpellUuid).toBe(
+      "Item.RPnxXYVb8z7EG5Wl",
+    );
+  });
+
   test("uses one symbolic Spell reference in each source description", () => {
     const heroic = readJson(HEROIC_SOURCE);
     const spells = readJson(SPELL_SOURCE);

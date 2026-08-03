@@ -23,6 +23,68 @@ import {
   makeSpell,
 } from "../helpers/documents.js";
 
+const MAGES_BRILLIANCE_CONTENT_KEY =
+  "heroic-class-ability.mage.mages-brilliance";
+const SENSE_MAGIC_UUID = "Item.RPnxXYVb8z7EG5Wl";
+
+function makeMageBrilliance(actor) {
+  return makeFlagDocument({
+    id: "mages-brilliance",
+    name: "Mage's Brilliance",
+    type: "ability",
+    parent: actor,
+    flags: {
+      "bane-of-azeroth": {
+        contentKey: MAGES_BRILLIANCE_CONTENT_KEY,
+        grantsSpellUuid: SENSE_MAGIC_UUID,
+      },
+    },
+  });
+}
+
+function makeSenseMagicSource() {
+  return makeFlagDocument({
+    id: "sense-magic-source",
+    name: "Sense Magic",
+    type: "spell",
+    system: {
+      memorized: false,
+    },
+    flags: {},
+    toObject: vi.fn(() => ({
+      _id: "sense-magic-source",
+      folder: "dragonbane-core",
+      ownership: {
+        default: 0,
+      },
+      name: "Sense Magic",
+      type: "spell",
+      system: {
+        memorized: false,
+      },
+      flags: {},
+    })),
+  });
+}
+
+function makeManagedSenseMagic({
+  id = "managed-sense-magic",
+} = {}) {
+  return makeFlagDocument({
+    id,
+    name: "Sense Magic",
+    type: "spell",
+    flags: {
+      "bane-of-azeroth": {
+        autoGranted: true,
+        grantedByAbility:
+          MAGES_BRILLIANCE_CONTENT_KEY,
+        sourceUuid: SENSE_MAGIC_UUID,
+      },
+    },
+  });
+}
+
 function makeAutoGrantedSpell({
   id = "granted-spell",
   sourceSpell = "spells.shadowform",
@@ -156,6 +218,11 @@ describe("Actor spell detection", () => {
 describe("grantSpellForAbility", () => {
   beforeEach(() => {
     game.items = [];
+    globalThis.fromUuid = vi.fn();
+  });
+
+  afterEach(() => {
+    delete globalThis.fromUuid;
   });
 
   test("creates one prepared, traceable spell", async () => {
@@ -254,6 +321,69 @@ describe("grantSpellForAbility", () => {
 
     expect(actor.createEmbeddedDocuments).not.toHaveBeenCalled();
   });
+
+  test("grants an external spell by UUID with provenance", async () => {
+    const actor = makeActor();
+    const ability = makeMageBrilliance(actor);
+    const sourceSpell = makeSenseMagicSource();
+    actor.items = [ability];
+    globalThis.fromUuid.mockResolvedValue(sourceSpell);
+
+    await grantSpellForAbility(ability);
+
+    expect(globalThis.fromUuid).toHaveBeenCalledWith(
+      SENSE_MAGIC_UUID,
+    );
+    expect(
+      actor.createEmbeddedDocuments,
+    ).toHaveBeenCalledOnce();
+    expect(
+      actor.createEmbeddedDocuments,
+    ).toHaveBeenCalledWith(
+      "Item",
+      [
+        expect.objectContaining({
+          name: "Sense Magic",
+          type: "spell",
+          flags: expect.objectContaining({
+            "bane-of-azeroth":
+              expect.objectContaining({
+                autoGranted: true,
+                grantedByAbility:
+                  MAGES_BRILLIANCE_CONTENT_KEY,
+                sourceUuid: SENSE_MAGIC_UUID,
+              }),
+          }),
+        }),
+      ],
+    );
+  });
+
+  test("does not duplicate a manually added external spell", async () => {
+    const actor = makeActor();
+    const ability = makeMageBrilliance(actor);
+    const sourceSpell = makeSenseMagicSource();
+    const manualSenseMagic = makeFlagDocument({
+      id: "manual-sense-magic",
+      name: "Sense Magic",
+      type: "spell",
+      flags: {},
+    });
+    actor.items = [
+      ability,
+      manualSenseMagic,
+    ];
+    globalThis.fromUuid.mockResolvedValue(sourceSpell);
+
+    await grantSpellForAbility(ability);
+
+    expect(globalThis.fromUuid).toHaveBeenCalledWith(
+      SENSE_MAGIC_UUID,
+    );
+    expect(
+      actor.createEmbeddedDocuments,
+    ).not.toHaveBeenCalled();
+  });
 });
 
 describe("removeSpellForAbility", () => {
@@ -299,6 +429,34 @@ describe("removeSpellForAbility", () => {
     await removeSpellForAbility(removedAbility);
 
     expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled();
+  });
+
+  test("removes only the managed external spell for Mage's Brilliance", async () => {
+    const actor = makeActor();
+    const removedAbility =
+      makeMageBrilliance(actor);
+    actor.items = [
+      makeManagedSenseMagic({
+        id: "managed-sense-magic",
+      }),
+      makeFlagDocument({
+        id: "manual-sense-magic",
+        name: "Sense Magic",
+        type: "spell",
+        flags: {},
+      }),
+    ];
+
+    await removeSpellForAbility(
+      removedAbility,
+    );
+
+    expect(
+      actor.deleteEmbeddedDocuments,
+    ).toHaveBeenCalledWith(
+      "Item",
+      ["managed-sense-magic"],
+    );
   });
 });
 

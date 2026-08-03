@@ -49,6 +49,12 @@ describe("Automation Settings presentation", () => {
     expect(labels.menuLabel).toBe("Automation Settings");
     expect(labels.menuName).not.toContain("Bane of Azeroth");
     expect(labels.groupSummons).toBe("Summons");
+    expect(labels.groupHeroicAbilities).toBe(
+      "Heroic Abilities",
+    );
+    expect(labels.mageBrillianceName).toBe(
+      "Mage's Brilliance",
+    );
   });
 
   test("uses Foundry ApplicationV2 like Dragonbane", () => {
@@ -83,19 +89,22 @@ describe("Automation Settings presentation", () => {
     );
   });
 
-  test("lets formGroup render both native checkbox rows", () => {
+  test("lets formGroup render all native checkbox rows", () => {
     const template = read(TEMPLATE);
 
     expect(template).toContain("<fieldset>");
     expect(template).toContain("<legend>");
     expect(
       template.match(/\{\{formGroup/g),
-    ).toHaveLength(2);
+    ).toHaveLength(3);
     expect(template).toContain(
       "schema.fields.elementalTotemAutomation",
     );
     expect(template).toContain(
       "schema.fields.demonAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.mageBrillianceAutomation",
     );
     expect(template).not.toContain("<form");
     expect(template).not.toContain("<button");

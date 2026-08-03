@@ -20,7 +20,7 @@ import {
 const MODULE_ID = "bane-of-azeroth";
 
 describe("automation settings registration", () => {
-  test("registers two hidden world booleans enabled by default", () => {
+  test("registers three hidden world booleans enabled by default", () => {
     const settings = {
       register: vi.fn(),
       registerMenu: vi.fn(),
@@ -30,7 +30,7 @@ describe("automation settings registration", () => {
       registerAutomationSettings(settings),
     ).toBe(true);
 
-    expect(settings.register).toHaveBeenCalledTimes(2);
+    expect(settings.register).toHaveBeenCalledTimes(3);
     for (const key of Object.values(
       AUTOMATION_SETTING_KEYS,
     )) {

@@ -3,6 +3,7 @@ import { MODULE_ID } from "./core/constants.js";
 export const AUTOMATION_SETTING_KEYS = Object.freeze({
   ELEMENTAL_TOTEMS: "elementalTotemAutomation",
   DEMONS: "demonAutomation",
+  MAGES_BRILLIANCE: "mageBrillianceAutomation",
 });
 
 const {
@@ -37,7 +38,11 @@ function schemaField(fields) {
     : { fields };
 }
 
-function settingDefinition(name, hint) {
+function settingDefinition(
+  name,
+  hint,
+  additional = {},
+) {
   return {
     name,
     hint,
@@ -45,7 +50,25 @@ function settingDefinition(name, hint) {
     config: false,
     type: Boolean,
     default: true,
+    ...additional,
   };
+}
+
+function reconcileMageBrillianceAutomation() {
+  const reconcile =
+    globalThis.game?.modules
+      ?.get?.(MODULE_ID)
+      ?.api
+      ?.reconcileSpellGrants;
+
+  if (typeof reconcile !== "function") return;
+
+  void Promise.resolve(reconcile()).catch(error => {
+    console.error(
+      `${MODULE_ID} | Failed to reconcile Mage's Brilliance automation.`,
+      error,
+    );
+  });
 }
 
 export function isAutomationEnabled(
@@ -75,6 +98,15 @@ export function isDemonAutomationEnabled(
 ) {
   return isAutomationEnabled(
     AUTOMATION_SETTING_KEYS.DEMONS,
+    settings,
+  );
+}
+
+export function isMageBrillianceAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.MAGES_BRILLIANCE,
     settings,
   );
 }
@@ -127,6 +159,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.demonName",
       "BOA.settings.automation.demonHint",
     ),
+    mageBrillianceAutomation: booleanField(
+      "BOA.settings.automation.mageBrillianceName",
+      "BOA.settings.automation.mageBrillianceHint",
+    ),
   });
 
   static get schema() {
@@ -144,6 +180,8 @@ export class AutomationSettingsForm
           isElementalTotemAutomationEnabled(),
         demonAutomation:
           isDemonAutomationEnabled(),
+        mageBrillianceAutomation:
+          isMageBrillianceAutomationEnabled(),
       },
       buttons: [
         {
@@ -180,6 +218,15 @@ export class AutomationSettingsForm
           ],
         ),
       ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.MAGES_BRILLIANCE,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.MAGES_BRILLIANCE
+          ],
+        ),
+      ),
     ]);
   }
 }
@@ -206,6 +253,17 @@ export function registerAutomationSettings(
     ),
   );
 
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.MAGES_BRILLIANCE,
+    settingDefinition(
+      "BOA.settings.automation.mageBrillianceName",
+      "BOA.settings.automation.mageBrillianceHint",
+      {
+        onChange: reconcileMageBrillianceAutomation,
+      },
+    ),
+  );
   if (settings.registerMenu) {
     settings.registerMenu(
       MODULE_ID,

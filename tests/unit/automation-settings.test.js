@@ -12,6 +12,7 @@ import {
   isAutomationEnabled,
   isDemonAutomationEnabled,
   isElementalTotemAutomationEnabled,
+  registerAutomationSettings,
 } from "../../foundry/scripts/automation-settings.js";
 
 const MODULE_ID = "bane-of-azeroth";
@@ -21,6 +22,38 @@ afterEach(() => {
 });
 
 describe("automation setting reads", () => {
+  test("defines an independent Mage's Brilliance setting key", () => {
+    expect(
+      AUTOMATION_SETTING_KEYS.MAGES_BRILLIANCE,
+    ).toBe("mageBrillianceAutomation");
+  });
+
+  test("registers Mage's Brilliance automation enabled by default", () => {
+    const register = vi.fn();
+    const registerMenu = vi.fn();
+
+    registerAutomationSettings({
+      register,
+      registerMenu,
+    });
+
+    const mageRegistration =
+      register.mock.calls.find(
+        ([moduleId, key]) =>
+          moduleId === MODULE_ID &&
+          key === "mageBrillianceAutomation",
+      );
+
+    expect(mageRegistration?.[2]).toEqual(
+      expect.objectContaining({
+        scope: "world",
+        config: false,
+        type: Boolean,
+        default: true,
+      }),
+    );
+  });
+
   test("defaults safely to enabled", () => {
     expect(
       isAutomationEnabled(
@@ -83,6 +116,7 @@ describe("ApplicationV2 automation settings form", () => {
     expect(context.source).toEqual({
       elementalTotemAutomation: true,
       demonAutomation: false,
+      mageBrillianceAutomation: false,
     });
     expect(context.buttons).toEqual([
       {
@@ -108,11 +142,12 @@ describe("ApplicationV2 automation settings form", () => {
         object: {
           elementalTotemAutomation: true,
           demonAutomation: false,
+          mageBrillianceAutomation: true,
         },
       },
     );
 
-    expect(set).toHaveBeenCalledTimes(2);
+    expect(set).toHaveBeenCalledTimes(3);
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,
@@ -122,6 +157,11 @@ describe("ApplicationV2 automation settings form", () => {
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.DEMONS,
       false,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.MAGES_BRILLIANCE,
+      true,
     );
   });
 });

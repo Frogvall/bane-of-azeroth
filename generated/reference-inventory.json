@@ -15,7 +15,7 @@
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
     "uuid-link": 64,
-    "uuid-literal": 54
+    "uuid-literal": 55
   },
   "entries": [
     {
@@ -118,9 +118,18 @@
       "label": "Sense Magic"
     },
     {
+      "kind": "uuid-literal",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 289,
+      "column": 31,
+      "target": "Item.RPnxXYVb8z7EG5Wl",
+      "classification": "unclassified",
+      "snippet": "\"grantsSpellUuid\": \"Item.RPnxXYVb8z7EG5Wl\","
+    },
+    {
       "kind": "uuid-link",
       "path": "foundry/content/heroic-class-abilities.json",
-      "line": 339,
+      "line": 340,
       "column": 78,
       "target": "Item.O7p7ZWnZNgxP8PFw",
       "classification": "unclassified",
@@ -130,7 +139,7 @@
     {
       "kind": "symbolic-reference",
       "path": "foundry/content/heroic-class-abilities.json",
-      "line": 454,
+      "line": 455,
       "column": 41,
       "target": "boa:item.spells.shadowform",
       "classification": "unclassified",
@@ -140,7 +149,7 @@
     {
       "kind": "uuid-link",
       "path": "foundry/content/heroic-class-abilities.json",
-      "line": 496,
+      "line": 497,
       "column": 32,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#sneak-attack",
       "classification": "unclassified",
@@ -150,7 +159,7 @@
     {
       "kind": "uuid-link",
       "path": "foundry/content/heroic-class-abilities.json",
-      "line": 518,
+      "line": 519,
       "column": 119,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
       "classification": "unclassified",
@@ -160,7 +169,7 @@
     {
       "kind": "symbolic-reference",
       "path": "foundry/content/heroic-class-abilities.json",
-      "line": 548,
+      "line": 549,
       "column": 41,
       "target": "boa:item.spells.elemental-totem",
       "classification": "unclassified",
@@ -170,7 +179,7 @@
     {
       "kind": "uuid-link",
       "path": "foundry/content/heroic-class-abilities.json",
-      "line": 602,
+      "line": 603,
       "column": 27,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.C0stUmhj95JFgL4f#power-level",
       "classification": "unclassified",
@@ -180,7 +189,7 @@
     {
       "kind": "uuid-link",
       "path": "foundry/content/heroic-class-abilities.json",
-      "line": 654,
+      "line": 655,
       "column": 93,
       "target": "Item.JrQqkQrSOFJzR7H9",
       "classification": "unclassified",

@@ -186,7 +186,7 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderControlledMonsterSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(3);
+expect(game.settings.register).toHaveBeenCalledTimes(4);
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

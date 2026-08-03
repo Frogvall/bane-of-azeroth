@@ -98,12 +98,15 @@
       "automation": {
         "menuName": "Automation Settings",
         "menuLabel": "Automation Settings",
-        "menuHint": "Configure placement and lifecycle automation for summoned creatures.",
+        "menuHint": "Configure Bane of Azeroth automation by feature.",
         "elementalTotemName": "Elemental Totems",
         "elementalTotemHint": "Automate selection, placement, replacement, ownership, and cleanup.",
         "demonName": "Warlock Demons",
         "demonHint": "Automate selection, placement, replacement, ownership, duration, and cleanup.",
-        "groupSummons": "Summons"
+        "groupSummons": "Summons",
+        "mageBrillianceName": "Mage's Brilliance",
+        "mageBrillianceHint": "Automatically manage Sense Magic and other Mage's Brilliance rules.",
+        "groupHeroicAbilities": "Heroic Abilities"
       }
     },
     "notifications": {

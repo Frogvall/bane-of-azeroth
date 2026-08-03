@@ -286,6 +286,7 @@
           "description": [
             "You know the @UUID[Item.RPnxXYVb8z7EG5Wl]{Sense Magic} magic trick and can cast it without spending Willpower Points. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling."
           ],
+          "grantsSpellUuid": "Item.RPnxXYVb8z7EG5Wl",
           "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp"
         },
         {

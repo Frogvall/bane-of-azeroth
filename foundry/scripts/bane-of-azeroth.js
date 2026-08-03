@@ -104,6 +104,7 @@ Hooks.once("init", () => {
     boaModule.api = {
       ...(boaModule.api ?? {}),
       processCommonAnimalAttackResult,
+      reconcileSpellGrants,
     };
   }
 
