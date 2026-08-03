@@ -11,11 +11,11 @@
   ],
   "counts": {
     "display-table": 6,
-    "runtime-uuid-lookup": 6,
+    "runtime-uuid-lookup": 7,
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
     "uuid-link": 64,
-    "uuid-literal": 53
+    "uuid-literal": 54
   },
   "entries": [
     {
@@ -1669,7 +1669,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/run-all.js",
-      "line": 268,
+      "line": 269,
       "column": 8,
       "target": "${report.uuid}",
       "classification": "unclassified",
@@ -1984,6 +1984,24 @@
       "function": "fromUuid",
       "classification": "runtime",
       "snippet": "attackTable = await fromUuid(attackTableUuid);"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-mages-brilliance.js",
+      "line": 12,
+      "column": 25,
+      "target": "Item.RPnxXYVb8z7EG5Wl",
+      "classification": "unclassified",
+      "snippet": "const senseMagicUuid = \"Item.RPnxXYVb8z7EG5Wl\";"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-mages-brilliance.js",
+      "line": 94,
+      "column": 28,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "sourceSenseMagic = await fromUuid("
     },
     {
       "kind": "uuid-literal",

@@ -46,6 +46,7 @@ const orderedKeys = [
   "ghoul",
   "warlock-demons",
   "spell-grants",
+  "mages-brilliance",
   "elemental-totems",
   "adventure-ownership",
 ];

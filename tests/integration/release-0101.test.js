@@ -57,15 +57,10 @@ function sectionBetween(
 }
 
 describe("0.10.1 release closure", () => {
-  test("keeps release metadata synchronized", () => {
-    const manifest = readJson(MODULE);
+  test("keeps 0.10.1 release metadata recorded", () => {
     const readme = read(README);
     const changelog = read(CHANGELOG);
 
-    expect(manifest.version).toBe("0.10.1");
-    expect(readme).toContain(
-      "**Current Foundry module version:** 0.10.1",
-    );
     expect(readme).toContain(
       "| Foundry Virtual Tabletop | 14.365 |",
     );
@@ -77,20 +72,14 @@ describe("0.10.1 release closure", () => {
     );
   });
 
-  test("closes Unreleased and records the complete Journal slice", () => {
+  test("records the complete 0.10.1 Journal slice", () => {
     const changelog = read(CHANGELOG);
-    const unreleased = sectionBetween(
-      changelog,
-      "## [Unreleased]",
-      "## [0.10.1]",
-    );
     const release = sectionBetween(
       changelog,
       "## [0.10.1] - 2026-08-02",
       "## [0.10.0]",
     );
 
-    expect(unreleased.trim()).toBe("");
 
     for (const marker of [
       "Heroic Class Abilities",

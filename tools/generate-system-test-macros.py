@@ -122,6 +122,15 @@ MACROS = [
         "img": "icons/svg/fire.svg",
     },
     {
+        "key": "mages-brilliance",
+        "id": "BoaDevMageBril01",
+        "name": "BOA DEV – Verify Mage's Brilliance",
+        "file": "verify-mages-brilliance.js",
+        "order": 18,
+        "suiteMember": True,
+        "img": "icons/svg/lightning.svg",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",
