@@ -111,6 +111,20 @@ boaCheck(
   }
 );
 
+const nativeSenseMagicCost =
+  typeof sourceSenseMagic?.getSpellCost === "function"
+    ? sourceSenseMagic.getSpellCost(0)
+    : null;
+
+if (sourceSenseMagic) {
+  boaCheckEqual(
+    checks,
+    "Dragonbane Sense Magic normally costs 1 WP",
+    nativeSenseMagicCost,
+    1
+  );
+}
+
 if (
   settingRegistered &&
   sourceAbility &&
@@ -200,6 +214,44 @@ if (
         ),
         abilityContentKey
       );
+    }
+
+    if (managedSenseMagic) {
+      boaCheckEqual(
+        checks,
+        "Mage's Brilliance makes managed Sense Magic free",
+        managedSenseMagic.getSpellCost(0),
+        0
+      );
+
+      const reconcile =
+        game.modules
+          ?.get?.(BOA_TEST_MODULE_ID)
+          ?.api
+          ?.reconcileSpellGrants;
+
+      if (typeof reconcile === "function") {
+        await reconcile();
+        await reconcile();
+        await reconcile();
+
+        boaCheckEqual(
+          checks,
+          "Repeated reconciliation does not duplicate Sense Magic",
+          actorSenseMagicItems(
+            actor,
+            sourceSenseMagic,
+          ).length,
+          1
+        );
+      } else {
+        boaCheck(
+          checks,
+          "Repeated reconciliation does not duplicate Sense Magic",
+          false,
+          "game.modules.get(...).api.reconcileSpellGrants is unavailable."
+        );
+      }
     }
 
     await game.settings.set(
@@ -328,6 +380,45 @@ if (
       String(matchingSenseMagic.length)
     );
 
+    boaCheckEqual(
+      checks,
+      "Manual Sense Magic is free while Mage's Brilliance is active",
+      manualSenseMagic.getSpellCost(0),
+      0
+    );
+
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      settingKey,
+      false,
+    );
+    await new Promise(
+      resolve => setTimeout(resolve, 100)
+    );
+
+    boaCheckEqual(
+      checks,
+      "Disabling Mage's Brilliance restores normal manual Sense Magic cost",
+      manualSenseMagic.getSpellCost(0),
+      nativeSenseMagicCost
+    );
+
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      settingKey,
+      true,
+    );
+    await new Promise(
+      resolve => setTimeout(resolve, 100)
+    );
+
+    boaCheckEqual(
+      checks,
+      "Re-enabling Mage's Brilliance makes manual Sense Magic free again",
+      manualSenseMagic.getSpellCost(0),
+      0
+    );
+
     await actor.deleteEmbeddedDocuments(
       "Item",
       [manualPhaseAbility.id]
@@ -335,6 +426,13 @@ if (
 
     await new Promise(
       resolve => setTimeout(resolve, 250)
+    );
+
+    boaCheckEqual(
+      checks,
+      "Removing Mage's Brilliance restores normal manual Sense Magic cost",
+      manualSenseMagic.getSpellCost(0),
+      nativeSenseMagicCost
     );
 
     boaCheck(
@@ -442,9 +540,8 @@ if (
 notes.push(
   "This is the initial 0.11.0 RED contract. It covers the granular world setting, " +
   "external Sense Magic grant provenance, reconciliation, manual-item safety, " +
-  "and the disabled path. Free Sense Magic casting and the LANGUAGES result-10 " +
-  "choice are intentionally added in subsequent red contracts after the Dragonbane " +
-  "casting and skill-roll hooks have been inspected."
+  "the disabled path, free Sense Magic cost, and reconciliation idempotence. " +
+  "The LANGUAGES result-10 choice remains a separate subsequent red/green slice."
 );
 
 return boaFinish(
