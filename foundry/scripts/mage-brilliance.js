@@ -247,7 +247,7 @@ export async function castLegacyFreeSenseMagicTrick(
         ),
       },
       content: i18n.format(
-        "DoD.ui.dialog.castMagicTrickContent",
+        "BOA.dialog.mageBrillianceFreeSenseMagicContent",
         {
           spell: item.name,
         },

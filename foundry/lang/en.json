@@ -3,6 +3,7 @@
     "dialog": {
       "missingAmmoPouchTitle": "No Ammo Pouch",
       "missingAmmoPouchContent": "The character does not have an Ammo Pouch.\nAre you sure you want to perform an action?",
+      "mageBrillianceFreeSenseMagicContent": "Cast {spell} without spending WP?",
       "elementalTotem": {
         "initialTitle": "Elemental Totem — Power Level {powerLevel}",
         "totemType": "Totem type",

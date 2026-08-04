@@ -381,6 +381,107 @@ describe("Dragonbane 4.0.1 legacy magic-trick adapter", () => {
     ).toBe(0);
   });
 
+  test("uses the BoA free-cast prompt instead of Dragonbane's 1 WP prompt", async () => {
+    const subject = await loadSubject();
+
+    const actor = makeActor();
+    actor.type = "character";
+    actor.isObserver = true;
+    actor.system = {
+      willPoints: {
+        value: 5,
+      },
+    };
+
+    const ability =
+      makeMageAbility(actor);
+    const spell =
+      makeSpell({ actor });
+
+    actor.items =
+      makeActorItems([
+        ability,
+        spell,
+      ]);
+
+    let dialogOptions = null;
+
+    const DialogClass = {
+      confirm: vi.fn(
+        async options => {
+          dialogOptions = options;
+          return false;
+        },
+      ),
+    };
+
+    const i18n = {
+      localize: vi.fn(
+        key => key,
+      ),
+      format: vi.fn(
+        (key, data) => {
+          if (
+            key ===
+            "BOA.dialog.mageBrillianceFreeSenseMagicContent"
+          ) {
+            return (
+              `Cast ${data.spell} ` +
+              "without spending WP?"
+            );
+          }
+
+          if (
+            key ===
+            "DoD.ui.dialog.castMagicTrickContent"
+          ) {
+            return (
+              `Spend 1 WP to cast ` +
+              `${data.spell}?`
+            );
+          }
+
+          return key;
+        },
+      ),
+    };
+
+    const result =
+      await subject
+        .castLegacyFreeSenseMagicTrick(
+          actor,
+          spell,
+          {
+            confirmCast: true,
+            createMessage: false,
+            DialogClass,
+            i18n,
+          },
+        );
+
+    expect(result).toEqual({
+      handled: true,
+      cast: false,
+      wpCost: 0,
+    });
+
+    expect(i18n.format)
+      .toHaveBeenCalledWith(
+        "BOA.dialog.mageBrillianceFreeSenseMagicContent",
+        {
+          spell: "Sense Magic",
+        },
+      );
+
+    expect(dialogOptions?.content)
+      .toBe(
+        "Cast Sense Magic without spending WP?",
+      );
+
+    expect(dialogOptions?.content)
+      .not.toContain("1 WP");
+  });
+
   test("does not handle the legacy path when Mage's Brilliance automation is disabled", async () => {
     const subject = await loadSubject();
 

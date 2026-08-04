@@ -271,6 +271,36 @@ if (
       managedSenseMagic &&
       typeof legacyFreeCast === "function"
     ) {
+      let capturedFreeDialog = null;
+
+      await legacyFreeCast(
+        actor,
+        managedSenseMagic,
+        {
+          confirmCast: true,
+          createMessage: false,
+          DialogClass: {
+            confirm: async options => {
+              capturedFreeDialog = options;
+              return false;
+            },
+          },
+        }
+      );
+
+      const freeDialogContent =
+        capturedFreeDialog?.content ?? "";
+
+      boaCheck(
+        checks,
+        "Mage's Brilliance free Sense Magic dialog does not claim a 1 WP cost",
+        freeDialogContent.includes(
+          managedSenseMagic.name
+        ) &&
+          !freeDialogContent.includes("1 WP"),
+        freeDialogContent
+      );
+
       const wpBeforeLegacyCast =
         actor.system.willPoints.value;
 
