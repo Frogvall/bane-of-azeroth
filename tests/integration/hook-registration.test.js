@@ -98,6 +98,7 @@ describe("Foundry hook registration", () => {
       );
     const {
       onRenderAbilityActionActorSheet,
+      onUpdateAbilityActionChatMessage,
     } = abilityActions;
     const warlockDemons = await import(
       "../../foundry/scripts/warlock-demons.js"
@@ -114,6 +115,13 @@ const registeredHooks =
         .filter(
           ([name]) =>
             name === "createChatMessage"
+        )
+        .map(([, callback]) => callback);
+    const updateChatMessageCallbacks =
+      registeredHooks
+        .filter(
+          ([name]) =>
+            name === "updateChatMessage"
         )
         .map(([, callback]) => callback);
 const updateTokenCallbacks =
@@ -169,6 +177,19 @@ expect([
       updateTokenCallbacks
     ).toContain(
       onUpdateCommonAnimalMovementToken
+    );
+    expect(
+      updateChatMessageCallbacks
+    ).toHaveLength(3);
+    expect(
+      new Set(
+        updateChatMessageCallbacks
+      ).size
+    ).toBe(3);
+    expect(
+      updateChatMessageCallbacks
+    ).toContain(
+      onUpdateAbilityActionChatMessage,
     );
     expect(
       onCommonAnimalRollDamageChatMessage

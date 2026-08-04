@@ -1,39 +1,40 @@
-import { onRenderControlledMonsterSheet } from "./monster-attack-control.js";
+import {
+  onRenderControlledMonsterSheet } from "./monster-attack-control.js";
 import {
   registerCommonAnimalStatusSocket,
   onRenderCommonAnimalRestrainedSource,
-} from "./common-animal-status-effects.js";
+  } from "./common-animal-status-effects.js";
 import {
   MODULE_ID,
   WEAPON_FEATURES,
-} from "./core/constants.js";
+  } from "./core/constants.js";
 import {
   getContentVersion,
   promptAdventureImport,
   registerSettings,
-} from "./adventure-import.js";
+  } from "./adventure-import.js";
 import {
   isAutoGrantedSpell,
   lockAutoGrantedSpellPreparation,
   protectAutoGrantedSpellPreparation,
-} from "./spell-preparation.js";
+  } from "./spell-preparation.js";
 
 import {
   getContentKey,
   getModuleFlag,
-} from "./core/documents.js";
+  } from "./core/documents.js";
 import {
   loadSpellGrantDefinitions,
   onCreateItem,
   onDeleteItem,
   onUpdateItem,
   reconcileSpellGrants,
-} from "./spell-grants.js";
+  } from "./spell-grants.js";
 
 import {
   onScattershotDamageClick,
   patchWeaponTests,
-} from "./weapon-features.js";
+  } from "./weapon-features.js";
 
 
 import {
@@ -45,36 +46,36 @@ import {
   onUpdateElementalTotemChatMessage,
   registerElementalTotemSocket,
   protectElementalTotemMovement,
-} from "./elemental-totems.js";
+  } from "./elemental-totems.js";
 import {
   onCreateWarlockDemonChatMessage,
-registerWarlockDemonSocket,
-} from "./warlock-demons.js";
+  registerWarlockDemonSocket,
+  } from "./warlock-demons.js";
 import {
   patchVoidwalkerSuffering,
   registerVoidwalkerSufferingSocket,
   registerVoidwalkerSufferingDamageCardHook,
-} from "./warlock-demons/suffering.js";
+  } from "./warlock-demons/suffering.js";
 import {
   isPrimaryActiveGM,
-} from "./core/users.js";
+  } from "./core/users.js";
 import {
   patchSummonRestLifecycle,
   registerSummonDurationLifecycleSocket,
-} from "./core/summon-duration-lifecycle.js";
+  } from "./core/summon-duration-lifecycle.js";
 import {
   onCommonAnimalRollDamageChatMessage,
   processCommonAnimalAttackResult,
-} from "./common-animal-attack-effects.js";
+  } from "./common-animal-attack-effects.js";
 import {
   onCreateCommonAnimalEffectOnlyWeaponTestMessage,
   onPreCreateCommonAnimalEffectOnlyWeaponTestMessage,
   onRenderCommonAnimalEffectOnlyActorSheet,
   onUpdateCommonAnimalEffectOnlyWeaponTestMessage,
-} from "./common-animal-effect-only-attacks.js";
+  } from "./common-animal-effect-only-attacks.js";
 import {
   onUpdateCommonAnimalMovementToken,
-} from "./common-animal-movement.js";
+  } from "./common-animal-movement.js";
 
 import {
   getAbilityActionDefinition,
@@ -86,6 +87,8 @@ import {
   planEyeBeamAction,
   reconcileAbilityActions,
   reconcileActorAbilityActions,
+  onUpdateAbilityActionChatMessage,
+  patchAbilityActionWeaponSlots,
 } from "./ability-actions.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
@@ -172,6 +175,10 @@ Hooks.on(
     "updateChatMessage",
     onUpdateCommonAnimalEffectOnlyWeaponTestMessage
   );
+  Hooks.on(
+    "updateChatMessage",
+    onUpdateAbilityActionChatMessage,
+  );
   Hooks.on("renderDoDActorBaseSheet", lockAutoGrantedSpellPreparation);
   Hooks.on(
     "renderDoDActorBaseSheet",
@@ -218,6 +225,7 @@ Hooks.once("ready", async () => {
 
   try {
     await patchWarStompWeaponTest();
+    await patchAbilityActionWeaponSlots();
 
     if (isPrimaryActiveGM()) {
       await reconcileAbilityActions();

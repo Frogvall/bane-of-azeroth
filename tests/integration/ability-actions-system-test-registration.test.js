@@ -79,6 +79,10 @@ describe(
         .toContain(
           "Eye Beam is automatic 2D8 magical damage rather than a weapon test",
         );
+      expect(source)
+        .toContain(
+          "Managed Eye Beam appears under Weapons with range 20 and 2D8",
+        );
     });
   },
 );

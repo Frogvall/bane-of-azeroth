@@ -323,9 +323,29 @@ if (
 
       boaCheckEqual(
         checks,
-        "Eye Beam does not create a fake weapon skill roll",
+        "Exactly one managed Eye Beam attack action is created",
         managedEye.length,
-        0
+        1
+      );
+
+      boaCheck(
+        checks,
+        "Managed Eye Beam appears under Weapons with range 20 and 2D8",
+        managedEye[0]?.type === "weapon" &&
+          Number(
+            managedEye[0]?.system?.range
+          ) === 20 &&
+          String(
+            managedEye[0]?.system?.damage
+          ).toUpperCase() === "2D8" &&
+          managedEye[0]?.system?.skill?.name === "" &&
+          managedEye[0]?.system?.features?.includes(
+            "noDamageBonus"
+          ) &&
+          managedEye[0]?.system?.features?.includes(
+            "noparry"
+          ),
+        managedEye[0]?.toObject?.() ?? null
       );
 
       boaCheck(
@@ -505,8 +525,9 @@ notes.push(
 );
 
 notes.push(
-  "Eye Beam intentionally stays an ability action rather than inventing a weapon " +
-  "skill: it auto-hits, cannot be parried, and deals magical 2D8 damage."
+  "Eye Beam is exposed as a managed Weapon entry so range and damage are visible " +
+  "with the character's other attacks. Its click still bypasses DoDWeaponTest: " +
+  "it auto-hits, cannot be parried, and deals magical 2D8 damage."
 );
 
 return boaFinish(

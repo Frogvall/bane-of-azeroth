@@ -45,6 +45,11 @@ describe(
         "reconcileActorAbilityActions",
         "patchWarStompWeaponTest",
         "useEyeBeamAction",
+        "buildManagedEyeBeamData",
+        "patchAbilityActionWeaponSlots",
+        "normalizeWarStompDialogData",
+        "normalizeWarStompRollOptions",
+        "resolvePendingWarStompCritical",
       ]) {
         expect(source)
           .toContain(marker);
@@ -78,6 +83,12 @@ describe(
       );
       expect(source).toContain(
         "onAbilityActionDamageClick",
+      );
+      expect(source).toContain(
+        "onUpdateAbilityActionChatMessage",
+      );
+      expect(source).toContain(
+        "patchAbilityActionWeaponSlots",
       );
     });
 

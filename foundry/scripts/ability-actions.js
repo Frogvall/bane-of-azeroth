@@ -32,6 +32,27 @@ const WAR_STOMP_PATCH =
     "bane-of-azeroth.war-stomp.weapon-test",
   );
 
+const WAR_STOMP_DIALOG_PATCH =
+  Symbol.for(
+    "bane-of-azeroth.war-stomp.dialog",
+  );
+
+const PENDING_WAR_STOMP_FLAG =
+  "pendingWarStompDamage";
+
+const reconcileQueues =
+  new WeakMap();
+
+const ABILITY_ACTION_WEAPON_SLOT_PATCH =
+  Symbol.for(
+    "bane-of-azeroth.ability-actions.weapon-slots",
+  );
+
+const ABILITY_ACTION_SHEET_SLOT_PATCH =
+  Symbol.for(
+    "bane-of-azeroth.ability-actions.sheet-weapon-slots",
+  );
+
 export const ABILITY_ACTION_DEFINITIONS =
   Object.freeze({
     [WAR_STOMP_KEY]:
@@ -242,6 +263,66 @@ export function buildManagedWarStompData(
   };
 }
 
+export function buildManagedEyeBeamData(
+  sourceAbility,
+) {
+  return {
+    name:
+      sourceAbility?.name ??
+      "Eye Beam",
+    type:
+      "weapon",
+    img:
+      sourceAbility?.img ??
+      "icons/svg/eye.svg",
+    system: {
+      itemDescription:
+        "<p>Managed Eye Beam attack action. " +
+        "Automatically hits one target within 20 m for 2D8 magical damage.</p>",
+      worn:
+        true,
+      quantity:
+        1,
+      weight:
+        0,
+      cost:
+        "",
+      supply:
+        "",
+      grip: {
+        value:
+          "",
+      },
+      str:
+        0,
+      range:
+        "20",
+      damage:
+        "2D8",
+      durability:
+        0,
+      skill: {
+        name:
+          "",
+      },
+      features: [
+        "noDamageBonus",
+        "noparry",
+      ],
+    },
+    flags: {
+      [MODULE_ID]: {
+        [MANAGED_FLAG]:
+          true,
+        [ACTION_KEY_FLAG]:
+          EYE_BEAM_KEY,
+        [SOURCE_KEY_FLAG]:
+          EYE_BEAM_SOURCE_CONTENT_KEY,
+      },
+    },
+  };
+}
+
 function managedItemsFor(
   actor,
   key,
@@ -269,16 +350,39 @@ async function removeManagedItems(
     return;
   }
 
+  const ids =
+    items
+      .map(
+        item =>
+          item.id,
+      )
+      .filter(
+        id =>
+          actor.items?.get
+            ? Boolean(
+                actor.items.get(
+                  id,
+                ),
+              )
+            : actor.items?.some?.(
+                item =>
+                  item.id === id,
+              ),
+      );
+
+  if (
+    ids.length === 0
+  ) {
+    return;
+  }
+
   await actor.deleteEmbeddedDocuments(
     "Item",
-    items.map(
-      item =>
-        item.id,
-    ),
+    ids,
   );
 }
 
-export async function reconcileActorAbilityActions(
+async function reconcileActorAbilityActionsNow(
   actor,
   {
     settings =
@@ -305,10 +409,22 @@ export async function reconcileActorAbilityActions(
       WAR_STOMP_SOURCE_CONTENT_KEY,
     );
 
+  const sourceEyeBeam =
+    findSourceAbility(
+      actor,
+      EYE_BEAM_SOURCE_CONTENT_KEY,
+    );
+
   const managedWarStomps =
     managedItemsFor(
       actor,
       WAR_STOMP_KEY,
+    );
+
+  const managedEyeBeams =
+    managedItemsFor(
+      actor,
+      EYE_BEAM_KEY,
     );
 
   const wantsWarStomp =
@@ -317,37 +433,121 @@ export async function reconcileActorAbilityActions(
       settings,
     );
 
+  const wantsEyeBeam =
+    Boolean(sourceEyeBeam) &&
+    isEyeBeamAutomationEnabled(
+      settings,
+    );
+
   if (!wantsWarStomp) {
     await removeManagedItems(
       actor,
       managedWarStomps,
     );
-    return true;
+  } else {
+    if (
+      managedWarStomps.length > 1
+    ) {
+      await removeManagedItems(
+        actor,
+        managedWarStomps.slice(1),
+      );
+    }
+
+    if (
+      managedWarStomps.length === 0
+    ) {
+      await actor.createEmbeddedDocuments(
+        "Item",
+        [
+          buildManagedWarStompData(
+            sourceWarStomp,
+          ),
+        ],
+      );
+    }
   }
 
-  if (
-    managedWarStomps.length > 1
-  ) {
+  if (!wantsEyeBeam) {
     await removeManagedItems(
       actor,
-      managedWarStomps.slice(1),
+      managedEyeBeams,
     );
-  }
+  } else {
+    if (
+      managedEyeBeams.length > 1
+    ) {
+      await removeManagedItems(
+        actor,
+        managedEyeBeams.slice(1),
+      );
+    }
 
-  if (
-    managedWarStomps.length === 0
-  ) {
-    await actor.createEmbeddedDocuments(
-      "Item",
-      [
-        buildManagedWarStompData(
-          sourceWarStomp,
-        ),
-      ],
-    );
+    if (
+      managedEyeBeams.length === 0
+    ) {
+      await actor.createEmbeddedDocuments(
+        "Item",
+        [
+          buildManagedEyeBeamData(
+            sourceEyeBeam,
+          ),
+        ],
+      );
+    }
   }
 
   return true;
+}
+
+export function reconcileActorAbilityActions(
+  actor,
+  options = {},
+) {
+  if (!actor) {
+    return Promise.resolve(
+      false,
+    );
+  }
+
+  const previous =
+    reconcileQueues.get(
+      actor,
+    ) ??
+    Promise.resolve();
+
+  const next =
+    previous
+      .catch(
+        () =>
+          undefined,
+      )
+      .then(
+        () =>
+          reconcileActorAbilityActionsNow(
+            actor,
+            options,
+          ),
+      );
+
+  reconcileQueues.set(
+    actor,
+    next,
+  );
+
+  return next.finally(
+    () => {
+      if (
+        reconcileQueues.get(
+          actor,
+        ) === next
+      ) {
+        reconcileQueues.delete(
+          actor,
+        );
+      }
+    },
+  );
 }
 
 export async function reconcileAbilityActions(
@@ -674,10 +874,46 @@ async function loadDamageHelper() {
     .inflictDamageMessage;
 }
 
+function getWarStompTargetActors(
+  actor,
+  {
+    tokens =
+      globalThis.canvas
+        ?.tokens
+        ?.placeables ??
+      [],
+    sourceToken =
+      findActorToken(
+        actor,
+      ),
+    measureDistance =
+      undefined,
+  } = {},
+) {
+  if (!sourceToken) {
+    return [];
+  }
+
+  return collectWarStompTargets(
+    sourceToken,
+    tokens,
+    measureDistance
+      ? {
+          measureDistance,
+        }
+      : {},
+  ).map(
+    target =>
+      target.actor,
+  );
+}
+
 export async function createWarStompDamageMessages(
   actor,
   weapon,
   {
+    targetActors =
+      null,
     tokens =
       globalThis.canvas
         ?.tokens
@@ -689,26 +925,27 @@ export async function createWarStompDamageMessages(
       ),
     inflictDamageMessage =
       null,
+    doubleWeaponDamage =
+      false,
   } = {},
 ) {
-  if (!sourceToken) {
-    warning(
-      "BOA.notifications.abilityActionNoSourceToken",
-    );
-    return [];
-  }
-
   const targets =
-    collectWarStompTargets(
-      sourceToken,
-      tokens,
+    targetActors ??
+    getWarStompTargetActors(
+      actor,
+      {
+        tokens,
+        sourceToken,
+      },
     );
 
   if (
     targets.length === 0
   ) {
     warning(
-      "BOA.notifications.warStompNoTargets",
+      sourceToken
+        ? "BOA.notifications.warStompNoTargets"
+        : "BOA.notifications.abilityActionNoSourceToken",
     );
     return [];
   }
@@ -748,8 +985,8 @@ export async function createWarStompDamageMessages(
           ?.damageTypes
           ?.none ??
         "none",
-      target:
-        target.actor,
+      doubleWeaponDamage,
+      target,
     });
   }
 
@@ -765,6 +1002,298 @@ function isWarStompWeapon(
   );
 }
 
+function isEyeBeamWeapon(
+  weapon,
+) {
+  return isManagedAbilityAction(
+    weapon,
+    EYE_BEAM_KEY,
+  );
+}
+
+function countsAgainstPhysicalWeaponLimit(
+  weapon,
+) {
+  return (
+    !weapon?.hasWeaponFeature?.(
+      "unarmed",
+    ) &&
+    !isEyeBeamWeapon(
+      weapon,
+    )
+  );
+}
+
+async function loadActorBaseSheetClass() {
+  const module =
+    await loadDragonbaneModule(
+      "systems/dragonbane/modules/sheets/actor-base-sheet.js",
+    );
+
+  return (
+    module?.default ??
+    null
+  );
+}
+
+export async function patchAbilityActionWeaponSlots({
+  ActorClass =
+    globalThis.CONFIG
+      ?.Actor
+      ?.documentClass,
+  ActorSheetClass =
+    null,
+} = {}) {
+  const actorPrototype =
+    ActorClass?.prototype;
+
+  if (
+    typeof actorPrototype
+      ?.canEquipWeapon !==
+      "function" ||
+    typeof actorPrototype
+      ?.getEquippedWeapons !==
+      "function"
+  ) {
+    console.error(
+      `${MODULE_ID} | Dragonbane Actor weapon-slot API was not available for ability actions.`,
+    );
+    return false;
+  }
+
+  const sheetClass =
+    ActorSheetClass ??
+    await loadActorBaseSheetClass();
+
+  const sheetPrototype =
+    sheetClass?.prototype;
+
+  if (
+    typeof sheetPrototype
+      ?._prepareItems !==
+      "function"
+  ) {
+    console.error(
+      `${MODULE_ID} | Dragonbane Actor-sheet weapon preparation was not available for ability actions.`,
+    );
+    return false;
+  }
+
+  if (
+    actorPrototype.canEquipWeapon[
+      ABILITY_ACTION_WEAPON_SLOT_PATCH
+    ] !== true
+  ) {
+    const nativeCanEquipWeapon =
+      actorPrototype
+        .canEquipWeapon;
+
+    function boaCanEquipWeapon(
+      ...args
+    ) {
+      const equipped =
+        this.getEquippedWeapons?.() ??
+        [];
+
+      if (
+        !equipped.some(
+          isEyeBeamWeapon,
+        )
+      ) {
+        return nativeCanEquipWeapon.apply(
+          this,
+          args,
+        );
+      }
+
+      return (
+        equipped.filter(
+          countsAgainstPhysicalWeaponLimit,
+        ).length < 3
+      );
+    }
+
+    Object.defineProperty(
+      boaCanEquipWeapon,
+      ABILITY_ACTION_WEAPON_SLOT_PATCH,
+      {
+        value:
+          true,
+      },
+    );
+
+    Object.defineProperty(
+      boaCanEquipWeapon,
+      "boaNativeCanEquipWeapon",
+      {
+        value:
+          nativeCanEquipWeapon,
+      },
+    );
+
+    actorPrototype.canEquipWeapon =
+      boaCanEquipWeapon;
+  }
+
+  if (
+    sheetPrototype._prepareItems[
+      ABILITY_ACTION_SHEET_SLOT_PATCH
+    ] !== true
+  ) {
+    const nativePrepareItems =
+      sheetPrototype
+        ._prepareItems;
+
+    function boaPrepareItems(
+      context,
+      ...args
+    ) {
+      const result =
+        nativePrepareItems.call(
+          this,
+          context,
+          ...args,
+        );
+
+      if (
+        Array.isArray(
+          context?.equippedWeapons,
+        ) &&
+        context.equippedWeapons.some(
+          isEyeBeamWeapon,
+        )
+      ) {
+        context.canEquipWeapon =
+          context.equippedWeapons.filter(
+            countsAgainstPhysicalWeaponLimit,
+          ).length < 3;
+      }
+
+      return result;
+    }
+
+    Object.defineProperty(
+      boaPrepareItems,
+      ABILITY_ACTION_SHEET_SLOT_PATCH,
+      {
+        value:
+          true,
+      },
+    );
+
+    sheetPrototype._prepareItems =
+      boaPrepareItems;
+  }
+
+  return true;
+}
+
+export function normalizeWarStompDialogData(
+  test,
+) {
+  if (
+    !isWarStompWeapon(
+      test?.weapon,
+    )
+  ) {
+    return false;
+  }
+
+  test.options = {
+    ...(test.options ?? {}),
+    action:
+      "normal",
+    extraDamage:
+      "",
+    enchantedWeapon:
+      0,
+  };
+
+  test.dialogData ??= {};
+  test.dialogData.actions = [];
+  test.dialogData.extraDamage = "";
+
+  if (
+    !test.noBanesBoons
+  ) {
+    test.dialogData.banes ??= [];
+
+    if (
+      !test.dialogData.banes.some(
+        bane =>
+          bane.source ===
+            "War Stomp",
+      )
+    ) {
+      test.dialogData.banes.push({
+        source:
+          "War Stomp",
+        value:
+          true,
+      });
+    }
+
+    const boons =
+      test.dialogData.boons?.length ??
+      0;
+    const banes =
+      test.dialogData.banes.length;
+
+    test.dialogData.fillerBanes =
+      Math.max(
+        0,
+        boons - banes,
+      );
+    test.dialogData.fillerBoons =
+      Math.max(
+        0,
+        banes - boons,
+      );
+  }
+
+  return true;
+}
+
+export function normalizeWarStompRollOptions(
+  options,
+) {
+  if (
+    options?.cancelled
+  ) {
+    return options;
+  }
+
+  const banes =
+    Array.isArray(
+      options?.banes,
+    )
+      ? [
+          ...options.banes,
+        ]
+      : [];
+
+  if (
+    !banes.includes(
+      "War Stomp",
+    )
+  ) {
+    banes.push(
+      "War Stomp",
+    );
+  }
+
+  return {
+    ...options,
+    action:
+      "normal",
+    extraDamage:
+      "",
+    enchantedWeapon:
+      0,
+    banes,
+  };
+}
+
 async function loadWeaponTestClass() {
   const module =
     await loadDragonbaneModule(
@@ -775,6 +1304,35 @@ async function loadWeaponTestClass() {
     module?.default ??
     null
   );
+}
+
+async function setPendingWarStompDamage(
+  test,
+  targetActors,
+) {
+  if (
+    !test?.rollMessage?.setFlag
+  ) {
+    return false;
+  }
+
+  await test.rollMessage.setFlag(
+    MODULE_ID,
+    PENDING_WAR_STOMP_FLAG,
+    {
+      actorUuid:
+        test.actor?.uuid,
+      weaponUuid:
+        test.weapon?.uuid,
+      targetActorUuids:
+        targetActors.map(
+          actor =>
+            actor.uuid,
+        ),
+    },
+  );
+
+  return true;
 }
 
 export async function patchWarStompWeaponTest({
@@ -792,10 +1350,13 @@ export async function patchWarStompWeaponTest({
 
   if (
     typeof prototype?.roll !==
+      "function" ||
+    typeof prototype
+      ?.updateDialogData !==
       "function"
   ) {
     console.error(
-      `${MODULE_ID} | Dragonbane DoDWeaponTest#roll was not available for War Stomp automation.`,
+      `${MODULE_ID} | Dragonbane DoDWeaponTest was not available for War Stomp automation.`,
     );
     return false;
   }
@@ -810,6 +1371,44 @@ export async function patchWarStompWeaponTest({
 
   const nativeRoll =
     prototype.roll;
+
+  const nativeUpdateDialogData =
+    prototype.updateDialogData;
+
+  function boaWarStompUpdateDialogData(
+    ...args
+  ) {
+    const result =
+      nativeUpdateDialogData.apply(
+        this,
+        args,
+      );
+
+    if (
+      isWarStompWeapon(
+        this.weapon,
+      ) &&
+      isWarStompAutomationEnabled()
+    ) {
+      normalizeWarStompDialogData(
+        this,
+      );
+    }
+
+    return result;
+  }
+
+  Object.defineProperty(
+    boaWarStompUpdateDialogData,
+    WAR_STOMP_DIALOG_PATCH,
+    {
+      value:
+        true,
+    },
+  );
+
+  prototype.updateDialogData =
+    boaWarStompUpdateDialogData;
 
   async function boaWarStompRoll(
     ...args
@@ -841,38 +1440,21 @@ export async function patchWarStompWeaponTest({
       return undefined;
     }
 
-    let nativeGetOptions =
-      null;
+    const nativeGetOptions =
+      this.getRollOptions;
 
-    if (!this.isReroll) {
-      nativeGetOptions =
-        this.getRollOptions;
+    this.getRollOptions =
+      async (...optionArgs) => {
+        const options =
+          await nativeGetOptions.apply(
+            this,
+            optionArgs,
+          );
 
-      this.getRollOptions =
-        async (...optionArgs) => {
-          const options =
-            await nativeGetOptions.apply(
-              this,
-              optionArgs,
-            );
-
-          if (
-            options?.cancelled
-          ) {
-            return options;
-          }
-
-          return {
-            ...options,
-            extraBanes:
-              Number(
-                options
-                  ?.extraBanes ??
-                0,
-              ) + 1,
-          };
-        };
-    }
+        return normalizeWarStompRollOptions(
+          options,
+        );
+      };
 
     let result;
 
@@ -883,12 +1465,8 @@ export async function patchWarStompWeaponTest({
           args,
         );
     } finally {
-      if (
-        nativeGetOptions
-      ) {
-        this.getRollOptions =
-          nativeGetOptions;
-      }
+      this.getRollOptions =
+        nativeGetOptions;
     }
 
     if (!result) {
@@ -909,14 +1487,44 @@ export async function patchWarStompWeaponTest({
     }
 
     if (
-      this.postRollData
+      !this.postRollData
         ?.success
     ) {
-      await resolveDamage(
-        actor,
-        this.weapon,
-      );
+      return result;
     }
+
+    const targetActors =
+      getWarStompTargetActors(
+        actor,
+      );
+
+    if (
+      targetActors.length === 0
+    ) {
+      warning(
+        "BOA.notifications.warStompNoTargets",
+      );
+      return result;
+    }
+
+    if (
+      this.postRollData
+        ?.isDragon
+    ) {
+      await setPendingWarStompDamage(
+        this,
+        targetActors,
+      );
+      return result;
+    }
+
+    await resolveDamage(
+      actor,
+      this.weapon,
+      {
+        targetActors,
+      },
+    );
 
     return result;
   }
@@ -934,6 +1542,118 @@ export async function patchWarStompWeaponTest({
     boaWarStompRoll;
 
   return true;
+}
+
+function resolveUuid(
+  uuid,
+) {
+  if (!uuid) {
+    return null;
+  }
+
+  try {
+    return (
+      globalThis.fromUuidSync?.(
+        uuid,
+      ) ??
+      null
+    );
+  } catch (_error) {
+    return null;
+  }
+}
+
+export async function resolvePendingWarStompCritical(
+  message,
+  {
+    resolveDamage =
+      createWarStompDamageMessages,
+    resolveDocument =
+      resolveUuid,
+  } = {},
+) {
+  const pending =
+    message?.getFlag?.(
+      MODULE_ID,
+      PENDING_WAR_STOMP_FLAG,
+    );
+
+  if (!pending) {
+    return false;
+  }
+
+  const context =
+    messageContext(
+      message,
+    );
+
+  const criticalEffect =
+    context
+      ?.criticalEffect;
+
+  if (!criticalEffect) {
+    return false;
+  }
+
+  await message.unsetFlag?.(
+    MODULE_ID,
+    PENDING_WAR_STOMP_FLAG,
+  );
+
+  const actor =
+    context?.actor ??
+    resolveDocument(
+      pending.actorUuid,
+    );
+
+  const weapon =
+    context?.weapon ??
+    resolveDocument(
+      pending.weaponUuid,
+    );
+
+  if (
+    !actor ||
+    !isWarStompWeapon(
+      weapon,
+    )
+  ) {
+    return false;
+  }
+
+  const targetActors =
+    (
+      pending
+        .targetActorUuids ??
+      []
+    )
+      .map(
+        resolveDocument,
+      )
+      .filter(
+        Boolean,
+      );
+
+  await resolveDamage(
+    actor,
+    weapon,
+    {
+      targetActors,
+      doubleWeaponDamage:
+        criticalEffect ===
+          "doubleWeaponDamage",
+    },
+  );
+
+  return true;
+}
+
+export async function onUpdateAbilityActionChatMessage(
+  message,
+) {
+  await resolvePendingWarStompCritical(
+    message,
+  );
 }
 
 function messageContext(
@@ -1070,9 +1790,29 @@ function measureTokenDistance(
   );
 }
 
+export async function confirmEyeBeamUse(
+  options,
+  DialogV2 =
+    globalThis.foundry
+      ?.applications
+      ?.api
+      ?.DialogV2,
+) {
+  if (
+    typeof DialogV2?.confirm !==
+      "function"
+  ) {
+    return false;
+  }
+
+  return DialogV2.confirm(
+    options,
+  );
+}
+
 export async function useEyeBeamAction(
   actor,
-  ability,
+  actionItem,
   {
     target =
       selectedTarget(),
@@ -1081,11 +1821,7 @@ export async function useEyeBeamAction(
         actor,
       ),
     confirm =
-      globalThis.foundry
-        ?.applications
-        ?.api
-        ?.DialogV2
-        ?.confirm,
+      confirmEyeBeamUse,
     inflictDamageMessage =
       null,
     measureDistance =
@@ -1144,7 +1880,7 @@ export async function useEyeBeamAction(
   }
 
   const accepted =
-    await confirm?.({
+    await confirm({
       window: {
         title:
           "Eye Beam",
@@ -1168,7 +1904,7 @@ export async function useEyeBeamAction(
     await spendWillpower(
       actor,
       3,
-      ability?.name ??
+      actionItem?.name ??
         "Eye Beam",
     );
 
@@ -1201,10 +1937,21 @@ export async function useEyeBeamAction(
     inflictDamageMessage ??
     await loadDamageHelper();
 
+  const damageItem =
+    isEyeBeamWeapon(
+      actionItem,
+    )
+      ? actionItem
+      : managedItemsFor(
+          actor,
+          EYE_BEAM_KEY,
+        )[0] ??
+        actionItem;
+
   await inflict({
     actor,
     weapon:
-      ability,
+      damageItem,
     damage:
       "2D8",
     damageType:
@@ -1218,6 +1965,31 @@ export async function useEyeBeamAction(
   });
 
   return true;
+}
+
+function isEyeBeamSourceAbility(
+  item,
+) {
+  return (
+    item?.type === "ability" &&
+    getContentKey(
+      item,
+    ) ===
+      EYE_BEAM_SOURCE_CONTENT_KEY
+  );
+}
+
+export function isEyeBeamActionItem(
+  item,
+) {
+  return (
+    isEyeBeamSourceAbility(
+      item,
+    ) ||
+    isEyeBeamWeapon(
+      item,
+    )
+  );
 }
 
 function actorSheetRoot(
@@ -1275,7 +2047,11 @@ export function onRenderAbilityActionActorSheet(
 
       const action =
         event.target?.closest?.(
-          "[data-action='useAbility']",
+          [
+            "[data-action='useAbility']",
+            "[data-action='skillRoll']",
+            "[data-action='rollDamage']",
+          ].join(","),
         );
 
       if (!action) {
@@ -1294,11 +2070,9 @@ export function onRenderAbilityActionActorSheet(
         );
 
       if (
-        item?.type !== "ability" ||
-        getContentKey(
+        !isEyeBeamActionItem(
           item,
-        ) !==
-          EYE_BEAM_SOURCE_CONTENT_KEY ||
+        ) ||
         !isEyeBeamAutomationEnabled()
       ) {
         return;

@@ -89,7 +89,7 @@ function fakeActor({
               (doc, index) => ({
                 ...doc,
                 id:
-                  `managed-${index}`,
+                  `managed-${actor.items.length}-${index}`,
                 parent: actor,
                 getFlag(moduleId, key) {
                   return (
@@ -224,7 +224,7 @@ describe(
       );
     });
 
-    test("reconciles only the managed War Stomp attack and preserves manual same-name items", async () => {
+    test("reconciles managed War Stomp and Eye Beam actions and preserves manual same-name items", async () => {
       const source =
         ability(
           WAR_STOMP_SOURCE_CONTENT_KEY,
@@ -270,7 +270,7 @@ describe(
 
       expect(
         actor.createEmbeddedDocuments,
-      ).toHaveBeenCalledTimes(1);
+      ).toHaveBeenCalledTimes(2);
 
       const managed =
         actor.items.filter(
@@ -296,7 +296,7 @@ describe(
               "eye-beam",
             ),
         ),
-      ).toBe(false);
+      ).toBe(true);
 
       await reconcileActorAbilityActions(
         actor,
@@ -317,6 +317,16 @@ describe(
             ),
         ),
       ).toBe(false);
+
+      expect(
+        actor.items.some(
+          item =>
+            isManagedAbilityAction(
+              item,
+              "eye-beam",
+            ),
+        ),
+      ).toBe(true);
 
       expect(
         actor.items,
