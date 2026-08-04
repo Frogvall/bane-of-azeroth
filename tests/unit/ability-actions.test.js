@@ -164,6 +164,7 @@ describe(
         canParry: false,
         magical: true,
         usesWeaponTest: false,
+        manualDamageRoll: true,
       });
     });
 

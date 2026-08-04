@@ -205,7 +205,7 @@ describe(
           type:
             "weapon",
           img:
-            source.img,
+            "modules/bane-of-azeroth/assets/icons/weapons/eye_beam.webp",
           system:
             expect.objectContaining({
               worn:

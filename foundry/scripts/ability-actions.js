@@ -39,6 +39,8 @@ const WAR_STOMP_DIALOG_PATCH =
 
 const PENDING_WAR_STOMP_FLAG =
   "pendingWarStompDamage";
+const TARGET_RESOLUTION_FLAG =
+  "abilityActionTargetResolution";
 
 const reconcileQueues =
   new WeakMap();
@@ -77,6 +79,8 @@ export const ABILITY_ACTION_DEFINITIONS =
           false,
         canParry:
           false,
+        manualDamageRoll:
+          true,
       }),
     [EYE_BEAM_KEY]:
       Object.freeze({
@@ -100,6 +104,8 @@ export const ABILITY_ACTION_DEFINITIONS =
           true,
         usesWeaponTest:
           false,
+        manualDamageRoll:
+          true,
       }),
   });
 
@@ -143,6 +149,8 @@ export function planEyeBeamAction() {
       definition.magical,
     usesWeaponTest:
       definition.usesWeaponTest,
+    manualDamageRoll:
+      definition.manualDamageRoll,
   };
 }
 
@@ -212,8 +220,7 @@ export function buildManagedWarStompData(
     type:
       "weapon",
     img:
-      sourceAbility?.img ??
-      "icons/svg/explosion.svg",
+      "modules/bane-of-azeroth/assets/icons/weapons/war_stomp.webp",
     system: {
       itemDescription:
         "<p>Managed War Stomp attack. " +
@@ -273,8 +280,7 @@ export function buildManagedEyeBeamData(
     type:
       "weapon",
     img:
-      sourceAbility?.img ??
-      "icons/svg/eye.svg",
+      "modules/bane-of-azeroth/assets/icons/weapons/eye_beam.webp",
     system: {
       itemDescription:
         "<p>Managed Eye Beam attack action. " +
@@ -908,6 +914,118 @@ function getWarStompTargetActors(
   );
 }
 
+function abilityActionResolutionContent(
+  weapon,
+  target,
+  {
+    automaticHit = false,
+    damage,
+    magical = false,
+  } = {},
+) {
+  const attackName =
+    weapon?.name ??
+    "Attack";
+  const targetName =
+    target?.isToken
+      ? target.token?.name
+      : target?.name ??
+        "Target";
+
+  const hitText =
+    automaticHit
+      ? `${attackName} targeting <strong>${targetName}</strong> hits automatically.`
+      : `${attackName} targeting <strong>${targetName}</strong> succeeded.`;
+
+  const damageText =
+    magical
+      ? `${damage} magical damage`
+      : `${damage} damage`;
+
+  return (
+    `<p>${hitText}</p>` +
+    `<p>${damageText}</p>` +
+    `<button class="chat-button weapon-roll" ` +
+    `data-action="boaRollAbilityActionDamage">` +
+    `<i class="fas fa-dice"></i>` +
+    `${globalThis.game?.i18n?.localize?.(
+      "DoD.ui.chat.rollDamage",
+    ) ?? "Roll Damage"}` +
+    `</button>`
+  );
+}
+
+export async function createAbilityActionResolutionMessages(
+  actor,
+  weapon,
+  {
+    actionKey,
+    automaticHit = false,
+    damage,
+    targetActors = [],
+    magical = false,
+    doubleWeaponDamage = false,
+    createMessage =
+      data =>
+        globalThis.ChatMessage?.create?.(
+          data,
+        ),
+    // Injectable only for regression tests. Creating the hit/result card
+    // must never roll damage.
+    inflictDamageMessage =
+      null,
+  } = {},
+) {
+  void inflictDamageMessage;
+
+  const messages = [];
+
+  for (const target of targetActors) {
+    const message =
+      await createMessage({
+        user:
+          globalThis.game?.user?.id,
+        speaker:
+          globalThis.ChatMessage
+            ?.getSpeaker?.({
+              actor,
+            }),
+        content:
+          abilityActionResolutionContent(
+            weapon,
+            target,
+            {
+              automaticHit,
+              damage,
+              magical,
+            },
+          ),
+        flags: {
+          [MODULE_ID]: {
+            [TARGET_RESOLUTION_FLAG]: {
+              actorUuid:
+                actor?.uuid,
+              weaponUuid:
+                weapon?.uuid,
+              targetActorUuid:
+                target?.uuid,
+              actionKey,
+              damage,
+              magical,
+              doubleWeaponDamage,
+            },
+          },
+        },
+      });
+
+    messages.push(
+      message,
+    );
+  }
+
+  return messages;
+}
+
 export async function createWarStompDamageMessages(
   actor,
   weapon,
@@ -923,8 +1041,8 @@ export async function createWarStompDamageMessages(
       findActorToken(
         actor,
       ),
-    inflictDamageMessage =
-      null,
+    createResolutionMessages =
+      createAbilityActionResolutionMessages,
     doubleWeaponDamage =
       false,
   } = {},
@@ -969,26 +1087,19 @@ export async function createWarStompDamageMessages(
       )}</p>`,
   });
 
-  const inflict =
-    inflictDamageMessage ??
-    await loadDamageHelper();
-
-  for (const target of targets) {
-    await inflict({
-      actor,
-      weapon,
+  await createResolutionMessages(
+    actor,
+    weapon,
+    {
+      actionKey:
+        WAR_STOMP_KEY,
       damage:
         "D6",
-      damageType:
-        globalThis.CONFIG
-          ?.DoD
-          ?.damageTypes
-          ?.none ??
-        "none",
+      targetActors:
+        targets,
       doubleWeaponDamage,
-      target,
-    });
-  }
+    },
+  );
 
   return targets;
 }
@@ -1671,9 +1782,108 @@ function messageContext(
   }
 }
 
+export async function rollAbilityActionResolutionDamage(
+  message,
+  {
+    resolveDocument =
+      resolveUuid,
+    inflictDamageMessage =
+      null,
+  } = {},
+) {
+  const pending =
+    message?.getFlag?.(
+      MODULE_ID,
+      TARGET_RESOLUTION_FLAG,
+    );
+
+  if (!pending) {
+    return false;
+  }
+
+  const actor =
+    resolveDocument(
+      pending.actorUuid,
+    );
+  const weapon =
+    resolveDocument(
+      pending.weaponUuid,
+    );
+  const target =
+    resolveDocument(
+      pending.targetActorUuid,
+    );
+
+  if (
+    !actor ||
+    !weapon ||
+    !target
+  ) {
+    return false;
+  }
+
+  const inflict =
+    inflictDamageMessage ??
+    await loadDamageHelper();
+
+  await inflict({
+    actor,
+    weapon,
+    damage:
+      pending.damage,
+    damageType:
+      globalThis.CONFIG
+        ?.DoD
+        ?.damageTypes
+        ?.none ??
+      "none",
+    doubleWeaponDamage:
+      Boolean(
+        pending.doubleWeaponDamage,
+      ),
+    target,
+  });
+
+  return true;
+}
+
 export function onAbilityActionDamageClick(
   event,
 ) {
+  const resolutionButton =
+    event?.target?.closest?.(
+      "[data-action='boaRollAbilityActionDamage']",
+    );
+
+  if (resolutionButton) {
+    event.preventDefault?.();
+    event.stopImmediatePropagation?.();
+
+    const element =
+      resolutionButton.closest(
+        ".chat-message",
+      );
+
+    const messageId =
+      element?.dataset
+        ?.messageId;
+
+    const message =
+      globalThis.game
+        ?.messages
+        ?.get?.(
+          messageId,
+        );
+
+    if (message) {
+      void rollAbilityActionResolutionDamage(
+        message,
+      );
+    }
+
+    return;
+  }
+
   const button =
     event?.target?.closest?.(
       [
@@ -1822,6 +2032,9 @@ export async function useEyeBeamAction(
       ),
     confirm =
       confirmEyeBeamUse,
+    createResolutionMessages =
+      createAbilityActionResolutionMessages,
+    // Injectable only for regression tests. Activation must not roll damage.
     inflictDamageMessage =
       null,
     measureDistance =
@@ -1912,30 +2125,7 @@ export async function useEyeBeamAction(
     return true;
   }
 
-  await globalThis.ChatMessage?.create?.({
-    user:
-      globalThis.game?.user?.id,
-    speaker:
-      globalThis.ChatMessage
-        ?.getSpeaker?.({
-          actor,
-        }),
-    content:
-      `<p>${format(
-        "BOA.chat.eyeBeamHit",
-        {
-          actor:
-            actor.name,
-          target:
-            target.name ??
-            target.actor.name,
-        },
-      )}</p>`,
-  });
-
-  const inflict =
-    inflictDamageMessage ??
-    await loadDamageHelper();
+  void inflictDamageMessage;
 
   const damageItem =
     isEyeBeamWeapon(
@@ -1948,21 +2138,23 @@ export async function useEyeBeamAction(
         )[0] ??
         actionItem;
 
-  await inflict({
+  await createResolutionMessages(
     actor,
-    weapon:
-      damageItem,
-    damage:
-      "2D8",
-    damageType:
-      globalThis.CONFIG
-        ?.DoD
-        ?.damageTypes
-        ?.none ??
-      "none",
-    target:
-      target.actor,
-  });
+    damageItem,
+    {
+      actionKey:
+        EYE_BEAM_KEY,
+      automaticHit:
+        true,
+      damage:
+        "2D8",
+      magical:
+        true,
+      targetActors: [
+        target.actor,
+      ],
+    },
+  );
 
   return true;
 }

@@ -97,6 +97,8 @@ const getDefinition =
   api.getAbilityActionDefinition;
 const planEyeBeam =
   api.planEyeBeamAction;
+const createResolutionMessages =
+  api.createAbilityActionResolutionMessages;
 
 boaCheck(
   checks,
@@ -133,7 +135,8 @@ if (
       war?.damage === "D6" &&
       Number(war?.range) === 2 &&
       Number(war?.wpCost) === 3 &&
-      war?.mandatoryBanes === 1,
+      war?.mandatoryBanes === 1 &&
+      war?.manualDamageRoll === true,
     war ?? null
   );
 }
@@ -154,7 +157,8 @@ if (
       Number(eye?.maxRange) === 20 &&
       Number(eye?.wpCost) === 3 &&
       eye?.magical === true &&
-      eye?.usesWeaponTest === false,
+      eye?.usesWeaponTest === false &&
+      eye?.manualDamageRoll === true,
     eye ?? null
   );
 }
@@ -317,7 +321,9 @@ if (
           ) &&
           managedWar[0]?.system?.features?.includes(
             "unarmed"
-          ),
+          ) &&
+          managedWar[0]?.img ===
+            "modules/bane-of-azeroth/assets/icons/weapons/war_stomp.webp",
         managedWar[0]?.toObject?.() ?? null
       );
 
@@ -344,7 +350,9 @@ if (
           ) &&
           managedEye[0]?.system?.features?.includes(
             "noparry"
-          ),
+          ) &&
+          managedEye[0]?.img ===
+            "modules/bane-of-azeroth/assets/icons/weapons/eye_beam.webp",
         managedEye[0]?.toObject?.() ?? null
       );
 
@@ -518,16 +526,23 @@ if (
   }
 }
 
-notes.push(
-  "War Stomp damage cards are rolled separately for every creature within 2 m. " +
-  "Resolve defenses before applying each card; applying a War Stomp damage card " +
-  "also knocks that target prone."
+boaCheck(
+  checks,
+  "War Stomp does not roll damage automatically",
+  typeof createResolutionMessages === "function",
+  "createAbilityActionResolutionMessages"
 );
 
 notes.push(
-  "Eye Beam is exposed as a managed Weapon entry so range and damage are visible " +
-  "with the character's other attacks. Its click still bypasses DoDWeaponTest: " +
-  "it auto-hits, cannot be parried, and deals magical 2D8 damage."
+  "War Stomp uses one attack roll, then creates one hit/result card per creature " +
+  "hit. No D6 is rolled automatically; use Roll Damage only after players/GM " +
+  "have had the normal opportunity to react."
+);
+
+notes.push(
+  "Eye Beam is exposed as a managed Weapon entry and automatically hits without " +
+  "a weapon test. It creates a hit/result card first; 2D8 magical damage is " +
+  "rolled only when Roll Damage is clicked."
 );
 
 return boaFinish(
