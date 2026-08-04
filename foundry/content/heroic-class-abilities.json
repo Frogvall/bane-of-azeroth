@@ -284,7 +284,7 @@
           "requirement": "One School of Magic",
           "wp": "",
           "description": [
-            "You know the @UUID[Item.RPnxXYVb8z7EG5Wl]{Sense Magic} magic trick and can cast it without spending Willpower Points. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling."
+            "You know the @UUID[Item.RPnxXYVb8z7EG5Wl]{Sense Magic} magic trick and can cast it without spending WP. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling."
           ],
           "grantsSpellUuid": "Item.RPnxXYVb8z7EG5Wl",
           "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp"
@@ -307,7 +307,7 @@
           "requirement": "Mage's Brilliance",
           "wp": "3",
           "description": [
-            "When you deal damage with a spell or this ability, you can choose an additional creature within 10 meters of the target that did not take damage from that spell or this ability. That creature takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the Willpower Points for each use."
+            "When you deal damage with a spell or this ability, you can choose an additional creature within 10 meters of the target that did not take damage from that spell or this ability. That creature takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each use."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp"
         },
@@ -570,7 +570,7 @@
           "requirement": "Shamanic Calling",
           "wp": "2",
           "description": [
-            "When you heal with a spell or this ability, you can choose an additional creature within 10 meters of the target that was not healed by that spell or this ability. That creature receives the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the Willpower Points for each use."
+            "When you heal with a spell or this ability, you can choose an additional creature within 10 meters of the target that was not healed by that spell or this ability. That creature receives the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each use."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp"
         },

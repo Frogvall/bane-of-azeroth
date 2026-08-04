@@ -114,7 +114,7 @@
       "column": 27,
       "target": "Item.RPnxXYVb8z7EG5Wl",
       "classification": "unclassified",
-      "snippet": "\"You know the @UUID[Item.RPnxXYVb8z7EG5Wl]{Sense Magic} magic trick and can cast it without spending Willpower Points. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.\"",
+      "snippet": "\"You know the @UUID[Item.RPnxXYVb8z7EG5Wl]{Sense Magic} magic trick and can cast it without spending WP. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.\"",
       "label": "Sense Magic"
     },
     {
@@ -1491,7 +1491,7 @@
       "column": 19,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling",
       "classification": "unclassified",
-      "snippet": "\"When @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling]{falling}, you can spend 1 willpower to slow your fall and land as light as a feather, no matter the height.\"",
+      "snippet": "\"When @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling]{falling}, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height.\"",
       "label": "falling"
     },
     {

@@ -24,7 +24,7 @@
           "name": "Draconic Wings (flying)",
           "wp": "3",
           "description": [
-            "By spending 3 willpower, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you."
+            "By spending 3 WP, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you."
           ]
         },
         {
@@ -33,7 +33,7 @@
           "name": "Draconic Wings (falling)",
           "wp": "1",
           "description": [
-            "When @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling]{falling}, you can spend 1 willpower to slow your fall and land as light as a feather, no matter the height."
+            "When @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling]{falling}, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height."
           ]
         },
         {

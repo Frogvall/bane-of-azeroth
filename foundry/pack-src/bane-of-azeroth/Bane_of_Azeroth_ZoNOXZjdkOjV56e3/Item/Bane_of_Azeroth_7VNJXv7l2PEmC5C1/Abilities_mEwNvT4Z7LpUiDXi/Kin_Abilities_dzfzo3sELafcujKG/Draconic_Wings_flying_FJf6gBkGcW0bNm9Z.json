@@ -5,7 +5,7 @@
   "_id": "FJf6gBkGcW0bNm9Z",
   "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
   "system": {
-    "itemDescription": "<p>By spending 3 willpower, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you.</p>",
+    "itemDescription": "<p>By spending 3 WP, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Dracthyr",

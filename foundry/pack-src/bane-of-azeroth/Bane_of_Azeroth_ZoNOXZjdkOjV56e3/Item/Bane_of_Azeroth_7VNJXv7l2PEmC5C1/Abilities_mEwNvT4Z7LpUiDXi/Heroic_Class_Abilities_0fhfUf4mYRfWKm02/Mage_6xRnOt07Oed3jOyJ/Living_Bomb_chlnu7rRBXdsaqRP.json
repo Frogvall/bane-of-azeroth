@@ -5,7 +5,7 @@
   "_id": "chlnu7rRBXdsaqRP",
   "img": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
   "system": {
-    "itemDescription": "<p>When you deal damage with a spell or this ability, you can choose an additional creature within 10 meters of the target that did not take damage from that spell or this ability. That creature takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the Willpower Points for each use.</p>",
+    "itemDescription": "<p>When you deal damage with a spell or this ability, you can choose an additional creature within 10 meters of the target that did not take damage from that spell or this ability. That creature takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each use.</p>",
     "gmDescription": "",
     "abilityType": "",
     "requirement": "Mage's Brilliance",
