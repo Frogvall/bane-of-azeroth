@@ -26,6 +26,13 @@ describe("Foundry hook registration", () => {
     game.settings.register.mockReset();
     game.system.id = "dragonbane";
     CONFIG.DoD.weaponFeatureTypes = {};
+    CONFIG.Item ??= {};
+    class FakeDragonbaneItem {
+      getSpellCost() {
+        return 1;
+      }
+    }
+    CONFIG.Item.documentClass = FakeDragonbaneItem;
   });
 
   test("registers one init hook and one ready hook", async () => {
@@ -186,7 +193,7 @@ expect(
       );
     }
         expect(renderActorSheetCallbacks).toHaveLength(5);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(4);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(5);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );

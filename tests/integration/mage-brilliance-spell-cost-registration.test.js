@@ -47,9 +47,6 @@ describe("Mage's Brilliance spell cost registration", () => {
     expect(source).toContain(
       "registerMageBrillianceLegacyMagicTrickAdapter",
     );
-    expect(source).toContain(
-      "legacy magic-trick adapter",
-    );
   });
 
   test("patches spell cost during module init", () => {

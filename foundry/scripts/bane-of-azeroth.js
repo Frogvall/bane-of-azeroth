@@ -90,7 +90,6 @@ Hooks.once("init", () => {
   if (game.system.id !== "dragonbane") return;
   registerAutomationSettings();
   patchMageBrillianceSpellCost();
-  registerMageBrillianceLegacyMagicTrickAdapter();
 
   Hooks.on("drawToken", drawElementalTotemAura);
   Hooks.on("updateToken", onUpdateElementalTotemAura);
@@ -157,6 +156,7 @@ Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderControlledMonsterSheet,
   );
+  registerMageBrillianceLegacyMagicTrickAdapter();
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;

@@ -275,6 +275,10 @@ describe("Mage's Brilliance spell cost automation", () => {
 });
 
 describe("Dragonbane 4.0.1 legacy magic-trick adapter", () => {
+  beforeEach(() => {
+    setAutomation(true);
+  });
+
   function legacySkillRollHandler() {
     const title = "castMagicTrickTitle";
 
