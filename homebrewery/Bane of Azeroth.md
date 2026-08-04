@@ -1101,7 +1101,7 @@ You can activate this ability when you are about to take damage (no action). You
 - **Requirement:** Mage's Brilliance
 - **Willpower Points:** 3
 
-When you deal damage with a spell or this ability, you can choose an additional creature, that did not take damage from that spell or this ability, within 10 meters of the target that takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the Willpower Points for each.
+When you deal damage with a spell or this ability, you can choose an additional creature, that did not take damage from that spell or this ability, within 10 meters of the target that takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each.
 
 ### Time Warp
 - **Requirement:** Mage's Brilliance
