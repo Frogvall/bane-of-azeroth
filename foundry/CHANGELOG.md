@@ -6,6 +6,21 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+## [0.11.1] - 2026-08-04
+
+### Added
+- Added a dedicated **Evoker's Legacy** automation setting under **Heroic Abilities**, enabled by default.
+- Added spell-cost automation for characters with **Evoker's Legacy**.
+
+### Changed
+- Evoker's Legacy now reduces spell costs to **2 WP at Power Level 1**, **3 WP at Power Level 2**, and **4 WP at Power Level 3**.
+- Spell affordability and actual WP expenditure use Dragonbane's native `Item#getSpellCost()` path, keeping the spell-resolution path and resource payment synchronized.
+- Characters without Evoker's Legacy, characters with the automation disabled, magic tricks, and unsupported power levels retain Dragonbane's native spell costs.
+
+### Testing
+- Added **BOA DEV – Verify Evoker's Legacy** to verify the imported ability, automation setting, 2/3/4 WP cost contract, native fallback, and real Dragonbane PL2 WP payment.
+- Added focused unit and integration coverage for Evoker's Legacy spell-cost behavior, automation settings, runtime registration, system-test registration, and hook integration.
+- Verified the complete automated test suite and Foundry Developer Test suite after the Evoker's Legacy implementation.
 
 ## [0.11.0] - 2026-08-04
 
