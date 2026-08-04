@@ -6,6 +6,33 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+
+## [0.11.0] - 2026-08-04
+
+### Added
+- Added a dedicated **Heroic Abilities** automation setting for **Mage's Brilliance**, enabled by default.
+- Added automatic granting and reconciliation of Dragonbane Core **Sense Magic** for Actors with Mage's Brilliance.
+- Added **Roll / Take 10 / Cancel** when using **LANGUAGES** with Mage's Brilliance.
+- Added Dragonbane-native LANGUAGES Take 10 resolution with a fixed result of 10 and no push.
+
+### Changed
+- **Sense Magic** now costs 0 WP for characters with Mage's Brilliance, including manually owned copies.
+- Added a Dragonbane 4.0.1 compatibility adapter for the legacy rank-0 magic-trick Actor-sheet path that bypasses `Item#getSpellCost()`.
+- The compatibility adapter feature-detects the legacy Dragonbane path and remains inactive when that workaround is no longer required.
+- Disabling Mage's Brilliance automation restores normal spell-cost and LANGUAGES behavior while removing only module-managed Sense Magic grants.
+- Updated Foundry wording to use **WP** consistently for Draconic Wings, Mage's Brilliance, Chain Heal, and Living Bomb.
+- Kept the Character Options Journals synchronized with the corrected Kin and Heroic Class Ability wording.
+
+### Fixed
+- Corrected the Mage's Brilliance **Sense Magic** confirmation dialog so it no longer claims that the free cast costs 1 WP.
+- Corrected stale generated and Journal text after the WP terminology updates.
+
+### Testing
+- Expanded **BOA DEV – Verify Mage's Brilliance** with grant lifecycle, free casting, dialog, LANGUAGES Take 10, and disabled-automation coverage.
+- Added focused unit and integration coverage for Mage's Brilliance spell costs, Dragonbane 4.0.1 compatibility, LANGUAGES choice behavior, localization, and hook registration.
+- Kept **BOA DEV – Verify Assets and Journals** as a drift check between canonical Ability content and the curated Journal Ability boxes.
+- Regenerated affected Kin, Heroic Class Ability, and Journal Adventure content and kept generator/reference checks synchronized.
+
 ## [0.10.1] - 2026-08-02
 
 ### Added
