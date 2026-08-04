@@ -140,6 +140,15 @@ MACROS = [
         "img": "icons/svg/lightning.svg",
     },
     {
+        "key": "ability-actions",
+        "id": "BoaDevAttack0012",
+        "name": "BOA DEV – Verify Ability Attacks",
+        "file": "verify-ability-actions.js",
+        "order": 20,
+        "suiteMember": True,
+        "img": "icons/svg/explosion.svg",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",

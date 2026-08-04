@@ -92,6 +92,13 @@ describe("Foundry hook registration", () => {
     const {
       onRenderMageBrillianceActorSheet,
     } = mageBrilliance;
+    const abilityActions =
+      await import(
+        "../../foundry/scripts/ability-actions.js"
+      );
+    const {
+      onRenderAbilityActionActorSheet,
+    } = abilityActions;
     const warlockDemons = await import(
       "../../foundry/scripts/warlock-demons.js"
     );
@@ -192,8 +199,8 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(5);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(5);
+        expect(renderActorSheetCallbacks).toHaveLength(6);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(6);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );
@@ -203,7 +210,10 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderMageBrillianceActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(5); // Evoker's Legacy setting registration count
+    expect(renderActorSheetCallbacks).toContain(
+      onRenderAbilityActionActorSheet,
+    );
+expect(game.settings.register).toHaveBeenCalledTimes(7); // Evoker's Legacy setting registration count
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

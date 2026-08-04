@@ -48,6 +48,7 @@ const orderedKeys = [
   "spell-grants",
   "mages-brilliance",
   "evokers-legacy",
+  "ability-actions",
   "elemental-totems",
   "adventure-ownership",
 ];

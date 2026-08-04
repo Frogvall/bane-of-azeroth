@@ -52,6 +52,15 @@ describe("Automation Settings presentation", () => {
     expect(labels.groupHeroicAbilities).toBe(
       "Heroic Abilities",
     );
+    expect(labels.groupKinAbilities).toBe(
+      "Kin Abilities",
+    );
+    expect(labels.warStompName).toBe(
+      "War Stomp",
+    );
+    expect(labels.eyeBeamName).toBe(
+      "Eye Beam",
+    );
     expect(labels.mageBrillianceName).toBe(
       "Mage's Brilliance",
     );
@@ -99,7 +108,7 @@ describe("Automation Settings presentation", () => {
     expect(template).toContain("<legend>");
     expect(
       template.match(/\{\{formGroup/g),
-    ).toHaveLength(4);
+    ).toHaveLength(6);
     expect(template).toContain(
       "schema.fields.elementalTotemAutomation",
     );
@@ -111,6 +120,12 @@ describe("Automation Settings presentation", () => {
     );
     expect(template).toContain(
       "schema.fields.evokersLegacyAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.warStompAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.eyeBeamAutomation",
     );
     expect(template).not.toContain("<form");
     expect(template).not.toContain("<button");

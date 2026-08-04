@@ -83,6 +83,45 @@ describe("automation setting reads", () => {
       }),
     );
   });
+  test("defines independent War Stomp and Eye Beam settings enabled by default", () => {
+    expect(
+      AUTOMATION_SETTING_KEYS.WAR_STOMP,
+    ).toBe("warStompAutomation");
+
+    expect(
+      AUTOMATION_SETTING_KEYS.EYE_BEAM,
+    ).toBe("eyeBeamAutomation");
+
+    const register = vi.fn();
+    const registerMenu = vi.fn();
+
+    registerAutomationSettings({
+      register,
+      registerMenu,
+    });
+
+    for (const key of [
+      "warStompAutomation",
+      "eyeBeamAutomation",
+    ]) {
+      const registration =
+        register.mock.calls.find(
+          ([moduleId, registeredKey]) =>
+            moduleId === MODULE_ID &&
+            registeredKey === key,
+        );
+
+      expect(registration?.[2]).toEqual(
+        expect.objectContaining({
+          scope: "world",
+          config: false,
+          type: Boolean,
+          default: true,
+          onChange: expect.any(Function),
+        }),
+      );
+    }
+  });
   test("defaults safely to enabled", () => {
     expect(
       isAutomationEnabled(
@@ -147,6 +186,8 @@ describe("ApplicationV2 automation settings form", () => {
       demonAutomation: false,
       mageBrillianceAutomation: false,
       evokersLegacyAutomation: false,
+      warStompAutomation: false,
+      eyeBeamAutomation: false,
     });
     expect(context.buttons).toEqual([
       {
@@ -174,11 +215,13 @@ describe("ApplicationV2 automation settings form", () => {
           demonAutomation: false,
           mageBrillianceAutomation: true,
           evokersLegacyAutomation: true,
+          warStompAutomation: true,
+          eyeBeamAutomation: true,
         },
       },
     );
 
-    expect(set).toHaveBeenCalledTimes(4);
+    expect(set).toHaveBeenCalledTimes(6);
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,
@@ -197,6 +240,16 @@ describe("ApplicationV2 automation settings form", () => {
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.EVOKERS_LEGACY,
+      true,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.WAR_STOMP,
+      true,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.EYE_BEAM,
       true,
     );
   });
