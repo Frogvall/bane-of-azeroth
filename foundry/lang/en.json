@@ -112,7 +112,9 @@
         "groupSummons": "Summons",
         "mageBrillianceName": "Mage's Brilliance",
         "mageBrillianceHint": "Automatically manage Sense Magic and other Mage's Brilliance rules.",
-        "groupHeroicAbilities": "Heroic Abilities"
+        "groupHeroicAbilities": "Heroic Abilities",
+        "evokersLegacyName": "Evoker's Legacy",
+        "evokersLegacyHint": "Reduce spell WP costs for characters with Evoker's Legacy."
       }
     },
     "notifications": {

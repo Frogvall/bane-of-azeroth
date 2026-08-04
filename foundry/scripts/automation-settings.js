@@ -4,6 +4,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   ELEMENTAL_TOTEMS: "elementalTotemAutomation",
   DEMONS: "demonAutomation",
   MAGES_BRILLIANCE: "mageBrillianceAutomation",
+  EVOKERS_LEGACY: "evokersLegacyAutomation",
 });
 
 const {
@@ -111,6 +112,15 @@ export function isMageBrillianceAutomationEnabled(
   );
 }
 
+export function isEvokersLegacyAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.EVOKERS_LEGACY,
+    settings,
+  );
+}
+
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -163,6 +173,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.mageBrillianceName",
       "BOA.settings.automation.mageBrillianceHint",
     ),
+    evokersLegacyAutomation: booleanField(
+      "BOA.settings.automation.evokersLegacyName",
+      "BOA.settings.automation.evokersLegacyHint",
+    ),
   });
 
   static get schema() {
@@ -182,6 +196,8 @@ export class AutomationSettingsForm
           isDemonAutomationEnabled(),
         mageBrillianceAutomation:
           isMageBrillianceAutomationEnabled(),
+        evokersLegacyAutomation:
+          isEvokersLegacyAutomationEnabled(),
       },
       buttons: [
         {
@@ -227,6 +243,15 @@ export class AutomationSettingsForm
           ],
         ),
       ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.EVOKERS_LEGACY,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.EVOKERS_LEGACY
+          ],
+        ),
+      ),
     ]);
   }
 }
@@ -262,6 +287,14 @@ export function registerAutomationSettings(
       {
         onChange: reconcileMageBrillianceAutomation,
       },
+    ),
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.EVOKERS_LEGACY,
+    settingDefinition(
+      "BOA.settings.automation.evokersLegacyName",
+      "BOA.settings.automation.evokersLegacyHint",
     ),
   );
   if (settings.registerMenu) {

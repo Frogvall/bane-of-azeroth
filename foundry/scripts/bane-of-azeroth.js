@@ -78,6 +78,9 @@ import {
 
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
+  patchEvokersLegacySpellCost,
+} from "./evokers-legacy.js";
+import {
   patchMageBrillianceSpellCost,
   takeMageBrillianceLanguagesTen,
 } from "./mage-brilliance.js";
@@ -91,6 +94,7 @@ Hooks.once("init", () => {
   if (game.system.id !== "dragonbane") return;
   registerAutomationSettings();
   patchMageBrillianceSpellCost();
+  patchEvokersLegacySpellCost();
 
   Hooks.on("drawToken", drawElementalTotemAura);
   Hooks.on("updateToken", onUpdateElementalTotemAura);

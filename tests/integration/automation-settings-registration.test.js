@@ -20,7 +20,7 @@ import {
 const MODULE_ID = "bane-of-azeroth";
 
 describe("automation settings registration", () => {
-  test("registers three hidden world booleans enabled by default", () => {
+  test("registers four hidden world booleans enabled by default", () => {
     const settings = {
       register: vi.fn(),
       registerMenu: vi.fn(),
@@ -30,7 +30,7 @@ describe("automation settings registration", () => {
       registerAutomationSettings(settings),
     ).toBe(true);
 
-    expect(settings.register).toHaveBeenCalledTimes(3);
+    expect(settings.register).toHaveBeenCalledTimes(4);
     for (const key of Object.values(
       AUTOMATION_SETTING_KEYS,
     )) {
@@ -47,6 +47,11 @@ describe("automation settings registration", () => {
     }
   });
 
+  test("includes the Evoker's Legacy setting key in the automation schema", () => {
+    expect(
+      AUTOMATION_SETTING_KEYS.EVOKERS_LEGACY,
+    ).toBe("evokersLegacyAutomation");
+  });
   test("registers a restricted Automation Settings menu", () => {
     const settings = {
       register: vi.fn(),

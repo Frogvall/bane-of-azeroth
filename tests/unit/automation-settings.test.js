@@ -54,6 +54,35 @@ describe("automation setting reads", () => {
     );
   });
 
+  test("Evoker's Legacy spell-cost automation uses an independent enabled-by-default setting", () => {
+    expect(
+      AUTOMATION_SETTING_KEYS.EVOKERS_LEGACY,
+    ).toBe("evokersLegacyAutomation");
+
+    const register = vi.fn();
+    const registerMenu = vi.fn();
+
+    registerAutomationSettings({
+      register,
+      registerMenu,
+    });
+
+    const registration =
+      register.mock.calls.find(
+        ([moduleId, key]) =>
+          moduleId === MODULE_ID &&
+          key === "evokersLegacyAutomation",
+      );
+
+    expect(registration?.[2]).toEqual(
+      expect.objectContaining({
+        scope: "world",
+        config: false,
+        type: Boolean,
+        default: true,
+      }),
+    );
+  });
   test("defaults safely to enabled", () => {
     expect(
       isAutomationEnabled(
@@ -117,6 +146,7 @@ describe("ApplicationV2 automation settings form", () => {
       elementalTotemAutomation: true,
       demonAutomation: false,
       mageBrillianceAutomation: false,
+      evokersLegacyAutomation: false,
     });
     expect(context.buttons).toEqual([
       {
@@ -143,11 +173,12 @@ describe("ApplicationV2 automation settings form", () => {
           elementalTotemAutomation: true,
           demonAutomation: false,
           mageBrillianceAutomation: true,
+          evokersLegacyAutomation: true,
         },
       },
     );
 
-    expect(set).toHaveBeenCalledTimes(3);
+    expect(set).toHaveBeenCalledTimes(4);
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,
@@ -161,6 +192,11 @@ describe("ApplicationV2 automation settings form", () => {
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.MAGES_BRILLIANCE,
+      true,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.EVOKERS_LEGACY,
       true,
     );
   });

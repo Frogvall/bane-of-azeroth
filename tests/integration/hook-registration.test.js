@@ -203,7 +203,7 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderMageBrillianceActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(4);
+expect(game.settings.register).toHaveBeenCalledTimes(5); // Evoker's Legacy setting registration count
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

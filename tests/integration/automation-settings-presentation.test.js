@@ -55,6 +55,9 @@ describe("Automation Settings presentation", () => {
     expect(labels.mageBrillianceName).toBe(
       "Mage's Brilliance",
     );
+    expect(labels.evokersLegacyName).toBe(
+      "Evoker's Legacy",
+    );
   });
 
   test("uses Foundry ApplicationV2 like Dragonbane", () => {
@@ -96,7 +99,7 @@ describe("Automation Settings presentation", () => {
     expect(template).toContain("<legend>");
     expect(
       template.match(/\{\{formGroup/g),
-    ).toHaveLength(3);
+    ).toHaveLength(4);
     expect(template).toContain(
       "schema.fields.elementalTotemAutomation",
     );
@@ -105,6 +108,9 @@ describe("Automation Settings presentation", () => {
     );
     expect(template).toContain(
       "schema.fields.mageBrillianceAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.evokersLegacyAutomation",
     );
     expect(template).not.toContain("<form");
     expect(template).not.toContain("<button");

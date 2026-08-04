@@ -131,6 +131,15 @@ MACROS = [
         "img": "icons/svg/lightning.svg",
     },
     {
+        "key": "evokers-legacy",
+        "id": "BoaDevEvoker0011",
+        "name": "BOA DEV – Verify Evoker's Legacy",
+        "file": "verify-evokers-legacy.js",
+        "order": 19,
+        "suiteMember": True,
+        "img": "icons/svg/lightning.svg",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",
