@@ -676,3 +676,524 @@ describe("Dragonbane 4.0.1 legacy magic-trick adapter", () => {
   });
 });
 
+describe("Mage's Brilliance LANGUAGES Take 10", () => {
+  beforeEach(() => {
+    setAutomation(true);
+  });
+
+  function makeLanguagesSkill(
+    actor,
+    {
+      name = "Languages",
+      value = 12,
+    } = {},
+  ) {
+    return makeFlagDocument({
+      id: "languages",
+      name,
+      type: "skill",
+      parent: actor,
+      system: {
+        value,
+        skillType: "core",
+        attribute: "int",
+      },
+    });
+  }
+
+  function makeActorItems(entries) {
+    const items = [...entries];
+    items.get = id =>
+      items.find(
+        item => item.id === id,
+      );
+    return items;
+  }
+
+  function makeMageActor({
+    skillName = "Languages",
+  } = {}) {
+    const actor = makeActor();
+    actor.documentName = "Actor";
+    actor.type = "character";
+    actor.isObserver = true;
+
+    const ability =
+      makeMageAbility(actor);
+    const skill =
+      makeLanguagesSkill(
+        actor,
+        {
+          name: skillName,
+        },
+      );
+
+    actor.items =
+      makeActorItems([
+        ability,
+        skill,
+      ]);
+
+    return {
+      actor,
+      ability,
+      skill,
+    };
+  }
+
+  test("recognizes English Languages and Swedish Språk only", async () => {
+    const subject =
+      await loadSubject();
+
+    const actor = makeActor();
+
+    expect(
+      subject
+        .isMageBrillianceLanguagesSkill(
+          makeLanguagesSkill(actor),
+        ),
+    ).toBe(true);
+
+    expect(
+      subject
+        .isMageBrillianceLanguagesSkill(
+          makeLanguagesSkill(
+            actor,
+            {
+              name: "Språk",
+            },
+          ),
+        ),
+    ).toBe(true);
+
+    expect(
+      subject
+        .isMageBrillianceLanguagesSkill(
+          makeLanguagesSkill(
+            actor,
+            {
+              name: "Awareness",
+            },
+          ),
+        ),
+    ).toBe(false);
+  });
+
+  test("resolves Take 10 through Dragonbane skill-test semantics", async () => {
+    const subject =
+      await loadSubject();
+
+    const {
+      actor,
+      skill,
+    } = makeMageActor();
+
+    class FakeSkillTest {
+      constructor(
+        testActor,
+        testSkill,
+        options,
+      ) {
+        this.actor = testActor;
+        this.skill = testSkill;
+        this.options = options;
+      }
+
+      async roll() {
+        this.roll = {
+          result: "10",
+        };
+        this.postRollData = {
+          result: 10,
+          success:
+            10 <=
+            this.skill.system.value,
+          isDragon: false,
+          isDemon: false,
+          canPush: false,
+        };
+        return this;
+      }
+    }
+
+    const result =
+      await subject
+        .takeMageBrillianceLanguagesTen(
+          actor,
+          skill,
+          {
+            SkillTestClass:
+              FakeSkillTest,
+            targets: [],
+          },
+        );
+
+    expect(result.handled)
+      .toBe(true);
+    expect(result.choice)
+      .toBe("take10");
+    expect(result.result)
+      .toBe(10);
+
+    expect(
+      result.test.options,
+    ).toMatchObject({
+      formula: "10",
+      skipDialog: true,
+      canPush: false,
+    });
+
+    expect(
+      result.test
+        .postRollData
+        .isDragon,
+    ).toBe(false);
+
+    expect(
+      result.test
+        .postRollData
+        .isDemon,
+    ).toBe(false);
+
+    expect(
+      result.test
+        .postRollData
+        .canPush,
+    ).toBe(false);
+  });
+
+  test("disabled automation or a missing Mage's Brilliance does not offer Take 10", async () => {
+    const subject =
+      await loadSubject();
+
+    const {
+      actor,
+      skill,
+    } = makeMageActor();
+
+    setAutomation(false);
+
+    expect(
+      subject
+        .canUseMageBrillianceLanguagesTen(
+          actor,
+          skill,
+        ),
+    ).toBe(false);
+
+    setAutomation(true);
+
+    actor.items =
+      makeActorItems([
+        skill,
+      ]);
+
+    expect(
+      subject
+        .canUseMageBrillianceLanguagesTen(
+          actor,
+          skill,
+        ),
+    ).toBe(false);
+  });
+
+  test("Roll delegates to Dragonbane while Take 10 bypasses the native roll", async () => {
+    const subject =
+      await loadSubject();
+
+    const {
+      actor,
+      skill,
+    } = makeMageActor();
+
+    const nativeRoll = vi.fn();
+    const takeTen =
+      vi.fn(
+        async () => ({
+          handled: true,
+          choice: "take10",
+          result: 10,
+        }),
+      );
+
+    const i18n = {
+      localize:
+        vi.fn(key => key),
+      format:
+        vi.fn(key => key),
+    };
+
+    const rollResult =
+      await subject
+        .chooseMageBrillianceLanguagesRoll(
+          actor,
+          skill,
+          {
+            nativeRoll,
+            takeTen,
+            DialogClass: {
+              wait:
+                vi.fn(
+                  async () => "roll",
+                ),
+            },
+            i18n,
+          },
+        );
+
+    expect(rollResult.choice)
+      .toBe("roll");
+    expect(nativeRoll)
+      .toHaveBeenCalledOnce();
+    expect(takeTen)
+      .not.toHaveBeenCalled();
+
+    nativeRoll.mockClear();
+
+    const tenResult =
+      await subject
+        .chooseMageBrillianceLanguagesRoll(
+          actor,
+          skill,
+          {
+            nativeRoll,
+            takeTen,
+            DialogClass: {
+              wait:
+                vi.fn(
+                  async () => "take10",
+                ),
+            },
+            i18n,
+          },
+        );
+
+    expect(tenResult.choice)
+      .toBe("take10");
+    expect(nativeRoll)
+      .not.toHaveBeenCalled();
+    expect(takeTen)
+      .toHaveBeenCalledWith(
+        actor,
+        skill,
+      );
+  });
+
+  test("Cancel performs neither path", async () => {
+    const subject =
+      await loadSubject();
+
+    const {
+      actor,
+      skill,
+    } = makeMageActor();
+
+    const nativeRoll = vi.fn();
+    const takeTen = vi.fn();
+
+    const result =
+      await subject
+        .chooseMageBrillianceLanguagesRoll(
+          actor,
+          skill,
+          {
+            nativeRoll,
+            takeTen,
+            DialogClass: {
+              wait:
+                vi.fn(
+                  async () => "cancel",
+                ),
+            },
+            i18n: {
+              localize:
+                vi.fn(key => key),
+              format:
+                vi.fn(key => key),
+            },
+          },
+        );
+
+    expect(result).toEqual({
+      handled: true,
+      choice: "cancel",
+    });
+    expect(nativeRoll)
+      .not.toHaveBeenCalled();
+    expect(takeTen)
+      .not.toHaveBeenCalled();
+  });
+
+  test("sheet adapter intercepts Languages but leaves other skills untouched", async () => {
+    const subject =
+      await loadSubject();
+
+    const {
+      actor,
+      skill,
+    } = makeMageActor();
+
+    const otherSkill =
+      makeLanguagesSkill(
+        actor,
+        {
+          name: "Awareness",
+        },
+      );
+    otherSkill.id =
+      "awareness";
+    actor.items.push(
+      otherSkill,
+    );
+
+    let listener = null;
+
+    const element = {
+      addEventListener:
+        vi.fn(
+          (
+            _name,
+            callback,
+            capture,
+          ) => {
+            listener = callback;
+            expect(capture)
+              .toBe(true);
+          },
+        ),
+      removeEventListener:
+        vi.fn(),
+    };
+
+    const nativeHandler =
+      vi.fn();
+
+    const app = {
+      actor,
+      element,
+      options: {
+        actions: {
+          skillRoll: {
+            handler:
+              nativeHandler,
+            buttons: [0, 2],
+          },
+        },
+      },
+    };
+
+    const choose = vi.fn();
+
+    expect(
+      subject
+        .attachMageBrillianceLanguagesAdapter(
+          app,
+          {
+            choose,
+          },
+        ),
+    ).toBe(true);
+
+    const eventFor = item => {
+      const row = {
+        dataset: {
+          itemId: item.id,
+        },
+      };
+
+      const actionTarget = {
+        closest:
+          vi.fn(
+            selector => (
+              selector ===
+                ".sheet-table-data"
+                ? row
+                : null
+            ),
+          ),
+      };
+
+      return {
+        event: {
+          type: "click",
+          button: 0,
+          target: {
+            closest:
+              vi.fn(
+                selector => (
+                  selector ===
+                    '[data-action="skillRoll"]'
+                    ? actionTarget
+                    : null
+                ),
+              ),
+          },
+          preventDefault:
+            vi.fn(),
+          stopImmediatePropagation:
+            vi.fn(),
+        },
+        actionTarget,
+      };
+    };
+
+    const languagesEvent =
+      eventFor(skill);
+
+    await listener(
+      languagesEvent.event,
+    );
+
+    expect(
+      languagesEvent.event
+        .preventDefault,
+    ).toHaveBeenCalledOnce();
+
+    expect(
+      languagesEvent.event
+        .stopImmediatePropagation,
+    ).toHaveBeenCalledOnce();
+
+    expect(choose)
+      .toHaveBeenCalledOnce();
+
+    const chooseOptions =
+      choose.mock.calls[0][2];
+
+    await chooseOptions
+      .nativeRoll();
+
+    expect(nativeHandler)
+      .toHaveBeenCalledWith(
+        languagesEvent.event,
+        languagesEvent.actionTarget,
+      );
+
+    choose.mockClear();
+    nativeHandler.mockClear();
+
+    const otherEvent =
+      eventFor(otherSkill);
+
+    await listener(
+      otherEvent.event,
+    );
+
+    expect(
+      otherEvent.event
+        .preventDefault,
+    ).not.toHaveBeenCalled();
+
+    expect(
+      otherEvent.event
+        .stopImmediatePropagation,
+    ).not.toHaveBeenCalled();
+
+    expect(choose)
+      .not.toHaveBeenCalled();
+
+    expect(nativeHandler)
+      .not.toHaveBeenCalled();
+  });
+});
+
