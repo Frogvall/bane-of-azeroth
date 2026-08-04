@@ -6,6 +6,32 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+## [0.11.2] - 2026-08-04
+
+### Added
+- Added independent **War Stomp** and **Eye Beam** automation settings, enabled by default.
+- Added a module-managed **War Stomp** weapon/action for Tauren characters.
+- Added a module-managed **Eye Beam** weapon/action so its range and damage are visible with the character's other attacks.
+- Added dedicated weapon-only icons for War Stomp and Eye Beam.
+- Added Foundry Developer Test coverage for the combined ability-action workflow.
+
+### Changed
+- War Stomp uses BRAWLING with a mandatory bane, costs 3 WP, uses one attack roll for all creatures within 2 meters, and rolls D6 damage separately per affected creature.
+- War Stomp now asks for confirmation before spending 3 WP on the initial attack and does not charge again when the attack is pushed.
+- War Stomp waits for Dragonbane's normal hit/critical resolution before exposing manual Roll Damage actions.
+- Eye Beam costs 3 WP, automatically hits one target within 20 meters, cannot be parried, and deals 2D8 magical damage without making a weapon test.
+- Eye Beam now follows Dragonbane's normal hit/result → Roll Damage pause instead of rolling damage immediately.
+- Module-managed ability-action weapons now reconcile their own metadata so stale generated items repair themselves without touching manual same-name items.
+
+### Fixed
+- Fixed concurrent ability-action reconciliation attempting to delete the same embedded Item twice.
+- Fixed Eye Beam confirmation losing the DialogV2 method binding.
+- Fixed War Stomp damage being rolled before Dragonbane's critical-effect choice.
+- Removed irrelevant generic melee action, additional-damage, and enchanted-weapon choices from the War Stomp roll dialog.
+
+### Testing
+- Added focused unit/integration regression coverage for ability-action reconciliation, War Stomp roll behavior, Eye Beam auto-hit behavior, manual damage timing, DialogV2 confirmation, icon reconciliation, and module API exposure.
+
 ## [0.11.1] - 2026-08-04
 
 ### Added
