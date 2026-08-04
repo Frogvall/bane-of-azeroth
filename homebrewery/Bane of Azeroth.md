@@ -327,9 +327,9 @@ The dracthyr are an ancient race of humanoid dragonkin created by the black Drag
 
 - **Willpower Points:** Varies
 
-By spending 3 willpower, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you.
+By spending 3 WP, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you.
 
-When falling, you can spend 1 willpower to slow your fall and land as light as a feather, no matter the height.
+When falling, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height.
 }}
 
 {{dragonbox
@@ -1089,7 +1089,7 @@ The mages of Azeroth are among the most powerful and most dangerous individuals 
 - **Requirement:** One School of Magic
 - **Willpower Points:** --
 
-You know the SENSE MAGIC magic trick and can cast it without spending Willpower Points. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.
+You know the SENSE MAGIC magic trick and can cast it without spending WP. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.
 
 ### Ice Block
 - **Requirement:** Mage's Brilliance
@@ -1283,7 +1283,7 @@ Your howl makes your friends' blood boil. Activating this ability (an action in 
 - **Requirement:** Shamanic Calling
 - **Willpower Points:** 2
 
-When you heal with a spell or this ability, you can choose an additional creature, that did not get healed from that spell or this ability, within 10 meters of the target that gets the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the Willpower Points for each.
+When you heal with a spell or this ability, you can choose an additional creature, that did not get healed from that spell or this ability, within 10 meters of the target that gets the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each.
 
 ### Stormstrike
 - **Requirement:** Shamanic Calling
