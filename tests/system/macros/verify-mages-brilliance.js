@@ -138,6 +138,19 @@ boaCheck(
   "game.modules.get(...).api.castLegacyFreeSenseMagicTrick"
 );
 
+const takeLanguagesTen =
+  game.modules
+    ?.get?.(BOA_TEST_MODULE_ID)
+    ?.api
+    ?.takeMageBrillianceLanguagesTen;
+
+boaCheck(
+  checks,
+  "Mage's Brilliance LANGUAGES Take 10 API is available",
+  typeof takeLanguagesTen === "function",
+  "game.modules.get(...).api.takeMageBrillianceLanguagesTen"
+);
+
 if (
   settingRegistered &&
   sourceAbility &&
@@ -181,6 +194,105 @@ if (
         "Item",
         [boaCloneEmbeddedItem(sourceAbility)]
       );
+
+    const languagesSkill =
+      boaCollectionValues(
+        actor.items
+      ).find(item =>
+        item.type === "skill" &&
+        [
+          "languages",
+          "språk",
+        ].includes(
+          String(item.name ?? "")
+            .trim()
+            .toLowerCase()
+        )
+      ) ?? null;
+
+    boaCheck(
+      checks,
+      "Temporary Mage has a LANGUAGES skill",
+      Boolean(languagesSkill),
+      boaCollectionValues(
+        actor.items
+      )
+        .filter(
+          item =>
+            item.type === "skill"
+        )
+        .map(item => item.name)
+    );
+
+    if (
+      languagesSkill &&
+      typeof takeLanguagesTen === "function"
+    ) {
+      const tenResult =
+        await takeLanguagesTen(
+          actor,
+          languagesSkill
+        );
+
+      boaCheck(
+        checks,
+        "Mage's Brilliance can resolve LANGUAGES as 10",
+        tenResult?.handled === true &&
+          tenResult?.choice === "take10" &&
+          tenResult?.result === 10 &&
+          tenResult?.test
+            ?.postRollData
+            ?.result === 10,
+        {
+          handled:
+            tenResult?.handled,
+          choice:
+            tenResult?.choice,
+          result:
+            tenResult?.result,
+          postRollResult:
+            tenResult?.test
+              ?.postRollData
+              ?.result,
+        }
+      );
+
+      boaCheck(
+        checks,
+        "LANGUAGES Take 10 is neither Dragon nor Demon and cannot be pushed",
+        tenResult?.test
+          ?.postRollData
+          ?.isDragon === false &&
+          tenResult?.test
+            ?.postRollData
+            ?.isDemon === false &&
+          tenResult?.test
+            ?.postRollData
+            ?.canPush === false,
+        tenResult?.test
+          ?.postRollData
+      );
+
+      try {
+        await tenResult?.test
+          ?.rollMessage
+          ?.delete?.();
+      } catch {
+        // Test-chat cleanup is best effort only.
+      }
+    } else {
+      boaSkip(
+        checks,
+        "Mage's Brilliance can resolve LANGUAGES as 10",
+        "Requires LANGUAGES and the Take 10 API."
+      );
+
+      boaSkip(
+        checks,
+        "LANGUAGES Take 10 is neither Dragon nor Demon and cannot be pushed",
+        "Requires LANGUAGES and the Take 10 API."
+      );
+    }
 
     let managedSenseMagic = null;
     try {
@@ -348,6 +460,30 @@ if (
       settingKey,
       false,
     );
+
+    if (
+      languagesSkill &&
+      typeof takeLanguagesTen === "function"
+    ) {
+      const disabledLanguages =
+        await takeLanguagesTen(
+          actor,
+          languagesSkill
+        );
+
+      boaCheck(
+        checks,
+        "Disabling Mage's Brilliance automation disables LANGUAGES Take 10",
+        disabledLanguages?.handled === false,
+        disabledLanguages
+      );
+    } else {
+      boaSkip(
+        checks,
+        "Disabling Mage's Brilliance automation disables LANGUAGES Take 10",
+        "Requires LANGUAGES and the Take 10 API."
+      );
+    }
 
     try {
       await boaWaitFor(
@@ -630,7 +766,7 @@ notes.push(
   "This is the initial 0.11.0 RED contract. It covers the granular world setting, " +
   "external Sense Magic grant provenance, reconciliation, manual-item safety, " +
   "the disabled path, free Sense Magic cost, and reconciliation idempotence. " +
-  "The LANGUAGES result-10 choice remains a separate subsequent red/green slice."
+  "LANGUAGES Take 10 is now included; Mage's Brilliance automation is feature-complete."
 );
 
 return boaFinish(
