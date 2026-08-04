@@ -29,7 +29,7 @@ const PACK_ROOT = resolve(
 
 const EXPECTED = {
   draconicWings:
-    "By spending 3 willpower, you can move freely "
+    "By spending 3 WP, you can move freely "
     + "through the air during your turn. If you end your "
     + "turn mid air, you safely land in the closest free "
     + "space below you.",
