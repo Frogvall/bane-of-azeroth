@@ -125,6 +125,19 @@ if (sourceSenseMagic) {
   );
 }
 
+const legacyFreeCast =
+  game.modules
+    ?.get?.(BOA_TEST_MODULE_ID)
+    ?.api
+    ?.castLegacyFreeSenseMagicTrick;
+
+boaCheck(
+  checks,
+  "Mage's Brilliance legacy free-cast API is available",
+  typeof legacyFreeCast === "function",
+  "game.modules.get(...).api.castLegacyFreeSenseMagicTrick"
+);
+
 if (
   settingRegistered &&
   sourceAbility &&
@@ -252,6 +265,52 @@ if (
           "game.modules.get(...).api.reconcileSpellGrants is unavailable."
         );
       }
+    }
+
+    if (
+      managedSenseMagic &&
+      typeof legacyFreeCast === "function"
+    ) {
+      const wpBeforeLegacyCast =
+        actor.system.willPoints.value;
+
+      const legacyResult =
+        await legacyFreeCast(
+          actor,
+          managedSenseMagic,
+          {
+            confirmCast: false,
+            createMessage: false,
+          }
+        );
+
+      boaCheck(
+        checks,
+        "Legacy adapter handles free Sense Magic",
+        legacyResult?.handled === true &&
+          legacyResult?.cast === true &&
+          legacyResult?.wpCost === 0,
+        legacyResult
+      );
+
+      boaCheckEqual(
+        checks,
+        "Legacy adapter does not spend WP",
+        actor.system.willPoints.value,
+        wpBeforeLegacyCast
+      );
+    } else {
+      boaSkip(
+        checks,
+        "Legacy adapter handles free Sense Magic",
+        "Requires managed Sense Magic and legacy free-cast API."
+      );
+
+      boaSkip(
+        checks,
+        "Legacy adapter does not spend WP",
+        "Requires managed Sense Magic and legacy free-cast API."
+      );
     }
 
     await game.settings.set(
