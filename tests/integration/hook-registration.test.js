@@ -78,6 +78,13 @@ describe("Foundry hook registration", () => {
       "../../foundry/scripts/monster-attack-control.js"
     );
     const { onRenderControlledMonsterSheet } = monsterAttackControl;
+    const mageBrilliance =
+      await import(
+        "../../foundry/scripts/mage-brilliance.js"
+      );
+    const {
+      onRenderMageBrillianceActorSheet,
+    } = mageBrilliance;
     const warlockDemons = await import(
       "../../foundry/scripts/warlock-demons.js"
     );
@@ -178,13 +185,16 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(4);
+        expect(renderActorSheetCallbacks).toHaveLength(5);
     expect(new Set(renderActorSheetCallbacks).size).toBe(4);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );
     expect(renderActorSheetCallbacks).toContain(
       onRenderControlledMonsterSheet,
+    );
+    expect(renderActorSheetCallbacks).toContain(
+      onRenderMageBrillianceActorSheet,
     );
 expect(game.settings.register).toHaveBeenCalledTimes(4);
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({

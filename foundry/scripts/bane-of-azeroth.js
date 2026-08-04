@@ -80,11 +80,17 @@ import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchMageBrillianceSpellCost,
 } from "./mage-brilliance.js";
+import {
+  castLegacyFreeSenseMagicTrick,
+  registerMageBrillianceLegacyMagicTrickAdapter,
+} from "./mage-brilliance.js";
+
 Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
   registerAutomationSettings();
   patchMageBrillianceSpellCost();
+  registerMageBrillianceLegacyMagicTrickAdapter();
 
   Hooks.on("drawToken", drawElementalTotemAura);
   Hooks.on("updateToken", onUpdateElementalTotemAura);
@@ -107,6 +113,7 @@ Hooks.once("init", () => {
   if (boaModule) {
     boaModule.api = {
       ...(boaModule.api ?? {}),
+      castLegacyFreeSenseMagicTrick,
       processCommonAnimalAttackResult,
       reconcileSpellGrants,
     };

@@ -38,6 +38,18 @@ describe("Mage's Brilliance spell cost registration", () => {
     expect(source).toContain(
       "getSpellCost",
     );
+    expect(source).toContain(
+      "isLegacyDragonbaneMagicTrickHandler",
+    );
+    expect(source).toContain(
+      "castLegacyFreeSenseMagicTrick",
+    );
+    expect(source).toContain(
+      "registerMageBrillianceLegacyMagicTrickAdapter",
+    );
+    expect(source).toContain(
+      "legacy magic-trick adapter",
+    );
   });
 
   test("patches spell cost during module init", () => {
@@ -49,6 +61,9 @@ describe("Mage's Brilliance spell cost registration", () => {
     );
     expect(source).toContain(
       "patchMageBrillianceSpellCost();",
+    );
+    expect(source).toContain(
+      "registerMageBrillianceLegacyMagicTrickAdapter();",
     );
   });
 });
