@@ -356,6 +356,43 @@ if (
         managedEye[0]?.toObject?.() ?? null
       );
 
+      if (
+        typeof reconcileActor === "function" &&
+        managedEye[0]
+      ) {
+        await managedEye[0].update({
+          img: "icons/svg/eye.svg",
+          "system.range": "10"
+        });
+
+        await reconcileActor(actor);
+
+        const repairedEye =
+          actor.items.find(
+            item =>
+              item.getFlag?.(
+                BOA_TEST_MODULE_ID,
+                "abilityActionKey"
+              ) === "eye-beam"
+          );
+
+        boaCheck(
+          checks,
+          "Managed Eye Beam metadata is repaired during reconciliation",
+          repairedEye?.img ===
+              "modules/bane-of-azeroth/assets/icons/weapons/eye_beam.webp" &&
+            Number(
+              repairedEye?.system?.range
+            ) === 20,
+          repairedEye?.toObject?.() ?? null
+        );
+      } else {
+        boaSkip(
+          checks,
+          "Managed Eye Beam metadata is repaired during reconciliation",
+          "The managed Eye Beam or reconciliation API is not available."
+        );
+      }
       boaCheck(
         checks,
         "Manual same-name War Stomp weapon survives reconciliation",

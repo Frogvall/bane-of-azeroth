@@ -89,6 +89,8 @@ import {
   reconcileActorAbilityActions,
   onUpdateAbilityActionChatMessage,
   patchAbilityActionWeaponSlots,
+  createAbilityActionResolutionMessages,
+  rollAbilityActionResolutionDamage,
 } from "./ability-actions.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
@@ -139,7 +141,9 @@ Hooks.once("init", () => {
       reconcileActorAbilityActions,
       getAbilityActionDefinition,
       planEyeBeamAction,
-    };
+          createAbilityActionResolutionMessages,
+      rollAbilityActionResolutionDamage,
+};
   }
 
   Hooks.on("createItem", onCreateItem);

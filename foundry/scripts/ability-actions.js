@@ -388,6 +388,170 @@ async function removeManagedItems(
   );
 }
 
+function arraysEqual(
+  left,
+  right,
+) {
+  const a =
+    Array.from(
+      left ?? [],
+    );
+  const b =
+    Array.from(
+      right ?? [],
+    );
+
+  return (
+    a.length ===
+      b.length &&
+    a.every(
+      (value, index) =>
+        value ===
+          b[index],
+    )
+  );
+}
+
+function managedAbilityActionMatches(
+  item,
+  desired,
+) {
+  const system =
+    item?.system ??
+    {};
+  const desiredSystem =
+    desired?.system ??
+    {};
+
+  return (
+    item?.name ===
+      desired?.name &&
+    item?.img ===
+      desired?.img &&
+    item?.type ===
+      desired?.type &&
+    Boolean(
+      system?.worn,
+    ) ===
+      Boolean(
+        desiredSystem?.worn,
+      ) &&
+    String(
+      system?.range ??
+      "",
+    ) ===
+      String(
+        desiredSystem?.range ??
+        "",
+      ) &&
+    String(
+      system?.damage ??
+      "",
+    ) ===
+      String(
+        desiredSystem?.damage ??
+        "",
+      ) &&
+    String(
+      system?.skill?.name ??
+      "",
+    ) ===
+      String(
+        desiredSystem?.skill?.name ??
+        "",
+      ) &&
+    arraysEqual(
+      system?.features,
+      desiredSystem?.features,
+    ) &&
+    getFlag(
+      item,
+      MANAGED_FLAG,
+    ) === true &&
+    getFlag(
+      item,
+      ACTION_KEY_FLAG,
+    ) ===
+      desired?.flags?.[
+        MODULE_ID
+      ]?.[
+        ACTION_KEY_FLAG
+      ] &&
+    getFlag(
+      item,
+      SOURCE_KEY_FLAG,
+    ) ===
+      desired?.flags?.[
+        MODULE_ID
+      ]?.[
+        SOURCE_KEY_FLAG
+      ]
+  );
+}
+
+async function syncManagedAbilityAction(
+  actor,
+  item,
+  desired,
+) {
+  if (
+    !item ||
+    managedAbilityActionMatches(
+      item,
+      desired,
+    )
+  ) {
+    return false;
+  }
+
+  const update = {
+    _id:
+      item.id,
+    name:
+      desired.name,
+    img:
+      desired.img,
+    system:
+      desired.system,
+    flags:
+      desired.flags,
+  };
+
+  if (
+    typeof actor
+      ?.updateEmbeddedDocuments ===
+      "function"
+  ) {
+    await actor.updateEmbeddedDocuments(
+      "Item",
+      [
+        update,
+      ],
+    );
+
+    return true;
+  }
+
+  if (
+    typeof item?.update ===
+      "function"
+  ) {
+    const {
+      _id,
+      ...itemUpdate
+    } = update;
+
+    void _id;
+
+    await item.update(
+      itemUpdate,
+    );
+
+    return true;
+  }
+
+  return false;
+}
 async function reconcileActorAbilityActionsNow(
   actor,
   {
@@ -460,16 +624,25 @@ async function reconcileActorAbilityActionsNow(
       );
     }
 
+    const desiredWarStomp =
+      buildManagedWarStompData(
+        sourceWarStomp,
+      );
+
     if (
       managedWarStomps.length === 0
     ) {
       await actor.createEmbeddedDocuments(
         "Item",
         [
-          buildManagedWarStompData(
-            sourceWarStomp,
-          ),
+          desiredWarStomp,
         ],
+      );
+    } else {
+      await syncManagedAbilityAction(
+        actor,
+        managedWarStomps[0],
+        desiredWarStomp,
       );
     }
   }
@@ -489,16 +662,25 @@ async function reconcileActorAbilityActionsNow(
       );
     }
 
+    const desiredEyeBeam =
+      buildManagedEyeBeamData(
+        sourceEyeBeam,
+      );
+
     if (
       managedEyeBeams.length === 0
     ) {
       await actor.createEmbeddedDocuments(
         "Item",
         [
-          buildManagedEyeBeamData(
-            sourceEyeBeam,
-          ),
+          desiredEyeBeam,
         ],
+      );
+    } else {
+      await syncManagedAbilityAction(
+        actor,
+        managedEyeBeams[0],
+        desiredEyeBeam,
       );
     }
   }
@@ -1446,11 +1628,32 @@ async function setPendingWarStompDamage(
   return true;
 }
 
+export async function confirmWarStompUse(
+  options,
+  DialogV2 =
+    globalThis.foundry
+      ?.applications
+      ?.api
+      ?.DialogV2,
+) {
+  if (
+    typeof DialogV2?.confirm !==
+      "function"
+  ) {
+    return false;
+  }
+
+  return DialogV2.confirm(
+    options,
+  );
+}
 export async function patchWarStompWeaponTest({
   WeaponTestClass =
     null,
   resolveDamage =
     createWarStompDamageMessages,
+  confirm =
+    confirmWarStompUse,
 } = {}) {
   const TestClass =
     WeaponTestClass ??
@@ -1549,6 +1752,25 @@ export async function patchWarStompWeaponTest({
         "BOA.notifications.abilityActionNotEnoughWp",
       );
       return undefined;
+    }
+
+    if (!this.isReroll) {
+      const accepted =
+        await confirm({
+          window: {
+            title:
+              "War Stomp",
+          },
+          content:
+            format(
+              "BOA.dialog.abilityActions.warStompConfirm",
+              {},
+            ),
+        });
+
+      if (!accepted) {
+        return undefined;
+      }
     }
 
     const nativeGetOptions =

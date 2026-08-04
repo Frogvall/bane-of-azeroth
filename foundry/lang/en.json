@@ -80,7 +80,8 @@
       },
       "abilityActions": {
         "eyeBeamConfirm": "Spend 3 WP to automatically hit {target} with Eye Beam for 2D8 magical damage?",
-        "warStompResolveHint": "{count} creature(s) are within 2 m. Resolve each creature's defense, then apply the corresponding D6 damage card if hit. Applied War Stomp damage also knocks the creature prone."
+        "warStompResolveHint": "{count} creature(s) are within 2 m. Resolve each creature's defense, then apply the corresponding D6 damage card if hit. Applied War Stomp damage also knocks the creature prone.",
+        "warStompConfirm": "Spend 3 WP to use War Stomp?"
       }
     },
     "spellAutomation": {
