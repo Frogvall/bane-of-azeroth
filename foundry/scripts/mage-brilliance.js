@@ -444,10 +444,19 @@ export function attachMageBrillianceLegacyMagicTrickAdapter(
 export function onRenderMageBrillianceActorSheet(
   app,
 ) {
-  return (
+  const legacyMagicTrick =
     attachMageBrillianceLegacyMagicTrickAdapter(
       app,
-    )
+    );
+
+  const languages =
+    attachMageBrillianceLanguagesAdapter(
+      app,
+    );
+
+  return (
+    legacyMagicTrick ||
+    languages
   );
 }
 
@@ -470,5 +479,362 @@ export function registerMageBrillianceLegacyMagicTrickAdapter(
   );
 
   legacyAdapterHookRegistered = true;
+  return true;
+}
+
+const MAGE_LANGUAGES_ADAPTER_STATE =
+  Symbol.for(
+    "bane-of-azeroth.mage-brilliance.languages",
+  );
+
+const MAGE_LANGUAGES_NAMES =
+  new Set([
+    "languages",
+    "språk",
+  ]);
+
+export function isMageBrillianceLanguagesSkill(
+  item,
+) {
+  return (
+    item?.type === "skill" &&
+    MAGE_LANGUAGES_NAMES.has(
+      String(item.name ?? "")
+        .trim()
+        .toLocaleLowerCase(),
+    )
+  );
+}
+
+export function canUseMageBrillianceLanguagesTen(
+  actor,
+  skill,
+  settings = globalThis.game?.settings,
+) {
+  return Boolean(
+    actor?.documentName === "Actor" &&
+    skill?.parent === actor &&
+    isMageBrillianceLanguagesSkill(skill) &&
+    actorHasMagesBrilliance(actor) &&
+    isMageBrillianceAutomationEnabled(settings)
+  );
+}
+
+async function loadDragonbaneSkillTestClass() {
+  const relativePath =
+    "systems/dragonbane/modules/tests/skill-test.js";
+
+  const route =
+    globalThis.foundry
+      ?.utils
+      ?.getRoute?.(relativePath) ??
+    `/${relativePath}`;
+
+  const module =
+    await import(route);
+
+  if (
+    typeof module?.default !== "function"
+  ) {
+    throw new Error(
+      "bane-of-azeroth | Dragonbane DoDSkillTest " +
+      "could not be loaded for Mage's Brilliance.",
+    );
+  }
+
+  return module.default;
+}
+
+export async function takeMageBrillianceLanguagesTen(
+  actor,
+  skill,
+  {
+    SkillTestClass = null,
+    targets = null,
+  } = {},
+) {
+  if (
+    !canUseMageBrillianceLanguagesTen(
+      actor,
+      skill,
+    )
+  ) {
+    return {
+      handled: false,
+      choice: null,
+      result: null,
+      test: null,
+    };
+  }
+
+  const TestClass =
+    SkillTestClass ??
+    await loadDragonbaneSkillTestClass();
+
+  const rollTargets =
+    targets ??
+    Array.from(
+      globalThis.game
+        ?.user
+        ?.targets ??
+      [],
+    );
+
+  const options = {
+    formula: "10",
+    skipDialog: true,
+    canPush: false,
+  };
+
+  if (rollTargets.length > 0) {
+    options.targets = rollTargets;
+  }
+
+  const test =
+    new TestClass(
+      actor,
+      skill,
+      options,
+    );
+
+  const rolled =
+    await test.roll();
+
+  const completed =
+    rolled ?? test;
+
+  return {
+    handled: true,
+    choice: "take10",
+    result:
+      Number(
+        completed
+          ?.postRollData
+          ?.result ??
+        completed
+          ?.roll
+          ?.result ??
+        10,
+      ),
+    test: completed,
+  };
+}
+
+export async function chooseMageBrillianceLanguagesRoll(
+  actor,
+  skill,
+  {
+    nativeRoll,
+    takeTen =
+      takeMageBrillianceLanguagesTen,
+    DialogClass =
+      globalThis.foundry
+        ?.applications
+        ?.api
+        ?.DialogV2,
+    i18n =
+      globalThis.game?.i18n,
+  } = {},
+) {
+  if (
+    !canUseMageBrillianceLanguagesTen(
+      actor,
+      skill,
+    )
+  ) {
+    return {
+      handled: false,
+      choice: null,
+    };
+  }
+
+  if (
+    typeof DialogClass?.wait !== "function" ||
+    typeof i18n?.format !== "function" ||
+    typeof i18n?.localize !== "function"
+  ) {
+    throw new Error(
+      "bane-of-azeroth | Mage's Brilliance " +
+      "LANGUAGES choice dialog is unavailable.",
+    );
+  }
+
+  const choice =
+    await DialogClass.wait({
+      window: {
+        title: i18n.format(
+          "BOA.dialog.mageBrillianceLanguagesTitle",
+          {
+            skill: skill.name,
+          },
+        ),
+      },
+      content: i18n.format(
+        "BOA.dialog.mageBrillianceLanguagesContent",
+        {
+          skill: skill.name,
+        },
+      ),
+      buttons: [
+        {
+          action: "roll",
+          label: i18n.localize(
+            "BOA.dialog.mageBrillianceLanguagesRoll",
+          ),
+          default: true,
+        },
+        {
+          action: "take10",
+          label: i18n.localize(
+            "BOA.dialog.mageBrillianceLanguagesTakeTen",
+          ),
+        },
+        {
+          action: "cancel",
+          label: i18n.localize(
+            "BOA.dialog.mageBrillianceLanguagesCancel",
+          ),
+        },
+      ],
+      rejectClose: false,
+      modal: true,
+    });
+
+  if (choice === "roll") {
+    if (typeof nativeRoll === "function") {
+      await nativeRoll();
+    }
+
+    return {
+      handled: true,
+      choice: "roll",
+    };
+  }
+
+  if (choice === "take10") {
+    return takeTen(
+      actor,
+      skill,
+    );
+  }
+
+  return {
+    handled: true,
+    choice: "cancel",
+  };
+}
+
+export function attachMageBrillianceLanguagesAdapter(
+  app,
+  {
+    choose =
+      chooseMageBrillianceLanguagesRoll,
+  } = {},
+) {
+  const element = app?.element;
+
+  if (
+    typeof element?.addEventListener !==
+    "function"
+  ) {
+    return false;
+  }
+
+  const nativeHandler =
+    getSkillRollHandler(app);
+
+  if (
+    typeof nativeHandler !== "function"
+  ) {
+    return false;
+  }
+
+  const existing =
+    app[MAGE_LANGUAGES_ADAPTER_STATE];
+
+  if (existing?.element === element) {
+    return true;
+  }
+
+  if (
+    existing?.element &&
+    typeof existing.element
+      .removeEventListener === "function"
+  ) {
+    existing.element.removeEventListener(
+      "click",
+      existing.listener,
+      true,
+    );
+  }
+
+  const listener = async event => {
+    if (
+      event?.type !== "click" ||
+      (
+        event.button !== undefined &&
+        event.button !== 0
+      )
+    ) {
+      return;
+    }
+
+    const actionTarget =
+      findSkillRollActionTarget(event);
+
+    if (!actionTarget) return;
+
+    const skill =
+      findSheetItem(
+        app,
+        actionTarget,
+      );
+
+    if (
+      !app.actor?.isObserver ||
+      !canUseMageBrillianceLanguagesTen(
+        app.actor,
+        skill,
+      )
+    ) {
+      return;
+    }
+
+    event.preventDefault?.();
+    event.stopImmediatePropagation?.();
+
+    try {
+      await choose(
+        app.actor,
+        skill,
+        {
+          nativeRoll: () =>
+            nativeHandler.call(
+              app,
+              event,
+              actionTarget,
+            ),
+        },
+      );
+    } catch (error) {
+      console.error(
+        "bane-of-azeroth | Failed to resolve " +
+        "Mage's Brilliance LANGUAGES choice.",
+        error,
+      );
+    }
+  };
+
+  element.addEventListener(
+    "click",
+    listener,
+    true,
+  );
+
+  app[MAGE_LANGUAGES_ADAPTER_STATE] = {
+    element,
+    listener,
+  };
+
   return true;
 }

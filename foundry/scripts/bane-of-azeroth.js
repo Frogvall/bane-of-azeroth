@@ -79,6 +79,7 @@ import {
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchMageBrillianceSpellCost,
+  takeMageBrillianceLanguagesTen,
 } from "./mage-brilliance.js";
 import {
   castLegacyFreeSenseMagicTrick,
@@ -112,6 +113,7 @@ Hooks.once("init", () => {
   if (boaModule) {
     boaModule.api = {
       ...(boaModule.api ?? {}),
+      takeMageBrillianceLanguagesTen,
       castLegacyFreeSenseMagicTrick,
       processCommonAnimalAttackResult,
       reconcileSpellGrants,

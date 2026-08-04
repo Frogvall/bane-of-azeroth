@@ -4,6 +4,11 @@
       "missingAmmoPouchTitle": "No Ammo Pouch",
       "missingAmmoPouchContent": "The character does not have an Ammo Pouch.\nAre you sure you want to perform an action?",
       "mageBrillianceFreeSenseMagicContent": "Cast {spell} without spending WP?",
+      "mageBrillianceLanguagesTitle": "Mage's Brilliance — {skill}",
+      "mageBrillianceLanguagesContent": "Choose how to resolve the {skill} test.",
+      "mageBrillianceLanguagesRoll": "Roll",
+      "mageBrillianceLanguagesTakeTen": "Take 10",
+      "mageBrillianceLanguagesCancel": "Cancel",
       "elementalTotem": {
         "initialTitle": "Elemental Totem — Power Level {powerLevel}",
         "totemType": "Totem type",
