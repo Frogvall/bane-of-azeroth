@@ -5,6 +5,8 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   DEMONS: "demonAutomation",
   MAGES_BRILLIANCE: "mageBrillianceAutomation",
   EVOKERS_LEGACY: "evokersLegacyAutomation",
+  WAR_STOMP: "warStompAutomation",
+  EYE_BEAM: "eyeBeamAutomation",
 });
 
 const {
@@ -121,6 +123,32 @@ export function isEvokersLegacyAutomationEnabled(
   );
 }
 
+function reconcileAbilityActionsOnChange() {
+  queueMicrotask(() => {
+    const api =
+      globalThis.game?.modules?.get?.(MODULE_ID)?.api;
+
+    void api?.reconcileAbilityActions?.();
+  });
+}
+
+export function isWarStompAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.WAR_STOMP,
+    settings,
+  );
+}
+
+export function isEyeBeamAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.EYE_BEAM,
+    settings,
+  );
+}
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -177,6 +205,14 @@ export class AutomationSettingsForm
       "BOA.settings.automation.evokersLegacyName",
       "BOA.settings.automation.evokersLegacyHint",
     ),
+    warStompAutomation: booleanField(
+      "BOA.settings.automation.warStompName",
+      "BOA.settings.automation.warStompHint",
+    ),
+    eyeBeamAutomation: booleanField(
+      "BOA.settings.automation.eyeBeamName",
+      "BOA.settings.automation.eyeBeamHint",
+    ),
   });
 
   static get schema() {
@@ -198,6 +234,10 @@ export class AutomationSettingsForm
           isMageBrillianceAutomationEnabled(),
         evokersLegacyAutomation:
           isEvokersLegacyAutomationEnabled(),
+        warStompAutomation:
+          isWarStompAutomationEnabled(),
+        eyeBeamAutomation:
+          isEyeBeamAutomationEnabled(),
       },
       buttons: [
         {
@@ -252,6 +292,24 @@ export class AutomationSettingsForm
           ],
         ),
       ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.WAR_STOMP,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.WAR_STOMP
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.EYE_BEAM,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.EYE_BEAM
+          ],
+        ),
+      ),
     ]);
   }
 }
@@ -296,6 +354,30 @@ export function registerAutomationSettings(
       "BOA.settings.automation.evokersLegacyName",
       "BOA.settings.automation.evokersLegacyHint",
     ),
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.WAR_STOMP,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.warStompName",
+        "BOA.settings.automation.warStompHint",
+      ),
+      onChange:
+        reconcileAbilityActionsOnChange,
+    },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.EYE_BEAM,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.eyeBeamName",
+        "BOA.settings.automation.eyeBeamHint",
+      ),
+      onChange:
+        reconcileAbilityActionsOnChange,
+    },
   );
   if (settings.registerMenu) {
     settings.registerMenu(

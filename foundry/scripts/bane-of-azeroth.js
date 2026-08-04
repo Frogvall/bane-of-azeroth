@@ -76,6 +76,17 @@ import {
   onUpdateCommonAnimalMovementToken,
 } from "./common-animal-movement.js";
 
+import {
+  getAbilityActionDefinition,
+  onAbilityActionDamageClick,
+  onCreateAbilityActionItem,
+  onDeleteAbilityActionItem,
+  onRenderAbilityActionActorSheet,
+  patchWarStompWeaponTest,
+  planEyeBeamAction,
+  reconcileAbilityActions,
+  reconcileActorAbilityActions,
+} from "./ability-actions.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchEvokersLegacySpellCost,
@@ -121,12 +132,24 @@ Hooks.once("init", () => {
       castLegacyFreeSenseMagicTrick,
       processCommonAnimalAttackResult,
       reconcileSpellGrants,
+      reconcileAbilityActions,
+      reconcileActorAbilityActions,
+      getAbilityActionDefinition,
+      planEyeBeamAction,
     };
   }
 
   Hooks.on("createItem", onCreateItem);
+  Hooks.on(
+    "createItem",
+    onCreateAbilityActionItem,
+  );
   Hooks.on("updateItem", onUpdateItem);
   Hooks.on("deleteItem", onDeleteItem);
+  Hooks.on(
+    "deleteItem",
+    onDeleteAbilityActionItem,
+  );
 Hooks.on(
     "preCreateChatMessage",
     onPreCreateCommonAnimalEffectOnlyWeaponTestMessage
@@ -163,6 +186,10 @@ Hooks.on(
     onRenderControlledMonsterSheet,
   );
   registerMageBrillianceLegacyMagicTrickAdapter();
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderAbilityActionActorSheet,
+  );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
@@ -189,6 +216,18 @@ Hooks.once("ready", async () => {
   if (game.system.id !== "dragonbane") return;
 
 
+  try {
+    await patchWarStompWeaponTest();
+
+    if (isPrimaryActiveGM()) {
+      await reconcileAbilityActions();
+    }
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize ability-action automation.`,
+      error,
+    );
+  }
   registerSummonDurationLifecycleSocket();
   patchSummonRestLifecycle();
   registerElementalTotemSocket();
@@ -217,6 +256,11 @@ Hooks.once("ready", async () => {
     "click",
     onScattershotDamageClick,
     true
+  );
+  document.addEventListener(
+    "click",
+    onAbilityActionDamageClick,
+    true,
   );
 
   await promptAdventureImport();

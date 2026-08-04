@@ -77,6 +77,10 @@
         "manualNotification": "Warlock demon automation is disabled. Manual instructions were posted to chat.",
         "phaseShiftBane": "Phase Shift",
         "seductiveBane": "Seductive"
+      },
+      "abilityActions": {
+        "eyeBeamConfirm": "Spend 3 WP to automatically hit {target} with Eye Beam for 2D8 magical damage?",
+        "warStompResolveHint": "{count} creature(s) are within 2 m. Resolve each creature's defense, then apply the corresponding D6 damage card if hit. Applied War Stomp damage also knocks the creature prone."
       }
     },
     "spellAutomation": {
@@ -98,7 +102,8 @@
       "monsterAttackWpSpent": "{actor} spends {amount} WP to use <strong>{attack}</strong>.",
       "monsterCommandWpSpent": "{actor} spent {amount} WP to command {demon} to use {attack}.",
       "voidwalkerSuffering": "{caster} would take {originalDamage} damage. <strong>Suffering</strong> halves it: {displayFormula}. {caster} and {voidwalker} lose {damage} HP each.",
-      "sufferingRoundedUp": "rounded up"
+      "sufferingRoundedUp": "rounded up",
+      "eyeBeamHit": "{actor} uses Eye Beam against {target}. The attack automatically hits, cannot be parried, and its damage is magical."
     },
     "settings": {
       "automation": {
@@ -114,11 +119,21 @@
         "mageBrillianceHint": "Automatically manage Sense Magic and other Mage's Brilliance rules.",
         "groupHeroicAbilities": "Heroic Abilities",
         "evokersLegacyName": "Evoker's Legacy",
-        "evokersLegacyHint": "Reduce spell WP costs for characters with Evoker's Legacy."
+        "evokersLegacyHint": "Reduce spell WP costs for characters with Evoker's Legacy.",
+        "groupKinAbilities": "Kin Abilities",
+        "warStompName": "War Stomp",
+        "warStompHint": "Add and automate the Tauren War Stomp Brawling attack.",
+        "eyeBeamName": "Eye Beam",
+        "eyeBeamHint": "Automate Eye Beam targeting, WP cost, automatic hit, and damage."
       }
     },
     "notifications": {
-      "summonCleanupFailed": "The rest completed, but one or more summoned tokens could not be removed. Ask a GM to remove them manually."
+      "summonCleanupFailed": "The rest completed, but one or more summoned tokens could not be removed. Ask a GM to remove them manually.",
+      "abilityActionNotEnoughWp": "Not enough WP to use this ability.",
+      "abilityActionNoSourceToken": "A token for the acting character is required for range automation.",
+      "warStompNoTargets": "There are no other visible creatures within 2 m.",
+      "eyeBeamOneTarget": "Eye Beam requires exactly one targeted creature.",
+      "eyeBeamOutOfRange": "The Eye Beam target is more than 20 m away."
     }
   },
   "DoD": {

@@ -21,6 +21,18 @@
 
   <fieldset>
     <legend>
+      {{localize "BOA.settings.automation.groupKinAbilities"}}
+    </legend>
+
+    {{formGroup
+      schema.fields.warStompAutomation
+      value=source.warStompAutomation
+      name="warStompAutomation"
+      localize=true
+    }}
+  </fieldset>
+  <fieldset>
+    <legend>
       {{localize "BOA.settings.automation.groupHeroicAbilities"}}
     </legend>
 
@@ -35,6 +47,13 @@
       schema.fields.evokersLegacyAutomation
       value=source.evokersLegacyAutomation
       name="evokersLegacyAutomation"
+      localize=true
+    }}
+
+    {{formGroup
+      schema.fields.eyeBeamAutomation
+      value=source.eyeBeamAutomation
+      name="eyeBeamAutomation"
       localize=true
     }}
   </fieldset>
