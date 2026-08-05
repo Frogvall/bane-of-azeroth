@@ -6,6 +6,25 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+## [0.11.3] - 2026-08-05
+
+### Added
+- Added a dedicated **Monk's Serenity** automation setting, enabled by default.
+- Added automatic reconciliation for Serenity, Unarmed, and Iron Fist regardless of item order.
+- Added Foundry Developer Test coverage for the Serenity lifecycle.
+
+### Changed
+- Characters with Monk's Serenity now have their existing embedded **Unarmed** weapon damage increased to D10 without creating a replacement weapon.
+- When the same character has **Iron Fist**, only the character's embedded Iron Fist description is adjusted from 2D6 to 2D10.
+- Unarmed Items added after Serenity are reconciled automatically.
+
+### Fixed
+- Serenity cleanup preserves and restores the character's original local Unarmed damage instead of assuming a hard-coded value.
+- Removing Serenity or disabling its automation restores only module-managed local changes and leaves world/source Items untouched.
+
+### Testing
+- Added focused unit/integration and Foundry Macro coverage for ordering, cleanup, setting changes, source-item preservation, Unarmed D10, and embedded Iron Fist 2D10 wording.
+
 ## [0.11.2] - 2026-08-04
 
 ### Added
