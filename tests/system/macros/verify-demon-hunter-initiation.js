@@ -346,9 +346,10 @@ if (
 
     boaCheck(
       checks,
-      "Prototype-token baseline was captured from the created Actor",
-      prototypeBaseline.visionMode === "basic" &&
-        prototypeBaseline.enabled === false,
+      "Prototype-token baseline was captured before Initiation",
+      !isUnlimitedDarkvision(
+        actor.prototypeToken?.sight
+      ),
       prototypeBaseline
     );
 
@@ -401,9 +402,12 @@ if (
 
     boaCheck(
       checks,
-      "Scene-token baseline was captured from the created Token",
-      tokenBaseline.visionMode === "basic" &&
-        tokenBaseline.enabled === false,
+      "Scene-token baseline was captured before Initiation",
+      !isUnlimitedDarkvision(
+        scene.tokens.get(
+          token.id
+        )?.sight
+      ),
       tokenBaseline
     );
 
