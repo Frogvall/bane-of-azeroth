@@ -415,12 +415,7 @@ async function restorePrototypeVision(
     actor?.prototypeToken
       ?.sight;
 
-  if (
-    original &&
-    hasManagedVision(
-      sight,
-    )
-  ) {
+  if (original) {
     await actor.update(
       originalVisionUpdate(
         "prototypeToken.sight",
@@ -502,12 +497,7 @@ async function restoreTokenVision(
       TOKEN_ORIGINAL_FLAG,
     );
 
-  if (
-    original &&
-    hasManagedVision(
-      token?.sight,
-    )
-  ) {
+  if (original) {
     await token.update(
       originalVisionUpdate(
         "sight",

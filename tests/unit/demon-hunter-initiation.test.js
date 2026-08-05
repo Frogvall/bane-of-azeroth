@@ -501,13 +501,34 @@ describe(
       ).toBe(0.71);
     });
 
-    test("does not overwrite a manual token-vision change made after automation applied", async () => {
+    test("restores the full original sight snapshot even when managed vision was changed while active", async () => {
       const testActor =
-        actor();
+        actor({
+          enabled:
+            false,
+          range:
+            9,
+          attenuation:
+            0.37,
+          saturation:
+            0.62,
+        });
+
       const sceneToken =
         token(
           testActor,
+          {
+            enabled:
+              false,
+            range:
+              5,
+            attenuation:
+              0.44,
+            saturation:
+              0.71,
+          },
         );
+
       const scenes = [
         {
           tokens: [
@@ -525,8 +546,16 @@ describe(
         },
       );
 
+      testActor.prototypeToken
+        .sight.range = 22;
+      testActor.prototypeToken
+        .sight.attenuation = 0.23;
+
       sceneToken.sight.range =
-        22;
+        18;
+      sceneToken.sight.attenuation =
+        0.19;
+
       testActor.items = [];
 
       await reconcileDemonHunterInitiationActor(
@@ -539,8 +568,49 @@ describe(
       );
 
       expect(
+        testActor.prototypeToken
+          .sight.enabled,
+      ).toBe(false);
+
+      expect(
+        testActor.prototypeToken
+          .sight.range,
+      ).toBe(9);
+
+      expect(
+        testActor.prototypeToken
+          .sight.visionMode,
+      ).toBe("basic");
+
+      expect(
+        testActor.prototypeToken
+          .sight.attenuation,
+      ).toBe(0.37);
+
+      expect(
+        testActor.prototypeToken
+          .sight.saturation,
+      ).toBe(0.62);
+
+      expect(
+        sceneToken.sight.enabled,
+      ).toBe(false);
+
+      expect(
         sceneToken.sight.range,
-      ).toBe(22);
+      ).toBe(5);
+
+      expect(
+        sceneToken.sight.visionMode,
+      ).toBe("basic");
+
+      expect(
+        sceneToken.sight.attenuation,
+      ).toBe(0.44);
+
+      expect(
+        sceneToken.sight.saturation,
+      ).toBe(0.71);
 
       expect(
         sceneToken.getFlag(

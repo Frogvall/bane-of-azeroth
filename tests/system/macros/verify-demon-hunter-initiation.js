@@ -323,6 +323,49 @@ if (
       );
     }
 
+    await actor.update({
+      "prototypeToken.sight.range": 22,
+      "prototypeToken.sight.attenuation": 0.23
+    });
+
+    await scene.tokens.get(
+      token.id
+    ).update({
+      "sight.range": 18,
+      "sight.attenuation": 0.19
+    });
+
+    boaCheck(
+      checks,
+      "Managed vision can differ from the preset before cleanup",
+      Number(
+        actor.prototypeToken?.sight?.range
+      ) === 22 &&
+        actor.prototypeToken?.sight?.attenuation === 0.23 &&
+        Number(
+          scene.tokens.get(
+            token.id
+          )?.sight?.range
+        ) === 18 &&
+        scene.tokens.get(
+          token.id
+        )?.sight?.attenuation === 0.19,
+      {
+        prototype:
+          actor.prototypeToken?.sight?.toObject?.() ??
+          actor.prototypeToken?.sight ??
+          null,
+        token:
+          scene.tokens.get(
+            token.id
+          )?.sight?.toObject?.() ??
+          scene.tokens.get(
+            token.id
+          )?.sight ??
+          null
+      }
+    );
+
     await actor.deleteEmbeddedDocuments(
       "Item",
       [
@@ -359,7 +402,7 @@ if (
 
     boaCheck(
       checks,
-      "Removing Initiation restores prototype and token vision settings",
+      "Removing Initiation restores the complete original prototype and token vision snapshots",
       restored,
       {
         prototype:
@@ -430,9 +473,9 @@ if (
 }
 
 notes.push(
-  "The automation sets Darkvision with unlimited Vision Range and Foundry's " +
-  "Darkvision visual defaults. Removing the ability restores the original " +
-  "vision mode, range, enabled state, and visual settings."
+  "The automation owns the relevant sight configuration while Initiation is " +
+  "active. Removing the ability restores the complete saved original sight " +
+  "snapshot even if managed vision values were changed while active."
 );
 
 return boaFinish(
