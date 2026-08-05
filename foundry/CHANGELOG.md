@@ -6,6 +6,32 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+## [0.11.5] - 2026-08-05
+
+### Added
+- Added a dedicated **Frostreaper** automation setting under Heroic Abilities, enabled by default.
+- Added a purely visual, light-blue **10 meter Frostreaper aura** around the activating Death Knight during combat.
+- Added persisted Frostreaper activation metadata to the native Dragonbane ability-use ChatMessage so the aura can be reconstructed consistently across clients and scene reloads.
+- Added the missing Dragonbane **resist cold** rule reference to Frostreaper content and its generated Journal presentation.
+
+### Changed
+- Frostreaper keeps Dragonbane's native ability-use and WP workflow unchanged.
+- Frostreaper's visual reminder remains active for the rest of the activation round and through the next round until the Death Knight's own turn begins.
+- Frostreaper activation outside combat does not create an automatic aura because there is no combat-turn boundary from which to derive its duration.
+- Disabling Frostreaper automation hides the visual aura without deleting the persisted activation state; re-enabling it restores an otherwise still-valid aura.
+
+### Preserved
+- Frostreaper automation does not modify Movement.
+- Frostreaper automation does not roll, prompt, or resolve BUSHCRAFT checks to resist cold.
+- The aura is a visual reminder only and does not automate the rules affecting creatures inside it.
+
+### Testing
+- Added focused unit and integration coverage for Frostreaper activation detection, persisted state, 10 meter radius conversion, light-blue presentation, disabled-setting behavior, hook registration, and exact next-round own-turn expiry.
+- Added **BOA DEV – Verify Frostreaper** system-Macro coverage.
+- Extended the real-Player harness with Frostreaper activation-state coverage using an owned Player character.
+- Added manual GM and Player aura verification covering multi-client visibility, token movement, scene reload, setting toggles, combat timing, no out-of-combat aura, and preservation of manual Movement and BUSHCRAFT handling.
+- Verified Frostreaper activation and aura rendering manually as both a game master and an owning player.
+
 ## [0.11.4] - 2026-08-05
 
 ### Added
