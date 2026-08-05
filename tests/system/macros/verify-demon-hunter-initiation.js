@@ -10,6 +10,200 @@ let actor = null;
 let scene = null;
 let originalSetting = null;
 
+function normalizeRange(
+  range
+) {
+  return Number.isFinite(
+    range
+  )
+    ? Number(range)
+    : null;
+}
+
+function sightSnapshot(
+  sight
+) {
+  const source =
+    sight?.toObject?.() ??
+    sight ??
+    {};
+
+  return {
+    enabled:
+      Boolean(
+        source.enabled
+      ),
+    range:
+      normalizeRange(
+        source.range
+      ),
+    visionMode:
+      source.visionMode ??
+      "basic",
+    angle:
+      source.angle ?? null,
+    attenuation:
+      source.attenuation ?? null,
+    saturation:
+      source.saturation ?? null,
+    brightness:
+      source.brightness ?? null,
+    contrast:
+      source.contrast ?? null,
+    color:
+      source.color ?? null
+  };
+}
+
+function sameValue(
+  left,
+  right
+) {
+  if (
+    typeof left === "number" &&
+    typeof right === "number"
+  ) {
+    return (
+      Math.abs(
+        left - right
+      ) < 0.000001
+    );
+  }
+
+  return left === right;
+}
+
+function sameSight(
+  left,
+  right
+) {
+  const fields = [
+    "enabled",
+    "range",
+    "visionMode",
+    "angle",
+    "attenuation",
+    "saturation",
+    "brightness",
+    "contrast",
+    "color"
+  ];
+
+  return fields.every(
+    field =>
+      sameValue(
+        left?.[field],
+        right?.[field]
+      )
+  );
+}
+
+function isUnlimitedDarkvision(
+  sight
+) {
+  return (
+    sight?.enabled === true &&
+    !Number.isFinite(
+      sight?.range
+    ) &&
+    sight?.visionMode === "darkvision"
+  );
+}
+
+async function waitCheck(
+  label,
+  predicate,
+  details
+) {
+  try {
+    const result =
+      await boaWaitFor(
+        predicate
+      );
+
+    const passed =
+      result !== false;
+
+    boaCheck(
+      checks,
+      label,
+      passed,
+      typeof details === "function"
+        ? details()
+        : details
+    );
+
+    return passed;
+  } catch (error) {
+    boaCheck(
+      checks,
+      label,
+      false,
+      {
+        error:
+          error.stack ??
+          error.message,
+        state:
+          typeof details === "function"
+            ? details()
+            : details
+      }
+    );
+
+    return false;
+  }
+}
+
+function checkDarkvisionDefaults(
+  labelPrefix,
+  sight,
+  defaults
+) {
+  if (
+    Object.hasOwn(
+      defaults,
+      "attenuation"
+    )
+  ) {
+    boaCheck(
+      checks,
+      `${labelPrefix} uses Foundry Darkvision attenuation`,
+      sameValue(
+        sight?.attenuation,
+        defaults.attenuation
+      ),
+      {
+        actual:
+          sight?.attenuation,
+        expected:
+          defaults.attenuation
+      }
+    );
+  }
+
+  if (
+    Object.hasOwn(
+      defaults,
+      "saturation"
+    )
+  ) {
+    boaCheck(
+      checks,
+      `${labelPrefix} uses Foundry Darkvision saturation`,
+      sameValue(
+        sight?.saturation,
+        defaults.saturation
+      ),
+      {
+        actual:
+          sight?.saturation,
+        expected:
+          defaults.saturation
+      }
+    );
+  }
+}
+
 if (!game.user.isGM) {
   boaCheck(
     checks,
@@ -68,17 +262,6 @@ const api =
 const reconcileActor =
   api.reconcileDemonHunterInitiationActor;
 
-const visionModes =
-  CONFIG?.Canvas?.visionModes;
-const darkvisionMode =
-  visionModes?.get?.(
-    "darkvision"
-  ) ??
-  visionModes?.darkvision;
-const darkvisionDefaults =
-  darkvisionMode?.vision?.defaults ??
-  {};
-
 boaCheck(
   checks,
   "Demon Hunter Initiation reconciliation API is exposed",
@@ -86,12 +269,27 @@ boaCheck(
   "reconcileDemonHunterInitiationActor"
 );
 
+const visionModes =
+  CONFIG?.Canvas?.visionModes;
+
+const darkvisionMode =
+  visionModes?.get?.(
+    "darkvision"
+  ) ??
+  visionModes?.darkvision;
+
+const darkvisionDefaults =
+  darkvisionMode?.vision?.defaults ??
+  {};
+
 boaCheck(
   checks,
-  "Foundry Darkvision exposes visual defaults",
-  Boolean(darkvisionMode) &&
-    typeof darkvisionDefaults === "object",
-  darkvisionDefaults
+  "Foundry Darkvision mode is available",
+  Boolean(
+    darkvisionMode
+  ),
+  darkvisionMode ??
+    null
 );
 
 if (
@@ -118,7 +316,8 @@ if (
         name:
           "[BOA TEST] Demon Hunter Vision " +
           foundry.utils.randomID(6),
-        type: "character",
+        type:
+          "character",
         prototypeToken: {
           sight: {
             enabled: false,
@@ -140,75 +339,17 @@ if (
       }
     );
 
-    const [embeddedAbility] =
-      await actor.createEmbeddedDocuments(
-        "Item",
-        [
-          boaCloneEmbeddedItem(
-            sourceAbility
-          )
-        ]
-      );
-
-    const prototypeApplied =
-      await boaWaitFor(
-        () =>
-          actor.prototypeToken?.sight?.enabled === true &&
-          !Number.isFinite(
-            actor.prototypeToken?.sight?.range
-          ) &&
-          actor.prototypeToken?.sight?.visionMode === "darkvision"
+    const prototypeBaseline =
+      sightSnapshot(
+        actor.prototypeToken?.sight
       );
 
     boaCheck(
       checks,
-      "Initiation gives the prototype token unlimited Darkvision",
-      prototypeApplied,
-      actor.prototypeToken?.sight?.toObject?.() ??
-        actor.prototypeToken?.sight ??
-        null
-    );
-
-    boaCheckEqual(
-      checks,
-      "Initiation sets prototype vision mode to Darkvision",
-      actor.prototypeToken?.sight?.visionMode,
-      "darkvision"
-    );
-
-    if (
-      Object.hasOwn(
-        darkvisionDefaults,
-        "attenuation"
-      )
-    ) {
-      boaCheckEqual(
-        checks,
-        "Initiation applies the Darkvision attenuation preset to the prototype",
-        actor.prototypeToken?.sight?.attenuation,
-        darkvisionDefaults.attenuation
-      );
-    }
-
-    if (
-      Object.hasOwn(
-        darkvisionDefaults,
-        "saturation"
-      )
-    ) {
-      boaCheckEqual(
-        checks,
-        "Initiation applies the Darkvision saturation preset to the prototype",
-        actor.prototypeToken?.sight?.saturation,
-        darkvisionDefaults.saturation
-      );
-    }
-
-    boaCheckEqual(
-      checks,
-      "Initiation preserves prototype sight angle",
-      actor.prototypeToken?.sight?.angle,
-      270
+      "Prototype-token baseline was captured from the created Actor",
+      prototypeBaseline.visionMode === "basic" &&
+        prototypeBaseline.enabled === false,
+      prototypeBaseline
     );
 
     scene = await Scene.create({
@@ -251,77 +392,170 @@ if (
         ]
       );
 
-    const tokenApplied =
-      await boaWaitFor(
-        () => {
-          const current =
-            scene.tokens.get(
-              token.id
-            );
-
-          return (
-            current?.sight?.enabled === true &&
-            !Number.isFinite(
-              current?.sight?.range
-            ) &&
-            current?.sight?.visionMode === "darkvision"
-          );
-        }
+    const tokenBaseline =
+      sightSnapshot(
+        scene.tokens.get(
+          token.id
+        )?.sight
       );
 
     boaCheck(
       checks,
-      "A token created after Initiation also gets unlimited Darkvision",
-      tokenApplied,
-      scene.tokens.get(
-        token.id
-      )?.sight?.toObject?.() ??
-        scene.tokens.get(
-          token.id
-        )?.sight ??
-        null
+      "Scene-token baseline was captured from the created Token",
+      tokenBaseline.visionMode === "basic" &&
+        tokenBaseline.enabled === false,
+      tokenBaseline
+    );
+
+    const [embeddedAbility] =
+      await actor.createEmbeddedDocuments(
+        "Item",
+        [
+          boaCloneEmbeddedItem(
+            sourceAbility
+          )
+        ]
+      );
+
+    await waitCheck(
+      "Adding Initiation applies unlimited Darkvision to the prototype token",
+      () =>
+        isUnlimitedDarkvision(
+          actor.prototypeToken?.sight
+        ),
+      () =>
+        sightSnapshot(
+          actor.prototypeToken?.sight
+        )
+    );
+
+    checkDarkvisionDefaults(
+      "Prototype token",
+      actor.prototypeToken?.sight,
+      darkvisionDefaults
     );
 
     boaCheckEqual(
       checks,
-      "Initiation sets scene-token vision mode to Darkvision",
-      scene.tokens.get(
-        token.id
-      )?.sight?.visionMode,
-      "darkvision"
+      "Initiation preserves prototype sight angle",
+      actor.prototypeToken?.sight?.angle,
+      prototypeBaseline.angle
     );
 
-    if (
-      Object.hasOwn(
-        darkvisionDefaults,
-        "attenuation"
-      )
-    ) {
-      boaCheckEqual(
-        checks,
-        "Initiation applies the Darkvision attenuation preset to the scene token",
-        scene.tokens.get(
-          token.id
-        )?.sight?.attenuation,
-        darkvisionDefaults.attenuation
-      );
-    }
+    await waitCheck(
+      "Adding Initiation applies unlimited Darkvision to an existing scene token",
+      () =>
+        isUnlimitedDarkvision(
+          scene.tokens.get(
+            token.id
+          )?.sight
+        ),
+      () =>
+        sightSnapshot(
+          scene.tokens.get(
+            token.id
+          )?.sight
+        )
+    );
 
-    if (
-      Object.hasOwn(
-        darkvisionDefaults,
-        "saturation"
-      )
-    ) {
-      boaCheckEqual(
-        checks,
-        "Initiation applies the Darkvision saturation preset to the scene token",
-        scene.tokens.get(
-          token.id
-        )?.sight?.saturation,
-        darkvisionDefaults.saturation
-      );
-    }
+    checkDarkvisionDefaults(
+      "Scene token",
+      scene.tokens.get(
+        token.id
+      )?.sight,
+      darkvisionDefaults
+    );
+
+    boaCheckEqual(
+      checks,
+      "Initiation preserves scene-token sight angle",
+      scene.tokens.get(
+        token.id
+      )?.sight?.angle,
+      tokenBaseline.angle
+    );
+
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      settingKey,
+      false
+    );
+
+    await waitCheck(
+      "Disabling Initiation automation restores the prototype-token baseline",
+      () =>
+        sameSight(
+          sightSnapshot(
+            actor.prototypeToken?.sight
+          ),
+          prototypeBaseline
+        ),
+      () => ({
+        expected:
+          prototypeBaseline,
+        actual:
+          sightSnapshot(
+            actor.prototypeToken?.sight
+          )
+      })
+    );
+
+    await waitCheck(
+      "Disabling Initiation automation restores the scene-token baseline",
+      () =>
+        sameSight(
+          sightSnapshot(
+            scene.tokens.get(
+              token.id
+            )?.sight
+          ),
+          tokenBaseline
+        ),
+      () => ({
+        expected:
+          tokenBaseline,
+        actual:
+          sightSnapshot(
+            scene.tokens.get(
+              token.id
+            )?.sight
+          )
+      })
+    );
+
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      settingKey,
+      true
+    );
+
+    await waitCheck(
+      "Re-enabling Initiation automation reapplies prototype Darkvision",
+      () =>
+        isUnlimitedDarkvision(
+          actor.prototypeToken?.sight
+        ),
+      () =>
+        sightSnapshot(
+          actor.prototypeToken?.sight
+        )
+    );
+
+    await waitCheck(
+      "Re-enabling Initiation automation reapplies scene-token Darkvision",
+      () =>
+        isUnlimitedDarkvision(
+          scene.tokens.get(
+            token.id
+          )?.sight
+        ),
+      () =>
+        sightSnapshot(
+          scene.tokens.get(
+            token.id
+          )?.sight
+        )
+    );
 
     await actor.update({
       "prototypeToken.sight.range": 22,
@@ -337,32 +571,26 @@ if (
 
     boaCheck(
       checks,
-      "Managed vision can differ from the preset before cleanup",
+      "Managed sight can be changed while Initiation remains active",
       Number(
         actor.prototypeToken?.sight?.range
       ) === 22 &&
-        actor.prototypeToken?.sight?.attenuation === 0.23 &&
         Number(
           scene.tokens.get(
             token.id
           )?.sight?.range
-        ) === 18 &&
-        scene.tokens.get(
-          token.id
-        )?.sight?.attenuation === 0.19,
+        ) === 18,
       {
         prototype:
-          actor.prototypeToken?.sight?.toObject?.() ??
-          actor.prototypeToken?.sight ??
-          null,
+          sightSnapshot(
+            actor.prototypeToken?.sight
+          ),
         token:
-          scene.tokens.get(
-            token.id
-          )?.sight?.toObject?.() ??
-          scene.tokens.get(
-            token.id
-          )?.sight ??
-          null
+          sightSnapshot(
+            scene.tokens.get(
+              token.id
+            )?.sight
+          )
       }
     );
 
@@ -373,56 +601,51 @@ if (
       ]
     );
 
-    const restored =
-      await boaWaitFor(
-        () => {
-          const currentToken =
+    await waitCheck(
+      "Removing Initiation restores the complete prototype-token baseline",
+      () =>
+        sameSight(
+          sightSnapshot(
+            actor.prototypeToken?.sight
+          ),
+          prototypeBaseline
+        ),
+      () => ({
+        expected:
+          prototypeBaseline,
+        actual:
+          sightSnapshot(
+            actor.prototypeToken?.sight
+          )
+      })
+    );
+
+    await waitCheck(
+      "Removing Initiation restores the complete scene-token baseline",
+      () =>
+        sameSight(
+          sightSnapshot(
             scene.tokens.get(
               token.id
-            );
-
-          return (
-            actor.prototypeToken?.sight?.enabled === false &&
-            Number(
-              actor.prototypeToken?.sight?.range
-            ) === 7 &&
-            actor.prototypeToken?.sight?.visionMode === "basic" &&
-            actor.prototypeToken?.sight?.attenuation === 0.37 &&
-            actor.prototypeToken?.sight?.saturation === 0.62 &&
-            currentToken?.sight?.enabled === false &&
-            Number(
-              currentToken?.sight?.range
-            ) === 5 &&
-            currentToken?.sight?.visionMode === "basic" &&
-            currentToken?.sight?.attenuation === 0.44 &&
-            currentToken?.sight?.saturation === 0.71
-          );
-        }
-      );
-
-    boaCheck(
-      checks,
-      "Removing Initiation restores the complete original prototype and token vision snapshots",
-      restored,
-      {
-        prototype:
-          actor.prototypeToken?.sight?.toObject?.() ??
-          actor.prototypeToken?.sight ??
-          null,
-        token:
-          scene.tokens.get(
-            token.id
-          )?.sight?.toObject?.() ??
-          scene.tokens.get(
-            token.id
-          )?.sight ??
-          null
-      }
+            )?.sight
+          ),
+          tokenBaseline
+        ),
+      () => ({
+        expected:
+          tokenBaseline,
+        actual:
+          sightSnapshot(
+            scene.tokens.get(
+              token.id
+            )?.sight
+          )
+      })
     );
   } catch (error) {
     boaCheck(
       checks,
-      "Demon Hunter Initiation vision workflow completed",
+      "Demon Hunter Initiation test setup completed",
       false,
       error.stack ?? error.message
     );
@@ -473,9 +696,9 @@ if (
 }
 
 notes.push(
-  "The automation owns the relevant sight configuration while Initiation is " +
-  "active. Removing the ability restores the complete saved original sight " +
-  "snapshot even if managed vision values were changed while active."
+  "This Macro captures Foundry's actual created sight baselines instead of " +
+  "assuming requested creation values survive normalization. Every async " +
+  "lifecycle stage reports its own failure instead of collapsing into one timeout."
 );
 
 return boaFinish(
