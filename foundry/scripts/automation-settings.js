@@ -8,6 +8,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   WAR_STOMP: "warStompAutomation",
   EYE_BEAM: "eyeBeamAutomation",
   SERENITY: "serenityAutomation",
+  DEMON_HUNTER_INITIATION: "demonHunterInitiationAutomation",
 });
 
 const {
@@ -167,6 +168,23 @@ export function isSerenityAutomationEnabled(
     settings,
   );
 }
+function reconcileDemonHunterInitiationOnChange() {
+  queueMicrotask(() => {
+    const api =
+      globalThis.game?.modules?.get?.(MODULE_ID)?.api;
+
+    void api?.reconcileDemonHunterInitiation?.();
+  });
+}
+
+export function isDemonHunterInitiationAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DEMON_HUNTER_INITIATION,
+    settings,
+  );
+}
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -235,6 +253,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.serenityName",
       "BOA.settings.automation.serenityHint",
     ),
+    demonHunterInitiationAutomation: booleanField(
+      "BOA.settings.automation.demonHunterInitiationName",
+      "BOA.settings.automation.demonHunterInitiationHint",
+    ),
   });
 
   static get schema() {
@@ -262,6 +284,8 @@ export class AutomationSettingsForm
           isEyeBeamAutomationEnabled(),
         serenityAutomation:
           isSerenityAutomationEnabled(),
+        demonHunterInitiationAutomation:
+          isDemonHunterInitiationAutomationEnabled(),
       },
       buttons: [
         {
@@ -340,6 +364,15 @@ export class AutomationSettingsForm
         Boolean(
           values[
             AUTOMATION_SETTING_KEYS.SERENITY
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DEMON_HUNTER_INITIATION,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.DEMON_HUNTER_INITIATION
           ],
         ),
       ),
@@ -422,6 +455,18 @@ export function registerAutomationSettings(
       ),
       onChange:
         reconcileSerenityOnChange,
+    },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DEMON_HUNTER_INITIATION,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.demonHunterInitiationName",
+        "BOA.settings.automation.demonHunterInitiationHint",
+      ),
+      onChange:
+        reconcileDemonHunterInitiationOnChange,
     },
   );
   if (settings.registerMenu) {

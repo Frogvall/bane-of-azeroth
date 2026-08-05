@@ -146,6 +146,7 @@ expect([
       "preUpdateToken",
       "canvasReady",
       "createItem",
+      "createToken",
       "updateItem",
       "deleteItem",
       "preCreateChatMessage",
@@ -220,8 +221,8 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(7);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(7);
+        expect(renderActorSheetCallbacks).toHaveLength(8);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(8);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );
@@ -234,7 +235,7 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderAbilityActionActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(8); // Evoker's Legacy setting registration count
+expect(game.settings.register).toHaveBeenCalledTimes(9); // Evoker's Legacy setting registration count
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

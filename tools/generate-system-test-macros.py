@@ -158,6 +158,15 @@ MACROS = [
         "img": "modules/bane-of-azeroth/assets/icons/classes/monk.webp",
     },
     {
+        "key": "demon-hunter-initiation",
+        "id": "BoaDevDHInit0014",
+        "name": "BOA DEV – Verify Demon Hunter Initiation",
+        "file": "verify-demon-hunter-initiation.js",
+        "order": 22,
+        "suiteMember": True,
+        "img": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",

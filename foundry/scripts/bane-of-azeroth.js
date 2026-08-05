@@ -93,6 +93,14 @@ import {
   rollAbilityActionResolutionDamage,
 } from "./ability-actions.js";
 import {
+  onCreateDemonHunterInitiationItem,
+  onCreateDemonHunterInitiationToken,
+  onDeleteDemonHunterInitiationItem,
+  onRenderDemonHunterInitiationActorSheet,
+  reconcileDemonHunterInitiation,
+  reconcileDemonHunterInitiationActor,
+} from "./demon-hunter-initiation.js";
+import {
   onCreateSerenityItem,
   onDeleteSerenityItem,
   onRenderSerenityActorSheet,
@@ -152,12 +160,22 @@ Hooks.once("init", () => {
       rollAbilityActionResolutionDamage,
       reconcileSerenity,
       reconcileSerenityActor,
+      reconcileDemonHunterInitiation,
+      reconcileDemonHunterInitiationActor,
 };
   }
 
   Hooks.on(
     "createItem",
+    onCreateDemonHunterInitiationItem,
+  );
+  Hooks.on(
+    "createItem",
     onCreateSerenityItem,
+  );
+  Hooks.on(
+    "createToken",
+    onCreateDemonHunterInitiationToken,
   );
   Hooks.on("createItem", onCreateItem);
   Hooks.on(
@@ -165,6 +183,10 @@ Hooks.once("init", () => {
     onCreateAbilityActionItem,
   );
   Hooks.on("updateItem", onUpdateItem);
+  Hooks.on(
+    "deleteItem",
+    onDeleteDemonHunterInitiationItem,
+  );
   Hooks.on(
     "deleteItem",
     onDeleteSerenityItem,
@@ -220,6 +242,10 @@ Hooks.on(
   );
   Hooks.on(
     "renderDoDActorBaseSheet",
+    onRenderDemonHunterInitiationActorSheet,
+  );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
     onRenderSerenityActorSheet,
   );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
@@ -268,6 +294,16 @@ Hooks.once("ready", async () => {
   } catch (error) {
     console.error(
       `${MODULE_ID} | Failed to initialize Serenity automation.`,
+      error,
+    );
+  }
+  try {
+    if (isPrimaryActiveGM()) {
+      await reconcileDemonHunterInitiation();
+    }
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize Demon Hunter Initiation automation.`,
       error,
     );
   }

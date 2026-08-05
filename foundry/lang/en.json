@@ -127,7 +127,9 @@
         "eyeBeamName": "Eye Beam",
         "eyeBeamHint": "Automate Eye Beam targeting, WP cost, automatic hit, and damage.",
         "serenityName": "Monk's Serenity",
-        "serenityHint": "Increase embedded Unarmed weapon damage to D10 while Monk's Serenity is present, and update the actor's local Iron Fist description from 2D6 to 2D10."
+        "serenityHint": "Increase embedded Unarmed weapon damage to D10 while Monk's Serenity is present, and update the actor's local Iron Fist description from 2D6 to 2D10.",
+        "demonHunterInitiationName": "Demon Hunter Initiation",
+        "demonHunterInitiationHint": "Give characters with Demon Hunter Initiation unlimited sight in darkness while preserving their existing token vision presentation settings."
       }
     },
     "notifications": {
