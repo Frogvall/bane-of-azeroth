@@ -193,6 +193,33 @@ if (missingAbilities.length > 0) {
   return boaFinish(testKey, testName, checks, notes);
 }
 
+const demonHunterInitiationContentKey =
+  "heroic-class-ability.demon-hunter.demon-hunter-initiation";
+const demonHunterInitiationSource =
+  sourceItem(
+    demonHunterInitiationContentKey,
+    "Demon Hunter Initiation",
+  );
+
+if (!boaCheck(
+  checks,
+  "Demon Hunter Initiation source ability is imported for the real-Player flow",
+  Boolean(
+    demonHunterInitiationSource,
+  ),
+  demonHunterInitiationContentKey,
+)) {
+  notes.push(
+    "Import the current Bane of Azeroth Adventure first.",
+  );
+  return boaFinish(
+    testKey,
+    testName,
+    checks,
+    notes,
+  );
+}
+
 const impTemplate = boaFindWorldActor(
   "actors.summoned-monsters.imp",
 );
@@ -249,6 +276,11 @@ const originalDemonAutomationSetting = game.settings.get(
   BOA_TEST_MODULE_ID,
   "demonAutomation",
 );
+const originalDemonHunterInitiationAutomationSetting =
+  game.settings.get(
+    BOA_TEST_MODULE_ID,
+    "demonHunterInitiationAutomation",
+  );
 const previousActiveSceneId = game.scenes.active?.id ?? null;
 const sessionId =
   `boa-player-${Date.now()}-${foundry.utils.randomID(8)}`;
@@ -326,6 +358,31 @@ try {
     );
   }
   created.actors.push(shiftActor);
+  const demonHunterInitiationSourceData =
+    markFixture(
+      boaCloneEmbeddedItem(
+        demonHunterInitiationSource,
+      ),
+      sessionId,
+      "demon-hunter-initiation-source-item",
+    );
+
+  const [demonHunterInitiationSourceItem] =
+    await shiftActor.createEmbeddedDocuments(
+      "Item",
+      [
+        demonHunterInitiationSourceData,
+      ],
+    );
+
+  if (
+    !demonHunterInitiationSourceItem
+  ) {
+    throw new Error(
+      "The Demon Hunter Initiation Player-flow source Item "
+      + "could not be embedded.",
+    );
+  }
 
   const sufferingActor = await Actor.create(
     markFixture({
@@ -705,6 +762,11 @@ try {
     "demonAutomation",
     true,
   );
+  await game.settings.set(
+    BOA_TEST_MODULE_ID,
+    "demonHunterInitiationAutomation",
+    true,
+  );
 
   const session = {
     schemaVersion: sessionSchemaVersion,
@@ -733,9 +795,14 @@ try {
     sufferingActorTokenId: sufferingActorToken.id,
     sufferingVoidwalkerTokenId: sufferingVoidwalkerToken.id,
     playerMacroId: playerMacro.id,
+    demonHunterInitiationSourceActorId:
+      shiftActor.id,
+    demonHunterInitiationSourceItemId:
+      demonHunterInitiationSourceItem.id,
     previousActiveSceneId,
     originalAutomationSetting,
     originalDemonAutomationSetting,
+    originalDemonHunterInitiationAutomationSetting,
     requiredAbilityKeys: requiredAbilities.map(entry => entry.key),
     createdAt: new Date().toISOString(),
   };
@@ -920,6 +987,15 @@ try {
     true,
   );
 
+  boaCheckEqual(
+    checks,
+    "Demon Hunter Initiation automation is enabled for player tests",
+    game.settings.get(
+      BOA_TEST_MODULE_ID,
+      "demonHunterInitiationAutomation",
+    ),
+    true,
+  );
   notes.push(`Session: ${sessionId}`);
   notes.push(
     "The password was shown only in the GM-whispered credentials message.",
@@ -959,6 +1035,17 @@ try {
     );
   }
 
+  try {
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      "demonHunterInitiationAutomation",
+      originalDemonHunterInitiationAutomationSetting,
+    );
+  } catch (settingError) {
+    notes.push(
+      `Could not restore Demon Hunter Initiation automation: ${settingError.message}`,
+    );
+  }
   try {
     if (previousActiveSceneId) {
       await game.scenes.get(previousActiveSceneId)?.activate();

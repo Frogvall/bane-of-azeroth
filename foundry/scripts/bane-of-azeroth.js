@@ -99,6 +99,8 @@ import {
   onRenderDemonHunterInitiationActorSheet,
   reconcileDemonHunterInitiation,
   reconcileDemonHunterInitiationActor,
+  registerDemonHunterInitiationSocket,
+  requestDemonHunterInitiationReconcile,
 } from "./demon-hunter-initiation.js";
 import {
   onCreateSerenityItem,
@@ -162,6 +164,7 @@ Hooks.once("init", () => {
       reconcileSerenityActor,
       reconcileDemonHunterInitiation,
       reconcileDemonHunterInitiationActor,
+      requestDemonHunterInitiationReconcile,
 };
   }
 
@@ -311,6 +314,7 @@ Hooks.once("ready", async () => {
   patchSummonRestLifecycle();
   registerElementalTotemSocket();
   registerWarlockDemonSocket();
+  registerDemonHunterInitiationSocket();
   registerVoidwalkerSufferingSocket();
   registerVoidwalkerSufferingDamageCardHook();
   registerCommonAnimalStatusSocket();

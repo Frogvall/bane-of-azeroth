@@ -5,11 +5,29 @@ import {
   getContentKey,
 } from "./core/documents.js";
 import {
+  getPrimaryActiveGMUser,
+  isPrimaryActiveGM,
+} from "./core/users.js";
+import {
   isDemonHunterInitiationAutomationEnabled,
 } from "./automation-settings.js";
 
 export const DEMON_HUNTER_INITIATION_CONTENT_KEY =
   "heroic-class-ability.demon-hunter.demon-hunter-initiation";
+
+const SOCKET_NAME =
+  `module.${MODULE_ID}`;
+const RECONCILE_REQUEST_TYPE =
+  "demonHunterInitiationReconcileRequest";
+const RECONCILE_RESULT_TYPE =
+  "demonHunterInitiationReconcileResult";
+const RECONCILE_TIMEOUT_MS =
+  10000;
+
+const pendingReconcileRequests =
+  new Map();
+let reconcileSocketRegistered =
+  false;
 
 const PROTOTYPE_MANAGED_FLAG =
   "demonHunterInitiationManagedPrototypeVision";
@@ -625,6 +643,13 @@ export function reconcileDemonHunterInitiationActor(
 export async function reconcileDemonHunterInitiation(
   actor = null,
 ) {
+  if (
+    globalThis.game?.user &&
+    !isPrimaryActiveGM()
+  ) {
+    return false;
+  }
+
   if (actor) {
     return reconcileDemonHunterInitiationActor(
       actor,
@@ -647,6 +672,365 @@ export async function reconcileDemonHunterInitiation(
   return true;
 }
 
+export async function executeDemonHunterInitiationReconcileRequest(
+  payload,
+  {
+    users =
+      globalThis.game?.users,
+    actors =
+      globalThis.game?.actors,
+    reconcileActor =
+      reconcileDemonHunterInitiationActor,
+    ownerLevel =
+      globalThis.CONST
+        ?.DOCUMENT_OWNERSHIP_LEVELS
+        ?.OWNER ??
+      3,
+  } = {},
+) {
+  const requesterUserId =
+    payload?.requesterUserId;
+  const actorId =
+    payload?.actorId;
+
+  if (
+    !requesterUserId ||
+    !actorId
+  ) {
+    throw new Error(
+      "The Demon Hunter Initiation reconciliation request is incomplete.",
+    );
+  }
+
+  const requester =
+    users?.get?.(
+      requesterUserId,
+    ) ??
+    null;
+
+  if (
+    !requester ||
+    requester.active !== true
+  ) {
+    throw new Error(
+      "The requesting User is not active.",
+    );
+  }
+
+  const actor =
+    actors?.get?.(
+      actorId,
+    ) ??
+    null;
+
+  if (!actor) {
+    throw new Error(
+      "The requested Demon Hunter Initiation Actor does not exist.",
+    );
+  }
+
+  const mayManageActor =
+    requester.isGM === true ||
+    actor.testUserPermission?.(
+      requester,
+      ownerLevel,
+    ) === true;
+
+  if (!mayManageActor) {
+    throw new Error(
+      "The requesting User does not own the Demon Hunter Initiation Actor.",
+    );
+  }
+
+  await reconcileActor(
+    actor,
+  );
+
+  return {
+    actorId:
+      actor.id,
+  };
+}
+
+function handleDemonHunterInitiationReconcileResult(
+  payload,
+) {
+  if (
+    payload?.requesterUserId !==
+      globalThis.game?.user?.id
+  ) {
+    return;
+  }
+
+  const pending =
+    pendingReconcileRequests.get(
+      payload.requestId,
+    );
+
+  if (!pending) {
+    return;
+  }
+
+  clearTimeout(
+    pending.timeoutId,
+  );
+
+  pendingReconcileRequests.delete(
+    payload.requestId,
+  );
+
+  if (
+    payload.success === true
+  ) {
+    pending.resolve(
+      payload.result,
+    );
+  } else {
+    pending.reject(
+      new Error(
+        payload.error ||
+        "The GM could not reconcile Demon Hunter Initiation.",
+      ),
+    );
+  }
+}
+
+async function handleDemonHunterInitiationReconcileRequest(
+  payload,
+) {
+  if (
+    !isPrimaryActiveGM()
+  ) {
+    return;
+  }
+
+  if (
+    payload?.gmUserId &&
+    payload.gmUserId !==
+      globalThis.game?.user?.id
+  ) {
+    return;
+  }
+
+  try {
+    const result =
+      await executeDemonHunterInitiationReconcileRequest(
+        payload,
+      );
+
+    globalThis.game.socket.emit(
+      SOCKET_NAME,
+      {
+        type:
+          RECONCILE_RESULT_TYPE,
+        requestId:
+          payload.requestId,
+        requesterUserId:
+          payload.requesterUserId,
+        success:
+          true,
+        result,
+      },
+    );
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Demon Hunter Initiation `
+      + "reconciliation request failed.",
+      error,
+    );
+
+    globalThis.game.socket.emit(
+      SOCKET_NAME,
+      {
+        type:
+          RECONCILE_RESULT_TYPE,
+        requestId:
+          payload?.requestId,
+        requesterUserId:
+          payload?.requesterUserId,
+        success:
+          false,
+        error:
+          error.message,
+      },
+    );
+  }
+}
+
+function onDemonHunterInitiationSocketMessage(
+  payload,
+) {
+  if (
+    !payload ||
+    typeof payload !==
+      "object"
+  ) {
+    return;
+  }
+
+  if (
+    payload.type ===
+      RECONCILE_REQUEST_TYPE
+  ) {
+    void handleDemonHunterInitiationReconcileRequest(
+      payload,
+    );
+  } else if (
+    payload.type ===
+      RECONCILE_RESULT_TYPE
+  ) {
+    handleDemonHunterInitiationReconcileResult(
+      payload,
+    );
+  }
+}
+
+export function registerDemonHunterInitiationSocket() {
+  if (
+    reconcileSocketRegistered
+  ) {
+    return;
+  }
+
+  globalThis.game?.socket?.on?.(
+    SOCKET_NAME,
+    onDemonHunterInitiationSocketMessage,
+  );
+
+  reconcileSocketRegistered =
+    true;
+}
+
+export function requestDemonHunterInitiationReconcile(
+  actor,
+) {
+  if (!actor) {
+    return Promise.resolve(
+      false,
+    );
+  }
+
+  const currentUser =
+    globalThis.game?.user;
+
+  if (!currentUser) {
+    return reconcileDemonHunterInitiationActor(
+      actor,
+    );
+  }
+
+  if (
+    isPrimaryActiveGM()
+  ) {
+    return reconcileDemonHunterInitiationActor(
+      actor,
+    );
+  }
+
+  const ownerLevel =
+    globalThis.CONST
+      ?.DOCUMENT_OWNERSHIP_LEVELS
+      ?.OWNER ??
+    3;
+
+  const mayManageActor =
+    currentUser.isGM === true ||
+    actor.testUserPermission?.(
+      currentUser,
+      ownerLevel,
+    ) === true;
+
+  if (!mayManageActor) {
+    return Promise.reject(
+      new Error(
+        "You do not own this Demon Hunter Initiation Actor.",
+      ),
+    );
+  }
+
+  const activeGM =
+    getPrimaryActiveGMUser();
+
+  if (!activeGM) {
+    return Promise.reject(
+      new Error(
+        "An active GM is required for Demon Hunter Initiation vision automation.",
+      ),
+    );
+  }
+
+  const requestId =
+    globalThis.foundry?.utils
+      ?.randomID?.() ??
+    `${Date.now()}-${Math.random()}`;
+
+  return new Promise(
+    (
+      resolve,
+      reject,
+    ) => {
+      const timeoutId =
+        setTimeout(
+          () => {
+            pendingReconcileRequests.delete(
+              requestId,
+            );
+
+            reject(
+              new Error(
+                "The Demon Hunter Initiation reconciliation request timed out.",
+              ),
+            );
+          },
+          RECONCILE_TIMEOUT_MS,
+        );
+
+      pendingReconcileRequests.set(
+        requestId,
+        {
+          resolve,
+          reject,
+          timeoutId,
+        },
+      );
+
+      globalThis.game.socket.emit(
+        SOCKET_NAME,
+        {
+          type:
+            RECONCILE_REQUEST_TYPE,
+          requestId,
+          requesterUserId:
+            currentUser.id,
+          gmUserId:
+            activeGM.id,
+          actorId:
+            actor.id,
+        },
+      );
+    },
+  );
+}
+
+async function reconcileDemonHunterInitiationWithAuthority(
+  actor,
+  context,
+) {
+  try {
+    return await requestDemonHunterInitiationReconcile(
+      actor,
+    );
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to reconcile Demon Hunter Initiation `
+      + `${context}.`,
+      error,
+    );
+
+    return false;
+  }
+}
+
 export async function onCreateDemonHunterInitiationItem(
   item,
 ) {
@@ -655,8 +1039,9 @@ export async function onCreateDemonHunterInitiationItem(
       item,
     )
   ) {
-    await reconcileDemonHunterInitiationActor(
+    await reconcileDemonHunterInitiationWithAuthority(
       item.parent,
+      "after Item creation",
     );
   }
 }
@@ -677,8 +1062,9 @@ export function onDeleteDemonHunterInitiationItem(
 
   queueMicrotask(
     () => {
-      void reconcileDemonHunterInitiationActor(
+      void reconcileDemonHunterInitiationWithAuthority(
         actor,
+        "after Item deletion",
       );
     },
   );
@@ -690,8 +1076,9 @@ export async function onCreateDemonHunterInitiationToken(
   if (
     token?.actor
   ) {
-    await reconcileDemonHunterInitiationActor(
+    await reconcileDemonHunterInitiationWithAuthority(
       token.actor,
+      "after Token creation",
     );
   }
 }
@@ -702,8 +1089,9 @@ export function onRenderDemonHunterInitiationActorSheet(
   if (
     app?.actor
   ) {
-    void reconcileDemonHunterInitiationActor(
+    void reconcileDemonHunterInitiationWithAuthority(
       app.actor,
+      "while rendering the Actor sheet",
     );
   }
 }

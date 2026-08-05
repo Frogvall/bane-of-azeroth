@@ -1668,7 +1668,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/cleanup-player-tests.js",
-      "line": 406,
+      "line": 438,
       "column": 11,
       "target": "${report.uuid}",
       "classification": "unclassified",
@@ -1678,7 +1678,7 @@
     {
       "kind": "uuid-literal",
       "path": "tests/system/macros/prepare-player-tests.js",
-      "line": 646,
+      "line": 703,
       "column": 25,
       "target": "Actor.BoaOtherPlayerTe",
       "classification": "unclassified",
@@ -1697,7 +1697,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/run-player-tests.js",
-      "line": 476,
+      "line": 871,
       "column": 10,
       "target": "${summonAbility.uuid}",
       "classification": "unclassified",

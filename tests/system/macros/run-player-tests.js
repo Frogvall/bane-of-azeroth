@@ -88,6 +88,136 @@ function tokenIdExists(targetScene, tokenId) {
     targetScene?.tokens?.get(tokenId),
   );
 }
+function normalizeDemonHunterRange(
+  range,
+) {
+  if (
+    range === null ||
+    range === undefined
+  ) {
+    return null;
+  }
+
+  const numeric =
+    Number(
+      range,
+    );
+
+  return Number.isFinite(
+    numeric,
+  )
+    ? numeric
+    : null;
+}
+
+function demonHunterSightSnapshot(
+  sight,
+) {
+  const source =
+    sight?.toObject?.() ??
+    sight ??
+    {};
+
+  return {
+    enabled:
+      Boolean(
+        source.enabled,
+      ),
+    range:
+      normalizeDemonHunterRange(
+        source.range,
+      ),
+    visionMode:
+      source.visionMode ??
+      "basic",
+    angle:
+      source.angle ??
+      null,
+    attenuation:
+      source.attenuation ??
+      null,
+    saturation:
+      source.saturation ??
+      null,
+    brightness:
+      source.brightness ??
+      null,
+    contrast:
+      source.contrast ??
+      null,
+    color:
+      source.color ??
+      null,
+  };
+}
+
+function sameDemonHunterValue(
+  left,
+  right,
+) {
+  if (
+    typeof left ===
+      "number" &&
+    typeof right ===
+      "number"
+  ) {
+    return (
+      Math.abs(
+        left - right,
+      ) <
+      0.000001
+    );
+  }
+
+  return left === right;
+}
+
+function sameDemonHunterSight(
+  left,
+  right,
+) {
+  return [
+    "enabled",
+    "range",
+    "visionMode",
+    "angle",
+    "attenuation",
+    "saturation",
+    "brightness",
+    "contrast",
+    "color",
+  ].every(
+    field =>
+      sameDemonHunterValue(
+        left?.[field],
+        right?.[field],
+      ),
+  );
+}
+
+function isUnlimitedDemonHunterDarkvision(
+  sight,
+) {
+  const range =
+    sight?.range;
+
+  const unlimited =
+    range === null ||
+    range === undefined ||
+    !Number.isFinite(
+      Number(
+        range,
+      ),
+    );
+
+  return (
+    sight?.enabled === true &&
+    unlimited &&
+    sight?.visionMode ===
+      "darkvision"
+  );
+}
+
 
 async function runRestMethod(
   restingActor,
@@ -109,6 +239,18 @@ async function runRestMethod(
 const actor = game.user.character;
 const shiftActor =
   game.actors.get(session.shiftActorId) ?? null;
+const demonHunterInitiationSourceActor =
+  game.actors.get(
+    session.demonHunterInitiationSourceActorId,
+  ) ??
+  null;
+const demonHunterInitiationSourceItem =
+  demonHunterInitiationSourceActor
+    ?.items
+    ?.get?.(
+      session.demonHunterInitiationSourceItemId,
+    ) ??
+  null;
 const sufferingActor =
   game.actors.get(session.sufferingActorId) ?? null;
 const summonActor =
@@ -198,6 +340,23 @@ boaCheck(
   session.sessionId,
 );
 
+boaCheck(
+  checks,
+  "Prepared Demon Hunter Initiation Player-flow source Item exists",
+  Boolean(
+    demonHunterInitiationSourceActor &&
+    demonHunterInitiationSourceItem
+  ),
+  {
+    actorId:
+      demonHunterInitiationSourceActor?.id ??
+      null,
+    itemId:
+      demonHunterInitiationSourceItem?.id ??
+      null,
+  },
+);
+
 for (const contentKey of session.requiredAbilityKeys ?? []) {
   boaCheck(
     checks,
@@ -206,6 +365,242 @@ for (const contentKey of session.requiredAbilityKeys ?? []) {
       boaContentKey(item) === contentKey
     ),
     contentKey,
+  );
+}
+
+if (
+  actor &&
+  scene &&
+  token &&
+  demonHunterInitiationSourceItem
+) {
+  try {
+    const requestDemonHunterInitiationReconcile =
+      game.modules.get(
+        BOA_TEST_MODULE_ID,
+      )?.api
+        ?.requestDemonHunterInitiationReconcile;
+
+    boaCheck(
+      checks,
+      "Demon Hunter Initiation Player authority API is available",
+      typeof requestDemonHunterInitiationReconcile ===
+        "function",
+      "requestDemonHunterInitiationReconcile",
+    );
+
+    if (
+      typeof requestDemonHunterInitiationReconcile !==
+        "function"
+    ) {
+      throw new Error(
+        "The Demon Hunter Initiation Player authority API is unavailable.",
+      );
+    }
+
+    const authorityProbe =
+      await requestDemonHunterInitiationReconcile(
+        actor,
+      );
+
+    boaCheckEqual(
+      checks,
+      "Player can request Demon Hunter Initiation reconciliation through the primary GM",
+      authorityProbe?.actorId ??
+        null,
+      actor.id,
+    );
+
+    const prototypeBaseline =
+      demonHunterSightSnapshot(
+        actor.prototypeToken?.sight,
+      );
+
+    const tokenBaseline =
+      demonHunterSightSnapshot(
+        scene.tokens.get(
+          token.id,
+        )?.sight,
+      );
+
+    const initiationData =
+      boaCloneEmbeddedItem(
+        demonHunterInitiationSourceItem,
+      );
+
+    const [createdInitiation] =
+      await actor.createEmbeddedDocuments(
+        "Item",
+        [
+          initiationData,
+        ],
+      );
+
+    if (!createdInitiation) {
+      throw new Error(
+        "The real Player could not add Demon Hunter Initiation.",
+      );
+    }
+
+    await boaWaitFor(
+      () => (
+        isUnlimitedDemonHunterDarkvision(
+          actor.prototypeToken?.sight,
+        ) &&
+        isUnlimitedDemonHunterDarkvision(
+          scene.tokens.get(
+            token.id,
+          )?.sight,
+        )
+      ),
+      {
+        timeout:
+          10000,
+        interval:
+          100,
+        description:
+          "Demon Hunter Initiation Player assignment through the active GM",
+      },
+    );
+
+    boaCheck(
+      checks,
+      "Real Player adds Demon Hunter Initiation and receives Darkvision through the active GM",
+      (
+        boaContentKey(
+          createdInitiation,
+        ) ===
+          "heroic-class-ability.demon-hunter.demon-hunter-initiation" &&
+        isUnlimitedDemonHunterDarkvision(
+          actor.prototypeToken?.sight,
+        ) &&
+        isUnlimitedDemonHunterDarkvision(
+          scene.tokens.get(
+            token.id,
+          )?.sight,
+        )
+      ),
+      {
+        prototype:
+          demonHunterSightSnapshot(
+            actor.prototypeToken?.sight,
+          ),
+        token:
+          demonHunterSightSnapshot(
+            scene.tokens.get(
+              token.id,
+            )?.sight,
+          ),
+      },
+    );
+
+    await actor.deleteEmbeddedDocuments(
+      "Item",
+      [
+        createdInitiation.id,
+      ],
+    );
+
+    await boaWaitFor(
+      () => (
+        sameDemonHunterSight(
+          demonHunterSightSnapshot(
+            actor.prototypeToken?.sight,
+          ),
+          prototypeBaseline,
+        ) &&
+        sameDemonHunterSight(
+          demonHunterSightSnapshot(
+            scene.tokens.get(
+              token.id,
+            )?.sight,
+          ),
+          tokenBaseline,
+        )
+      ),
+      {
+        timeout:
+          10000,
+        interval:
+          100,
+        description:
+          "Demon Hunter Initiation Player removal through the active GM",
+      },
+    );
+
+    boaCheck(
+      checks,
+      "Real Player removes Demon Hunter Initiation and restores the complete sight baseline",
+      (
+        !boaCollectionValues(
+          actor.items,
+        ).some(
+          item =>
+            boaContentKey(
+              item,
+            ) ===
+              "heroic-class-ability.demon-hunter.demon-hunter-initiation",
+        ) &&
+        sameDemonHunterSight(
+          demonHunterSightSnapshot(
+            actor.prototypeToken?.sight,
+          ),
+          prototypeBaseline,
+        ) &&
+        sameDemonHunterSight(
+          demonHunterSightSnapshot(
+            scene.tokens.get(
+              token.id,
+            )?.sight,
+          ),
+          tokenBaseline,
+        )
+      ),
+      {
+        expectedPrototype:
+          prototypeBaseline,
+        actualPrototype:
+          demonHunterSightSnapshot(
+            actor.prototypeToken?.sight,
+          ),
+        expectedToken:
+          tokenBaseline,
+        actualToken:
+          demonHunterSightSnapshot(
+            scene.tokens.get(
+              token.id,
+            )?.sight,
+          ),
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player Demon Hunter Initiation GM-authority lifecycle completed",
+      false,
+      error.stack ??
+        error.message,
+    );
+  }
+} else {
+  boaCheck(
+    checks,
+    "Prepared Demon Hunter Initiation Player-flow fixtures are available",
+    false,
+    {
+      actor:
+        actor?.id ??
+        null,
+      scene:
+        scene?.id ??
+        null,
+      token:
+        token?.id ??
+        null,
+      sourceItem:
+        demonHunterInitiationSourceItem?.id ??
+        null,
+    },
   );
 }
 

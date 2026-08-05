@@ -212,6 +212,38 @@ for (const preparedSession of sessions) {
     }
   }
 
+  if (
+    Object.prototype.hasOwnProperty.call(
+      preparedSession,
+      "originalDemonHunterInitiationAutomationSetting",
+    )
+  ) {
+    try {
+      await game.settings.set(
+        BOA_TEST_MODULE_ID,
+        "demonHunterInitiationAutomation",
+        preparedSession.originalDemonHunterInitiationAutomationSetting,
+      );
+
+      boaCheckEqual(
+        checks,
+        `Restored Demon Hunter Initiation automation for ${preparedSession.sessionId}`,
+        game.settings.get(
+          BOA_TEST_MODULE_ID,
+          "demonHunterInitiationAutomation",
+        ),
+        preparedSession.originalDemonHunterInitiationAutomationSetting,
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        `Restored Demon Hunter Initiation automation for ${preparedSession.sessionId}`,
+        false,
+        error.stack ??
+          error.message,
+      );
+    }
+  }
   try {
     const previousScene = preparedSession.previousActiveSceneId
       ? game.scenes.get(preparedSession.previousActiveSceneId)
