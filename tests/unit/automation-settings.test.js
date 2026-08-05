@@ -188,6 +188,7 @@ describe("ApplicationV2 automation settings form", () => {
       evokersLegacyAutomation: false,
       warStompAutomation: false,
       eyeBeamAutomation: false,
+      serenityAutomation: false,
     });
     expect(context.buttons).toEqual([
       {
@@ -217,11 +218,12 @@ describe("ApplicationV2 automation settings form", () => {
           evokersLegacyAutomation: true,
           warStompAutomation: true,
           eyeBeamAutomation: true,
+          serenityAutomation: true,
         },
       },
     );
 
-    expect(set).toHaveBeenCalledTimes(6);
+    expect(set).toHaveBeenCalledTimes(7);
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,

@@ -108,7 +108,7 @@ describe("Automation Settings presentation", () => {
     expect(template).toContain("<legend>");
     expect(
       template.match(/\{\{formGroup/g),
-    ).toHaveLength(6);
+    ).toHaveLength(7);
     expect(template).toContain(
       "schema.fields.elementalTotemAutomation",
     );

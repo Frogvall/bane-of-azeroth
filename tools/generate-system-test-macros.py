@@ -149,6 +149,15 @@ MACROS = [
         "img": "icons/svg/explosion.svg",
     },
     {
+        "key": "serenity",
+        "id": "BoaDevSerenity13",
+        "name": "BOA DEV – Verify Monk's Serenity",
+        "file": "verify-serenity.js",
+        "order": 21,
+        "suiteMember": True,
+        "img": "modules/bane-of-azeroth/assets/icons/classes/monk.webp",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",

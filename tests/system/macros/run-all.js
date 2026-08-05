@@ -49,6 +49,7 @@ const orderedKeys = [
   "mages-brilliance",
   "evokers-legacy",
   "ability-actions",
+  "serenity",
   "elemental-totems",
   "adventure-ownership",
 ];

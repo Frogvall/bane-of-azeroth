@@ -7,6 +7,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   EVOKERS_LEGACY: "evokersLegacyAutomation",
   WAR_STOMP: "warStompAutomation",
   EYE_BEAM: "eyeBeamAutomation",
+  SERENITY: "serenityAutomation",
 });
 
 const {
@@ -149,6 +150,23 @@ export function isEyeBeamAutomationEnabled(
     settings,
   );
 }
+function reconcileSerenityOnChange() {
+  queueMicrotask(() => {
+    const api =
+      globalThis.game?.modules?.get?.(MODULE_ID)?.api;
+
+    void api?.reconcileSerenity?.();
+  });
+}
+
+export function isSerenityAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.SERENITY,
+    settings,
+  );
+}
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -213,6 +231,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.eyeBeamName",
       "BOA.settings.automation.eyeBeamHint",
     ),
+    serenityAutomation: booleanField(
+      "BOA.settings.automation.serenityName",
+      "BOA.settings.automation.serenityHint",
+    ),
   });
 
   static get schema() {
@@ -238,6 +260,8 @@ export class AutomationSettingsForm
           isWarStompAutomationEnabled(),
         eyeBeamAutomation:
           isEyeBeamAutomationEnabled(),
+        serenityAutomation:
+          isSerenityAutomationEnabled(),
       },
       buttons: [
         {
@@ -310,6 +334,15 @@ export class AutomationSettingsForm
           ],
         ),
       ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.SERENITY,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.SERENITY
+          ],
+        ),
+      ),
     ]);
   }
 }
@@ -377,6 +410,18 @@ export function registerAutomationSettings(
       ),
       onChange:
         reconcileAbilityActionsOnChange,
+    },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.SERENITY,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.serenityName",
+        "BOA.settings.automation.serenityHint",
+      ),
+      onChange:
+        reconcileSerenityOnChange,
     },
   );
   if (settings.registerMenu) {

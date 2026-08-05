@@ -92,6 +92,13 @@ import {
   createAbilityActionResolutionMessages,
   rollAbilityActionResolutionDamage,
 } from "./ability-actions.js";
+import {
+  onCreateSerenityItem,
+  onDeleteSerenityItem,
+  onRenderSerenityActorSheet,
+  reconcileSerenity,
+  reconcileSerenityActor,
+} from "./serenity.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchEvokersLegacySpellCost,
@@ -143,15 +150,25 @@ Hooks.once("init", () => {
       planEyeBeamAction,
           createAbilityActionResolutionMessages,
       rollAbilityActionResolutionDamage,
+      reconcileSerenity,
+      reconcileSerenityActor,
 };
   }
 
+  Hooks.on(
+    "createItem",
+    onCreateSerenityItem,
+  );
   Hooks.on("createItem", onCreateItem);
   Hooks.on(
     "createItem",
     onCreateAbilityActionItem,
   );
   Hooks.on("updateItem", onUpdateItem);
+  Hooks.on(
+    "deleteItem",
+    onDeleteSerenityItem,
+  );
   Hooks.on("deleteItem", onDeleteItem);
   Hooks.on(
     "deleteItem",
@@ -201,6 +218,10 @@ Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderAbilityActionActorSheet,
   );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderSerenityActorSheet,
+  );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
@@ -237,6 +258,16 @@ Hooks.once("ready", async () => {
   } catch (error) {
     console.error(
       `${MODULE_ID} | Failed to initialize ability-action automation.`,
+      error,
+    );
+  }
+  try {
+    if (isPrimaryActiveGM()) {
+      await reconcileSerenity();
+    }
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize Serenity automation.`,
       error,
     );
   }

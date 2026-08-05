@@ -125,7 +125,9 @@
         "warStompName": "War Stomp",
         "warStompHint": "Add and automate the Tauren War Stomp Brawling attack.",
         "eyeBeamName": "Eye Beam",
-        "eyeBeamHint": "Automate Eye Beam targeting, WP cost, automatic hit, and damage."
+        "eyeBeamHint": "Automate Eye Beam targeting, WP cost, automatic hit, and damage.",
+        "serenityName": "Monk's Serenity",
+        "serenityHint": "Increase embedded Unarmed weapon damage to D10 while Monk's Serenity is present, and update the actor's local Iron Fist description from 2D6 to 2D10."
       }
     },
     "notifications": {

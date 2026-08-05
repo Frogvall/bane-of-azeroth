@@ -220,8 +220,8 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(6);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(6);
+        expect(renderActorSheetCallbacks).toHaveLength(7);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(7);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );
@@ -234,7 +234,7 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderAbilityActionActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(7); // Evoker's Legacy setting registration count
+expect(game.settings.register).toHaveBeenCalledTimes(8); // Evoker's Legacy setting registration count
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",
