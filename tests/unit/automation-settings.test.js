@@ -190,6 +190,7 @@ describe("ApplicationV2 automation settings form", () => {
       eyeBeamAutomation: false,
       serenityAutomation: false,
       demonHunterInitiationAutomation: false,
+      frostreaperAutomation: false,
     });
     expect(context.buttons).toEqual([
       {
@@ -221,11 +222,12 @@ describe("ApplicationV2 automation settings form", () => {
           eyeBeamAutomation: true,
           serenityAutomation: true,
           demonHunterInitiationAutomation: true,
+          frostreaperAutomation: true,
         },
       },
     );
 
-    expect(set).toHaveBeenCalledTimes(8);
+    expect(set).toHaveBeenCalledTimes(9);
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,

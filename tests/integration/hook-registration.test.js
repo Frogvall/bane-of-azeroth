@@ -151,29 +151,34 @@ expect([
       "deleteItem",
       "preCreateChatMessage",
       "createChatMessage",
+      "deleteChatMessage",
+      "updateCombat",
+      "updateCombatant",
+      "deleteCombatant",
+      "deleteCombat",
       "updateChatMessage",
       "renderDoDActorBaseSheet",
       "preUpdateItem",
     ]);
     expect(
       createChatMessageCallbacks
-    ).toHaveLength(4);
+    ).toHaveLength(5);
     expect(
       new Set(
         createChatMessageCallbacks
       ).size
-    ).toBe(4);
+    ).toBe(5);
     expect(
       onUpdateCommonAnimalMovementToken
     ).toEqual(expect.any(Function));
     expect(
       updateTokenCallbacks
-    ).toHaveLength(2);
+    ).toHaveLength(3);
     expect(
       new Set(
         updateTokenCallbacks
       ).size
-    ).toBe(2);
+    ).toBe(3);
     expect(
       updateTokenCallbacks
     ).toContain(
@@ -235,7 +240,7 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderAbilityActionActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(9); // Evoker's Legacy setting registration count
+expect(game.settings.register).toHaveBeenCalledTimes(10); // Automation settings registration count
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

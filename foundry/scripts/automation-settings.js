@@ -9,6 +9,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   EYE_BEAM: "eyeBeamAutomation",
   SERENITY: "serenityAutomation",
   DEMON_HUNTER_INITIATION: "demonHunterInitiationAutomation",
+  FROSTREAPER: "frostreaperAutomation",
 });
 
 const {
@@ -185,6 +186,23 @@ export function isDemonHunterInitiationAutomationEnabled(
     settings,
   );
 }
+function redrawFrostreaperOnChange() {
+  queueMicrotask(() => {
+    const api =
+      globalThis.game?.modules?.get?.(MODULE_ID)?.api;
+
+    api?.drawAllFrostreaperAuras?.();
+  });
+}
+
+export function isFrostreaperAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.FROSTREAPER,
+    settings,
+  );
+}
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -257,6 +275,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.demonHunterInitiationName",
       "BOA.settings.automation.demonHunterInitiationHint",
     ),
+    frostreaperAutomation: booleanField(
+      "BOA.settings.automation.frostreaperName",
+      "BOA.settings.automation.frostreaperHint",
+    ),
   });
 
   static get schema() {
@@ -286,6 +308,8 @@ export class AutomationSettingsForm
           isSerenityAutomationEnabled(),
         demonHunterInitiationAutomation:
           isDemonHunterInitiationAutomationEnabled(),
+        frostreaperAutomation:
+          isFrostreaperAutomationEnabled(),
       },
       buttons: [
         {
@@ -373,6 +397,15 @@ export class AutomationSettingsForm
         Boolean(
           values[
             AUTOMATION_SETTING_KEYS.DEMON_HUNTER_INITIATION
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.FROSTREAPER,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.FROSTREAPER
           ],
         ),
       ),
@@ -467,6 +500,18 @@ export function registerAutomationSettings(
       ),
       onChange:
         reconcileDemonHunterInitiationOnChange,
+    },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.FROSTREAPER,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.frostreaperName",
+        "BOA.settings.automation.frostreaperHint",
+      ),
+      onChange:
+        redrawFrostreaperOnChange,
     },
   );
   if (settings.registerMenu) {

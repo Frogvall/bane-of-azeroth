@@ -167,6 +167,15 @@ MACROS = [
         "img": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp",
     },
     {
+        "key": "frostreaper",
+        "id": "BoaDevFrost00015",
+        "name": "BOA DEV – Verify Frostreaper",
+        "file": "verify-frostreaper.js",
+        "order": 23,
+        "suiteMember": True,
+        "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",

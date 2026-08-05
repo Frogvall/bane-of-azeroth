@@ -129,7 +129,9 @@
         "serenityName": "Monk's Serenity",
         "serenityHint": "Increase embedded Unarmed weapon damage to D10 while Monk's Serenity is present, and update the actor's local Iron Fist description from 2D6 to 2D10.",
         "demonHunterInitiationName": "Demon Hunter Initiation",
-        "demonHunterInitiationHint": "Give characters with Demon Hunter Initiation unlimited sight in darkness while preserving their existing token vision presentation settings."
+        "demonHunterInitiationHint": "Give characters with Demon Hunter Initiation unlimited sight in darkness while preserving their existing token vision presentation settings.",
+        "frostreaperName": "Frostreaper",
+        "frostreaperHint": "Show a light-blue 10 m visual reminder aura after Frostreaper is activated. The aura lasts until the Death Knight's turn in the next round. Movement and BUSHCRAFT remain manual."
       }
     },
     "notifications": {

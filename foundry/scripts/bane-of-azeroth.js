@@ -109,6 +109,17 @@ import {
   reconcileSerenity,
   reconcileSerenityActor,
 } from "./serenity.js";
+import {
+  drawAllFrostreaperAuras,
+  drawFrostreaperAura,
+  getFrostreaperAuraData,
+  isFrostreaperActivationActive,
+  onCreateFrostreaperChatMessage,
+  onDeleteFrostreaperChatMessage,
+  onFrostreaperCombatChange,
+  onPreCreateFrostreaperChatMessage,
+  onUpdateFrostreaperToken,
+} from "./frostreaper.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchEvokersLegacySpellCost,
@@ -130,7 +141,9 @@ Hooks.once("init", () => {
   patchEvokersLegacySpellCost();
 
   Hooks.on("drawToken", drawElementalTotemAura);
+  Hooks.on("drawToken", drawFrostreaperAura);
   Hooks.on("updateToken", onUpdateElementalTotemAura);
+  Hooks.on("updateToken", onUpdateFrostreaperToken);
   Hooks.on(
     "updateToken",
     onUpdateCommonAnimalMovementToken
@@ -141,6 +154,7 @@ Hooks.once("init", () => {
     protectElementalTotemMovement
   );
   Hooks.on("canvasReady", drawAllElementalTotemAuras);
+  Hooks.on("canvasReady", drawAllFrostreaperAuras);
 
   registerSettings();
 
@@ -165,6 +179,9 @@ Hooks.once("init", () => {
       reconcileDemonHunterInitiation,
       reconcileDemonHunterInitiationActor,
       requestDemonHunterInitiationReconcile,
+      drawAllFrostreaperAuras,
+      getFrostreaperAuraData,
+      isFrostreaperActivationActive,
 };
   }
 
@@ -203,7 +220,35 @@ Hooks.on(
     "preCreateChatMessage",
     onPreCreateCommonAnimalEffectOnlyWeaponTestMessage
   );
+  Hooks.on(
+    "preCreateChatMessage",
+    onPreCreateFrostreaperChatMessage,
+  );
   Hooks.on("createChatMessage", onCreateElementalTotemChatMessage);
+  Hooks.on(
+    "createChatMessage",
+    onCreateFrostreaperChatMessage,
+  );
+  Hooks.on(
+    "deleteChatMessage",
+    onDeleteFrostreaperChatMessage,
+  );
+  Hooks.on(
+    "updateCombat",
+    onFrostreaperCombatChange,
+  );
+  Hooks.on(
+    "updateCombatant",
+    onFrostreaperCombatChange,
+  );
+  Hooks.on(
+    "deleteCombatant",
+    onFrostreaperCombatChange,
+  );
+  Hooks.on(
+    "deleteCombat",
+    onFrostreaperCombatChange,
+  );
   Hooks.on(
     "createChatMessage",
     onCreateWarlockDemonChatMessage,

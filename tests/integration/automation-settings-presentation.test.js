@@ -108,7 +108,7 @@ describe("Automation Settings presentation", () => {
     expect(template).toContain("<legend>");
     expect(
       template.match(/\{\{formGroup/g),
-    ).toHaveLength(8);
+    ).toHaveLength(9);
     expect(template).toContain(
       "schema.fields.elementalTotemAutomation",
     );
@@ -126,6 +126,9 @@ describe("Automation Settings presentation", () => {
     );
     expect(template).toContain(
       "schema.fields.eyeBeamAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.frostreaperAutomation",
     );
     expect(template).not.toContain("<form");
     expect(template).not.toContain("<button");
