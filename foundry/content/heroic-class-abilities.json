@@ -42,7 +42,7 @@
           "requirement": "Death Knight's Rebirth",
           "wp": "2",
           "description": [
-            "By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you has its movement rate halved, and if it ends its turn within the aura, it must roll BUSHCRAFT to resist cold."
+            "By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you has its movement rate halved, and if it ends its turn within the aura, it must roll BUSHCRAFT to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#cold]{resist cold}."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp"
         },
