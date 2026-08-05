@@ -68,11 +68,30 @@ const api =
 const reconcileActor =
   api.reconcileDemonHunterInitiationActor;
 
+const visionModes =
+  CONFIG?.Canvas?.visionModes;
+const darkvisionMode =
+  visionModes?.get?.(
+    "darkvision"
+  ) ??
+  visionModes?.darkvision;
+const darkvisionDefaults =
+  darkvisionMode?.vision?.defaults ??
+  {};
+
 boaCheck(
   checks,
   "Demon Hunter Initiation reconciliation API is exposed",
   typeof reconcileActor === "function",
   "reconcileDemonHunterInitiationActor"
+);
+
+boaCheck(
+  checks,
+  "Foundry Darkvision exposes visual defaults",
+  Boolean(darkvisionMode) &&
+    typeof darkvisionDefaults === "object",
+  darkvisionDefaults
 );
 
 if (
@@ -105,7 +124,9 @@ if (
             enabled: false,
             range: 7,
             visionMode: "basic",
-            angle: 270
+            angle: 270,
+            attenuation: 0.37,
+            saturation: 0.62
           }
         },
         flags: {
@@ -155,6 +176,34 @@ if (
       "darkvision"
     );
 
+    if (
+      Object.hasOwn(
+        darkvisionDefaults,
+        "attenuation"
+      )
+    ) {
+      boaCheckEqual(
+        checks,
+        "Initiation applies the Darkvision attenuation preset to the prototype",
+        actor.prototypeToken?.sight?.attenuation,
+        darkvisionDefaults.attenuation
+      );
+    }
+
+    if (
+      Object.hasOwn(
+        darkvisionDefaults,
+        "saturation"
+      )
+    ) {
+      boaCheckEqual(
+        checks,
+        "Initiation applies the Darkvision saturation preset to the prototype",
+        actor.prototypeToken?.sight?.saturation,
+        darkvisionDefaults.saturation
+      );
+    }
+
     boaCheckEqual(
       checks,
       "Initiation preserves prototype sight angle",
@@ -194,7 +243,9 @@ if (
               enabled: false,
               range: 5,
               visionMode: "basic",
-              angle: 180
+              angle: 180,
+              attenuation: 0.44,
+              saturation: 0.71
             }
           }
         ]
@@ -240,6 +291,38 @@ if (
       "darkvision"
     );
 
+    if (
+      Object.hasOwn(
+        darkvisionDefaults,
+        "attenuation"
+      )
+    ) {
+      boaCheckEqual(
+        checks,
+        "Initiation applies the Darkvision attenuation preset to the scene token",
+        scene.tokens.get(
+          token.id
+        )?.sight?.attenuation,
+        darkvisionDefaults.attenuation
+      );
+    }
+
+    if (
+      Object.hasOwn(
+        darkvisionDefaults,
+        "saturation"
+      )
+    ) {
+      boaCheckEqual(
+        checks,
+        "Initiation applies the Darkvision saturation preset to the scene token",
+        scene.tokens.get(
+          token.id
+        )?.sight?.saturation,
+        darkvisionDefaults.saturation
+      );
+    }
+
     await actor.deleteEmbeddedDocuments(
       "Item",
       [
@@ -261,11 +344,15 @@ if (
               actor.prototypeToken?.sight?.range
             ) === 7 &&
             actor.prototypeToken?.sight?.visionMode === "basic" &&
+            actor.prototypeToken?.sight?.attenuation === 0.37 &&
+            actor.prototypeToken?.sight?.saturation === 0.62 &&
             currentToken?.sight?.enabled === false &&
             Number(
               currentToken?.sight?.range
             ) === 5 &&
-            currentToken?.sight?.visionMode === "basic"
+            currentToken?.sight?.visionMode === "basic" &&
+            currentToken?.sight?.attenuation === 0.44 &&
+            currentToken?.sight?.saturation === 0.71
           );
         }
       );
@@ -343,8 +430,9 @@ if (
 }
 
 notes.push(
-  "The automation sets Darkvision with unlimited Vision Range while preserving " +
-  "the existing sight angle and unrelated token vision presentation settings."
+  "The automation sets Darkvision with unlimited Vision Range and Foundry's " +
+  "Darkvision visual defaults. Removing the ability restores the original " +
+  "vision mode, range, enabled state, and visual settings."
 );
 
 return boaFinish(

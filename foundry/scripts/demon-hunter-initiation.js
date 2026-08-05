@@ -20,6 +20,14 @@ const TOKEN_MANAGED_FLAG =
 const TOKEN_ORIGINAL_FLAG =
   "demonHunterInitiationOriginalTokenVision";
 
+const VISION_DEFAULT_FIELDS = [
+  "color",
+  "saturation",
+  "contrast",
+  "attenuation",
+  "brightness",
+];
+
 const reconcileQueues =
   new WeakMap();
 
@@ -90,24 +98,81 @@ async function unsetFlagSafe(
   }
 }
 
+function visionModeDefaults(
+  modeId,
+) {
+  const modes =
+    globalThis.CONFIG?.Canvas
+      ?.visionModes;
+
+  const mode =
+    modes?.get?.(
+      modeId,
+    ) ??
+    modes?.[modeId];
+
+  const defaults =
+    mode?.vision?.defaults ??
+    {};
+
+  const result = {};
+
+  for (
+    const field of
+      VISION_DEFAULT_FIELDS
+  ) {
+    if (
+      Object.hasOwn(
+        defaults,
+        field,
+      )
+    ) {
+      result[field] =
+        defaults[field];
+    }
+  }
+
+  return result;
+}
+
 function visionSnapshot(
   sight,
 ) {
-  return {
+  const source =
+    sight?.toObject?.() ??
+    sight ??
+    {};
+
+  const snapshot = {
     enabled:
       Boolean(
-        sight?.enabled,
+        source.enabled,
       ),
     range:
       Number.isFinite(
-        sight?.range,
+        source.range,
       )
-        ? sight.range
+        ? source.range
         : null,
     visionMode:
-      sight?.visionMode ??
+      source.visionMode ??
       "basic",
   };
+
+  for (
+    const field of
+      VISION_DEFAULT_FIELDS
+  ) {
+    if (
+      source[field] !==
+        undefined
+    ) {
+      snapshot[field] =
+        source[field];
+    }
+  }
+
+  return snapshot;
 }
 
 function hasUnlimitedRange(
@@ -123,14 +188,96 @@ function hasUnlimitedRange(
 function hasManagedVision(
   sight,
 ) {
-  return (
-    sight?.enabled === true &&
-    hasUnlimitedRange(
+  if (
+    sight?.enabled !== true ||
+    !hasUnlimitedRange(
       sight?.range,
-    ) &&
-    sight?.visionMode ===
+    ) ||
+    sight?.visionMode !==
       "darkvision"
+  ) {
+    return false;
+  }
+
+  const defaults =
+    visionModeDefaults(
+      "darkvision",
+    );
+
+  return VISION_DEFAULT_FIELDS.every(
+    field =>
+      !Object.hasOwn(
+        defaults,
+        field,
+      ) ||
+      sight?.[field] ===
+        defaults[field],
   );
+}
+
+function managedVisionUpdate(
+  prefix,
+) {
+  const update = {
+    [`${prefix}.enabled`]:
+      true,
+    [`${prefix}.range`]:
+      null,
+    [`${prefix}.visionMode`]:
+      "darkvision",
+  };
+
+  for (
+    const [
+      field,
+      value,
+    ] of Object.entries(
+      visionModeDefaults(
+        "darkvision",
+      ),
+    )
+  ) {
+    update[
+      `${prefix}.${field}`
+    ] = value;
+  }
+
+  return update;
+}
+
+function originalVisionUpdate(
+  prefix,
+  original,
+) {
+  const update = {
+    [`${prefix}.enabled`]:
+      Boolean(
+        original.enabled,
+      ),
+    [`${prefix}.range`]:
+      original.range,
+    [`${prefix}.visionMode`]:
+      original.visionMode ??
+      "basic",
+  };
+
+  for (
+    const field of
+      VISION_DEFAULT_FIELDS
+  ) {
+    if (
+      Object.hasOwn(
+        original,
+        field,
+      )
+    ) {
+      update[
+        `${prefix}.${field}`
+      ] = original[field];
+    }
+  }
+
+  return update;
 }
 
 export function isDemonHunterInitiationAbility(
@@ -238,14 +385,11 @@ async function applyPrototypeVision(
       sight,
     )
   ) {
-    await actor.update({
-      "prototypeToken.sight.enabled":
-        true,
-      "prototypeToken.sight.range":
-        null,
-      "prototypeToken.sight.visionMode":
-        "darkvision",
-    });
+    await actor.update(
+      managedVisionUpdate(
+        "prototypeToken.sight",
+      ),
+    );
   }
 }
 
@@ -277,17 +421,12 @@ async function restorePrototypeVision(
       sight,
     )
   ) {
-    await actor.update({
-      "prototypeToken.sight.enabled":
-        Boolean(
-          original.enabled,
-        ),
-      "prototypeToken.sight.range":
-        original.range,
-      "prototypeToken.sight.visionMode":
-        original.visionMode ??
-        "basic",
-    });
+    await actor.update(
+      originalVisionUpdate(
+        "prototypeToken.sight",
+        original,
+      ),
+    );
   }
 
   await unsetFlagSafe(
@@ -337,14 +476,11 @@ async function applyTokenVision(
       sight,
     )
   ) {
-    await token.update({
-      "sight.enabled":
-        true,
-      "sight.range":
-        null,
-      "sight.visionMode":
-        "darkvision",
-    });
+    await token.update(
+      managedVisionUpdate(
+        "sight",
+      ),
+    );
   }
 }
 
@@ -372,17 +508,12 @@ async function restoreTokenVision(
       token?.sight,
     )
   ) {
-    await token.update({
-      "sight.enabled":
-        Boolean(
-          original.enabled,
-        ),
-      "sight.range":
-        original.range,
-      "sight.visionMode":
-        original.visionMode ??
-        "basic",
-    });
+    await token.update(
+      originalVisionUpdate(
+        "sight",
+        original,
+      ),
+    );
   }
 
   await unsetFlagSafe(

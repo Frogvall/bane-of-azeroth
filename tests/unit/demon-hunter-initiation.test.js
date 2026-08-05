@@ -1,5 +1,6 @@
 import {
   afterEach,
+  beforeEach,
   describe,
   expect,
   test,
@@ -73,6 +74,11 @@ function actor({
   enabled = false,
   range = 7,
   visionMode = "basic",
+  attenuation = 0.1,
+  saturation = 0.25,
+  brightness = 0,
+  contrast = 0,
+  color = null,
 } = {}) {
   const result = flagsDocument({
     id:
@@ -88,6 +94,11 @@ function actor({
         enabled,
         range,
         visionMode,
+        attenuation,
+        saturation,
+        brightness,
+        contrast,
+        color,
         angle:
           270,
       },
@@ -117,6 +128,28 @@ function actor({
           update[
             "prototypeToken.sight.visionMode"
           ];
+      }
+
+      for (const field of [
+        "color",
+        "saturation",
+        "contrast",
+        "attenuation",
+        "brightness",
+      ]) {
+        const key =
+          `prototypeToken.sight.${field}`;
+
+        if (
+          Object.hasOwn(
+            update,
+            key,
+          )
+        ) {
+          this.prototypeToken
+            .sight[field] =
+            update[key];
+        }
       }
 
       if (
@@ -153,6 +186,11 @@ function token(
     enabled = false,
     range = 5,
     visionMode = "basic",
+    attenuation = 0.1,
+    saturation = 0.4,
+    brightness = 0,
+    contrast = 0,
+    color = null,
   } = {},
 ) {
   return flagsDocument({
@@ -164,6 +202,11 @@ function token(
       enabled,
       range,
       visionMode,
+      attenuation,
+      saturation,
+      brightness,
+      contrast,
+      color,
       angle:
         180,
     },
@@ -190,6 +233,27 @@ function token(
           update[
             "sight.visionMode"
           ];
+      }
+
+      for (const field of [
+        "color",
+        "saturation",
+        "contrast",
+        "attenuation",
+        "brightness",
+      ]) {
+        const key =
+          `sight.${field}`;
+
+        if (
+          Object.hasOwn(
+            update,
+            key,
+          )
+        ) {
+          this.sight[field] =
+            update[key];
+        }
       }
 
       if (
@@ -224,8 +288,34 @@ function settings(
   };
 }
 
+beforeEach(() => {
+  globalThis.CONFIG = {
+    Canvas: {
+      visionModes: {
+        darkvision: {
+          vision: {
+            defaults: {
+              attenuation:
+                0,
+              saturation:
+                0,
+              brightness:
+                0,
+              contrast:
+                0,
+              color:
+                null,
+            },
+          },
+        },
+      },
+    },
+  };
+});
+
 afterEach(() => {
   delete globalThis.game;
+  delete globalThis.CONFIG;
 });
 
 describe(
@@ -284,6 +374,10 @@ describe(
             Number.POSITIVE_INFINITY,
           visionMode:
             "darkvision",
+          attenuation:
+            0,
+          saturation:
+            0,
           angle:
             270,
         }),
@@ -299,6 +393,10 @@ describe(
             Number.POSITIVE_INFINITY,
           visionMode:
             "darkvision",
+          attenuation:
+            0,
+          saturation:
+            0,
           angle:
             180,
         }),
@@ -312,6 +410,10 @@ describe(
             false,
           range:
             9,
+          attenuation:
+            0.37,
+          saturation:
+            0.62,
         });
       const sceneToken =
         token(
@@ -321,6 +423,10 @@ describe(
               true,
             range:
               13,
+            attenuation:
+              0.44,
+            saturation:
+              0.71,
           },
         );
       const scenes = [
@@ -366,6 +472,16 @@ describe(
       ).toBe("basic");
 
       expect(
+        testActor.prototypeToken
+          .sight.attenuation,
+      ).toBe(0.37);
+
+      expect(
+        testActor.prototypeToken
+          .sight.saturation,
+      ).toBe(0.62);
+
+      expect(
         sceneToken.sight.enabled,
       ).toBe(true);
       expect(
@@ -375,6 +491,14 @@ describe(
       expect(
         sceneToken.sight.visionMode,
       ).toBe("basic");
+
+      expect(
+        sceneToken.sight.attenuation,
+      ).toBe(0.44);
+
+      expect(
+        sceneToken.sight.saturation,
+      ).toBe(0.71);
     });
 
     test("does not overwrite a manual token-vision change made after automation applied", async () => {
@@ -462,6 +586,14 @@ describe(
       expect(
         sceneToken.sight.visionMode,
       ).toBe("darkvision");
+
+      expect(
+        sceneToken.sight.attenuation,
+      ).toBe(0);
+
+      expect(
+        sceneToken.sight.saturation,
+      ).toBe(0);
     });
 
     test("disabling automation restores the prototype baseline", async () => {
@@ -510,6 +642,16 @@ describe(
         testActor.prototypeToken
           .sight.visionMode,
       ).toBe("basic");
+
+      expect(
+        testActor.prototypeToken
+          .sight.attenuation,
+      ).toBe(0.1);
+
+      expect(
+        testActor.prototypeToken
+          .sight.saturation,
+      ).toBe(0.25);
     });
 
     test("collects matching actor tokens from all supplied scenes", () => {

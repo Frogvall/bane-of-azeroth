@@ -61,8 +61,12 @@ describe(
         "DEMON_HUNTER_INITIATION_CONTENT_KEY",
         "reconcileDemonHunterInitiationActor",
         "onCreateDemonHunterInitiationToken",
-        '"sight.range":\n        null',
-        '"sight.visionMode":\n        "darkvision"',
+        "managedVisionUpdate",
+        "originalVisionUpdate",
+        '"darkvision"',
+        "visionModeDefaults",
+        "VISION_DEFAULT_FIELDS",
+        "CONFIG?.Canvas",
       ]) {
         expect(source)
           .toContain(
