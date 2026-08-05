@@ -1577,6 +1577,264 @@ if (
   );
 }
 
+const frostreaperAbility =
+  boaCollectionValues(
+    actor?.items,
+  ).find(item =>
+    boaContentKey(
+      item,
+    ) ===
+      "heroic-class-ability.death-knight.frostreaper"
+  ) ??
+  null;
+
+boaCheck(
+  checks,
+  "Assigned Player character has Frostreaper",
+  Boolean(
+    frostreaperAbility,
+  ),
+  frostreaperAbility?.uuid ??
+    "",
+);
+
+if (
+  actor &&
+  scene &&
+  token &&
+  frostreaperAbility
+) {
+  try {
+    const {
+      createFrostreaperActivationData,
+      getFrostreaperAuraData,
+      isFrostreaperActivationActive,
+    } = await import(
+      `/modules/${BOA_TEST_MODULE_ID}/scripts/frostreaper.js`
+    );
+
+    const combatantId =
+      `boa-player-frostreaper-${actor.id}`;
+    const syntheticCombat = {
+      id:
+        `boa-player-frostreaper-${session.sessionId}`,
+      started:
+        true,
+      round:
+        4,
+      turn:
+        0,
+      scene: {
+        id:
+          scene.id,
+      },
+      turns: [{
+        id:
+          combatantId,
+        actorId:
+          actor.id,
+        tokenId:
+          token.id,
+      }],
+    };
+
+    const sourceMessage = {
+      content:
+        `<div class="ability-use" `
+        + `data-ability-id="${frostreaperAbility.id}">`
+        + `${frostreaperAbility.name}</div>`,
+      speaker: {
+        actor:
+          actor.id,
+        scene:
+          scene.id,
+        token:
+          token.id,
+      },
+    };
+
+    const activation =
+      createFrostreaperActivationData(
+        sourceMessage,
+        {
+          actors:
+            game.actors,
+          combat:
+            syntheticCombat,
+        },
+      );
+
+    boaCheckEqual(
+      checks,
+      "Real Player Frostreaper activation identifies the owned Actor and Token",
+      {
+        actorId:
+          activation?.actorId ??
+          null,
+        sceneId:
+          activation?.sceneId ??
+          null,
+        tokenId:
+          activation?.tokenId ??
+          null,
+        combatantId:
+          activation?.combatantId ??
+          null,
+        range:
+          activation?.range ??
+          null,
+      },
+      {
+        actorId:
+          actor.id,
+        sceneId:
+          scene.id,
+        tokenId:
+          token.id,
+        combatantId,
+        range:
+          10,
+      },
+    );
+
+    const messagesBefore =
+      currentMessageIds();
+
+    let frostreaperMessage = null;
+
+    try {
+      frostreaperMessage =
+        await ChatMessage.create({
+          speaker: {
+            actor:
+              actor.id,
+            scene:
+              scene.id,
+            token:
+              token.id,
+          },
+          content:
+            `<p>BOA real-player Frostreaper state `
+            + `${session.sessionId}</p>`,
+          flags: {
+            [BOA_TEST_MODULE_ID]: {
+              frostreaperActivation:
+                activation,
+            },
+          },
+        });
+    } finally {
+      await markMessagesSince(
+        messagesBefore,
+        "player-frostreaper-message",
+      );
+    }
+
+    const authorId =
+      frostreaperMessage?.author?.id
+      ?? frostreaperMessage?.user?.id
+      ?? frostreaperMessage?.user
+      ?? null;
+
+    boaCheckEqual(
+      checks,
+      "Real Player authors the persisted Frostreaper activation message",
+      authorId,
+      game.user.id,
+    );
+
+    const persistedActivation =
+      boaGetFlag(
+        frostreaperMessage,
+        "frostreaperActivation",
+      );
+
+    boaCheckEqual(
+      checks,
+      "Real Player can persist Frostreaper activation state without Token writes",
+      persistedActivation,
+      activation,
+    );
+
+    const aura =
+      getFrostreaperAuraData(
+        token.object ??
+          token,
+        {
+          settings: {
+            get:
+              () =>
+                true,
+          },
+          combat:
+            syntheticCombat,
+          messages: [
+            frostreaperMessage,
+          ],
+        },
+      );
+
+    boaCheckEqual(
+      checks,
+      "Real Player Frostreaper state produces the expected visual aura data",
+      {
+        active:
+          isFrostreaperActivationActive(
+            activation,
+            syntheticCombat,
+          ),
+        range:
+          aura?.range ??
+          null,
+        radius:
+          aura?.radius ??
+          null,
+        color:
+          aura?.color ??
+          null,
+      },
+      {
+        active:
+          true,
+        range:
+          10,
+        radius:
+          500,
+        color:
+          0x8edbff,
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player Frostreaper persisted-aura workflow completed",
+      false,
+      error.stack ??
+        error.message,
+    );
+  }
+} else {
+  boaCheck(
+    checks,
+    "Prepared real-player Frostreaper fixtures are available",
+    false,
+    {
+      actor:
+        actor?.id ??
+        null,
+      scene:
+        scene?.id ??
+        null,
+      token:
+        token?.id ??
+        null,
+      frostreaper:
+        frostreaperAbility?.id ??
+        null,
+    },
+  );
+}
+
 notes.push(
   "The player suite ran in a genuine Player User context.",
 );

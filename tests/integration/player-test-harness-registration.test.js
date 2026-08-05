@@ -490,4 +490,56 @@ describe("real-player test harness registration", () => {
     );
   });
 
+  test("real-player Frostreaper coverage and manual aura checks are registered", () => {
+    const prep = read(PREP);
+    const player = read(PLAYER);
+    const cleanup = read(CLEANUP);
+    const library = read(LIBRARY);
+
+    for (const marker of [
+      "heroic-class-ability.death-knight.frostreaper",
+      "Frostreaper",
+      "originalFrostreaperAutomationSetting",
+      '"frostreaperAutomation"',
+    ]) {
+      expect(prep).toContain(marker);
+    }
+
+    for (const marker of [
+      "createFrostreaperActivationData",
+      "getFrostreaperAuraData",
+      "isFrostreaperActivationActive",
+      "Real Player Frostreaper activation identifies the owned Actor and Token",
+      "Real Player authors the persisted Frostreaper activation message",
+      "Real Player can persist Frostreaper activation state without Token writes",
+      "Real Player Frostreaper state produces the expected visual aura data",
+      '"player-frostreaper-message"',
+      "0x8edbff",
+      "500",
+    ]) {
+      expect(player).toContain(marker);
+    }
+
+    for (const marker of [
+      "originalFrostreaperAutomationSetting",
+      '"frostreaperAutomation"',
+      "Restored Frostreaper automation",
+    ]) {
+      expect(cleanup).toContain(marker);
+    }
+
+    for (const marker of [
+      "<h2>Frostreaper aura verification</h2>",
+      "apparent 10 meter radius",
+      "Death Knight's own turn begins in the next round",
+      "Repeat a real activation as the prepared owning Player",
+      "both the Player client and connected GM client see the same aura",
+      "Activating Frostreaper outside combat creates no aura",
+      "does not change any creature's movement rate",
+      "does not automatically roll or prompt BUSHCRAFT",
+    ]) {
+      expect(library).toContain(marker);
+    }
+  });
+
 });

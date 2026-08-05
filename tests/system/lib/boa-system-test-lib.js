@@ -932,6 +932,27 @@ function boaBuildManualChecklistHtml() {
   <li>[ ] The complete player/GM flow creates no duplicate tokens or dialogs and produces no unexpected console errors.</li>
   </ul>
 
+  <h2>Frostreaper aura verification</h2>
+  <p>
+  Automated tests cover Frostreaper activation metadata, 10 meter radius,
+  light-blue aura configuration, Player-authored persisted state, and the
+  exact combat timing rule. Use the real canvas to verify the rendered aura
+  and multi-client behavior through Dragonbane's normal ability workflow.
+  </p>
+  <ul>
+  <li>[ ] With Frostreaper automation enabled, activating Frostreaper through the normal ability action during the Death Knight's turn creates one light-blue aura with an apparent 10 meter radius.</li>
+  <li>[ ] Moving the Death Knight token while Frostreaper is active moves the aura with the token and does not leave stale graphics behind.</li>
+  <li>[ ] The aura remains visible for the rest of the activation round.</li>
+  <li>[ ] At the start of the next round the aura is still visible during combatants whose turns occur before the Death Knight.</li>
+  <li>[ ] The aura disappears when the Death Knight's own turn begins in the next round, not when the round itself begins.</li>
+  <li>[ ] Repeat a real activation as the prepared owning Player: both the Player client and connected GM client see the same aura, and both lose it at the same turn boundary.</li>
+  <li>[ ] Reload or re-enter the Scene on one client while the activation is still current; the aura is reconstructed from persisted state.</li>
+  <li>[ ] Disabling Frostreaper automation hides the aura. Re-enabling it while the activation is still current restores the reminder.</li>
+  <li>[ ] Activating Frostreaper outside combat creates no aura.</li>
+  <li>[ ] Frostreaper automation does not change any creature's movement rate and does not automatically roll or prompt BUSHCRAFT to resist cold.</li>
+  <li>[ ] The complete GM and Player aura workflow produces no duplicate graphics and no unexpected console errors.</li>
+  </ul>
+
   <h2>Adventure and interface verification</h2>
 
   <p>

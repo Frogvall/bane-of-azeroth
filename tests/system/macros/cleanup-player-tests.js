@@ -244,6 +244,37 @@ for (const preparedSession of sessions) {
       );
     }
   }
+  if (
+    Object.prototype.hasOwnProperty.call(
+      preparedSession,
+      "originalFrostreaperAutomationSetting",
+    )
+  ) {
+    try {
+      await game.settings.set(
+        BOA_TEST_MODULE_ID,
+        "frostreaperAutomation",
+        preparedSession.originalFrostreaperAutomationSetting,
+      );
+      boaCheckEqual(
+        checks,
+        `Restored Frostreaper automation for ${preparedSession.sessionId}`,
+        game.settings.get(
+          BOA_TEST_MODULE_ID,
+          "frostreaperAutomation",
+        ),
+        preparedSession.originalFrostreaperAutomationSetting,
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        `Restored Frostreaper automation for ${preparedSession.sessionId}`,
+        false,
+        error.stack ??
+          error.message,
+      );
+    }
+  }
   try {
     const previousScene = preparedSession.previousActiveSceneId
       ? game.scenes.get(preparedSession.previousActiveSceneId)

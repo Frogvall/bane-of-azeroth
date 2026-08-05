@@ -173,6 +173,10 @@ const requiredAbilities = [
     name: "Raise Ghoul",
   },
   {
+    key: "heroic-class-ability.death-knight.frostreaper",
+    name: "Frostreaper",
+  },
+  {
     key: "heroic-class-ability.warlock.demonologist",
     name: "Demonologist",
   },
@@ -280,6 +284,11 @@ const originalDemonHunterInitiationAutomationSetting =
   game.settings.get(
     BOA_TEST_MODULE_ID,
     "demonHunterInitiationAutomation",
+  );
+const originalFrostreaperAutomationSetting =
+  game.settings.get(
+    BOA_TEST_MODULE_ID,
+    "frostreaperAutomation",
   );
 const previousActiveSceneId = game.scenes.active?.id ?? null;
 const sessionId =
@@ -767,6 +776,11 @@ try {
     "demonHunterInitiationAutomation",
     true,
   );
+  await game.settings.set(
+    BOA_TEST_MODULE_ID,
+    "frostreaperAutomation",
+    true,
+  );
 
   const session = {
     schemaVersion: sessionSchemaVersion,
@@ -803,6 +817,7 @@ try {
     originalAutomationSetting,
     originalDemonAutomationSetting,
     originalDemonHunterInitiationAutomationSetting,
+    originalFrostreaperAutomationSetting,
     requiredAbilityKeys: requiredAbilities.map(entry => entry.key),
     createdAt: new Date().toISOString(),
   };
@@ -1044,6 +1059,17 @@ try {
   } catch (settingError) {
     notes.push(
       `Could not restore Demon Hunter Initiation automation: ${settingError.message}`,
+    );
+  }
+  try {
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      "frostreaperAutomation",
+      originalFrostreaperAutomationSetting,
+    );
+  } catch (settingError) {
+    notes.push(
+      `Could not restore Frostreaper automation: ${settingError.message}`,
     );
   }
   try {
