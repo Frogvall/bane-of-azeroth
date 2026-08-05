@@ -62,6 +62,7 @@ describe(
         "reconcileDemonHunterInitiationActor",
         "onCreateDemonHunterInitiationToken",
         '"sight.range":\n        null',
+        '"sight.visionMode":\n        "darkvision"',
       ]) {
         expect(source)
           .toContain(

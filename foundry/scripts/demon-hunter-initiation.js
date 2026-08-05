@@ -99,9 +99,25 @@ function visionSnapshot(
         sight?.enabled,
       ),
     range:
-      sight?.range ??
-      null,
+      Number.isFinite(
+        sight?.range,
+      )
+        ? sight.range
+        : null,
+    visionMode:
+      sight?.visionMode ??
+      "basic",
   };
+}
+
+function hasUnlimitedRange(
+  range,
+) {
+  return (
+    range === null ||
+    range ===
+      Number.POSITIVE_INFINITY
+  );
 }
 
 function hasManagedVision(
@@ -109,7 +125,11 @@ function hasManagedVision(
 ) {
   return (
     sight?.enabled === true &&
-    sight?.range === null
+    hasUnlimitedRange(
+      sight?.range,
+    ) &&
+    sight?.visionMode ===
+      "darkvision"
   );
 }
 
@@ -223,6 +243,8 @@ async function applyPrototypeVision(
         true,
       "prototypeToken.sight.range":
         null,
+      "prototypeToken.sight.visionMode":
+        "darkvision",
     });
   }
 }
@@ -261,8 +283,10 @@ async function restorePrototypeVision(
           original.enabled,
         ),
       "prototypeToken.sight.range":
-        original.range ??
-        null,
+        original.range,
+      "prototypeToken.sight.visionMode":
+        original.visionMode ??
+        "basic",
     });
   }
 
@@ -318,6 +342,8 @@ async function applyTokenVision(
         true,
       "sight.range":
         null,
+      "sight.visionMode":
+        "darkvision",
     });
   }
 }
@@ -352,8 +378,10 @@ async function restoreTokenVision(
           original.enabled,
         ),
       "sight.range":
-        original.range ??
-        null,
+        original.range,
+      "sight.visionMode":
+        original.visionMode ??
+        "basic",
     });
   }
 

@@ -133,12 +133,15 @@ if (
       await boaWaitFor(
         () =>
           actor.prototypeToken?.sight?.enabled === true &&
-          actor.prototypeToken?.sight?.range === null
+          !Number.isFinite(
+            actor.prototypeToken?.sight?.range
+          ) &&
+          actor.prototypeToken?.sight?.visionMode === "darkvision"
       );
 
     boaCheck(
       checks,
-      "Initiation gives the prototype token unlimited sight in darkness",
+      "Initiation gives the prototype token unlimited Darkvision",
       prototypeApplied,
       actor.prototypeToken?.sight?.toObject?.() ??
         actor.prototypeToken?.sight ??
@@ -147,9 +150,9 @@ if (
 
     boaCheckEqual(
       checks,
-      "Initiation preserves prototype vision mode",
+      "Initiation sets prototype vision mode to Darkvision",
       actor.prototypeToken?.sight?.visionMode,
-      "basic"
+      "darkvision"
     );
 
     boaCheckEqual(
@@ -207,14 +210,17 @@ if (
 
           return (
             current?.sight?.enabled === true &&
-            current?.sight?.range === null
+            !Number.isFinite(
+              current?.sight?.range
+            ) &&
+            current?.sight?.visionMode === "darkvision"
           );
         }
       );
 
     boaCheck(
       checks,
-      "A token created after Initiation also gets unlimited sight in darkness",
+      "A token created after Initiation also gets unlimited Darkvision",
       tokenApplied,
       scene.tokens.get(
         token.id
@@ -227,11 +233,11 @@ if (
 
     boaCheckEqual(
       checks,
-      "Initiation preserves scene-token vision mode",
+      "Initiation sets scene-token vision mode to Darkvision",
       scene.tokens.get(
         token.id
       )?.sight?.visionMode,
-      "basic"
+      "darkvision"
     );
 
     await actor.deleteEmbeddedDocuments(
@@ -254,10 +260,12 @@ if (
             Number(
               actor.prototypeToken?.sight?.range
             ) === 7 &&
+            actor.prototypeToken?.sight?.visionMode === "basic" &&
             currentToken?.sight?.enabled === false &&
             Number(
               currentToken?.sight?.range
-            ) === 5
+            ) === 5 &&
+            currentToken?.sight?.visionMode === "basic"
           );
         }
       );
@@ -335,8 +343,8 @@ if (
 }
 
 notes.push(
-  "The automation changes only sight.enabled and sight.range. Vision mode, " +
-  "angle, and other token vision presentation settings remain untouched."
+  "The automation sets Darkvision with unlimited Vision Range while preserving " +
+  "the existing sight angle and unrelated token vision presentation settings."
 );
 
 return boaFinish(
