@@ -6,6 +6,27 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+## [0.11.4] - 2026-08-05
+
+### Added
+- Added a dedicated **Demon Hunter Initiation** automation setting, enabled by default.
+- Added automatic darkness-vision reconciliation for characters with Demon Hunter Initiation.
+- Added real-Player coverage for assigning and removing Demon Hunter Initiation on an owned character.
+- Added Player-to-GM reconciliation so Player-owned scene tokens do not require Player Token Configuration permission.
+
+### Changed
+- Demon Hunter Initiation now configures prototype and scene-token sight as enabled, unlimited-range **Darkvision**.
+- Darkvision uses Foundry's own vision-mode defaults so the actual canvas rendering matches a manually selected Darkvision mode.
+- Tokens created after the character already has Demon Hunter Initiation are reconciled automatically.
+
+### Fixed
+- Removing Demon Hunter Initiation or disabling its automation now restores the complete saved pre-automation sight configuration.
+- Vision cleanup no longer depends on Foundry preserving an exact intermediate Darkvision representation.
+- Demon Hunter Initiation system-test diagnostics now report individual lifecycle stages instead of collapsing failures into a generic workflow timeout.
+
+### Testing
+- Added focused unit/integration coverage, Foundry system-Macro coverage, real-Player lifecycle coverage, and manual GM/Player verification for Darkvision assignment and cleanup.
+
 ## [0.11.3] - 2026-08-05
 
 ### Added
