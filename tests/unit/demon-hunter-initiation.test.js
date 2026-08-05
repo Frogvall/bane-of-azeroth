@@ -109,14 +109,32 @@ function actor({
       if (
         Object.hasOwn(
           update,
-          "prototypeToken.sight.range",
+          "prototypeToken.sight.visionMode",
         )
       ) {
         this.prototypeToken
-          .sight.range =
+          .sight.visionMode =
+          update[
+            "prototypeToken.sight.visionMode"
+          ];
+      }
+
+      if (
+        Object.hasOwn(
+          update,
+          "prototypeToken.sight.range",
+        )
+      ) {
+        const range =
           update[
             "prototypeToken.sight.range"
           ];
+
+        this.prototypeToken
+          .sight.range =
+          range === null
+            ? Number.POSITIVE_INFINITY
+            : range;
       }
     },
   });
@@ -165,13 +183,30 @@ function token(
       if (
         Object.hasOwn(
           update,
+          "sight.visionMode",
+        )
+      ) {
+        this.sight.visionMode =
+          update[
+            "sight.visionMode"
+          ];
+      }
+
+      if (
+        Object.hasOwn(
+          update,
           "sight.range",
         )
       ) {
-        this.sight.range =
+        const range =
           update[
             "sight.range"
           ];
+
+        this.sight.range =
+          range === null
+            ? Number.POSITIVE_INFINITY
+            : range;
       }
     },
   });
@@ -246,9 +281,9 @@ describe(
           enabled:
             true,
           range:
-            null,
+            Number.POSITIVE_INFINITY,
           visionMode:
-            "basic",
+            "darkvision",
           angle:
             270,
         }),
@@ -261,9 +296,9 @@ describe(
           enabled:
             true,
           range:
-            null,
+            Number.POSITIVE_INFINITY,
           visionMode:
-            "basic",
+            "darkvision",
           angle:
             180,
         }),
@@ -324,12 +359,22 @@ describe(
         testActor.prototypeToken
           .sight.range,
       ).toBe(9);
+
+      expect(
+        testActor.prototypeToken
+          .sight.visionMode,
+      ).toBe("basic");
+
       expect(
         sceneToken.sight.enabled,
       ).toBe(true);
       expect(
         sceneToken.sight.range,
       ).toBe(13);
+
+      expect(
+        sceneToken.sight.visionMode,
+      ).toBe("basic");
     });
 
     test("does not overwrite a manual token-vision change made after automation applied", async () => {
@@ -410,7 +455,13 @@ describe(
       ).toBe(true);
       expect(
         sceneToken.sight.range,
-      ).toBeNull();
+      ).toBe(
+        Number.POSITIVE_INFINITY,
+      );
+
+      expect(
+        sceneToken.sight.visionMode,
+      ).toBe("darkvision");
     });
 
     test("disabling automation restores the prototype baseline", async () => {
@@ -432,7 +483,14 @@ describe(
       expect(
         testActor.prototypeToken
           .sight.range,
-      ).toBeNull();
+      ).toBe(
+        Number.POSITIVE_INFINITY,
+      );
+
+      expect(
+        testActor.prototypeToken
+          .sight.visionMode,
+      ).toBe("darkvision");
 
       await reconcileDemonHunterInitiationActor(
         testActor,
@@ -447,6 +505,11 @@ describe(
         testActor.prototypeToken
           .sight.range,
       ).toBe(11);
+
+      expect(
+        testActor.prototypeToken
+          .sight.visionMode,
+      ).toBe("basic");
     });
 
     test("collects matching actor tokens from all supplied scenes", () => {
