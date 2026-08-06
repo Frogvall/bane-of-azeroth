@@ -9,6 +9,9 @@ import {
   expect,
   test,
 } from "vitest";
+import {
+  systemTestSuiteKeys,
+} from "../helpers/system-test-suite.js";
 
 const GENERATOR = resolve(
   "tools",
@@ -51,16 +54,15 @@ describe(
     });
 
     test("includes ability actions in Run All", () => {
-      const source =
-        readFileSync(
-          RUN_ALL,
-          "utf8",
-        );
+      const keys =
+        systemTestSuiteKeys();
 
-      expect(source)
-        .toContain(
-          '"ability-actions"',
-        );
+      expect(
+        keys.filter(
+          candidate =>
+            candidate === "ability-actions",
+        ),
+      ).toHaveLength(1);
     });
 
     test("keeps both rule contracts in the Macro source", () => {

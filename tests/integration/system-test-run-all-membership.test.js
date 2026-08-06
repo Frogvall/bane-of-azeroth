@@ -47,12 +47,22 @@ describe(
         expect(
           generator,
         ).toContain(
-          'key=lambda macro: int(macro["order"])',
+          'key=lambda macro: int(macro["suiteOrder"])',
+        );
+        expect(
+          generator,
+        ).toContain(
+          "suite_members",
         );
         expect(
           generator,
         ).toContain(
           "system_test_suite_member_keys()",
+        );
+        expect(
+          generator,
+        ).toContain(
+          "validate_system_test_suite_metadata",
         );
 
         expect(

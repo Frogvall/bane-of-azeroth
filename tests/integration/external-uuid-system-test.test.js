@@ -9,6 +9,9 @@ import {
   expect,
   test,
 } from "vitest";
+import {
+  systemTestSuiteKeys,
+} from "../helpers/system-test-suite.js";
 
 const REFERENCES = resolve(
   "foundry",
@@ -247,12 +250,20 @@ describe("external UUID system verification", () => {
   });
 
   test("runs external UUID verification in Run All", () => {
-    const runAll = read(
-      RUN_ALL,
-    );
+    const keys =
+      systemTestSuiteKeys();
 
-    expect(runAll).toMatch(
-      /"smoke",\s*"external-uuids",/,
-    );
+    expect(
+      keys.slice(0, 2),
+    ).toEqual([
+      "smoke",
+      "external-uuids",
+    ]);
+    expect(
+      keys.filter(
+        key =>
+          key === "external-uuids",
+      ),
+    ).toHaveLength(1);
   });
 });

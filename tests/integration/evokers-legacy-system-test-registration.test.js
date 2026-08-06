@@ -9,6 +9,9 @@ import {
   expect,
   test,
 } from "vitest";
+import {
+  systemTestSuiteKeys,
+} from "../helpers/system-test-suite.js";
 
 const GENERATOR = resolve(
   "tools",
@@ -48,15 +51,15 @@ describe(
     });
 
     test("includes Evoker's Legacy in Run All", () => {
-      const source =
-        readFileSync(
-          RUN_ALL,
-          "utf8",
-        );
+      const keys =
+        systemTestSuiteKeys();
 
-      expect(source).toContain(
-        '"evokers-legacy"',
-      );
+      expect(
+        keys.filter(
+          candidate =>
+            candidate === "evokers-legacy",
+        ),
+      ).toHaveLength(1);
     });
 
     test("keeps a source Macro contract", () => {

@@ -41,6 +41,8 @@ MACROS = [
         "name": "BOA DEV – Smoke Test",
         "file": "smoke-test.js",
         "order": 2,
+
+        "suiteOrder": 1,
         "suiteMember": True,
         "img": "icons/svg/upgrade.svg",
     },
@@ -50,6 +52,8 @@ MACROS = [
         "name": "BOA DEV – Verify Generated Content",
         "file": "verify-generated-content.js",
         "order": 3,
+
+        "suiteOrder": 3,
         "suiteMember": True,
         "img": "icons/svg/book.svg",
     },
@@ -59,6 +63,8 @@ MACROS = [
         "name": "BOA DEV – Verify Spell Grants",
         "file": "verify-spell-grants.js",
         "order": 4,
+
+        "suiteOrder": 10,
         "suiteMember": True,
         "img": "icons/svg/lightning.svg",
     },
@@ -68,6 +74,8 @@ MACROS = [
         "name": "BOA DEV – Verify Elemental Totems",
         "file": "verify-elemental-totems.js",
         "order": 5,
+
+        "suiteOrder": 19,
         "suiteMember": True,
         "img": "icons/svg/aura.svg",
     },
@@ -77,6 +85,8 @@ MACROS = [
         "name": "BOA DEV – Verify Adventure Ownership",
         "file": "verify-adventure-ownership.js",
         "order": 6,
+
+        "suiteOrder": 20,
         "suiteMember": True,
         "img": "icons/svg/castle.svg",
     },
@@ -86,6 +96,8 @@ MACROS = [
         "name": "BOA DEV – Verify Common Animals",
         "file": "verify-common-animals.js",
         "order": 7,
+
+        "suiteOrder": 5,
         "suiteMember": True,
         "img": "icons/svg/pawprint.svg",
     },
@@ -95,6 +107,8 @@ MACROS = [
         "name": "BOA DEV – Verify Common Animal Attack Messages",
         "file": "verify-common-animal-attack-messages.js",
         "order": 8,
+
+        "suiteOrder": 6,
         "suiteMember": True,
         "img": "icons/svg/combat.svg",
     },
@@ -104,6 +118,8 @@ MACROS = [
         "name": "BOA DEV – Verify Common Animal Movement",
         "file": "verify-common-animal-movement.js",
         "order": 9,
+
+        "suiteOrder": 7,
         "suiteMember": True,
         "img": "icons/svg/wing.svg",
     },
@@ -113,6 +129,8 @@ MACROS = [
         "name": "BOA DEV – Verify Ghoul",
         "file": "verify-ghoul.js",
         "order": 10,
+
+        "suiteOrder": 8,
         "suiteMember": True,
         "img": "icons/svg/bones.svg",
     },
@@ -122,6 +140,8 @@ MACROS = [
         "name": "BOA DEV – Verify Warlock Demons",
         "file": "verify-warlock-demons.js",
         "order": 11,
+
+        "suiteOrder": 9,
         "suiteMember": True,
         "img": "icons/svg/fire.svg",
     },
@@ -131,6 +151,8 @@ MACROS = [
         "name": "BOA DEV – Verify Mage's Brilliance",
         "file": "verify-mages-brilliance.js",
         "order": 18,
+
+        "suiteOrder": 11,
         "suiteMember": True,
         "img": "icons/svg/lightning.svg",
     },
@@ -140,6 +162,8 @@ MACROS = [
         "name": "BOA DEV – Verify Evoker's Legacy",
         "file": "verify-evokers-legacy.js",
         "order": 19,
+
+        "suiteOrder": 12,
         "suiteMember": True,
         "img": "icons/svg/lightning.svg",
     },
@@ -149,6 +173,8 @@ MACROS = [
         "name": "BOA DEV – Verify Ability Attacks",
         "file": "verify-ability-actions.js",
         "order": 20,
+
+        "suiteOrder": 13,
         "suiteMember": True,
         "img": "icons/svg/explosion.svg",
     },
@@ -158,6 +184,8 @@ MACROS = [
         "name": "BOA DEV – Verify Monk's Serenity",
         "file": "verify-serenity.js",
         "order": 21,
+
+        "suiteOrder": 14,
         "suiteMember": True,
         "img": "modules/bane-of-azeroth/assets/icons/classes/monk.webp",
     },
@@ -167,6 +195,8 @@ MACROS = [
         "name": "BOA DEV – Verify Demon Hunter Initiation",
         "file": "verify-demon-hunter-initiation.js",
         "order": 22,
+
+        "suiteOrder": 15,
         "suiteMember": True,
         "img": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp",
     },
@@ -176,6 +206,8 @@ MACROS = [
         "name": "BOA DEV – Verify Frostreaper",
         "file": "verify-frostreaper.js",
         "order": 23,
+
+        "suiteOrder": 16,
         "suiteMember": True,
         "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
     },
@@ -185,6 +217,8 @@ MACROS = [
         "name": "BOA DEV – Verify Death Knight Runes",
         "file": "verify-death-knight-runes.js",
         "order": 24,
+
+        "suiteOrder": 17,
         "suiteMember": True,
         "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
     },
@@ -194,6 +228,8 @@ MACROS = [
         "name": "BOA DEV – Verify Druid Forms",
         "file": "verify-druid-forms.js",
         "order": 25,
+
+        "suiteOrder": 18,
         "suiteMember": True,
         "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
     },
@@ -240,6 +276,8 @@ MACROS = [
         "name": "BOA DEV – Verify External UUIDs",
         "file": "verify-external-uuids.js",
         "order": 16,
+
+        "suiteOrder": 2,
         "suiteMember": True,
         "img": "icons/svg/book.svg",
     },
@@ -250,6 +288,8 @@ MACROS = [
         "name": "BOA DEV – Verify Assets and Journals",
         "file": "verify-assets-and-journals.js",
         "order": 17,
+
+        "suiteOrder": 4,
         "suiteMember": True,
         "img": "icons/svg/book.svg",
     },
@@ -257,14 +297,61 @@ MACROS = [
 
 
 def system_test_suite_member_keys() -> list[str]:
+    suite_members = [
+        macro
+        for macro in MACROS
+        if macro.get("suiteMember") is True
+    ]
+
     return [
         str(macro["key"])
         for macro in sorted(
-            MACROS,
-            key=lambda macro: int(macro["order"]),
+            suite_members,
+            key=lambda macro: int(macro["suiteOrder"]),
         )
-        if macro.get("suiteMember") is True
     ]
+
+
+def validate_system_test_suite_metadata() -> None:
+    seen_orders: set[int] = set()
+
+    for macro in MACROS:
+        is_member = (
+            macro.get("suiteMember") is True
+        )
+        suite_order = macro.get(
+            "suiteOrder"
+        )
+
+        if not is_member:
+            if suite_order is not None:
+                raise SystemExit(
+                    "Non-suite Macro must not define suiteOrder: "
+                    f"{macro['key']}"
+                )
+            continue
+
+        if (
+            not isinstance(
+                suite_order,
+                int,
+            )
+            or suite_order <= 0
+        ):
+            raise SystemExit(
+                "Suite Macro requires a positive integer suiteOrder: "
+                f"{macro['key']}"
+            )
+
+        if suite_order in seen_orders:
+            raise SystemExit(
+                "Duplicate system-test suiteOrder: "
+                f"{suite_order}"
+            )
+
+        seen_orders.add(
+            suite_order
+        )
 
 
 def parse_args() -> argparse.Namespace:
@@ -459,6 +546,7 @@ def base_stats() -> dict[str, object]:
 
 def main() -> int:
     args = parse_args()
+    validate_system_test_suite_metadata()
     repo_root = Path(__file__).resolve().parents[1]
     temporary_output = None
     if args.check:

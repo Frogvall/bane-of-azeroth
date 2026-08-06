@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, test } from "vitest";
+import {
+  systemTestSuiteKeys,
+} from "../helpers/system-test-suite.js";
 
 const GENERATOR = resolve(
   "tools",
@@ -23,15 +26,8 @@ function read(path) {
   return readFileSync(path, "utf-8");
 }
 
-function orderedSuiteKeys(source) {
-  const match = source.match(
-    /const\s+orderedKeys\s*=\s*\[(?<body>[\s\S]*?)\]\s*;/,
-  );
-  expect(match).not.toBeNull();
-
-  return [
-    ...match.groups.body.matchAll(/["']([^"']+)["']/g),
-  ].map(result => result[1]);
+function orderedSuiteKeys() {
+  return systemTestSuiteKeys();
 }
 
 describe("Ghoul system-test registration", () => {
@@ -51,7 +47,7 @@ describe("Ghoul system-test registration", () => {
   });
 
   test("runs the Ghoul macro from Run All exactly once", () => {
-    const keys = orderedSuiteKeys(read(RUN_ALL));
+    const keys = orderedSuiteKeys();
 
     expect(keys).toContain("ghoul");
     expect(keys.filter(key => key === "ghoul")).toHaveLength(1);

@@ -9,6 +9,9 @@ import {
   expect,
   test,
 } from "vitest";
+import {
+  systemTestSuiteKeys,
+} from "../helpers/system-test-suite.js";
 
 const DIALOGS = resolve(
   "foundry",
@@ -84,13 +87,17 @@ describe("Elemental Totem automation system-test coverage", () => {
 
   test("the existing Macro remains registered exactly once in Run All", () => {
     const generator = read(GENERATOR);
-    const runAll = read(RUN_ALL);
+    const keys =
+      systemTestSuiteKeys();
 
     expect(
       generator.match(/"key"\s*:\s*"elemental-totems"/g),
     ).toHaveLength(1);
     expect(
-      runAll.match(/["']elemental-totems["']/g),
+      keys.filter(
+        key =>
+          key === "elemental-totems",
+      ),
     ).toHaveLength(1);
   });
 

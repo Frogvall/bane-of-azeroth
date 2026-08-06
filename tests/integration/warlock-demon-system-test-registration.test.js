@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, test } from "vitest";
+import {
+  systemTestSuiteKeys,
+} from "../helpers/system-test-suite.js";
 
 const GENERATOR = resolve("tools", "generate-system-test-macros.py");
 const RUN_ALL = resolve("tests", "system", "macros", "run-all.js");
@@ -15,13 +18,8 @@ function read(path) {
   return readFileSync(path, "utf-8");
 }
 
-function orderedSuiteKeys(source) {
-  const match = source.match(
-    /const\s+orderedKeys\s*=\s*\[(?<body>[\s\S]*?)\]\s*;/,
-  );
-  expect(match).not.toBeNull();
-  return [...match.groups.body.matchAll(/["']([^"']+)["']/g)]
-    .map(result => result[1]);
+function orderedSuiteKeys() {
+  return systemTestSuiteKeys();
 }
 
 describe("Warlock demon system-test registration", () => {
@@ -42,7 +40,7 @@ describe("Warlock demon system-test registration", () => {
   });
 
   test("runs the Macro from Run All exactly once", () => {
-    const keys = orderedSuiteKeys(read(RUN_ALL));
+    const keys = orderedSuiteKeys();
     expect(keys).toContain("warlock-demons");
     expect(keys.filter(key => key === "warlock-demons"))
       .toHaveLength(1);

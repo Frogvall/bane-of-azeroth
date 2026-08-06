@@ -9,6 +9,9 @@ import {
   expect,
   test,
 } from "vitest";
+import {
+  systemTestSuiteKeys,
+} from "../helpers/system-test-suite.js";
 
 const GENERATOR = resolve(
   "tools",
@@ -31,18 +34,8 @@ function read(path) {
   return readFileSync(path, "utf8");
 }
 
-function orderedSuiteKeys(source) {
-  const match = source.match(
-    /const\s+orderedKeys\s*=\s*\[(?<body>[\s\S]*?)\]\s*;/,
-  );
-
-  expect(match).not.toBeNull();
-
-  return [
-    ...match.groups.body.matchAll(
-      /["']([^"']+)["']/g,
-    ),
-  ].map(result => result[1]);
+function orderedSuiteKeys() {
+  return systemTestSuiteKeys();
 }
 
 describe("asset and Journal system-test registration", () => {
@@ -65,9 +58,7 @@ describe("asset and Journal system-test registration", () => {
   });
 
   test("runs after generated content in Run All exactly once", () => {
-    const keys = orderedSuiteKeys(
-      read(RUN_ALL),
-    );
+    const keys = orderedSuiteKeys();
 
     expect(
       keys.filter(
