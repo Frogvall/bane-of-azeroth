@@ -27,6 +27,8 @@ export const DEATH_KNIGHT_RUNE_DEFINITIONS =
       key: "fallenCrusader",
       name:
         "BOA.deathKnightRunes.fallenCrusader",
+      description:
+        "BOA.deathKnightRunes.fallenCrusaderDescription",
       icon:
         "modules/bane-of-azeroth/assets/icons/runes/fallen_crusader.webp",
       automated: false,
@@ -35,6 +37,8 @@ export const DEATH_KNIGHT_RUNE_DEFINITIONS =
       key: "razorice",
       name:
         "BOA.deathKnightRunes.razorice",
+      description:
+        "BOA.deathKnightRunes.razoriceDescription",
       icon:
         "modules/bane-of-azeroth/assets/icons/runes/razorice.webp",
       automated: false,
@@ -43,6 +47,8 @@ export const DEATH_KNIGHT_RUNE_DEFINITIONS =
       key: "unendingThirst",
       name:
         "BOA.deathKnightRunes.unendingThirst",
+      description:
+        "BOA.deathKnightRunes.unendingThirstDescription",
       icon:
         "modules/bane-of-azeroth/assets/icons/runes/unending_thirst.webp",
       automated: true,
@@ -1083,6 +1089,18 @@ function runePickerMarkup(
               ? " checked"
               : "";
 
+          const name =
+            localize(
+              rune.name,
+              rune.key,
+            );
+
+          const description =
+            localize(
+              rune.description,
+              "",
+            );
+
           return (
             `<label class="boa-death-knight-rune-choice">`
             + `<input type="radio" name="boa-rune" value="${escapeHtml(
@@ -1091,12 +1109,14 @@ function runePickerMarkup(
             + `<img src="${escapeHtml(
               rune.icon,
             )}" alt="">`
-            + `<span>${escapeHtml(
-              localize(
-                rune.name,
-                rune.key,
-              ),
+            + `<span class="boa-death-knight-rune-choice-text">`
+            + `<strong>${escapeHtml(
+              name,
+            )}</strong>`
+            + `<span class="boa-death-knight-rune-description">${escapeHtml(
+              description,
             )}</span>`
+            + `</span>`
             + `</label>`
           );
         },
@@ -1121,12 +1141,14 @@ function runePickerMarkup(
     + choices
     + `<label class="boa-death-knight-rune-choice boa-death-knight-rune-choice-clear">`
     + `<input type="radio" name="boa-rune" value=""${clearChecked}>`
-    + `<span>${escapeHtml(
+    + `<span class="boa-death-knight-rune-choice-text">`
+    + `<strong>${escapeHtml(
       localize(
         "BOA.deathKnightRunes.clear",
         "Clear Rune",
       ),
-    )}</span>`
+    )}</strong>`
+    + `</span>`
     + `</label>`
     + `</form>`
   );
@@ -1311,14 +1333,22 @@ function createDeathKnightRuneSlot(
       );
     }
 
-    element.title =
-      `${localize(
+    const name =
+      localize(
         active.name,
         active.key,
-      )} — ${localize(
-        "BOA.deathKnightRunes.engraved",
-        "Engraved Rune",
-      )}`;
+      );
+
+    const description =
+      localize(
+        active.description,
+        "",
+      );
+
+    element.title =
+      description
+        ? `${name}: ${description}`
+        : name;
   } else {
     element.classList.add(
       "empty",
@@ -1390,6 +1420,39 @@ function createDeathKnightRuneSlot(
   return element;
 }
 
+function deathKnightRuneWeaponRows(
+  root,
+) {
+  const selectors = [
+    ".weapon-table.item-list tr.sheet-table-data.item[data-item-id]",
+    'table.sheet-table.item-list[data-droptarget="weapon"] tr.sheet-table-data.item[data-item-id]',
+    'table.sheet-table.item-list[data-droptarget="inventory"] tr.sheet-table-data.item[data-item-id]',
+  ];
+
+  const rows =
+    new Set();
+
+  for (
+    const selector
+    of selectors
+  ) {
+    for (
+      const row
+      of root.querySelectorAll(
+        selector,
+      )
+    ) {
+      rows.add(
+        row,
+      );
+    }
+  }
+
+  return Array.from(
+    rows,
+  );
+}
+
 export async function renderDeathKnightRuneControls(
   app,
   html,
@@ -1450,21 +1513,17 @@ export async function renderDeathKnightRuneControls(
     );
   }
 
-  const weaponTable =
-    root.querySelector(
-      ".weapon-table.item-list",
+  const rows =
+    deathKnightRuneWeaponRows(
+      root,
     );
 
-  if (!weaponTable) {
+  if (
+    rows.length ===
+    0
+  ) {
     return false;
   }
-
-  const rows =
-    Array.from(
-      weaponTable.querySelectorAll(
-        "tr.sheet-table-data.item[data-item-id]",
-      ),
-    );
 
   let rendered =
     0;
@@ -1475,45 +1534,49 @@ export async function renderDeathKnightRuneControls(
       actor,
     )
   ) {
-    const row =
-      rows.find(
-        candidate =>
-          candidate.dataset
+    const weaponRows =
+      rows.filter(
+        row =>
+          row.dataset
             ?.itemId ===
           weapon.id,
       );
 
-    const nameCell =
-      row?.querySelector(
-        "td.text-data",
+    for (
+      const row
+      of weaponRows
+    ) {
+      const nameCell =
+        row.querySelector(
+          "td.text-data",
+        );
+
+      if (!nameCell) {
+        continue;
+      }
+
+      const slot =
+        createDeathKnightRuneSlot(
+          actor,
+          weapon,
+          app,
+        );
+
+      if (!slot) {
+        continue;
+      }
+
+      nameCell.append(
+        slot,
       );
-
-    if (!nameCell) {
-      continue;
+      rendered +=
+        1;
     }
-
-    const slot =
-      createDeathKnightRuneSlot(
-        actor,
-        weapon,
-        app,
-      );
-
-    if (!slot) {
-      continue;
-    }
-
-    nameCell.append(
-      slot,
-    );
-    rendered +=
-      1;
   }
 
   return rendered >
     0;
 }
-
 
 export function onRenderDeathKnightRuneActorSheet(
   app,

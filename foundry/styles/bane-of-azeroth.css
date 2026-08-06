@@ -57,7 +57,7 @@ a.boa-death-knight-rune-slot:focus {
 }
 
 .boa-death-knight-rune-choice {
-  display: flex;
+  display: grid;
   align-items: center;
   gap: 0.5rem;
   padding: 0.25rem 0.35rem;
@@ -73,4 +73,25 @@ a.boa-death-knight-rune-slot:focus {
 
 .boa-death-knight-rune-choice-clear {
   min-height: 2rem;
+}
+
+.boa-death-knight-rune-choice {
+  grid-template-columns: auto 2rem minmax(0, 1fr);
+}
+
+.boa-death-knight-rune-choice-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.boa-death-knight-rune-description {
+  font-weight: 400;
+  line-height: 1.25;
+  opacity: 0.82;
+}
+
+.boa-death-knight-rune-choice-clear {
+  grid-template-columns: auto minmax(0, 1fr);
 }

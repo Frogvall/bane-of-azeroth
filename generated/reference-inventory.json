@@ -15,7 +15,7 @@
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
     "uuid-link": 66,
-    "uuid-literal": 67
+    "uuid-literal": 72
   },
   "entries": [
     {
@@ -1670,7 +1670,16 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 37,
+      "line": 31,
+      "column": 10,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.fallenCrusaderDescription\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/death-knight-runes.js",
+      "line": 39,
       "column": 10,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1679,7 +1688,16 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 45,
+      "line": 41,
+      "column": 10,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.razoriceDescription\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/death-knight-runes.js",
+      "line": 49,
       "column": 10,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1688,7 +1706,16 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1117,
+      "line": 51,
+      "column": 10,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.unendingThirstDescription\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/death-knight-runes.js",
+      "line": 1137,
       "column": 10,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1697,7 +1724,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1126,
+      "line": 1147,
       "column": 10,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1706,7 +1733,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1164,
+      "line": 1186,
       "column": 12,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1715,7 +1742,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1176,
+      "line": 1198,
       "column": 14,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1724,7 +1751,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1191,
+      "line": 1213,
       "column": 16,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1733,7 +1760,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1213,
+      "line": 1235,
       "column": 16,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1742,16 +1769,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1319,
-      "column": 10,
-      "target": "BOA.deathKnightRunes",
-      "classification": "unclassified",
-      "snippet": "\"BOA.deathKnightRunes.engraved\","
-    },
-    {
-      "kind": "uuid-literal",
-      "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1346,
+      "line": 1376,
       "column": 10,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -2094,6 +2112,33 @@
       "classification": "unclassified",
       "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
       "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-death-knight-runes.js",
+      "line": 181,
+      "column": 12,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.fallenCrusaderDescription\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-death-knight-runes.js",
+      "line": 187,
+      "column": 12,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.razoriceDescription\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-death-knight-runes.js",
+      "line": 193,
+      "column": 12,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.unendingThirstDescription\","
     },
     {
       "kind": "runtime-uuid-lookup",

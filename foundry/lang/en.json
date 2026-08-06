@@ -157,12 +157,14 @@
       "clear": "Clear Rune",
       "noWeapons": "No melee weapons are available.",
       "slot": "Engrave Rune",
-      "engraved": "Engraved Rune",
       "pickerTitle": "Death Knight Rune",
       "pickerHint": "Choose the rune to engrave on this weapon. Engraving here replaces any rune already engraved by this character.",
       "apply": "Apply Rune",
       "cancel": "Cancel",
-      "dialogUnavailable": "The rune picker could not be opened."
+      "dialogUnavailable": "The rune picker could not be opened.",
+      "fallenCrusaderDescription": "Whenever you deal damage to a living creature with the weapon, you heal 1 HP.",
+      "razoriceDescription": "The weapon is cold to the touch, and attacks with it count as magical.",
+      "unendingThirstDescription": "While wielding the weapon, your movement rate increases by 2."
     }
   },
   "DoD": {

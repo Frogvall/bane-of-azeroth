@@ -956,16 +956,21 @@ function boaBuildManualChecklistHtml() {
   <h2>Death Knight rune verification</h2>
   <p>
   Automated tests cover one persisted rune selection per character,
-  weapon eligibility, Player ownership, and Unending Thirst as an
-  equipped-only Movement +2 Active Effect. Fallen Crusader, Razorice,
-  and the stretch required to engrave a rune remain deliberately manual.
+  weapon eligibility, Player ownership, localized rune descriptions, and
+  Unending Thirst as an equipped-only Movement +2 Active Effect. Fallen
+  Crusader, Razorice, and the stretch required to engrave a rune remain
+  deliberately manual.
   </p>
   <ul>
   <li>[ ] A character with Death Knight's Rebirth has rune controls on Main → Weapons; no separate Death Knight Runes panel appears on the Abilities tab.</li>
-  <li>[ ] Each eligible melee weapon has a small rune slot directly after its weapon name.</li>
-  <li>[ ] Ranged weapons, shields, and Unarmed have no rune slot.</li>
+  <li>[ ] Each eligible melee weapon has a small rune slot directly after its weapon name on Main → Weapons.</li>
+  <li>[ ] The same rune slot/icon is visible beside eligible weapons on Inventory → Equipped Weapons and Inventory → Inventory.</li>
+  <li>[ ] An eligible carried weapon can be engraved from Inventory even while it is not equipped.</li>
+  <li>[ ] Ranged weapons, shields, and Unarmed have no rune slot on either Main or Inventory.</li>
   <li>[ ] Clicking an eligible weapon's rune slot opens a compact rune picker for that specific weapon, with Fallen Crusader, Razorice, Unending Thirst, and Clear Rune.</li>
-  <li>[ ] Selecting a rune immediately shows that rune's dedicated icon beside the selected weapon name.</li>
+  <li>[ ] Each rune choice in the picker shows the rule description from Death Knight's Rebirth next to the rune name/icon.</li>
+  <li>[ ] Selecting a rune immediately shows that rune's dedicated icon beside the selected weapon name everywhere that weapon is displayed.</li>
+  <li>[ ] Hovering the active rune icon shows the rune name and its localized rule description, without an extra "Engraved Rune" suffix.</li>
   <li>[ ] Selecting another rune on the same weapon replaces the icon and active state.</li>
   <li>[ ] Selecting a rune on another weapon moves the single active rune to that weapon.</li>
   <li>[ ] Clear Rune removes the active rune icon and selection.</li>

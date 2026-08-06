@@ -155,6 +155,49 @@ if (
 
 if (
   typeof api
+    .getDeathKnightRuneDefinitions ===
+    "function"
+) {
+  const runeDescriptions =
+    api.getDeathKnightRuneDefinitions()
+      .map(
+        rune => ({
+          key:
+            rune.key,
+          description:
+            rune.description,
+        }),
+      );
+
+  boaCheckEqual(
+    checks,
+    "Death Knight rune definitions expose localizable rule descriptions",
+    runeDescriptions,
+    [
+      {
+        key:
+          "fallenCrusader",
+        description:
+          "BOA.deathKnightRunes.fallenCrusaderDescription",
+      },
+      {
+        key:
+          "razorice",
+        description:
+          "BOA.deathKnightRunes.razoriceDescription",
+      },
+      {
+        key:
+          "unendingThirst",
+        description:
+          "BOA.deathKnightRunes.unendingThirstDescription",
+      },
+    ],
+  );
+}
+
+if (
+  typeof api
     .isDeathKnightRuneEligibleWeapon ===
     "function"
 ) {

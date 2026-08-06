@@ -142,7 +142,10 @@ describe(
           of [
             "<h2>Death Knight rune verification</h2>",
             "Main → Weapons",
-            "Ranged weapons, shields, and Unarmed have no rune slot.",
+            "Inventory → Equipped Weapons",
+            "eligible carried weapon can be engraved from Inventory",
+            "localized rule description",
+            "Ranged weapons, shields, and Unarmed have no rune slot on either Main or Inventory.",
             "dedicated icon beside the selected weapon name",
             "Fallen Crusader is only a visual/rules reminder",
             "Razorice is only a visual/rules reminder",

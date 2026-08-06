@@ -398,6 +398,42 @@ describe(
     );
 
     test(
+      "exposes localizable rule descriptions for all three runes",
+      () => {
+        expect(
+          getDeathKnightRuneDefinitions()
+            .map(
+              rune => ({
+                key:
+                  rune.key,
+                description:
+                  rune.description,
+              }),
+            ),
+        ).toEqual([
+          {
+            key:
+              "fallenCrusader",
+            description:
+              "BOA.deathKnightRunes.fallenCrusaderDescription",
+          },
+          {
+            key:
+              "razorice",
+            description:
+              "BOA.deathKnightRunes.razoriceDescription",
+          },
+          {
+            key:
+              "unendingThirst",
+            description:
+              "BOA.deathKnightRunes.unendingThirstDescription",
+          },
+        ]);
+      },
+    );
+
+    test(
       "accepts melee weapons and rejects ranged weapons, shields, and Unarmed",
       () => {
         const sword =

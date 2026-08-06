@@ -196,13 +196,13 @@ describe(
         expect(
           runtime,
         ).toContain(
-          '".weapon-table.item-list"',
+          "deathKnightRuneWeaponRows",
         );
 
         expect(
           runtime,
         ).toContain(
-          '"tr.sheet-table-data.item[data-item-id]"',
+          "tr.sheet-table-data.item[data-item-id]",
         );
 
         expect(
@@ -227,6 +227,86 @@ describe(
           css,
         ).toContain(
           ".boa-death-knight-rune-slot",
+        );
+      },
+    );
+
+    test(
+      "localizes rune descriptions and renders rune slots on Main and Inventory weapon rows",
+      () => {
+        const runtime =
+          read(
+            RUNTIME,
+          );
+        const lang =
+          JSON.parse(
+            read(
+              LANG,
+            ),
+          );
+        const css =
+          read(
+            CSS,
+          );
+
+        expect(
+          lang.BOA
+            .deathKnightRunes
+            .fallenCrusaderDescription,
+        ).toBe(
+          "Whenever you deal damage to a living creature with the weapon, you heal 1 HP.",
+        );
+
+        expect(
+          lang.BOA
+            .deathKnightRunes
+            .razoriceDescription,
+        ).toBe(
+          "The weapon is cold to the touch, and attacks with it count as magical.",
+        );
+
+        expect(
+          lang.BOA
+            .deathKnightRunes
+            .unendingThirstDescription,
+        ).toBe(
+          "While wielding the weapon, your movement rate increases by 2.",
+        );
+
+        expect(
+          runtime,
+        ).toContain(
+          'data-droptarget="weapon"',
+        );
+
+        expect(
+          runtime,
+        ).toContain(
+          'data-droptarget="inventory"',
+        );
+
+        expect(
+          runtime,
+        ).toContain(
+          "boa-death-knight-rune-description",
+        );
+
+        expect(
+          runtime,
+        ).toContain(
+          "active.description",
+        );
+
+        expect(
+          runtime,
+        ).not.toContain(
+          '"BOA.deathKnightRunes.engraved"',
+        );
+
+        expect(
+          css,
+        ).toContain(
+          ".boa-death-knight-rune-description",
         );
       },
     );
