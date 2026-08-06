@@ -18,10 +18,8 @@ const PROFILE_DEFINITIONS =
         "spells.savage-incarnation",
       powerLevel: 1,
       form: "travel",
-      defaultPortrait:
-        FALLBACK_ARTWORK,
-      defaultToken:
-        FALLBACK_ARTWORK,
+      defaultPortrait: "modules/bane-of-azeroth/assets/actors/druid-forms/travel-pl1.webp",
+      defaultToken: "modules/bane-of-azeroth/assets/tokens/druid-forms/travel-pl1-token.webp",
     }),
     Object.freeze({
       key: "travelPl2",
@@ -29,10 +27,8 @@ const PROFILE_DEFINITIONS =
         "spells.savage-incarnation",
       powerLevel: 2,
       form: "travel",
-      defaultPortrait:
-        FALLBACK_ARTWORK,
-      defaultToken:
-        FALLBACK_ARTWORK,
+      defaultPortrait: "modules/bane-of-azeroth/assets/actors/druid-forms/travel-pl2.webp",
+      defaultToken: "modules/bane-of-azeroth/assets/tokens/druid-forms/travel-pl2-token.webp",
     }),
     Object.freeze({
       key: "travelPl3",
@@ -40,10 +36,8 @@ const PROFILE_DEFINITIONS =
         "spells.savage-incarnation",
       powerLevel: 3,
       form: "travel",
-      defaultPortrait:
-        FALLBACK_ARTWORK,
-      defaultToken:
-        FALLBACK_ARTWORK,
+      defaultPortrait: "modules/bane-of-azeroth/assets/actors/druid-forms/travel-pl3.webp",
+      defaultToken: "modules/bane-of-azeroth/assets/tokens/druid-forms/travel-pl3-token.webp",
     }),
     Object.freeze({
       key: "bear",
@@ -51,10 +45,8 @@ const PROFILE_DEFINITIONS =
         "spells.feral-incarnation",
       powerLevel: null,
       form: "bear",
-      defaultPortrait:
-        FALLBACK_ARTWORK,
-      defaultToken:
-        FALLBACK_ARTWORK,
+      defaultPortrait: "modules/bane-of-azeroth/assets/actors/druid-forms/bear.webp",
+      defaultToken: "modules/bane-of-azeroth/assets/tokens/druid-forms/bear-token.webp",
     }),
     Object.freeze({
       key: "cat",
@@ -62,10 +54,8 @@ const PROFILE_DEFINITIONS =
         "spells.feral-incarnation",
       powerLevel: null,
       form: "cat",
-      defaultPortrait:
-        FALLBACK_ARTWORK,
-      defaultToken:
-        FALLBACK_ARTWORK,
+      defaultPortrait: "modules/bane-of-azeroth/assets/actors/druid-forms/cat.webp",
+      defaultToken: "modules/bane-of-azeroth/assets/tokens/druid-forms/cat-token.webp",
     }),
     Object.freeze({
       key: "tree",
@@ -73,10 +63,8 @@ const PROFILE_DEFINITIONS =
         "spells.incarnation-of-harmony",
       powerLevel: null,
       form: "tree",
-      defaultPortrait:
-        FALLBACK_ARTWORK,
-      defaultToken:
-        FALLBACK_ARTWORK,
+      defaultPortrait: "modules/bane-of-azeroth/assets/actors/druid-forms/tree.webp",
+      defaultToken: "modules/bane-of-azeroth/assets/tokens/druid-forms/tree-token.webp",
     }),
     Object.freeze({
       key: "moonkin",
@@ -84,10 +72,8 @@ const PROFILE_DEFINITIONS =
         "spells.incarnation-of-the-stars",
       powerLevel: null,
       form: "moonkin",
-      defaultPortrait:
-        FALLBACK_ARTWORK,
-      defaultToken:
-        FALLBACK_ARTWORK,
+      defaultPortrait: "modules/bane-of-azeroth/assets/actors/druid-forms/moonkin.webp",
+      defaultToken: "modules/bane-of-azeroth/assets/tokens/druid-forms/moonkin-token.webp",
     }),
   ]);
 
@@ -1163,31 +1149,148 @@ function profileLabel(profile) {
   return labels[profile.key] ?? profile.key;
 }
 
-function artworkDialogMarkup(actor) {
-  return (
-    '<form class="boa-druid-form-artwork-dialog">' +
-    getAvailableDruidFormProfiles(actor)
-      .map(profile => {
-        const artwork = getDruidFormArtwork(actor, profile.key);
+function artworkDialogMarkup(
+  actor,
+) {
+  const profiles =
+    getAvailableDruidFormProfiles(
+      actor,
+    );
+
+  const selectors =
+    profiles.map(
+      (
+        profile,
+        index,
+      ) => (
+        `<input class="boa-druid-artwork-tab-input" `
+        + `type="radio" `
+        + `name="boaDruidArtworkActiveProfile" `
+        + `id="boa-druid-artwork-tab-${escapeArtworkHtml(
+          profile.key,
+        )}" `
+        + `value="${escapeArtworkHtml(
+          profile.key,
+        )}" `
+        + (
+          index ===
+            0
+            ? "checked "
+            : ""
+        )
+        + `>`
+      ),
+    ).join("");
+
+  const tabs =
+    profiles.map(
+      profile => (
+        `<label class="boa-druid-artwork-tab" `
+        + `for="boa-druid-artwork-tab-${escapeArtworkHtml(
+          profile.key,
+        )}">`
+        + `${escapeArtworkHtml(
+          formProfileLabel(
+            profile,
+          ),
+        )}`
+        + `</label>`
+      ),
+    ).join("");
+
+  const panels =
+    profiles.map(
+      profile => {
+        const artwork =
+          getDruidFormArtwork(
+            actor,
+            profile.key,
+          );
+
+        const portrait =
+          artwork?.portrait ??
+          "";
+        const token =
+          artwork?.token ??
+          "";
+
         return (
-          `<fieldset data-profile-key="${escapeArtworkHtml(profile.key)}">` +
-          `<legend>${escapeArtworkHtml(profileLabel(profile))}</legend>` +
-          `<label>${escapeArtworkHtml(localizeArtwork("BOA.druidForms.portrait", "Portrait"))}` +
-          `<file-picker type="image" name="portrait.${escapeArtworkHtml(profile.key)}" value="${escapeArtworkHtml(artwork?.portrait ?? "")}"></file-picker>` +
-          `</label>` +
-          `<label>${escapeArtworkHtml(localizeArtwork("BOA.druidForms.token", "Token"))}` +
-          `<file-picker type="image" name="token.${escapeArtworkHtml(profile.key)}" value="${escapeArtworkHtml(artwork?.token ?? "")}"></file-picker>` +
-          `</label>` +
-          `<label><input type="checkbox" name="reset.${escapeArtworkHtml(profile.key)}"> ` +
-          `${escapeArtworkHtml(localizeArtwork("BOA.druidForms.reset", "Reset to Default"))}</label>` +
-          `</fieldset>`
+          `<section class="boa-druid-artwork-panel" `
+          + `data-profile-key="${escapeArtworkHtml(
+            profile.key,
+          )}" `
+          + `role="tabpanel">`
+          + `<div class="boa-druid-artwork-previews">`
+          + `<div class="boa-druid-artwork-image-field">`
+          + `<strong>${escapeArtworkHtml(
+            localizeArtwork(
+              "BOA.druidForms.portrait",
+              "Portrait",
+            ),
+          )}</strong>`
+          + `<div class="boa-druid-artwork-preview">`
+          + `<img src="${escapeArtworkHtml(
+            portrait,
+          )}" alt="">`
+          + `</div>`
+          + `<file-picker type="image" `
+          + `name="portrait.${escapeArtworkHtml(
+            profile.key,
+          )}" `
+          + `value="${escapeArtworkHtml(
+            portrait,
+          )}"></file-picker>`
+          + `</div>`
+          + `<div class="boa-druid-artwork-image-field">`
+          + `<strong>${escapeArtworkHtml(
+            localizeArtwork(
+              "BOA.druidForms.token",
+              "Token",
+            ),
+          )}</strong>`
+          + `<div class="boa-druid-artwork-preview">`
+          + `<img src="${escapeArtworkHtml(
+            token,
+          )}" alt="">`
+          + `</div>`
+          + `<file-picker type="image" `
+          + `name="token.${escapeArtworkHtml(
+            profile.key,
+          )}" `
+          + `value="${escapeArtworkHtml(
+            token,
+          )}"></file-picker>`
+          + `</div>`
+          + `</div>`
+          + `<label class="boa-druid-artwork-reset">`
+          + `<input type="checkbox" `
+          + `name="reset.${escapeArtworkHtml(
+            profile.key,
+          )}"> `
+          + `${escapeArtworkHtml(
+            localizeArtwork(
+              "BOA.druidForms.reset",
+              "Reset to Default",
+            ),
+          )}`
+          + `</label>`
+          + `</section>`
         );
-      })
-      .join("") +
-    "</form>"
+      },
+    ).join("");
+
+  return (
+    `<form class="boa-druid-form-artwork-dialog">`
+    + selectors
+    + `<nav class="boa-druid-artwork-tabs" role="tablist">`
+    + tabs
+    + `</nav>`
+    + `<div class="boa-druid-artwork-panels">`
+    + panels
+    + `</div>`
+    + `</form>`
   );
 }
-
 function formValue(form, name) {
   return form?.elements?.namedItem?.(name)?.value ?? "";
 }
@@ -1219,6 +1322,9 @@ export async function openDruidFormArtworkDialog(actor) {
         "Druid Form Artwork",
       ),
     },
+      position: {
+        width: 560,
+      },
     content: artworkDialogMarkup(actor),
     buttons: [
       {
