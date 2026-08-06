@@ -956,23 +956,27 @@ function boaBuildManualChecklistHtml() {
   <h2>Death Knight rune verification</h2>
   <p>
   Automated tests cover one persisted rune selection per character,
-  melee-weapon eligibility, the three rune icons, Player ownership, and
-  Unending Thirst as an equipped-only Movement +2 Active Effect. Fallen
-  Crusader, Razorice, and the stretch required to engrave a rune remain
-  deliberately manual.
+  weapon eligibility, Player ownership, and Unending Thirst as an
+  equipped-only Movement +2 Active Effect. Fallen Crusader, Razorice,
+  and the stretch required to engrave a rune remain deliberately manual.
   </p>
   <ul>
-  <li>[ ] A character with Death Knight's Rebirth shows a Death Knight Runes section immediately after Heroic Abilities.</li>
-  <li>[ ] The selector shows the dedicated Fallen Crusader, Razorice, and Unending Thirst icons and only embedded melee weapons.</li>
-  <li>[ ] Selecting a rune and weapon shows exactly one active rune; selecting another rune or weapon replaces the previous selection.</li>
-  <li>[ ] Clear Rune removes the active rune selection.</li>
+  <li>[ ] A character with Death Knight's Rebirth has rune controls on Main → Weapons; no separate Death Knight Runes panel appears on the Abilities tab.</li>
+  <li>[ ] Each eligible melee weapon has a small rune slot directly after its weapon name.</li>
+  <li>[ ] Ranged weapons, shields, and Unarmed have no rune slot.</li>
+  <li>[ ] Clicking an eligible weapon's rune slot opens a compact rune picker for that specific weapon, with Fallen Crusader, Razorice, Unending Thirst, and Clear Rune.</li>
+  <li>[ ] Selecting a rune immediately shows that rune's dedicated icon beside the selected weapon name.</li>
+  <li>[ ] Selecting another rune on the same weapon replaces the icon and active state.</li>
+  <li>[ ] Selecting a rune on another weapon moves the single active rune to that weapon.</li>
+  <li>[ ] Clear Rune removes the active rune icon and selection.</li>
   <li>[ ] Fallen Crusader is only a visual/rules reminder: damaging a living creature does not automatically heal the Death Knight.</li>
   <li>[ ] Razorice is only a visual/rules reminder: the module does not invent or attach a generic magical-weapon property.</li>
   <li>[ ] With Unending Thirst selected, the character gains exactly +2 Movement while the selected weapon is wielded/equipped.</li>
   <li>[ ] Unequipping the Unending Thirst weapon removes exactly that +2 Movement; equipping it again restores the bonus.</li>
   <li>[ ] Replacing Unending Thirst with Fallen Crusader or Razorice removes the managed Movement effect.</li>
   <li>[ ] A manually created Active Effect named Unending Thirst is not removed by rune cleanup unless it carries the Bane of Azeroth managed flag.</li>
-  <li>[ ] Disabling Death Knight Runes automation hides the selector and removes the managed Unending Thirst effect while preserving the selected rune state; re-enabling restores the effect if the selection is still valid.</li>
+  <li>[ ] Disabling Death Knight Runes automation immediately removes rune slots/icons from open character sheets and removes the managed Unending Thirst effect while preserving rune state.</li>
+  <li>[ ] Re-enabling Death Knight Runes automation restores the rune UI and the Unending Thirst effect if the preserved selection is still valid.</li>
   <li>[ ] Removing Death Knight's Rebirth or deleting the selected weapon clears stale rune state and any managed Unending Thirst effect.</li>
   <li>[ ] Repeat rune selection, replacement, Clear Rune, and Unending Thirst equip/unequip as the prepared owning Player.</li>
   <li>[ ] Rune selection never starts, enforces, or completes a stretch; the table still decides when the engraving has been completed.</li>

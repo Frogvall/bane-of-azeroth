@@ -308,6 +308,47 @@ export function isDeathKnightRuneEligibleWeapon(
     return false;
   }
 
+  const rawFeatures =
+    item?.system?.features;
+
+  const features =
+    Array.isArray(
+      rawFeatures,
+    )
+      ? rawFeatures
+      : (
+          typeof rawFeatures
+            ?.values ===
+            "function"
+            ? Array.from(
+                rawFeatures.values(),
+              )
+            : []
+        );
+
+  const featureKeys =
+    new Set(
+      features.map(
+        feature =>
+          String(
+            feature,
+          )
+            .trim()
+            .toLowerCase(),
+      ),
+    );
+
+  if (
+    featureKeys.has(
+      "shield",
+    ) ||
+    featureKeys.has(
+      "unarmed",
+    )
+  ) {
+    return false;
+  }
+
   if (
     typeof item.isRangedWeapon ===
     "boolean"
@@ -335,6 +376,7 @@ export function isDeathKnightRuneEligibleWeapon(
 
   return true;
 }
+
 
 export function getDeathKnightRuneEligibleWeapons(
   actor,
@@ -1016,8 +1058,198 @@ export function onDeleteDeathKnightRuneItem(
   )();
 }
 
-function runeControlsMarkup(
+function runePickerMarkup(
   actor,
+  weapon,
+) {
+  const state =
+    getDeathKnightRuneState(
+      actor,
+    );
+
+  const selectedRune =
+    state?.weaponId ===
+      weapon?.id
+      ? state.rune
+      : null;
+
+  const choices =
+    getDeathKnightRuneDefinitions()
+      .map(
+        rune => {
+          const checked =
+            rune.key ===
+              selectedRune
+              ? " checked"
+              : "";
+
+          return (
+            `<label class="boa-death-knight-rune-choice">`
+            + `<input type="radio" name="boa-rune" value="${escapeHtml(
+              rune.key,
+            )}"${checked}>`
+            + `<img src="${escapeHtml(
+              rune.icon,
+            )}" alt="">`
+            + `<span>${escapeHtml(
+              localize(
+                rune.name,
+                rune.key,
+              ),
+            )}</span>`
+            + `</label>`
+          );
+        },
+      )
+      .join(
+        "",
+      );
+
+  const clearChecked =
+    selectedRune
+      ? ""
+      : " checked";
+
+  return (
+    `<form class="boa-death-knight-rune-picker">`
+    + `<p class="hint">${escapeHtml(
+      localize(
+        "BOA.deathKnightRunes.pickerHint",
+        "Choose the rune to engrave on this weapon. Engraving here replaces any rune already engraved by this character.",
+      ),
+    )}</p>`
+    + choices
+    + `<label class="boa-death-knight-rune-choice boa-death-knight-rune-choice-clear">`
+    + `<input type="radio" name="boa-rune" value=""${clearChecked}>`
+    + `<span>${escapeHtml(
+      localize(
+        "BOA.deathKnightRunes.clear",
+        "Clear Rune",
+      ),
+    )}</span>`
+    + `</label>`
+    + `</form>`
+  );
+}
+
+async function chooseDeathKnightRuneForWeapon(
+  actor,
+  weapon,
+) {
+  if (
+    !canManageActor(
+      actor,
+    ) ||
+    !isDeathKnightRuneEligibleWeapon(
+      weapon,
+    )
+  ) {
+    return false;
+  }
+
+  const DialogV2 =
+    globalThis.foundry
+      ?.applications
+      ?.api
+      ?.DialogV2;
+
+  if (
+    typeof DialogV2?.wait !==
+    "function"
+  ) {
+    globalThis.ui
+      ?.notifications
+      ?.error?.(
+        localize(
+          "BOA.deathKnightRunes.dialogUnavailable",
+          "The rune picker could not be opened.",
+        ),
+      );
+    return false;
+  }
+
+  const result =
+    await DialogV2.wait({
+      window: {
+        title:
+          `${localize(
+            "BOA.deathKnightRunes.pickerTitle",
+            "Death Knight Rune",
+          )} — ${weapon.name}`,
+      },
+      content:
+        runePickerMarkup(
+          actor,
+          weapon,
+        ),
+      buttons: [
+        {
+          action:
+            "apply",
+          label:
+            localize(
+              "BOA.deathKnightRunes.apply",
+              "Apply Rune",
+            ),
+          default:
+            true,
+          callback:
+            (
+              _event,
+              button,
+            ) =>
+              button?.form
+                ?.querySelector?.(
+                  'input[name="boa-rune"]:checked',
+                )
+                ?.value ??
+              null,
+        },
+        {
+          action:
+            "cancel",
+          label:
+            localize(
+              "BOA.deathKnightRunes.cancel",
+              "Cancel",
+            ),
+        },
+      ],
+      close:
+        () =>
+          null,
+    });
+
+  if (
+    result ===
+      null ||
+    result ===
+      undefined
+  ) {
+    return false;
+  }
+
+  if (
+    result ===
+    ""
+  ) {
+    await clearDeathKnightRune(
+      actor,
+    );
+    return true;
+  }
+
+  return setDeathKnightRune(
+    actor,
+    result,
+    weapon.id,
+  );
+}
+
+function createDeathKnightRuneSlot(
+  actor,
+  weapon,
+  app,
   {
     canManage =
       canManageActor(
@@ -1025,155 +1257,137 @@ function runeControlsMarkup(
       ),
   } = {},
 ) {
-  const weapons =
-    getDeathKnightRuneEligibleWeapons(
-      actor,
-    );
+  const element =
+    globalThis.document
+      ?.createElement?.(
+        canManage
+          ? "a"
+          : "span",
+      );
+
+  if (!element) {
+    return null;
+  }
 
   const state =
     getDeathKnightRuneState(
       actor,
     );
 
-  const selectedWeapon =
-    weapons.find(
-      weapon =>
-        weapon.id ===
-        state?.weaponId,
-    ) ??
-    null;
-
-  const activeRune =
-    state
+  const active =
+    state?.weaponId ===
+      weapon.id
       ? DEATH_KNIGHT_RUNE_DEFINITIONS[
           state.rune
-        ]
+        ] ??
+        null
       : null;
 
-  const disabled =
-    canManage
-      ? ""
-      : " disabled";
-
-  const weaponOptions = [
-    `<option value="">${escapeHtml(
-      localize(
-        "BOA.deathKnightRunes.chooseWeapon",
-        "Choose melee weapon",
-      ),
-    )}</option>`,
-    ...weapons.map(
-      weapon =>
-        `<option value="${escapeHtml(
-          weapon.id,
-        )}"${
-          weapon.id ===
-            state?.weaponId
-            ? " selected"
-            : ""
-        }>${escapeHtml(
-          weapon.name,
-        )}</option>`,
-    ),
-  ].join(
-    "",
+  element.classList.add(
+    "boa-death-knight-rune-slot",
   );
+  element.dataset
+    .boaRuneWeaponId =
+    weapon.id;
 
-  const runeButtons =
-    getDeathKnightRuneDefinitions()
-      .map(
-        rune =>
-          `<button type="button" class="boa-death-knight-rune-button${
-            rune.key ===
-              state?.rune
-              ? " active"
-              : ""
-          }" data-boa-rune="${escapeHtml(
-            rune.key,
-          )}" title="${escapeHtml(
-            localize(
-              rune.name,
-              rune.key,
-            ),
-          )}"${disabled}>`
-          + `<img src="${escapeHtml(
-            rune.icon,
-          )}" alt="">`
-          + `<span>${escapeHtml(
-            localize(
-              rune.name,
-              rune.key,
-            ),
-          )}</span>`
-          + `</button>`,
-      )
-      .join(
-        "",
-      );
+  if (active) {
+    element.classList.add(
+      "active",
+    );
 
-  const activeText =
-    activeRune &&
-    selectedWeapon
-      ? `${localize(
-          "BOA.deathKnightRunes.active",
-          "Active",
-        )}: ${localize(
-          activeRune.name,
-          activeRune.key,
-        )} — ${selectedWeapon.name}`
-      : localize(
-          "BOA.deathKnightRunes.none",
-          "No rune engraved",
+    const image =
+      globalThis.document
+        ?.createElement?.(
+          "img",
         );
 
-  const noWeapons =
-    weapons.length > 0
-      ? ""
-      : `<p class="hint">${
-          escapeHtml(
-            localize(
-              "BOA.deathKnightRunes.noWeapons",
-              "No melee weapons are available.",
-            ),
-          )
-        }</p>`;
+    if (image) {
+      image.src =
+        active.icon;
+      image.alt =
+        "";
+      element.append(
+        image,
+      );
+    }
 
-  return (
-    `<section class="boa-death-knight-runes">`
-    + `<h3>${escapeHtml(
+    element.title =
+      `${localize(
+        active.name,
+        active.key,
+      )} — ${localize(
+        "BOA.deathKnightRunes.engraved",
+        "Engraved Rune",
+      )}`;
+  } else {
+    element.classList.add(
+      "empty",
+    );
+
+    const marker =
+      globalThis.document
+        ?.createElement?.(
+          "span",
+        );
+
+    if (marker) {
+      marker.classList.add(
+        "boa-death-knight-rune-empty-marker",
+      );
+      marker.textContent =
+        "+";
+      element.append(
+        marker,
+      );
+    }
+
+    element.title =
       localize(
-        "BOA.deathKnightRunes.title",
-        "Death Knight Runes",
-      ),
-    )}</h3>`
-    + `<p class="hint">${escapeHtml(
-      localize(
-        "BOA.deathKnightRunes.hint",
-        "Engraving a rune takes a stretch. Choose the rune and melee weapon after the stretch is completed.",
-      ),
-    )}</p>`
-    + `<div class="boa-death-knight-rune-controls">`
-    + `<select class="boa-death-knight-rune-weapon"${disabled}>`
-    + weaponOptions
-    + `</select>`
-    + `<div class="boa-death-knight-rune-buttons">`
-    + runeButtons
-    + `</div>`
-    + `</div>`
-    + noWeapons
-    + `<p class="boa-death-knight-rune-active">${escapeHtml(
-      activeText,
-    )}</p>`
-    + `<button type="button" class="boa-death-knight-rune-clear"${disabled}>`
-    + escapeHtml(
-      localize(
-        "BOA.deathKnightRunes.clear",
-        "Clear Rune",
-      ),
-    )
-    + `</button>`
-    + `</section>`
-  );
+        "BOA.deathKnightRunes.slot",
+        "Engrave Rune",
+      );
+  }
+
+  if (canManage) {
+    element.href =
+      "#";
+    element.addEventListener(
+      "click",
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        void chooseDeathKnightRuneForWeapon(
+          actor,
+          weapon,
+        )
+          .then(
+            changed => {
+              if (changed) {
+                app?.render?.(
+                  false,
+                );
+              }
+            },
+          )
+          .catch(
+            error => {
+              console.error(
+                `${MODULE_ID} | Failed to update Death Knight rune selection.`,
+                error,
+              );
+            },
+          );
+      },
+    );
+  } else {
+    element.setAttribute(
+      "aria-disabled",
+      "true",
+    );
+  }
+
+  return element;
 }
 
 export async function renderDeathKnightRuneControls(
@@ -1202,6 +1416,15 @@ export async function renderDeathKnightRuneControls(
     return false;
   }
 
+  for (
+    const existing
+    of root.querySelectorAll(
+      ".boa-death-knight-rune-slot",
+    )
+  ) {
+    existing.remove();
+  }
+
   root
     .querySelector(
       ".boa-death-knight-runes",
@@ -1227,141 +1450,70 @@ export async function renderDeathKnightRuneControls(
     );
   }
 
-  const heroicTable =
+  const weaponTable =
     root.querySelector(
-      ".heroic-abilities",
+      ".weapon-table.item-list",
     );
 
-  if (!heroicTable) {
+  if (!weaponTable) {
     return false;
   }
 
-  const wrapper =
-    globalThis.document
-      ?.createElement?.(
-        "div",
-      );
-
-  if (!wrapper) {
-    return false;
-  }
-
-  wrapper.innerHTML =
-    runeControlsMarkup(
-      actor,
+  const rows =
+    Array.from(
+      weaponTable.querySelectorAll(
+        "tr.sheet-table-data.item[data-item-id]",
+      ),
     );
 
-  const section =
-    wrapper.firstElementChild;
-
-  if (!section) {
-    return false;
-  }
-
-  heroicTable.insertAdjacentElement(
-    "afterend",
-    section,
-  );
-
-  const weaponSelect =
-    section.querySelector(
-      ".boa-death-knight-rune-weapon",
-    );
-
-  const selectedWeaponId =
-    () =>
-      weaponSelect?.value ||
-      getDeathKnightRuneState(
-        actor,
-      )?.weaponId ||
-      "";
-
-  weaponSelect?.addEventListener(
-    "change",
-    async event => {
-      const state =
-        getDeathKnightRuneState(
-          actor,
-        );
-
-      if (
-        !state ||
-        !event.currentTarget
-          ?.value
-      ) {
-        return;
-      }
-
-      await setDeathKnightRune(
-        actor,
-        state.rune,
-        event.currentTarget.value,
-      );
-
-      app.render?.(
-        false,
-      );
-    },
-  );
+  let rendered =
+    0;
 
   for (
-    const button
-    of section.querySelectorAll(
-      "[data-boa-rune]",
+    const weapon
+    of getDeathKnightRuneEligibleWeapons(
+      actor,
     )
   ) {
-    button.addEventListener(
-      "click",
-      async event => {
-        const weaponId =
-          selectedWeaponId();
+    const row =
+      rows.find(
+        candidate =>
+          candidate.dataset
+            ?.itemId ===
+          weapon.id,
+      );
 
-        if (!weaponId) {
-          globalThis.ui
-            ?.notifications
-            ?.warn?.(
-              localize(
-                "BOA.deathKnightRunes.chooseWeaponFirst",
-                "Choose a melee weapon first.",
-              ),
-            );
-          return;
-        }
+    const nameCell =
+      row?.querySelector(
+        "td.text-data",
+      );
 
-        await setDeathKnightRune(
-          actor,
-          event.currentTarget
-            ?.dataset
-            ?.boaRune,
-          weaponId,
-        );
+    if (!nameCell) {
+      continue;
+    }
 
-        app.render?.(
-          false,
-        );
-      },
+    const slot =
+      createDeathKnightRuneSlot(
+        actor,
+        weapon,
+        app,
+      );
+
+    if (!slot) {
+      continue;
+    }
+
+    nameCell.append(
+      slot,
     );
+    rendered +=
+      1;
   }
 
-  section
-    .querySelector(
-      ".boa-death-knight-rune-clear",
-    )
-    ?.addEventListener(
-      "click",
-      async () => {
-        await clearDeathKnightRune(
-          actor,
-        );
-
-        app.render?.(
-          false,
-        );
-      },
-    );
-
-  return true;
+  return rendered >
+    0;
 }
+
 
 export function onRenderDeathKnightRuneActorSheet(
   app,

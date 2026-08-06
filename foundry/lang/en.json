@@ -155,7 +155,14 @@
       "active": "Active",
       "none": "No rune engraved",
       "clear": "Clear Rune",
-      "noWeapons": "No melee weapons are available."
+      "noWeapons": "No melee weapons are available.",
+      "slot": "Engrave Rune",
+      "engraved": "Engraved Rune",
+      "pickerTitle": "Death Knight Rune",
+      "pickerHint": "Choose the rune to engrave on this weapon. Engraving here replaces any rune already engraved by this character.",
+      "apply": "Apply Rune",
+      "cancel": "Cancel",
+      "dialogUnavailable": "The rune picker could not be opened."
     }
   },
   "DoD": {

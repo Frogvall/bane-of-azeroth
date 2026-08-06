@@ -76,6 +76,7 @@ class FakeItem {
     contentKey = null,
     range = 2,
     isRangedWeapon = undefined,
+    features = [],
     worn = false,
   }) {
     this.id =
@@ -87,6 +88,7 @@ class FakeItem {
     this.flags = {};
     this.system = {
       range,
+      features,
       worn,
     };
     this.effects = [];
@@ -256,6 +258,44 @@ function ranged() {
   });
 }
 
+function shield() {
+  return new FakeItem({
+    id:
+      "shield",
+    name:
+      "Small Shield",
+    type:
+      "weapon",
+    range:
+      2,
+    isRangedWeapon:
+      false,
+    features: [
+      "bludgeoning",
+      "shield",
+    ],
+  });
+}
+
+function unarmed() {
+  return new FakeItem({
+    id:
+      "unarmed",
+    name:
+      "Unarmed",
+    type:
+      "weapon",
+    range:
+      2,
+    isRangedWeapon:
+      false,
+    features: [
+      "bludgeoning",
+      "unarmed",
+    ],
+  });
+}
+
 function managedEffects(
   actor,
 ) {
@@ -358,18 +398,24 @@ describe(
     );
 
     test(
-      "requires Death Knight's Rebirth and a melee weapon",
+      "accepts melee weapons and rejects ranged weapons, shields, and Unarmed",
       () => {
         const sword =
           melee();
         const bow =
           ranged();
+        const smallShield =
+          shield();
+        const fists =
+          unarmed();
 
         const actor =
           new FakeActor([
             rebirth(),
             sword,
             bow,
+            smallShield,
+            fists,
           ]);
 
         expect(
@@ -387,10 +433,23 @@ describe(
         ).toBe(
           true,
         );
-
         expect(
           isDeathKnightRuneEligibleWeapon(
             bow,
+          ),
+        ).toBe(
+          false,
+        );
+        expect(
+          isDeathKnightRuneEligibleWeapon(
+            smallShield,
+          ),
+        ).toBe(
+          false,
+        );
+        expect(
+          isDeathKnightRuneEligibleWeapon(
+            fists,
           ),
         ).toBe(
           false,
@@ -403,6 +462,49 @@ describe(
         ).toEqual([
           sword,
         ]);
+      },
+    );
+
+    test(
+      "refuses rune assignment to shields and Unarmed through the public API",
+      async () => {
+        const smallShield =
+          shield();
+        const fists =
+          unarmed();
+
+        const actor =
+          new FakeActor([
+            rebirth(),
+            smallShield,
+            fists,
+          ]);
+
+        expect(
+          await setDeathKnightRune(
+            actor,
+            "fallenCrusader",
+            smallShield.id,
+          ),
+        ).toBe(
+          false,
+        );
+
+        expect(
+          await setDeathKnightRune(
+            actor,
+            "razorice",
+            fists.id,
+          ),
+        ).toBe(
+          false,
+        );
+
+        expect(
+          getDeathKnightRuneState(
+            actor,
+          ),
+        ).toBeNull();
       },
     );
 

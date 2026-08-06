@@ -136,7 +136,7 @@ describe(
     );
 
     test(
-      "registers a default-enabled granular automation setting and sheet UI",
+      "registers the setting and renders rune controls on Dragonbane weapon rows",
       () => {
         const settings =
           read(
@@ -156,6 +156,10 @@ describe(
           read(
             CSS,
           );
+        const runtime =
+          read(
+            RUNTIME,
+          );
 
         expect(
           settings,
@@ -167,6 +171,12 @@ describe(
           settings,
         ).toContain(
           "isDeathKnightRunesAutomationEnabled",
+        );
+
+        expect(
+          settings,
+        ).toContain(
+          "rerenderOpenDeathKnightRuneSheets",
         );
 
         expect(
@@ -184,17 +194,39 @@ describe(
         );
 
         expect(
-          lang.BOA
-            .deathKnightRunes
-            .unendingThirst,
-        ).toBe(
-          "Unending Thirst",
+          runtime,
+        ).toContain(
+          '".weapon-table.item-list"',
+        );
+
+        expect(
+          runtime,
+        ).toContain(
+          '"tr.sheet-table-data.item[data-item-id]"',
+        );
+
+        expect(
+          runtime,
+        ).toContain(
+          '"td.text-data"',
+        );
+
+        expect(
+          runtime,
+        ).toContain(
+          "DialogV2.wait",
+        );
+
+        expect(
+          runtime,
+        ).not.toContain(
+          'root.querySelector(\n      ".heroic-abilities"',
         );
 
         expect(
           css,
         ).toContain(
-          ".boa-death-knight-runes",
+          ".boa-death-knight-rune-slot",
         );
       },
     );

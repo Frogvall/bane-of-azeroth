@@ -111,7 +111,7 @@ describe(
     );
 
     test(
-      "restores the setting and documents the manual selector contract",
+      "restores the setting and documents the weapon-row rune contract",
       () => {
         const cleanup =
           read(
@@ -141,6 +141,9 @@ describe(
           const marker
           of [
             "<h2>Death Knight rune verification</h2>",
+            "Main → Weapons",
+            "Ranged weapons, shields, and Unarmed have no rune slot.",
+            "dedicated icon beside the selected weapon name",
             "Fallen Crusader is only a visual/rules reminder",
             "Razorice is only a visual/rules reminder",
             "exactly +2 Movement",

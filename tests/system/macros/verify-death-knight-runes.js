@@ -166,6 +166,9 @@ if (
     system: {
       range:
         2,
+      features: [
+        "slashing",
+      ],
     },
   };
 
@@ -177,12 +180,43 @@ if (
     system: {
       range:
         20,
+      features: [],
+    },
+  };
+
+  const shield = {
+    type:
+      "weapon",
+    isRangedWeapon:
+      false,
+    system: {
+      range:
+        2,
+      features: [
+        "bludgeoning",
+        "shield",
+      ],
+    },
+  };
+
+  const unarmed = {
+    type:
+      "weapon",
+    isRangedWeapon:
+      false,
+    system: {
+      range:
+        2,
+      features: [
+        "bludgeoning",
+        "unarmed",
+      ],
     },
   };
 
   boaCheckEqual(
     checks,
-    "Death Knight rune selector accepts melee weapons and rejects ranged weapons",
+    "Death Knight rune slots accept melee weapons and reject ranged weapons, shields, and Unarmed",
     {
       melee:
         api.isDeathKnightRuneEligibleWeapon(
@@ -192,11 +226,23 @@ if (
         api.isDeathKnightRuneEligibleWeapon(
           ranged,
         ),
+      shield:
+        api.isDeathKnightRuneEligibleWeapon(
+          shield,
+        ),
+      unarmed:
+        api.isDeathKnightRuneEligibleWeapon(
+          unarmed,
+        ),
     },
     {
       melee:
         true,
       ranged:
+        false,
+      shield:
+        false,
+      unarmed:
         false,
     },
   );

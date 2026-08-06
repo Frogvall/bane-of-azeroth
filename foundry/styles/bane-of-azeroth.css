@@ -5,52 +5,72 @@ input.boa-always-prepared[type="checkbox"] {
   cursor: not-allowed;
 }
 
-.boa-death-knight-runes {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--color-border-light-primary);
-}
-
-.boa-death-knight-runes h3 {
-  margin: 0 0 0.35rem;
-}
-
-.boa-death-knight-rune-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.boa-death-knight-rune-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.boa-death-knight-rune-button {
+.boa-death-knight-rune-slot {
   display: inline-flex;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.3rem;
+  vertical-align: middle;
   align-items: center;
-  gap: 0.35rem;
-  min-height: 2.25rem;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  text-decoration: none;
+  line-height: 1;
 }
 
-.boa-death-knight-rune-button img {
+a.boa-death-knight-rune-slot {
+  cursor: pointer;
+}
+
+a.boa-death-knight-rune-slot:hover,
+a.boa-death-knight-rune-slot:focus {
+  border-color: currentColor;
+  text-shadow: none;
+}
+
+.boa-death-knight-rune-slot.active img {
+  width: 1.15rem;
+  height: 1.15rem;
+  object-fit: cover;
+  border: 0;
+}
+
+.boa-death-knight-rune-slot.empty {
+  opacity: 0.55;
+}
+
+.boa-death-knight-rune-empty-marker {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.boa-death-knight-rune-picker {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.boa-death-knight-rune-picker .hint {
+  margin: 0 0 0.4rem;
+}
+
+.boa-death-knight-rune-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.35rem;
+  cursor: pointer;
+}
+
+.boa-death-knight-rune-choice img {
   width: 2rem;
   height: 2rem;
   object-fit: contain;
   border: 0;
 }
 
-.boa-death-knight-rune-button.active {
-  outline: 2px solid var(--color-border-highlight);
-  outline-offset: 1px;
-}
-
-.boa-death-knight-rune-active {
-  margin: 0.5rem 0;
-  font-weight: 600;
-}
-
-.boa-death-knight-rune-clear {
-  width: auto;
+.boa-death-knight-rune-choice-clear {
+  min-height: 2rem;
 }

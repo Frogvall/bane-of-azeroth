@@ -1688,61 +1688,16 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1061,
+      "line": 1117,
       "column": 10,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
-      "snippet": "\"BOA.deathKnightRunes.chooseWeapon\","
+      "snippet": "\"BOA.deathKnightRunes.pickerHint\","
     },
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1118,
-      "column": 12,
-      "target": "BOA.deathKnightRunes",
-      "classification": "unclassified",
-      "snippet": "\"BOA.deathKnightRunes.active\","
-    },
-    {
-      "kind": "uuid-literal",
-      "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1125,
-      "column": 12,
-      "target": "BOA.deathKnightRunes",
-      "classification": "unclassified",
-      "snippet": "\"BOA.deathKnightRunes.none\","
-    },
-    {
-      "kind": "uuid-literal",
-      "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1135,
-      "column": 16,
-      "target": "BOA.deathKnightRunes",
-      "classification": "unclassified",
-      "snippet": "\"BOA.deathKnightRunes.noWeapons\","
-    },
-    {
-      "kind": "uuid-literal",
-      "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1145,
-      "column": 10,
-      "target": "BOA.deathKnightRunes",
-      "classification": "unclassified",
-      "snippet": "\"BOA.deathKnightRunes.title\","
-    },
-    {
-      "kind": "uuid-literal",
-      "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1151,
-      "column": 10,
-      "target": "BOA.deathKnightRunes",
-      "classification": "unclassified",
-      "snippet": "\"BOA.deathKnightRunes.hint\","
-    },
-    {
-      "kind": "uuid-literal",
-      "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1170,
+      "line": 1126,
       "column": 10,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
@@ -1751,11 +1706,56 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/death-knight-runes.js",
-      "line": 1324,
-      "column": 18,
+      "line": 1164,
+      "column": 12,
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
-      "snippet": "\"BOA.deathKnightRunes.chooseWeaponFirst\","
+      "snippet": "\"BOA.deathKnightRunes.dialogUnavailable\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/death-knight-runes.js",
+      "line": 1176,
+      "column": 14,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.pickerTitle\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/death-knight-runes.js",
+      "line": 1191,
+      "column": 16,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.apply\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/death-knight-runes.js",
+      "line": 1213,
+      "column": 16,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.cancel\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/death-knight-runes.js",
+      "line": 1319,
+      "column": 10,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.engraved\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/scripts/death-knight-runes.js",
+      "line": 1346,
+      "column": 10,
+      "target": "BOA.deathKnightRunes",
+      "classification": "unclassified",
+      "snippet": "\"BOA.deathKnightRunes.slot\","
     },
     {
       "kind": "runtime-uuid-lookup",

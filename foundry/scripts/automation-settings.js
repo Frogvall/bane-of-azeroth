@@ -204,18 +204,56 @@ export function isFrostreaperAutomationEnabled(
     settings,
   );
 }
+function rerenderOpenDeathKnightRuneSheets() {
+  const actors =
+    globalThis.game?.actors
+      ?.contents ??
+    (
+      typeof globalThis.game?.actors
+        ?.values ===
+        "function"
+        ? Array.from(
+            globalThis.game.actors.values(),
+          )
+        : []
+    );
+
+  for (
+    const actor
+    of actors
+  ) {
+    const sheet =
+      actor?.sheet;
+
+    if (
+      sheet?.rendered &&
+      typeof sheet.render ===
+        "function"
+    ) {
+      sheet.render(
+        false,
+      );
+    }
+  }
+}
+
 function reconcileDeathKnightRunesOnChange() {
   queueMicrotask(() => {
-    if (
-      !globalThis.game?.user?.isGM
-    ) {
-      return;
-    }
-
     const api =
       globalThis.game?.modules
         ?.get?.(MODULE_ID)
         ?.api;
+
+    const finish =
+      () =>
+        rerenderOpenDeathKnightRuneSheets();
+
+    if (
+      !globalThis.game?.user?.isGM
+    ) {
+      finish();
+      return;
+    }
 
     const reconcile =
       api?.reconcileDeathKnightRunes;
@@ -224,21 +262,27 @@ function reconcileDeathKnightRunesOnChange() {
       typeof reconcile !==
       "function"
     ) {
+      finish();
       return;
     }
 
     void Promise.resolve(
       reconcile(),
-    ).catch(
-      error => {
-        console.error(
-          `${MODULE_ID} | Failed to reconcile Death Knight Runes automation.`,
-          error,
-        );
-      },
-    );
+    )
+      .catch(
+        error => {
+          console.error(
+            `${MODULE_ID} | Failed to reconcile Death Knight Runes automation.`,
+            error,
+          );
+        },
+      )
+      .finally(
+        finish,
+      );
   });
 }
+
 
 export function isDeathKnightRunesAutomationEnabled(
   settings = globalThis.game?.settings,
