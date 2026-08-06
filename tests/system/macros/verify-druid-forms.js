@@ -34,6 +34,29 @@ if (settingDefinition) {
   );
 }
 
+const artworkSettingKey =
+  "druidFormArtworkAutomation";
+const artworkSettingDefinition =
+  game.settings?.settings?.get?.(
+    `${BOA_TEST_MODULE_ID}.${artworkSettingKey}`,
+  ) ?? null;
+
+boaCheck(
+  checks,
+  "Druid Form Artwork automation setting is registered",
+  Boolean(artworkSettingDefinition),
+  `${BOA_TEST_MODULE_ID}.${artworkSettingKey}`,
+);
+
+if (artworkSettingDefinition) {
+  boaCheckEqual(
+    checks,
+    "Druid Form Artwork automation defaults to enabled",
+    artworkSettingDefinition.default,
+    true,
+  );
+}
+
 const spellContentKeys = {
   savage: "spells.savage-incarnation",
   feral: "spells.feral-incarnation",
@@ -69,6 +92,9 @@ for (const functionName of [
   "setDruidFormArtwork",
   "resetDruidFormArtwork",
   "getDruidFormState",
+  "openDruidFormArtworkDialog",
+  "restoreDruidHumanoidArtwork",
+  "applyDruidFormArtwork",
 ]) {
   boaCheck(
     checks,
@@ -182,6 +208,7 @@ if (typeof api.getDruidFormProfileDefinitions === "function") {
 
 let actor = null;
 let originalSetting = null;
+let originalArtworkSetting = null;
 
 try {
   if (settingDefinition) {
@@ -192,6 +219,17 @@ try {
     await game.settings.set(
       BOA_TEST_MODULE_ID,
       settingKey,
+      true,
+    );
+  }
+  if (artworkSettingDefinition) {
+    originalArtworkSetting = game.settings.get(
+      BOA_TEST_MODULE_ID,
+      artworkSettingKey,
+    );
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      artworkSettingKey,
       true,
     );
   }
@@ -329,6 +367,133 @@ try {
     );
   }
 
+  if (
+    typeof api.applyDruidFormArtwork === "function" &&
+    typeof api.restoreDruidHumanoidArtwork === "function" &&
+    typeof api.setDruidFormArtwork === "function"
+  ) {
+    const humanoidPortrait =
+      "icons/svg/mystery-man.svg";
+    const humanoidToken =
+      "icons/svg/cowled.svg";
+
+    await actor.update({
+      img: humanoidPortrait,
+      "prototypeToken.texture.src":
+        humanoidToken,
+    });
+
+    const travelPl1Portrait =
+      "icons/svg/wing.svg";
+    const travelPl1Token =
+      "icons/svg/eagle-emblem.svg";
+    const travelPl2Portrait =
+      "icons/svg/fish.svg";
+    const travelPl2Token =
+      "icons/svg/fish.svg";
+
+    await api.setDruidFormArtwork(
+      actor,
+      "travelPl1",
+      {
+        portrait:
+          travelPl1Portrait,
+        token:
+          travelPl1Token,
+      },
+    );
+
+    await api.setDruidFormArtwork(
+      actor,
+      "travelPl2",
+      {
+        portrait:
+          travelPl2Portrait,
+        token:
+          travelPl2Token,
+      },
+    );
+
+    const firstApplied =
+      await api.applyDruidFormArtwork(
+        actor,
+        "travelPl1",
+      );
+
+    boaCheckEqual(
+      checks,
+      "Applying configured Travel artwork changes the Actor portrait and prototype token",
+      {
+        applied:
+          firstApplied,
+        portrait:
+          actor.img,
+        token:
+          actor.prototypeToken?.texture?.src,
+      },
+      {
+        applied:
+          true,
+        portrait:
+          travelPl1Portrait,
+        token:
+          travelPl1Token,
+      },
+    );
+
+    const secondApplied =
+      await api.applyDruidFormArtwork(
+        actor,
+        "travelPl2",
+      );
+
+    boaCheckEqual(
+      checks,
+      "Switching form artwork applies the new profile without restoring humanoid artwork between forms",
+      {
+        applied:
+          secondApplied,
+        portrait:
+          actor.img,
+        token:
+          actor.prototypeToken?.texture?.src,
+      },
+      {
+        applied:
+          true,
+        portrait:
+          travelPl2Portrait,
+        token:
+          travelPl2Token,
+      },
+    );
+
+    const restored =
+      await api.restoreDruidHumanoidArtwork(
+        actor,
+      );
+
+    boaCheckEqual(
+      checks,
+      "Restoring humanoid artwork returns the exact original Actor portrait and prototype token",
+      {
+        restored,
+        portrait:
+          actor.img,
+        token:
+          actor.prototypeToken?.texture?.src,
+      },
+      {
+        restored:
+          true,
+        portrait:
+          humanoidPortrait,
+        token:
+          humanoidToken,
+      },
+    );
+  }
+
   if (sourceSpells.feral) {
     await actor.createEmbeddedDocuments(
       "Item",
@@ -389,17 +554,36 @@ try {
       );
     }
   }
+  if (originalArtworkSetting !== null) {
+    try {
+      await game.settings.set(
+        BOA_TEST_MODULE_ID,
+        artworkSettingKey,
+        originalArtworkSetting,
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        "Druid Form Artwork automation setting was restored",
+        false,
+        error.message,
+      );
+    }
+  }
 }
 
 notes.push(
-  "Slice 1 covers the Druid form-state/artwork foundation only. " +
-  "Spell activation, actual transformation, form mechanics, and Maul come later.",
+  "Slice 2 adds the RED contract for artwork switching, humanoid restore, and artwork configuration UI. " +
+  "Spell activation, form mechanics, and Maul still come later.",
 );
 notes.push(
   "Humanoid portrait and token remain Dragonbane-owned data; BoA only captures and restores them while transformed.",
 );
 notes.push(
   "Rejuvenation remains manual; BoA does not implement healing-over-time tracking.",
+);
+notes.push(
+  "Scene-token artwork provenance and real Player authority are covered by focused tests before GREEN.",
 );
 
 return boaFinish(
