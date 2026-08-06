@@ -231,7 +231,7 @@
           "requirement": "Companion Heroic Ability",
           "wp": "",
           "description": [
-            "Your companion follows you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically. As an action, you can spend 1 WP to see through the companion's eyes and hear what it hears for one minute, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2."
+            "Your companion follows you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically. As an action, you can spend 1 WP to see through the companion's eyes and hear what it hears for one stretch of time, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp"
         },
