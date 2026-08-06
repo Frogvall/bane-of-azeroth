@@ -121,6 +121,7 @@ import {
   onUpdateFrostreaperToken,
 } from "./frostreaper.js";
 import {
+  buildUnendingThirstEffectData,
   clearDeathKnightRune,
   getDeathKnightRuneDefinitions,
   getDeathKnightRuneEligibleWeapons,
@@ -196,6 +197,7 @@ Hooks.once("init", () => {
       drawAllFrostreaperAuras,
       getFrostreaperAuraData,
       isFrostreaperActivationActive,
+      buildUnendingThirstEffectData,
       getDeathKnightRuneDefinitions,
       getDeathKnightRuneEligibleWeapons,
       getDeathKnightRuneState,

@@ -124,6 +124,7 @@ describe(
             "setDeathKnightRune",
             "clearDeathKnightRune",
             "getDeathKnightRuneState",
+            "buildUnendingThirstEffectData",
           ]
         ) {
           expect(
