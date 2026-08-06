@@ -11,6 +11,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   DEMON_HUNTER_INITIATION: "demonHunterInitiationAutomation",
   FROSTREAPER: "frostreaperAutomation",
   DEATH_KNIGHT_RUNES: "deathKnightRunesAutomation",
+  DRUID_FORMS: "druidFormsAutomation",
 });
 
 const {
@@ -293,6 +294,15 @@ export function isDeathKnightRunesAutomationEnabled(
   );
 }
 
+export function isDruidFormsAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_FORMS,
+    settings,
+  );
+}
+
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -373,6 +383,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.deathKnightRunesName",
       "BOA.settings.automation.deathKnightRunesHint",
     ),
+    druidFormsAutomation: booleanField(
+      "BOA.settings.automation.druidFormsName",
+      "BOA.settings.automation.druidFormsHint",
+    ),
   });
 
   static get schema() {
@@ -406,6 +420,8 @@ export class AutomationSettingsForm
           isFrostreaperAutomationEnabled(),
         deathKnightRunesAutomation:
           isDeathKnightRunesAutomationEnabled(),
+        druidFormsAutomation:
+          isDruidFormsAutomationEnabled(),
       },
       buttons: [
         {
@@ -511,6 +527,15 @@ export class AutomationSettingsForm
         Boolean(
           values[
             AUTOMATION_SETTING_KEYS.DEATH_KNIGHT_RUNES
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_FORMS,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.DRUID_FORMS
           ],
         ),
       ),
@@ -630,6 +655,14 @@ export function registerAutomationSettings(
       onChange:
         reconcileDeathKnightRunesOnChange,
     },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_FORMS,
+    settingDefinition(
+      "BOA.settings.automation.druidFormsName",
+      "BOA.settings.automation.druidFormsHint",
+    ),
   );
   if (settings.registerMenu) {
     settings.registerMenu(

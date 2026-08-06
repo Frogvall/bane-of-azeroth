@@ -192,6 +192,7 @@ describe("ApplicationV2 automation settings form", () => {
       demonHunterInitiationAutomation: false,
       frostreaperAutomation: false,
       deathKnightRunesAutomation: false,
+      druidFormsAutomation: false,
     });
     expect(context.buttons).toEqual([
       {
@@ -225,11 +226,12 @@ describe("ApplicationV2 automation settings form", () => {
           demonHunterInitiationAutomation: true,
           frostreaperAutomation: true,
           deathKnightRunesAutomation: true,
+          druidFormsAutomation: true,
         },
       },
     );
 
-    expect(set).toHaveBeenCalledTimes(10);
+    expect(set).toHaveBeenCalledTimes(11);
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,
@@ -258,6 +260,11 @@ describe("ApplicationV2 automation settings form", () => {
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.EYE_BEAM,
+      true,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.DRUID_FORMS,
       true,
     );
   });

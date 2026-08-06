@@ -240,7 +240,7 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderAbilityActionActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(11); // Automation settings registration count
+expect(game.settings.register).toHaveBeenCalledTimes(12); // Druid Forms automation registration count
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

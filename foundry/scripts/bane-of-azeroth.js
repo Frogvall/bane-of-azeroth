@@ -135,6 +135,14 @@ import {
   reconcileDeathKnightRunes,
   setDeathKnightRune,
 } from "./death-knight-runes.js";
+import {
+  getAvailableDruidFormProfiles,
+  getDruidFormArtwork,
+  getDruidFormProfileDefinitions,
+  getDruidFormState,
+  resetDruidFormArtwork,
+  setDruidFormArtwork,
+} from "./druid-forms.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchEvokersLegacySpellCost,
@@ -206,6 +214,12 @@ Hooks.once("init", () => {
       clearDeathKnightRune,
       reconcileDeathKnightRunes,
       reconcileDeathKnightRuneActor,
+      getDruidFormProfileDefinitions,
+      getAvailableDruidFormProfiles,
+      getDruidFormArtwork,
+      setDruidFormArtwork,
+      resetDruidFormArtwork,
+      getDruidFormState,
 };
   }
 

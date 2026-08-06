@@ -133,7 +133,9 @@
         "frostreaperName": "Frostreaper",
         "frostreaperHint": "Show a light-blue 10 m visual reminder aura after Frostreaper is activated. The aura lasts until the Death Knight's turn in the next round. Movement and BUSHCRAFT remain manual.",
         "deathKnightRunesName": "Death Knight Runes",
-        "deathKnightRunesHint": "Show and manage the rune engraved through Death Knight's Rebirth. Fallen Crusader and Razorice remain manual reminders; Unending Thirst adds +2 Movement while its selected melee weapon is wielded."
+        "deathKnightRunesHint": "Show and manage the rune engraved through Death Knight's Rebirth. Fallen Crusader and Razorice remain manual reminders; Unending Thirst adds +2 Movement while its selected melee weapon is wielded.",
+        "druidFormsName": "Druid Forms",
+        "druidFormsHint": "Automate Druid incarnation forms and associated configurable form artwork."
       }
     },
     "notifications": {

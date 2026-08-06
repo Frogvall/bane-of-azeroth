@@ -20,7 +20,7 @@ import {
 const MODULE_ID = "bane-of-azeroth";
 
 describe("automation settings registration", () => {
-  test("registers ten hidden world booleans enabled by default", () => {
+  test("registers all hidden world booleans enabled by default", () => {
     const settings = {
       register: vi.fn(),
       registerMenu: vi.fn(),
@@ -30,7 +30,7 @@ describe("automation settings registration", () => {
       registerAutomationSettings(settings),
     ).toBe(true);
 
-    expect(settings.register).toHaveBeenCalledTimes(10);
+    expect(settings.register).toHaveBeenCalledTimes(11);
     for (const key of Object.values(
       AUTOMATION_SETTING_KEYS,
     )) {
@@ -59,6 +59,11 @@ describe("automation settings registration", () => {
     expect(
       AUTOMATION_SETTING_KEYS.EYE_BEAM,
     ).toBe("eyeBeamAutomation");
+  });
+  test("includes the Druid Forms setting key in the automation schema", () => {
+    expect(
+      AUTOMATION_SETTING_KEYS.DRUID_FORMS,
+    ).toBe("druidFormsAutomation");
   });
   test("registers a restricted Automation Settings menu", () => {
     const settings = {
