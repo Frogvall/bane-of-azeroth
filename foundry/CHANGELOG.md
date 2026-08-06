@@ -6,6 +6,34 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+## [0.11.6] - 2026-08-06
+
+### Added
+- Added a dedicated **Death Knight Runes** automation setting, enabled by default.
+- Added rune controls for characters with **Death Knight's Rebirth** directly beside eligible melee weapons on **Main → Weapons**.
+- Added the same rune controls to **Inventory → Equipped Weapons** and **Inventory → Inventory**, allowing carried but unequipped melee weapons to be engraved.
+- Added dedicated **Fallen Crusader**, **Razorice**, and **Unending Thirst** rune icons with a compact rune-selection dialog.
+- Added localized rune rule descriptions to the selector and active-rune tooltips.
+- Added persistent per-character rune state with one active rune on one weapon, replacement across weapons, and **Clear Rune**.
+
+### Changed
+- **Unending Thirst** now applies Movement +2 through a Bane of Azeroth-managed Dragonbane Active Effect only while the engraved weapon is equipped/wielded.
+- Rune eligibility is limited to actual melee weapons; ranged weapons, shields, and **Unarmed** are rejected both by the sheet UI and the public rune API.
+- Active rune state is shown directly beside the affected weapon wherever that weapon is managed, without replacing the weapon's normal icon.
+- Disabling Death Knight Runes automation removes the rune UI and managed Unending Thirst effect while preserving the selected rune state; re-enabling restores valid state.
+- Removing **Death Knight's Rebirth** or deleting/invalidating the engraved weapon cleans stale rune state and module-managed effects.
+
+### Notes
+- **Fallen Crusader** remains a visual/rules reminder; its healing is resolved manually.
+- **Razorice** remains a visual/rules reminder; Bane of Azeroth does not invent a generic magical-weapon property that Dragonbane does not provide.
+- Engraving or replacing a rune still takes a stretch according to the book; the stretch itself remains manual.
+
+### Testing
+- Added focused unit and integration coverage for rune eligibility, state replacement, cleanup, automation settings, Foundry V14 Active Effect data, localization, and sheet registration.
+- Expanded **BOA DEV – Verify Death Knight Runes** with rune-definition, eligibility, state, and Unending Thirst contracts.
+- Added real-Player coverage for owned-character rune selection and Unending Thirst Movement behavior.
+- Expanded the manual system-test checklist for Main/Inventory presentation, rune descriptions, tooltips, setting toggles, equip/unequip behavior, and Player interaction.
+
 ## [0.11.5] - 2026-08-05
 
 ### Added

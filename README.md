@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Active development / prerelease testing
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 0.11.6
+> **Current Foundry module version:** 0.11.7
 
 ## Project goals
 
