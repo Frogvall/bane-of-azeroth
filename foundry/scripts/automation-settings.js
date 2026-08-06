@@ -10,6 +10,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   SERENITY: "serenityAutomation",
   DEMON_HUNTER_INITIATION: "demonHunterInitiationAutomation",
   FROSTREAPER: "frostreaperAutomation",
+  DEATH_KNIGHT_RUNES: "deathKnightRunesAutomation",
 });
 
 const {
@@ -203,6 +204,51 @@ export function isFrostreaperAutomationEnabled(
     settings,
   );
 }
+function reconcileDeathKnightRunesOnChange() {
+  queueMicrotask(() => {
+    if (
+      !globalThis.game?.user?.isGM
+    ) {
+      return;
+    }
+
+    const api =
+      globalThis.game?.modules
+        ?.get?.(MODULE_ID)
+        ?.api;
+
+    const reconcile =
+      api?.reconcileDeathKnightRunes;
+
+    if (
+      typeof reconcile !==
+      "function"
+    ) {
+      return;
+    }
+
+    void Promise.resolve(
+      reconcile(),
+    ).catch(
+      error => {
+        console.error(
+          `${MODULE_ID} | Failed to reconcile Death Knight Runes automation.`,
+          error,
+        );
+      },
+    );
+  });
+}
+
+export function isDeathKnightRunesAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DEATH_KNIGHT_RUNES,
+    settings,
+  );
+}
+
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -279,6 +325,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.frostreaperName",
       "BOA.settings.automation.frostreaperHint",
     ),
+    deathKnightRunesAutomation: booleanField(
+      "BOA.settings.automation.deathKnightRunesName",
+      "BOA.settings.automation.deathKnightRunesHint",
+    ),
   });
 
   static get schema() {
@@ -310,6 +360,8 @@ export class AutomationSettingsForm
           isDemonHunterInitiationAutomationEnabled(),
         frostreaperAutomation:
           isFrostreaperAutomationEnabled(),
+        deathKnightRunesAutomation:
+          isDeathKnightRunesAutomationEnabled(),
       },
       buttons: [
         {
@@ -406,6 +458,15 @@ export class AutomationSettingsForm
         Boolean(
           values[
             AUTOMATION_SETTING_KEYS.FROSTREAPER
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DEATH_KNIGHT_RUNES,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.DEATH_KNIGHT_RUNES
           ],
         ),
       ),
@@ -512,6 +573,18 @@ export function registerAutomationSettings(
       ),
       onChange:
         redrawFrostreaperOnChange,
+    },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DEATH_KNIGHT_RUNES,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.deathKnightRunesName",
+        "BOA.settings.automation.deathKnightRunesHint",
+      ),
+      onChange:
+        reconcileDeathKnightRunesOnChange,
     },
   );
   if (settings.registerMenu) {

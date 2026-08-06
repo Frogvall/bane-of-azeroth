@@ -4,3 +4,53 @@ input.boa-always-prepared[type="checkbox"] {
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+.boa-death-knight-runes {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border-light-primary);
+}
+
+.boa-death-knight-runes h3 {
+  margin: 0 0 0.35rem;
+}
+
+.boa-death-knight-rune-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.boa-death-knight-rune-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.boa-death-knight-rune-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.25rem;
+}
+
+.boa-death-knight-rune-button img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  border: 0;
+}
+
+.boa-death-knight-rune-button.active {
+  outline: 2px solid var(--color-border-highlight);
+  outline-offset: 1px;
+}
+
+.boa-death-knight-rune-active {
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+.boa-death-knight-rune-clear {
+  width: auto;
+}

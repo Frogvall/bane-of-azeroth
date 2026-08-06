@@ -131,7 +131,9 @@
         "demonHunterInitiationName": "Demon Hunter Initiation",
         "demonHunterInitiationHint": "Give characters with Demon Hunter Initiation unlimited sight in darkness while preserving their existing token vision presentation settings.",
         "frostreaperName": "Frostreaper",
-        "frostreaperHint": "Show a light-blue 10 m visual reminder aura after Frostreaper is activated. The aura lasts until the Death Knight's turn in the next round. Movement and BUSHCRAFT remain manual."
+        "frostreaperHint": "Show a light-blue 10 m visual reminder aura after Frostreaper is activated. The aura lasts until the Death Knight's turn in the next round. Movement and BUSHCRAFT remain manual.",
+        "deathKnightRunesName": "Death Knight Runes",
+        "deathKnightRunesHint": "Show and manage the rune engraved through Death Knight's Rebirth. Fallen Crusader and Razorice remain manual reminders; Unending Thirst adds +2 Movement while its selected melee weapon is wielded."
       }
     },
     "notifications": {
@@ -141,6 +143,19 @@
       "warStompNoTargets": "There are no other visible creatures within 2 m.",
       "eyeBeamOneTarget": "Eye Beam requires exactly one targeted creature.",
       "eyeBeamOutOfRange": "The Eye Beam target is more than 20 m away."
+    },
+    "deathKnightRunes": {
+      "title": "Death Knight Runes",
+      "hint": "Engraving or replacing a rune takes a stretch. After the stretch, choose the rune and melee weapon here.",
+      "chooseWeapon": "Choose melee weapon",
+      "chooseWeaponFirst": "Choose a melee weapon first.",
+      "fallenCrusader": "Fallen Crusader",
+      "razorice": "Razorice",
+      "unendingThirst": "Unending Thirst",
+      "active": "Active",
+      "none": "No rune engraved",
+      "clear": "Clear Rune",
+      "noWeapons": "No melee weapons are available."
     }
   },
   "DoD": {

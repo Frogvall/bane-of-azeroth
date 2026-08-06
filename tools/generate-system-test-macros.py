@@ -176,6 +176,15 @@ MACROS = [
         "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
     },
     {
+        "key": "death-knight-runes",
+        "id": "BoaDevRunes00016",
+        "name": "BOA DEV – Verify Death Knight Runes",
+        "file": "verify-death-knight-runes.js",
+        "order": 24,
+        "suiteMember": True,
+        "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",

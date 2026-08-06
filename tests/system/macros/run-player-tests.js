@@ -1835,6 +1835,358 @@ if (
   );
 }
 
+const deathKnightRebirth =
+  boaCollectionValues(
+    actor?.items,
+  ).find(
+    item =>
+      boaContentKey(
+        item,
+      ) ===
+        "heroic-class-ability.death-knight.death-knights-rebirth",
+  ) ??
+  null;
+
+const runeTestWeapon =
+  actor?.items?.get?.(
+    session.runeTestWeaponId,
+  ) ??
+  boaCollectionValues(
+    actor?.items,
+  ).find(
+    item =>
+      item.id ===
+        session.runeTestWeaponId,
+  ) ??
+  null;
+
+boaCheck(
+  checks,
+  "Assigned Player character has Death Knight's Rebirth",
+  Boolean(
+    deathKnightRebirth,
+  ),
+  deathKnightRebirth?.uuid ??
+    "",
+);
+
+boaCheck(
+  checks,
+  "Prepared Player rune test weapon is available",
+  Boolean(
+    runeTestWeapon,
+  ),
+  runeTestWeapon?.uuid ??
+    "",
+);
+
+if (
+  actor &&
+  deathKnightRebirth &&
+  runeTestWeapon
+) {
+  try {
+    const {
+      DEATH_KNIGHT_RUNE_EFFECT_FLAG,
+      clearDeathKnightRune,
+      getDeathKnightRuneState,
+      setDeathKnightRune,
+    } = await import(
+      `/modules/${BOA_TEST_MODULE_ID}/scripts/death-knight-runes.js`
+    );
+
+    const managedRuneEffectCount =
+      () =>
+        boaCollectionValues(
+          runeTestWeapon.effects,
+        ).filter(
+          effect =>
+            Boolean(
+              boaGetFlag(
+                effect,
+                DEATH_KNIGHT_RUNE_EFFECT_FLAG,
+              ),
+            ),
+        ).length;
+
+    await clearDeathKnightRune(
+      actor,
+    );
+
+    if (
+      runeTestWeapon.system
+        ?.worn
+    ) {
+      await runeTestWeapon.update({
+        "system.worn":
+          false,
+      });
+    }
+
+    const baselineMovement =
+      Number(
+        actor.system
+          ?.movement
+          ?.value,
+      );
+
+    boaCheck(
+      checks,
+      "Real Player rune test has a numeric baseline Movement",
+      Number.isFinite(
+        baselineMovement,
+      ),
+      actor.system
+        ?.movement
+        ?.value,
+    );
+
+    const unendingSelected =
+      await setDeathKnightRune(
+        actor,
+        "unendingThirst",
+        runeTestWeapon.id,
+      );
+
+    boaCheck(
+      checks,
+      "Real Player selects Unending Thirst on an owned melee weapon",
+      unendingSelected,
+      getDeathKnightRuneState(
+        actor,
+      ),
+    );
+
+    boaCheckEqual(
+      checks,
+      "Real Player Unending Thirst creates exactly one managed weapon Active Effect",
+      managedRuneEffectCount(),
+      1,
+    );
+
+    boaCheckEqual(
+      checks,
+      "Unending Thirst does not change Movement while its weapon is not wielded",
+      Number(
+        actor.system
+          ?.movement
+          ?.value,
+      ),
+      baselineMovement,
+    );
+
+    await runeTestWeapon.update({
+      "system.worn":
+        true,
+    });
+
+    const equippedMovement =
+      await boaWaitFor(
+        () => {
+          const value =
+            Number(
+              actor.system
+                ?.movement
+                ?.value,
+            );
+
+          return (
+            value ===
+              baselineMovement +
+                2
+          )
+            ? value
+            : null;
+        },
+        {
+          timeout:
+            4000,
+          description:
+            "Unending Thirst equipped Movement +2",
+        },
+      );
+
+    boaCheckEqual(
+      checks,
+      "Real Player gains +2 Movement while wielding the Unending Thirst weapon",
+      equippedMovement,
+      baselineMovement +
+        2,
+    );
+
+    await runeTestWeapon.update({
+      "system.worn":
+        false,
+    });
+
+    const restoredMovement =
+      await boaWaitFor(
+        () => {
+          const value =
+            Number(
+              actor.system
+                ?.movement
+                ?.value,
+            );
+
+          return (
+            value ===
+              baselineMovement
+          )
+            ? value
+            : null;
+        },
+        {
+          timeout:
+            4000,
+          description:
+            "Unending Thirst unequipped Movement restoration",
+        },
+      );
+
+    boaCheckEqual(
+      checks,
+      "Real Player loses the +2 Movement when the Unending Thirst weapon is no longer wielded",
+      restoredMovement,
+      baselineMovement,
+    );
+
+    const razoriceSelected =
+      await setDeathKnightRune(
+        actor,
+        "razorice",
+        runeTestWeapon.id,
+      );
+
+    boaCheckEqual(
+      checks,
+      "Real Player can replace Unending Thirst with visual-only Razorice",
+      {
+        selected:
+          razoriceSelected,
+        rune:
+          getDeathKnightRuneState(
+            actor,
+          )?.rune ??
+          null,
+        managedEffects:
+          managedRuneEffectCount(),
+        movement:
+          Number(
+            actor.system
+              ?.movement
+              ?.value,
+          ),
+      },
+      {
+        selected:
+          true,
+        rune:
+          "razorice",
+        managedEffects:
+          0,
+        movement:
+          baselineMovement,
+      },
+    );
+
+    const fallenSelected =
+      await setDeathKnightRune(
+        actor,
+        "fallenCrusader",
+        runeTestWeapon.id,
+      );
+
+    boaCheckEqual(
+      checks,
+      "Real Player can replace Razorice with visual-only Fallen Crusader",
+      {
+        selected:
+          fallenSelected,
+        rune:
+          getDeathKnightRuneState(
+            actor,
+          )?.rune ??
+          null,
+        managedEffects:
+          managedRuneEffectCount(),
+      },
+      {
+        selected:
+          true,
+        rune:
+          "fallenCrusader",
+        managedEffects:
+          0,
+      },
+    );
+
+    await clearDeathKnightRune(
+      actor,
+    );
+
+    boaCheckEqual(
+      checks,
+      "Real Player can clear the rune selection and managed effect",
+      {
+        state:
+          getDeathKnightRuneState(
+            actor,
+          ),
+        managedEffects:
+          managedRuneEffectCount(),
+      },
+      {
+        state:
+          null,
+        managedEffects:
+          0,
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player Death Knight rune workflow completed",
+      false,
+      error.stack ??
+        error.message,
+    );
+  } finally {
+    try {
+      if (
+        runeTestWeapon?.system
+          ?.worn
+      ) {
+        await runeTestWeapon.update({
+          "system.worn":
+            false,
+        });
+      }
+    } catch (error) {
+      notes.push(
+        `Could not leave the rune test weapon unequipped: ${error.message}`,
+      );
+    }
+  }
+} else {
+  boaCheck(
+    checks,
+    "Prepared real-player Death Knight rune fixtures are available",
+    false,
+    {
+      actor:
+        actor?.id ??
+        null,
+      rebirth:
+        deathKnightRebirth?.id ??
+        null,
+      weapon:
+        runeTestWeapon?.id ??
+        null,
+    },
+  );
+}
+
 notes.push(
   "The player suite ran in a genuine Player User context.",
 );

@@ -177,6 +177,10 @@ const requiredAbilities = [
     name: "Frostreaper",
   },
   {
+    key: "heroic-class-ability.death-knight.death-knights-rebirth",
+    name: "Death Knight's Rebirth",
+  },
+  {
     key: "heroic-class-ability.warlock.demonologist",
     name: "Demonologist",
   },
@@ -197,6 +201,36 @@ if (missingAbilities.length > 0) {
   return boaFinish(testKey, testName, checks, notes);
 }
 
+const runeTestWeaponSource =
+  game.items.get?.(
+    "Mtrym5LUbMbXISlI",
+  )
+  ?? boaCollectionValues(
+    game.items,
+  ).find(
+    item =>
+      item.type === "weapon"
+      && item.name === "Warglaive",
+  )
+  ?? null;
+if (!boaCheck(
+  checks,
+  "Warglaive source weapon is imported for the Death Knight rune real-Player flow",
+  Boolean(
+    runeTestWeaponSource,
+  ),
+  runeTestWeaponSource?.uuid ?? "Mtrym5LUbMbXISlI",
+)) {
+  notes.push(
+    "Import the current Bane of Azeroth Adventure first.",
+  );
+  return boaFinish(
+    testKey,
+    testName,
+    checks,
+    notes,
+  );
+}
 const demonHunterInitiationContentKey =
   "heroic-class-ability.demon-hunter.demon-hunter-initiation";
 const demonHunterInitiationSource =
@@ -289,6 +323,11 @@ const originalFrostreaperAutomationSetting =
   game.settings.get(
     BOA_TEST_MODULE_ID,
     "frostreaperAutomation",
+  );
+const originalDeathKnightRunesAutomationSetting =
+  game.settings.get(
+    BOA_TEST_MODULE_ID,
+    "deathKnightRunesAutomation",
   );
 const previousActiveSceneId = game.scenes.active?.id ?? null;
 const sessionId =
@@ -480,6 +519,27 @@ try {
       boaCloneEmbeddedItem(entry.item)
     ),
   );
+  const runeTestWeaponData =
+    boaCloneEmbeddedItem(
+      runeTestWeaponSource,
+    );
+  foundry.utils.setProperty(
+    runeTestWeaponData,
+    "system.worn",
+    false,
+  );
+  const [runeTestWeapon] =
+    await actor.createEmbeddedDocuments(
+      "Item",
+      [
+        runeTestWeaponData,
+      ],
+    );
+  if (!runeTestWeapon) {
+    throw new Error(
+      "The Death Knight rune test Warglaive could not be embedded.",
+    );
+  }
 
   const elementalTotemSpell = await boaWaitFor(
     () => boaCollectionValues(actor.items).find(item => (
@@ -781,6 +841,11 @@ try {
     "frostreaperAutomation",
     true,
   );
+  await game.settings.set(
+    BOA_TEST_MODULE_ID,
+    "deathKnightRunesAutomation",
+    true,
+  );
 
   const session = {
     schemaVersion: sessionSchemaVersion,
@@ -818,6 +883,8 @@ try {
     originalDemonAutomationSetting,
     originalDemonHunterInitiationAutomationSetting,
     originalFrostreaperAutomationSetting,
+    originalDeathKnightRunesAutomationSetting,
+    runeTestWeaponId: runeTestWeapon.id,
     requiredAbilityKeys: requiredAbilities.map(entry => entry.key),
     createdAt: new Date().toISOString(),
   };
@@ -1011,6 +1078,15 @@ try {
     ),
     true,
   );
+  boaCheckEqual(
+    checks,
+    "Death Knight Runes automation is enabled for player tests",
+    game.settings.get(
+      BOA_TEST_MODULE_ID,
+      "deathKnightRunesAutomation",
+    ),
+    true,
+  );
   notes.push(`Session: ${sessionId}`);
   notes.push(
     "The password was shown only in the GM-whispered credentials message.",
@@ -1070,6 +1146,17 @@ try {
   } catch (settingError) {
     notes.push(
       `Could not restore Frostreaper automation: ${settingError.message}`,
+    );
+  }
+  try {
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      "deathKnightRunesAutomation",
+      originalDeathKnightRunesAutomationSetting,
+    );
+  } catch (settingError) {
+    notes.push(
+      `Could not restore Death Knight Runes automation: ${settingError.message}`,
     );
   }
   try {

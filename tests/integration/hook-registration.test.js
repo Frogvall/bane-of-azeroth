@@ -226,8 +226,8 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(8);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(8);
+        expect(renderActorSheetCallbacks).toHaveLength(9);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(9);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );
@@ -240,7 +240,7 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderAbilityActionActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(10); // Automation settings registration count
+expect(game.settings.register).toHaveBeenCalledTimes(11); // Automation settings registration count
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

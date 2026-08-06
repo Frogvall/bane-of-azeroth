@@ -953,6 +953,31 @@ function boaBuildManualChecklistHtml() {
   <li>[ ] The complete GM and Player aura workflow produces no duplicate graphics and no unexpected console errors.</li>
   </ul>
 
+  <h2>Death Knight rune verification</h2>
+  <p>
+  Automated tests cover one persisted rune selection per character,
+  melee-weapon eligibility, the three rune icons, Player ownership, and
+  Unending Thirst as an equipped-only Movement +2 Active Effect. Fallen
+  Crusader, Razorice, and the stretch required to engrave a rune remain
+  deliberately manual.
+  </p>
+  <ul>
+  <li>[ ] A character with Death Knight's Rebirth shows a Death Knight Runes section immediately after Heroic Abilities.</li>
+  <li>[ ] The selector shows the dedicated Fallen Crusader, Razorice, and Unending Thirst icons and only embedded melee weapons.</li>
+  <li>[ ] Selecting a rune and weapon shows exactly one active rune; selecting another rune or weapon replaces the previous selection.</li>
+  <li>[ ] Clear Rune removes the active rune selection.</li>
+  <li>[ ] Fallen Crusader is only a visual/rules reminder: damaging a living creature does not automatically heal the Death Knight.</li>
+  <li>[ ] Razorice is only a visual/rules reminder: the module does not invent or attach a generic magical-weapon property.</li>
+  <li>[ ] With Unending Thirst selected, the character gains exactly +2 Movement while the selected weapon is wielded/equipped.</li>
+  <li>[ ] Unequipping the Unending Thirst weapon removes exactly that +2 Movement; equipping it again restores the bonus.</li>
+  <li>[ ] Replacing Unending Thirst with Fallen Crusader or Razorice removes the managed Movement effect.</li>
+  <li>[ ] A manually created Active Effect named Unending Thirst is not removed by rune cleanup unless it carries the Bane of Azeroth managed flag.</li>
+  <li>[ ] Disabling Death Knight Runes automation hides the selector and removes the managed Unending Thirst effect while preserving the selected rune state; re-enabling restores the effect if the selection is still valid.</li>
+  <li>[ ] Removing Death Knight's Rebirth or deleting the selected weapon clears stale rune state and any managed Unending Thirst effect.</li>
+  <li>[ ] Repeat rune selection, replacement, Clear Rune, and Unending Thirst equip/unequip as the prepared owning Player.</li>
+  <li>[ ] Rune selection never starts, enforces, or completes a stretch; the table still decides when the engraving has been completed.</li>
+  </ul>
+
   <h2>Adventure and interface verification</h2>
 
   <p>

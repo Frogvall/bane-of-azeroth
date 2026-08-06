@@ -120,6 +120,20 @@ import {
   onPreCreateFrostreaperChatMessage,
   onUpdateFrostreaperToken,
 } from "./frostreaper.js";
+import {
+  clearDeathKnightRune,
+  getDeathKnightRuneDefinitions,
+  getDeathKnightRuneEligibleWeapons,
+  getDeathKnightRuneState,
+  isDeathKnightRuneEligibleWeapon,
+  onCreateDeathKnightRuneItem,
+  onDeleteDeathKnightRuneItem,
+  onRenderDeathKnightRuneActorSheet,
+  onUpdateDeathKnightRuneItem,
+  reconcileDeathKnightRuneActor,
+  reconcileDeathKnightRunes,
+  setDeathKnightRune,
+} from "./death-knight-runes.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchEvokersLegacySpellCost,
@@ -182,6 +196,14 @@ Hooks.once("init", () => {
       drawAllFrostreaperAuras,
       getFrostreaperAuraData,
       isFrostreaperActivationActive,
+      getDeathKnightRuneDefinitions,
+      getDeathKnightRuneEligibleWeapons,
+      getDeathKnightRuneState,
+      isDeathKnightRuneEligibleWeapon,
+      setDeathKnightRune,
+      clearDeathKnightRune,
+      reconcileDeathKnightRunes,
+      reconcileDeathKnightRuneActor,
 };
   }
 
@@ -194,6 +216,10 @@ Hooks.once("init", () => {
     onCreateSerenityItem,
   );
   Hooks.on(
+    "createItem",
+    onCreateDeathKnightRuneItem,
+  );
+  Hooks.on(
     "createToken",
     onCreateDemonHunterInitiationToken,
   );
@@ -204,12 +230,20 @@ Hooks.once("init", () => {
   );
   Hooks.on("updateItem", onUpdateItem);
   Hooks.on(
+    "updateItem",
+    onUpdateDeathKnightRuneItem,
+  );
+  Hooks.on(
     "deleteItem",
     onDeleteDemonHunterInitiationItem,
   );
   Hooks.on(
     "deleteItem",
     onDeleteSerenityItem,
+  );
+  Hooks.on(
+    "deleteItem",
+    onDeleteDeathKnightRuneItem,
   );
   Hooks.on("deleteItem", onDeleteItem);
   Hooks.on(
@@ -296,6 +330,10 @@ Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderSerenityActorSheet,
   );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderDeathKnightRuneActorSheet,
+  );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
@@ -352,6 +390,16 @@ Hooks.once("ready", async () => {
   } catch (error) {
     console.error(
       `${MODULE_ID} | Failed to initialize Demon Hunter Initiation automation.`,
+      error,
+    );
+  }
+  try {
+    if (isPrimaryActiveGM()) {
+      await reconcileDeathKnightRunes();
+    }
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize Death Knight Runes automation.`,
       error,
     );
   }
