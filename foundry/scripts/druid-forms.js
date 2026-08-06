@@ -1213,6 +1213,10 @@ function artworkDialogMarkup(
         const token =
           artwork?.token ??
           "";
+        const portraitPreviewId =
+          `boa-druid-artwork-preview-portrait-${profile.key}`;
+        const tokenPreviewId =
+          `boa-druid-artwork-preview-token-${profile.key}`;
 
         return (
           `<section class="boa-druid-artwork-panel" `
@@ -1229,11 +1233,19 @@ function artworkDialogMarkup(
             ),
           )}</strong>`
           + `<div class="boa-druid-artwork-preview">`
-          + `<img src="${escapeArtworkHtml(
+          + `<img id="${escapeArtworkHtml(
+            portraitPreviewId,
+          )}" src="${escapeArtworkHtml(
             portrait,
           )}" alt="">`
           + `</div>`
-          + `<file-picker type="image" `
+          + `<file-picker type="image" class="boa-druid-artwork-picker" `
+          + `data-preview-target="${escapeArtworkHtml(
+            portraitPreviewId,
+          )}" `
+          + `data-initial-preview="${escapeArtworkHtml(
+            portrait,
+          )}" `
           + `name="portrait.${escapeArtworkHtml(
             profile.key,
           )}" `
@@ -1249,11 +1261,19 @@ function artworkDialogMarkup(
             ),
           )}</strong>`
           + `<div class="boa-druid-artwork-preview">`
-          + `<img src="${escapeArtworkHtml(
+          + `<img id="${escapeArtworkHtml(
+            tokenPreviewId,
+          )}" src="${escapeArtworkHtml(
             token,
           )}" alt="">`
           + `</div>`
-          + `<file-picker type="image" `
+          + `<file-picker type="image" class="boa-druid-artwork-picker" `
+          + `data-preview-target="${escapeArtworkHtml(
+            tokenPreviewId,
+          )}" `
+          + `data-initial-preview="${escapeArtworkHtml(
+            token,
+          )}" `
           + `name="token.${escapeArtworkHtml(
             profile.key,
           )}" `
@@ -1291,6 +1311,144 @@ function artworkDialogMarkup(
     + `</form>`
   );
 }
+export function bindDruidArtworkPreviewInteractions(
+  root,
+) {
+  const dialogRoot =
+    dialogArtworkRoot(
+      root,
+    );
+
+  if (
+    !dialogRoot
+      ?.querySelectorAll
+  ) {
+    return false;
+  }
+
+  const pickers =
+    Array.from(
+      dialogRoot.querySelectorAll(
+        ".boa-druid-artwork-picker, "
+        + 'file-picker[data-preview-target]',
+      ),
+    );
+
+  for (const picker of pickers) {
+    if (
+      picker?.dataset
+        ?.boaPreviewBound ===
+      "true"
+    ) {
+      continue;
+    }
+
+    if (picker?.dataset) {
+      picker.dataset.boaPreviewBound =
+        "true";
+    }
+
+    const refresh =
+      () => {
+        queueMicrotask(
+          () => {
+            updateDruidArtworkPreview(
+              dialogRoot,
+              picker,
+            );
+          },
+        );
+      };
+
+    picker.addEventListener?.(
+      "input",
+      refresh,
+    );
+    picker.addEventListener?.(
+      "change",
+      refresh,
+    );
+
+    const nestedInput =
+      picker.querySelector?.(
+        "input, input[type=text]",
+      );
+
+    nestedInput?.addEventListener?.(
+      "input",
+      refresh,
+    );
+    nestedInput?.addEventListener?.(
+      "change",
+      refresh,
+    );
+
+    refresh();
+  }
+
+  return pickers.length > 0;
+}
+
+function dialogArtworkRoot(
+  root,
+) {
+  return (
+    root?.element ??
+    root
+  );
+}
+
+function readDruidArtworkPickerValue(
+  picker,
+) {
+  const nestedInput =
+    picker?.querySelector?.(
+      "input, input[type=text]",
+    );
+
+  return (
+    nestedInput?.value ??
+    picker?.value ??
+    picker?.getAttribute?.(
+      "value",
+    ) ??
+    picker?.dataset
+      ?.initialPreview ??
+    ""
+  );
+}
+
+function updateDruidArtworkPreview(
+  root,
+  picker,
+) {
+  const targetId =
+    picker?.dataset
+      ?.previewTarget;
+
+  if (
+    !targetId
+  ) {
+    return false;
+  }
+
+  const image =
+    root?.querySelector?.(
+      `[id="${targetId}"]`,
+    );
+
+  if (!image) {
+    return false;
+  }
+
+  image.src =
+    readDruidArtworkPickerValue(
+      picker,
+    );
+
+  return true;
+}
+
 function formValue(form, name) {
   return form?.elements?.namedItem?.(name)?.value ?? "";
 }
@@ -1326,6 +1484,9 @@ export async function openDruidFormArtworkDialog(actor) {
         width: 560,
       },
     content: artworkDialogMarkup(actor),
+      render: (_event, dialog) => {
+        bindDruidArtworkPreviewInteractions(dialog);
+      },
     buttons: [
       {
         action: "save",
