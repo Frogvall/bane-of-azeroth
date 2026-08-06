@@ -1198,8 +1198,7 @@ function formChecked(form, name) {
 
 export async function openDruidFormArtworkDialog(actor) {
   if (
-    !canManageDruidActor(actor) ||
-    !artworkAutomationEnabled()
+    !canManageDruidActor(actor)
   ) {
     return false;
   }
@@ -1285,48 +1284,109 @@ export function onRenderDruidFormArtworkActorSheet(
   app,
   html,
 ) {
-  const actor = app?.actor ?? app?.document ?? null;
-  const root = artworkRoot(html);
+  const actor =
+    app?.actor ??
+    app?.document ??
+    null;
+  const root =
+    artworkRoot(
+      html,
+    );
+
   if (
     !actor ||
-    actor.type !== "character" ||
+    actor.type !==
+      "character" ||
     !root?.querySelector ||
-    !artworkAutomationEnabled() ||
-    !canManageDruidActor(actor) ||
-    getAvailableDruidFormProfiles(actor).length === 0
+    !canManageDruidActor(
+      actor,
+    ) ||
+    getAvailableDruidFormProfiles(
+      actor,
+    ).length ===
+      0
   ) {
     return false;
   }
 
   root
-    .querySelector(".boa-druid-form-artwork-button")
+    .querySelector(
+      ".boa-druid-form-artwork-controls",
+    )
     ?.remove?.();
 
-  const button = globalThis.document?.createElement?.("button");
-  if (!button) return false;
-  button.type = "button";
-  button.classList.add("boa-druid-form-artwork-button");
+  const tabs =
+    root.querySelector(
+      ".sheet-tabs, nav.tabs, "
+      + '[data-group="primary"].tabs, '
+      + '[data-application-part="tabs"]',
+    );
+
+  if (
+    !tabs
+      ?.parentElement
+      ?.insertBefore
+  ) {
+    return false;
+  }
+
+  const controls =
+    globalThis.document
+      ?.createElement?.(
+        "div",
+      );
+  const button =
+    globalThis.document
+      ?.createElement?.(
+        "button",
+      );
+
+  if (
+    !controls ||
+    !button
+  ) {
+    return false;
+  }
+
+  controls.classList.add(
+    "boa-druid-form-artwork-controls",
+  );
+
+  button.type =
+    "button";
+  button.classList.add(
+    "boa-druid-form-artwork-button",
+  );
   button.innerHTML =
-    '<i class="fa-solid fa-images"></i> ' +
-    escapeArtworkHtml(
+    '<i class="fa-solid fa-images"></i> '
+    + escapeArtworkHtml(
       localizeArtwork(
         "BOA.druidForms.artworkButton",
         "Druid Forms",
       ),
     );
-  button.addEventListener("click", event => {
-    event.preventDefault();
-    event.stopPropagation();
-    void openDruidFormArtworkDialog(actor);
-  });
 
-  const portrait = root.querySelector(
-    '[data-edit="img"], .profile-img, img.profile',
+  button.addEventListener(
+    "click",
+    event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      void openDruidFormArtworkDialog(
+        actor,
+      );
+    },
   );
-  const target =
-    portrait?.parentElement ??
-    root.querySelector(".sheet-header, header");
-  if (!target?.append) return false;
-  target.append(button);
+
+  controls.append(
+    button,
+  );
+
+  tabs.parentElement
+    .insertBefore(
+      controls,
+      tabs,
+    );
+
   return true;
 }
