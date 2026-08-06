@@ -1050,7 +1050,7 @@ Hunters are Azeroth's masters of the wild. They are trackers and survivalists, a
 - **Requirement:** Companion Heroic Ability
 - **Willpower Points:** --
 
-Your companion will follow you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically and as an action you can spend 1 WP to see through the companion's eyes and hear what it hears for one minute, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2.
+Your companion will follow you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically and as an action you can spend 1 WP to see through the companion's eyes and hear what it hears for one stretch of time, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2.
 
 ### Aimed Shot
 - **Requirement:** Hunter's Instincts
