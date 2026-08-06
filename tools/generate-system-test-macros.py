@@ -19,6 +19,10 @@ EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER = (
     "__BOA_EXTERNAL_UUID_CONFIGURATION__"
 )
 
+SYSTEM_TEST_SUITE_MEMBERS_PLACEHOLDER = (
+    "__BOA_SYSTEM_TEST_SUITE_MEMBERS__"
+)
+
 
 
 MACROS = [
@@ -252,6 +256,17 @@ MACROS = [
 ]
 
 
+def system_test_suite_member_keys() -> list[str]:
+    return [
+        str(macro["key"])
+        for macro in sorted(
+            MACROS,
+            key=lambda macro: int(macro["order"]),
+        )
+        if macro.get("suiteMember") is True
+    ]
+
+
 def parse_args() -> argparse.Namespace:
     repo_root = Path(__file__).resolve().parents[1]
 
@@ -378,33 +393,55 @@ def render_macro_body(
     external_configuration:
         dict[str, object],
 ) -> str:
-    count = body.count(
+    rendered = body
+
+    external_count = rendered.count(
         EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER
     )
-    if count == 0:
-        return body
-
-    rendered = body.replace(
-        EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER,
-        json.dumps(
-            external_configuration,
-            ensure_ascii=False,
-            indent=2,
-            sort_keys=True,
-        ),
-    )
-
-    if (
-        EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER
-        in rendered
-    ):
+    if external_count > 1:
         raise SystemExit(
             "External UUID configuration placeholder "
-            "was not fully rendered."
+            "appears more than once in one Macro source."
+        )
+    if external_count == 1:
+        rendered = rendered.replace(
+            EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER,
+            json.dumps(
+                external_configuration,
+                ensure_ascii=False,
+                indent=2,
+                sort_keys=True,
+            ),
         )
 
-    return rendered
+    suite_count = rendered.count(
+        SYSTEM_TEST_SUITE_MEMBERS_PLACEHOLDER
+    )
+    if suite_count > 1:
+        raise SystemExit(
+            "System-test suite-members placeholder "
+            "appears more than once in one Macro source."
+        )
+    if suite_count == 1:
+        rendered = rendered.replace(
+            SYSTEM_TEST_SUITE_MEMBERS_PLACEHOLDER,
+            json.dumps(
+                system_test_suite_member_keys(),
+                ensure_ascii=False,
+            ),
+        )
 
+    for placeholder in (
+        EXTERNAL_UUID_CONFIGURATION_PLACEHOLDER,
+        SYSTEM_TEST_SUITE_MEMBERS_PLACEHOLDER,
+    ):
+        if placeholder in rendered:
+            raise SystemExit(
+                "System-test Macro placeholder was not fully rendered: "
+                f"{placeholder}"
+            )
+
+    return rendered
 
 def base_stats() -> dict[str, object]:
     return {

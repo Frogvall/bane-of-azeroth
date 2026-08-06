@@ -35,31 +35,54 @@ if (!boaCheck(
   );
 }
 
-const orderedKeys = [
-  "smoke",
-  "external-uuids",
-  "generated-content",
-  "assets-journals",
-  "common-animals",
-  "common-animal-attack-messages",
-  "common-animal-movement",
-  "ghoul",
-  "warlock-demons",
-  "spell-grants",
-  "mages-brilliance",
-  "evokers-legacy",
-  "ability-actions",
-  "serenity",
-  "demon-hunter-initiation",
-  "elemental-totems",
-  "adventure-ownership",
-];
+const orderedKeys = JSON.parse(
+  `__BOA_SYSTEM_TEST_SUITE_MEMBERS__`
+);
 
 const index = await pack.getIndex({
   fields: [
     `flags.${BOA_TEST_MODULE_ID}.systemTestKey`,
+    `flags.${BOA_TEST_MODULE_ID}.suiteMember`,
   ],
 });
+
+const systemTestKeyPath =
+  `flags.${BOA_TEST_MODULE_ID}.systemTestKey`;
+const suiteMemberPath =
+  `flags.${BOA_TEST_MODULE_ID}.suiteMember`;
+
+const expectedSuiteKeys = [
+  ...orderedKeys,
+].sort();
+
+const actualSuiteKeys = index
+  .filter(
+    candidate =>
+      foundry.utils.getProperty(
+        candidate,
+        suiteMemberPath,
+      ) === true,
+  )
+  .map(
+    candidate =>
+      foundry.utils.getProperty(
+        candidate,
+        systemTestKeyPath,
+      ),
+  )
+  .filter(
+    key =>
+      typeof key === "string" &&
+      key.length > 0,
+  )
+  .sort();
+
+boaCheckEqual(
+  checks,
+  "Developer-test pack suite membership matches generated Run All contract",
+  actualSuiteKeys,
+  expectedSuiteKeys,
+);
 
 try {
   for (const key of orderedKeys) {
