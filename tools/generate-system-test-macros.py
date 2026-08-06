@@ -185,6 +185,15 @@ MACROS = [
         "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
     },
     {
+        "key": "druid-forms",
+        "id": "BoaDevDruid00017",
+        "name": "BOA DEV – Verify Druid Forms",
+        "file": "verify-druid-forms.js",
+        "order": 25,
+        "suiteMember": True,
+        "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",
