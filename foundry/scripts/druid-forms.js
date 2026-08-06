@@ -1190,7 +1190,7 @@ function artworkDialogMarkup(
           profile.key,
         )}">`
         + `${escapeArtworkHtml(
-          formProfileLabel(
+          profileLabel(
             profile,
           ),
         )}`
