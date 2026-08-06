@@ -193,6 +193,7 @@ describe("ApplicationV2 automation settings form", () => {
       frostreaperAutomation: false,
       deathKnightRunesAutomation: false,
       druidFormsAutomation: false,
+      druidFormArtworkAutomation: false,
     });
     expect(context.buttons).toEqual([
       {
@@ -227,11 +228,12 @@ describe("ApplicationV2 automation settings form", () => {
           frostreaperAutomation: true,
           deathKnightRunesAutomation: true,
           druidFormsAutomation: true,
+          druidFormArtworkAutomation: true,
         },
       },
     );
 
-    expect(set).toHaveBeenCalledTimes(11);
+    expect(set).toHaveBeenCalledTimes(12); // Druid Form Artwork setting
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,

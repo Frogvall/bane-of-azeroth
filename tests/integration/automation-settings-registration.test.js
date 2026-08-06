@@ -30,7 +30,7 @@ describe("automation settings registration", () => {
       registerAutomationSettings(settings),
     ).toBe(true);
 
-    expect(settings.register).toHaveBeenCalledTimes(11);
+    expect(settings.register).toHaveBeenCalledTimes(12); // Druid Form Artwork setting
     for (const key of Object.values(
       AUTOMATION_SETTING_KEYS,
     )) {

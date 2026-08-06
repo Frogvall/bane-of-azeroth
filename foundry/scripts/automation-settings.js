@@ -12,6 +12,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   FROSTREAPER: "frostreaperAutomation",
   DEATH_KNIGHT_RUNES: "deathKnightRunesAutomation",
   DRUID_FORMS: "druidFormsAutomation",
+  DRUID_FORM_ARTWORK: "druidFormArtworkAutomation",
 });
 
 const {
@@ -303,6 +304,23 @@ export function isDruidFormsAutomationEnabled(
   );
 }
 
+function restoreDruidArtworkOnChange(value) {
+  if (value !== false) return;
+  queueMicrotask(() => {
+    const api = globalThis.game?.modules?.get?.(MODULE_ID)?.api;
+    void api?.restoreAllDruidFormArtwork?.();
+  });
+}
+
+export function isDruidFormArtworkAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_ARTWORK,
+    settings,
+  );
+}
+
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -387,6 +405,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.druidFormsName",
       "BOA.settings.automation.druidFormsHint",
     ),
+    druidFormArtworkAutomation: booleanField(
+      "BOA.settings.automation.druidFormArtworkName",
+      "BOA.settings.automation.druidFormArtworkHint",
+    ),
   });
 
   static get schema() {
@@ -422,6 +444,8 @@ export class AutomationSettingsForm
           isDeathKnightRunesAutomationEnabled(),
         druidFormsAutomation:
           isDruidFormsAutomationEnabled(),
+        druidFormArtworkAutomation:
+          isDruidFormArtworkAutomationEnabled(),
       },
       buttons: [
         {
@@ -536,6 +560,15 @@ export class AutomationSettingsForm
         Boolean(
           values[
             AUTOMATION_SETTING_KEYS.DRUID_FORMS
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_FORM_ARTWORK,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.DRUID_FORM_ARTWORK
           ],
         ),
       ),
@@ -663,6 +696,17 @@ export function registerAutomationSettings(
       "BOA.settings.automation.druidFormsName",
       "BOA.settings.automation.druidFormsHint",
     ),
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_ARTWORK,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.druidFormArtworkName",
+        "BOA.settings.automation.druidFormArtworkHint",
+      ),
+      onChange: restoreDruidArtworkOnChange,
+    },
   );
   if (settings.registerMenu) {
     settings.registerMenu(

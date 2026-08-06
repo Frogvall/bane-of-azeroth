@@ -136,6 +136,14 @@ import {
   setDeathKnightRune,
 } from "./death-knight-runes.js";
 import {
+  restoreDruidHumanoidArtwork,
+  restoreAllDruidFormArtwork,
+  registerDruidFormArtworkSocket,
+  openDruidFormArtworkDialog,
+  onRenderDruidFormArtworkActorSheet,
+  onCreateDruidFormArtworkToken,
+  executeDruidFormArtworkRequest,
+  applyDruidFormArtwork,
   getAvailableDruidFormProfiles,
   getDruidFormArtwork,
   getDruidFormProfileDefinitions,
@@ -220,6 +228,11 @@ Hooks.once("init", () => {
       setDruidFormArtwork,
       resetDruidFormArtwork,
       getDruidFormState,
+      applyDruidFormArtwork,
+      executeDruidFormArtworkRequest,
+      openDruidFormArtworkDialog,
+      restoreAllDruidFormArtwork,
+      restoreDruidHumanoidArtwork,
 };
   }
 
@@ -238,6 +251,10 @@ Hooks.once("init", () => {
   Hooks.on(
     "createToken",
     onCreateDemonHunterInitiationToken,
+  );
+  Hooks.on(
+    "createToken",
+    onCreateDruidFormArtworkToken,
   );
   Hooks.on("createItem", onCreateItem);
   Hooks.on(
@@ -350,6 +367,10 @@ Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderDeathKnightRuneActorSheet,
   );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderDruidFormArtworkActorSheet,
+  );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
@@ -424,6 +445,7 @@ Hooks.once("ready", async () => {
   registerElementalTotemSocket();
   registerWarlockDemonSocket();
   registerDemonHunterInitiationSocket();
+  registerDruidFormArtworkSocket();
   registerVoidwalkerSufferingSocket();
   registerVoidwalkerSufferingDamageCardHook();
   registerCommonAnimalStatusSocket();

@@ -100,6 +100,12 @@ describe("Foundry hook registration", () => {
       onRenderAbilityActionActorSheet,
       onUpdateAbilityActionChatMessage,
     } = abilityActions;
+    const druidForms = await import(
+      "../../foundry/scripts/druid-forms.js"
+    );
+    const {
+      onRenderDruidFormArtworkActorSheet,
+    } = druidForms;
     const warlockDemons = await import(
       "../../foundry/scripts/warlock-demons.js"
     );
@@ -226,8 +232,8 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(9);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(9);
+        expect(renderActorSheetCallbacks).toHaveLength(10);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(10);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );
@@ -240,7 +246,10 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderAbilityActionActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(12); // Druid Forms automation registration count
+    expect(renderActorSheetCallbacks).toContain(
+      onRenderDruidFormArtworkActorSheet,
+    );
+expect(game.settings.register).toHaveBeenCalledTimes(13); // Druid Forms automation registration count // Druid Form Artwork setting
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",
