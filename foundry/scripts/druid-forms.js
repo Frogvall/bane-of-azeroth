@@ -1282,18 +1282,28 @@ function artworkDialogMarkup(
           )}"></file-picker>`
           + `</div>`
           + `</div>`
-          + `<label class="boa-druid-artwork-reset">`
-          + `<input type="checkbox" `
+          + `<input type="hidden" `
           + `name="reset.${escapeArtworkHtml(
             profile.key,
-          )}"> `
+          )}" value="0">`
+          + `<button type="button" class="boa-druid-artwork-reset" `
+          + `data-reset-profile="${escapeArtworkHtml(
+            profile.key,
+          )}" `
+          + `data-default-portrait="${escapeArtworkHtml(
+            profile.defaultPortrait,
+          )}" `
+          + `data-default-token="${escapeArtworkHtml(
+            profile.defaultToken,
+          )}">`
+          + `<i class="fa-solid fa-rotate-left"></i> `
           + `${escapeArtworkHtml(
             localizeArtwork(
               "BOA.druidForms.reset",
               "Reset to Default",
             ),
           )}`
-          + `</label>`
+          + `</button>`
           + `</section>`
         );
       },
@@ -1457,6 +1467,232 @@ function formChecked(form, name) {
   return form?.elements?.namedItem?.(name)?.checked === true;
 }
 
+function boaBindDruidResetDraft(
+  actor,
+  root,
+) {
+  const dialogRoot =
+    root?.element ??
+    root;
+
+  if (!dialogRoot?.querySelectorAll) {
+    return false;
+  }
+
+  const resetState =
+    profileKey =>
+      dialogRoot.elements
+        ?.namedItem?.(
+          `reset.${profileKey}`,
+        );
+
+  const setResetState =
+    (
+      profileKey,
+      value,
+    ) => {
+      const input =
+        resetState(
+          profileKey,
+        );
+
+      if (input) {
+        input.value =
+          value
+            ? "1"
+            : "0";
+      }
+    };
+
+  const setPicker =
+    (
+      picker,
+      value,
+      previewId,
+    ) => {
+      if (!picker) {
+        return;
+      }
+
+      const next =
+        String(
+          value ??
+          "",
+        );
+
+      picker.value =
+        next;
+      picker.setAttribute?.(
+        "value",
+        next,
+      );
+
+      const nested =
+        picker.querySelector?.(
+          "input, input[type=text]",
+        );
+
+      if (nested) {
+        nested.value =
+          next;
+      }
+
+      const preview =
+        dialogRoot.querySelector?.(
+          `[id="${previewId}"]`,
+        );
+
+      if (preview) {
+        preview.src =
+          next;
+      }
+    };
+
+  for (
+    const picker
+    of Array.from(
+      dialogRoot.querySelectorAll(
+        'file-picker[name^="portrait."], '
+        + 'file-picker[name^="token."]',
+      ),
+    )
+  ) {
+    if (
+      picker?.dataset
+        ?.boaResetDraftPickerBound ===
+      "true"
+    ) {
+      continue;
+    }
+
+    if (picker?.dataset) {
+      picker.dataset.boaResetDraftPickerBound =
+        "true";
+    }
+
+    const clearReset =
+      () => {
+        const name =
+          picker.getAttribute?.(
+            "name",
+          ) ??
+          picker.name ??
+          "";
+
+        const profileKey =
+          picker?.dataset
+            ?.profileKey ??
+          String(
+            name,
+          ).split(
+            ".",
+          )[
+            1
+          ];
+
+        if (profileKey) {
+          setResetState(
+            profileKey,
+            false,
+          );
+        }
+      };
+
+    picker.addEventListener?.(
+      "input",
+      clearReset,
+    );
+    picker.addEventListener?.(
+      "change",
+      clearReset,
+    );
+
+    const nested =
+      picker.querySelector?.(
+        "input, input[type=text]",
+      );
+
+    nested?.addEventListener?.(
+      "input",
+      clearReset,
+    );
+    nested?.addEventListener?.(
+      "change",
+      clearReset,
+    );
+  }
+
+  for (
+    const button
+    of Array.from(
+      dialogRoot.querySelectorAll(
+        ".boa-druid-artwork-reset[data-reset-profile]",
+      ),
+    )
+  ) {
+    if (
+      button?.dataset
+        ?.boaResetDraftBound ===
+      "true"
+    ) {
+      continue;
+    }
+
+    if (button?.dataset) {
+      button.dataset.boaResetDraftBound =
+        "true";
+    }
+
+    button.addEventListener?.(
+      "click",
+      event => {
+        event.preventDefault?.();
+
+        const profileKey =
+          button?.dataset
+            ?.resetProfile;
+
+        if (!profileKey) {
+          return;
+        }
+
+        const portrait =
+          dialogRoot.elements
+            ?.namedItem?.(
+              `portrait.${profileKey}`,
+            );
+        const token =
+          dialogRoot.elements
+            ?.namedItem?.(
+              `token.${profileKey}`,
+            );
+
+        setPicker(
+          portrait,
+          button.dataset
+            ?.defaultPortrait ??
+            "",
+          `boa-druid-artwork-preview-portrait-${profileKey}`,
+        );
+        setPicker(
+          token,
+          button.dataset
+            ?.defaultToken ??
+            "",
+          `boa-druid-artwork-preview-token-${profileKey}`,
+        );
+
+        setResetState(
+          profileKey,
+          true,
+        );
+      },
+    );
+  }
+
+  return true;
+}
+
 export async function openDruidFormArtworkDialog(actor) {
   if (
     !canManageDruidActor(actor)
@@ -1485,6 +1721,11 @@ export async function openDruidFormArtworkDialog(actor) {
       },
     content: artworkDialogMarkup(actor),
       render: (_event, dialog) => {
+      boaBindDruidResetDraft(
+        actor,
+        dialog,
+      );
+
         bindDruidArtworkPreviewInteractions(dialog);
       },
     buttons: [
@@ -1511,7 +1752,12 @@ export async function openDruidFormArtworkDialog(actor) {
   if (!form) return false;
 
   for (const profile of profiles) {
-    if (formChecked(form, `reset.${profile.key}`)) {
+    if (
+      formValue(
+        form,
+        `reset.${profile.key}`,
+      ) === "1"
+    ) {
       await resetDruidFormArtwork(actor, profile.key);
       continue;
     }
