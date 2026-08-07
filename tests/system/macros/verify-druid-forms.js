@@ -701,6 +701,233 @@ try {
       },
     );
   }
+  // BOA 0.11.7 regression: multi-profile reset and placed-token Shift restore
+  if (
+    typeof api.setDruidFormArtwork === "function" &&
+    typeof api.resetDruidFormArtwork === "function" &&
+    typeof api.getDruidFormArtwork === "function" &&
+    typeof api.getDruidFormProfileDefinitions === "function"
+  ) {
+    const definitions =
+      Object.fromEntries(
+        api.getDruidFormProfileDefinitions().map(
+          profile => [profile.key, profile],
+        ),
+      );
+
+    const firstCustom = {
+      portrait: "worlds/boa-test/reset-first-portrait.webp",
+      token: "worlds/boa-test/reset-first-token.webp",
+    };
+    const secondCustom = {
+      portrait: "worlds/boa-test/reset-second-portrait.webp",
+      token: "worlds/boa-test/reset-second-token.webp",
+    };
+
+    await api.setDruidFormArtwork(
+      actor,
+      "travelPl1",
+      firstCustom,
+    );
+    await api.setDruidFormArtwork(
+      actor,
+      "travelPl2",
+      secondCustom,
+    );
+    await api.resetDruidFormArtwork(
+      actor,
+      "travelPl1",
+    );
+
+    const firstAfterReset =
+      api.getDruidFormArtwork(
+        actor,
+        "travelPl1",
+      );
+    const secondAfterReset =
+      api.getDruidFormArtwork(
+        actor,
+        "travelPl2",
+      );
+
+    boaCheckEqual(
+      checks,
+      "Resetting one Druid artwork profile removes only that override",
+      {
+        resetPortrait:
+          firstAfterReset?.portrait,
+        resetToken:
+          firstAfterReset?.token,
+        resetPortraitIsCustom:
+          firstAfterReset?.portraitIsCustom,
+        resetTokenIsCustom:
+          firstAfterReset?.tokenIsCustom,
+        otherPortrait:
+          secondAfterReset?.portrait,
+        otherToken:
+          secondAfterReset?.token,
+      },
+      {
+        resetPortrait:
+          definitions.travelPl1?.defaultPortrait,
+        resetToken:
+          definitions.travelPl1?.defaultToken,
+        resetPortraitIsCustom:
+          false,
+        resetTokenIsCustom:
+          false,
+        otherPortrait:
+          secondCustom.portrait,
+        otherToken:
+          secondCustom.token,
+      },
+    );
+
+    await api.resetDruidFormArtwork(
+      actor,
+      "travelPl2",
+    );
+  }
+
+  if (
+    typeof api.activateDruidIncarnation === "function" &&
+    typeof api.expireDruidIncarnationsForRest === "function" &&
+    typeof api.setDruidFormArtwork === "function" &&
+    typeof globalThis.Scene?.create === "function"
+  ) {
+    let regressionScene = null;
+
+    try {
+      await actor.unsetFlag?.(
+        BOA_TEST_MODULE_ID,
+        "druidFormState",
+      );
+      await api.restoreDruidHumanoidArtwork?.(
+        actor,
+      );
+
+      const humanoidPortrait =
+        "icons/svg/mystery-man.svg";
+      const humanoidPrototypeToken =
+        "icons/svg/cowled.svg";
+      const humanoidSceneToken =
+        "icons/svg/eye.svg";
+      const travelPortrait =
+        "icons/svg/wing.svg";
+      const travelToken =
+        "icons/svg/eagle-emblem.svg";
+
+      await actor.update({
+        img: humanoidPortrait,
+        "prototypeToken.texture.src":
+          humanoidPrototypeToken,
+      });
+
+      await api.setDruidFormArtwork(
+        actor,
+        "travelPl1",
+        {
+          portrait:
+            travelPortrait,
+          token:
+            travelToken,
+        },
+      );
+
+      regressionScene =
+        await globalThis.Scene.create(
+          {
+            name:
+              "[BOA TEST] Druid Token Restore " +
+              foundry.utils.randomID(6),
+            active:
+              false,
+            navigation:
+              false,
+          },
+          {
+            renderSheet:
+              false,
+          },
+        );
+
+      const createdTokens =
+        await regressionScene.createEmbeddedDocuments(
+          "Token",
+          [
+            {
+              name:
+                "[BOA TEST] Druid",
+              actorId:
+                actor.id,
+              actorLink:
+                true,
+              x: 0,
+              y: 0,
+              texture: {
+                src:
+                  humanoidSceneToken,
+              },
+            },
+          ],
+        );
+
+      const sceneToken =
+        createdTokens?.[0] ?? null;
+
+      await api.activateDruidIncarnation(
+        actor,
+        "spells.savage-incarnation",
+        1,
+        {
+          bypassAuthority:
+            true,
+        },
+      );
+
+      const transformedToken =
+        sceneToken?.texture?.src ?? null;
+
+      await api.expireDruidIncarnationsForRest(
+        actor,
+        "shift",
+        {
+          bypassAuthority:
+            true,
+        },
+      );
+
+      boaCheckEqual(
+        checks,
+        "Shift-rest restores a placed Scene Token to its exact humanoid artwork",
+        {
+          transformed:
+            transformedToken,
+          restored:
+            sceneToken?.texture?.src ?? null,
+          portrait:
+            actor.img,
+          prototypeToken:
+            actor.prototypeToken?.texture?.src ?? null,
+        },
+        {
+          transformed:
+            travelToken,
+          restored:
+            humanoidSceneToken,
+          portrait:
+            humanoidPortrait,
+          prototypeToken:
+            humanoidPrototypeToken,
+        },
+      );
+    } finally {
+      if (regressionScene) {
+        await regressionScene.delete();
+      }
+    }
+  }
+
 } catch (error) {
   boaCheck(
     checks,
