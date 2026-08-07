@@ -7,11 +7,15 @@ import {
   vi,
 } from "vitest";
 
-const MODULE_ID = "bane-of-azeroth";
+const MODULE_ID =
+  "bane-of-azeroth";
+
 let lifecycle;
 
 class FakeItem {
-  constructor(contentKey) {
+  constructor(
+    contentKey,
+  ) {
     this.flags = {
       [MODULE_ID]: {
         contentKey,
@@ -19,75 +23,166 @@ class FakeItem {
     };
   }
 
-  getFlag(moduleId, key) {
-    return this.flags?.[moduleId]?.[key];
+  getFlag(
+    moduleId,
+    key,
+  ) {
+    return this.flags?.[
+      moduleId
+    ]?.[
+      key
+    ];
   }
 }
 
-beforeEach(async () => {
-  vi.resetModules();
+function element() {
+  const classes =
+    new Set();
 
-  globalThis.game = {
-    user: {
-      id: "player",
-      isGM: false,
+  return {
+    children: [],
+    classList: {
+      add(
+        ...names
+      ) {
+        for (
+          const name
+          of names
+        ) {
+          classes.add(
+            name,
+          );
+        }
+      },
+
+      contains(
+        name,
+      ) {
+        return classes.has(
+          name,
+        );
+      },
     },
-    settings: {
-      get:
-        vi.fn(() => true),
+
+    append(
+      child,
+    ) {
+      this.children.push(
+        child,
+      );
     },
+
+    appendChild(
+      child,
+    ) {
+      this.children.push(
+        child,
+      );
+    },
+
+    addEventListener:
+      vi.fn(),
+
+    remove:
+      vi.fn(),
+
+    innerHTML:
+      "",
+    title:
+      "",
+    type:
+      "",
   };
+}
 
-  lifecycle =
-    await import(
-      "../../foundry/scripts/druid-form-lifecycle.js"
-    );
-});
+beforeEach(
+  async () => {
+    vi.resetModules();
 
-afterEach(() => {
-  delete globalThis.game;
-  delete globalThis.document;
-});
+    globalThis.game = {
+      user: {
+        id:
+          "player",
+        isGM:
+          false,
+      },
+
+      settings: {
+        get:
+          vi.fn(
+            () =>
+              true,
+          ),
+      },
+    };
+
+    globalThis.CONST = {
+      DOCUMENT_OWNERSHIP_LEVELS: {
+        OWNER:
+          3,
+      },
+    };
+
+    lifecycle =
+      await import(
+        "../../foundry/scripts/druid-form-lifecycle.js"
+      );
+  },
+);
+
+afterEach(
+  () => {
+    delete globalThis.game;
+    delete globalThis.CONST;
+    delete globalThis.document;
+    delete globalThis.HTMLElement;
+  },
+);
 
 describe(
   "Druid Change Form sheet control",
   () => {
     test(
-      "renders an independent Change Form control before any incarnation is active",
+      "renders Change Form in the shared Druid row before any incarnation is active",
       () => {
         const actor = {
-          isOwner: true,
+          type:
+            "character",
+          isOwner:
+            true,
+
           items: [
             new FakeItem(
               "spells.savage-incarnation",
             ),
           ],
+
           getFlag() {
             return undefined;
           },
         };
 
-        const inserted = [];
+        const tabs =
+          element();
+        const inserted =
+          [];
 
-        const tabs = {
-          parentElement: {
-            insertBefore(element) {
-              inserted.push(
-                element,
-              );
-            },
+        tabs.parentElement = {
+          insertBefore(
+            child,
+            before,
+          ) {
+            inserted.push({
+              child,
+              before,
+            });
           },
         };
 
         const root = {
-          querySelector(selector) {
-            if (
-              selector ===
-                ".boa-druid-form-lifecycle-controls"
-            ) {
-              return null;
-            }
-
+          querySelector(
+            selector,
+          ) {
             if (
               selector.includes(
                 ".sheet-tabs",
@@ -101,25 +196,11 @@ describe(
         };
 
         globalThis.document = {
-          createElement(tag) {
-            return {
-              tag,
-              className: "",
-              type: "",
-              innerHTML: "",
-              title: "",
-              children: [],
-              addEventListener:
-                vi.fn(),
-              appendChild(child) {
-                this.children.push(
-                  child,
-                );
-              },
-              remove:
-                vi.fn(),
-            };
-          },
+          createElement:
+            vi.fn(
+              () =>
+                element(),
+            ),
         };
 
         expect(
@@ -140,16 +221,44 @@ describe(
           1,
         );
 
+        const controls =
+          inserted[
+            0
+          ].child;
+
         expect(
-          inserted[0].className,
+          controls
+            .classList
+            .contains(
+              "boa-druid-form-artwork-controls",
+            ),
         ).toBe(
-          "boa-druid-form-lifecycle-controls",
+          true,
         );
 
         expect(
-          inserted[0]
-            .children[0]
-            .innerHTML,
+          controls.children,
+        ).toHaveLength(
+          1,
+        );
+
+        const button =
+          controls.children[
+            0
+          ];
+
+        expect(
+          button
+            .classList
+            .contains(
+              "boa-druid-form-switch-button",
+            ),
+        ).toBe(
+          true,
+        );
+
+        expect(
+          button.innerHTML,
         ).toContain(
           "Change Form",
         );

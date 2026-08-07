@@ -1694,13 +1694,29 @@ export async function openDruidFormSwitchDialog(
 function sheetRoot(
   html,
 ) {
+  const HTMLElementClass =
+    globalThis.HTMLElement;
+
+  if (
+    HTMLElementClass &&
+    html instanceof HTMLElementClass
+  ) {
+    return html;
+  }
+
+  if (
+    HTMLElementClass &&
+    html?.[0] instanceof HTMLElementClass
+  ) {
+    return html[0];
+  }
+
   return (
     html?.element ??
-    html?.[0] ??
-    html
+    html ??
+    null
   );
 }
-
 function sheetActor(
   app,
 ) {
@@ -1717,9 +1733,9 @@ export function onRenderDruidFormLifecycleActorSheet(
   html,
 ) {
   const actor =
-    sheetActor(
-      app,
-    );
+    app?.actor ??
+    app?.document ??
+    null;
   const root =
     sheetRoot(
       html,
@@ -1727,20 +1743,12 @@ export function onRenderDruidFormLifecycleActorSheet(
 
   if (
     !actor ||
+    actor.type !== "character" ||
     !root?.querySelector ||
     !canManageActor(
       actor,
       globalThis.game?.user,
-    )
-  ) {
-    return false;
-  }
-
-  root.querySelector(
-    ".boa-druid-form-lifecycle-controls",
-  )?.remove?.();
-
-  if (
+    ) ||
     !lifecycleEnabled()
   ) {
     return false;
@@ -1757,28 +1765,66 @@ export function onRenderDruidFormLifecycleActorSheet(
         ),
     );
 
-  if (
-    !ownsIncarnation
-  ) {
+  if (!ownsIncarnation) {
     return false;
   }
+
+  /*
+   * Remove only our own old UI. Never remove the shared Druid control row.
+   * This also cleans up the separate lifecycle row from earlier 0.11.7 builds.
+   */
+  root
+    .querySelector(
+      ".boa-druid-form-lifecycle-controls",
+    )
+    ?.remove?.();
+
+  root
+    .querySelector(
+      ".boa-druid-form-switch-button",
+    )
+    ?.remove?.();
 
   const tabs =
     root.querySelector(
-      ".sheet-tabs, nav.tabs, [data-group=\"primary\"].tabs, [data-application-part=\"tabs\"]",
+      ".sheet-tabs, nav.tabs, "
+      + '[data-group="primary"].tabs, '
+      + '[data-application-part="tabs"]',
     );
 
   if (
-    !tabs?.parentElement
+    !tabs
+      ?.parentElement
+      ?.insertBefore
   ) {
     return false;
   }
 
-  const controls =
-    globalThis.document
-      ?.createElement?.(
-        "div",
+  let controls =
+    root.querySelector(
+      ".boa-druid-form-artwork-controls",
+    );
+
+  if (!controls) {
+    controls =
+      globalThis.document
+        ?.createElement?.(
+          "div",
+        );
+
+    if (controls) {
+      controls.classList.add(
+        "boa-druid-form-artwork-controls",
       );
+
+      tabs.parentElement
+        .insertBefore(
+          controls,
+          tabs,
+        );
+    }
+  }
+
   const button =
     globalThis.document
       ?.createElement?.(
@@ -1792,13 +1838,11 @@ export function onRenderDruidFormLifecycleActorSheet(
     return false;
   }
 
-  controls.className =
-    "boa-druid-form-lifecycle-controls";
-
   button.type =
     "button";
-  button.className =
-    "boa-druid-form-switch-button";
+  button.classList.add(
+    "boa-druid-form-switch-button",
+  );
   button.innerHTML =
     '<i class="fa-solid fa-paw"></i> Change Form';
   button.title =
@@ -1806,22 +1850,27 @@ export function onRenderDruidFormLifecycleActorSheet(
 
   button.addEventListener(
     "click",
-    () => {
+    event => {
+      event.preventDefault?.();
+      event.stopPropagation?.();
+
       void openDruidFormSwitchDialog(
         actor,
       );
     },
   );
 
-  controls.appendChild(
-    button,
-  );
-
-  tabs.parentElement
-    .insertBefore(
-      controls,
-      tabs,
+  if (
+    typeof controls.append === "function"
+  ) {
+    controls.append(
+      button,
     );
+  } else {
+    controls.appendChild?.(
+      button,
+    );
+  }
 
   return true;
 }
