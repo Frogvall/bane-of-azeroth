@@ -1613,6 +1613,10 @@ export async function openDruidFormSwitchDialog(
   if (
     targets.length === 0
   ) {
+    globalThis.ui?.notifications
+      ?.info?.(
+        "No alternate Druid form is currently active.",
+      );
     return false;
   }
 
@@ -1733,7 +1737,7 @@ export function onRenderDruidFormLifecycleActorSheet(
   }
 
   root.querySelector(
-    ".boa-druid-form-switch-button",
+    ".boa-druid-form-lifecycle-controls",
   )?.remove?.();
 
   if (
@@ -1742,62 +1746,54 @@ export function onRenderDruidFormLifecycleActorSheet(
     return false;
   }
 
-  const options =
-    getDruidFormSwitchOptions(
-      actor,
+  const ownsIncarnation =
+    Object.keys(
+      INCARNATIONS,
+    ).some(
+      contentKey =>
+        actorOwnsContentKey(
+          actor,
+          contentKey,
+        ),
     );
 
   if (
-    options.length <= 1
+    !ownsIncarnation
   ) {
     return false;
   }
 
-  let controls =
+  const tabs =
     root.querySelector(
-      ".boa-druid-form-artwork-controls",
+      ".sheet-tabs, nav.tabs, [data-group=\"primary\"].tabs, [data-application-part=\"tabs\"]",
     );
 
-  if (!controls) {
-    const tabs =
-      root.querySelector(
-        ".sheet-tabs, nav.tabs, [data-group=\"primary\"].tabs, [data-application-part=\"tabs\"]",
-      );
-
-    if (
-      !tabs?.parentElement
-    ) {
-      return false;
-    }
-
-    controls =
-      globalThis.document
-        ?.createElement?.(
-          "div",
-        );
-
-    if (!controls) {
-      return false;
-    }
-
-    controls.className =
-      "boa-druid-form-artwork-controls";
-    tabs.parentElement
-      .insertBefore(
-        controls,
-        tabs,
-      );
+  if (
+    !tabs?.parentElement
+  ) {
+    return false;
   }
 
+  const controls =
+    globalThis.document
+      ?.createElement?.(
+        "div",
+      );
   const button =
     globalThis.document
       ?.createElement?.(
         "button",
       );
 
-  if (!button) {
+  if (
+    !controls ||
+    !button
+  ) {
     return false;
   }
+
+  controls.className =
+    "boa-druid-form-lifecycle-controls";
 
   button.type =
     "button";
@@ -1805,6 +1801,9 @@ export function onRenderDruidFormLifecycleActorSheet(
     "boa-druid-form-switch-button";
   button.innerHTML =
     '<i class="fa-solid fa-paw"></i> Change Form';
+  button.title =
+    "Change between currently active Druid forms.";
+
   button.addEventListener(
     "click",
     () => {
@@ -1813,13 +1812,19 @@ export function onRenderDruidFormLifecycleActorSheet(
       );
     },
   );
+
   controls.appendChild(
     button,
   );
 
+  tabs.parentElement
+    .insertBefore(
+      controls,
+      tabs,
+    );
+
   return true;
 }
-
 async function expireAfterRest(
   actor,
   restType,

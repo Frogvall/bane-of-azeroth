@@ -502,6 +502,8 @@ export function getDruidFormState(
 }
 const ARTWORK_BASELINE_FLAG =
   "druidFormArtworkBaseline";
+const TOKEN_ARTWORK_BASELINE_FLAG =
+  "druidFormTokenArtworkBaseline";
 const ARTWORK_SETTING_KEY =
   "druidFormArtworkAutomation";
 const ARTWORK_SOCKET_NAME =
@@ -729,31 +731,115 @@ async function applyDruidFormArtworkNow(
 ) {
   if (
     !actor ||
-    (!bypassSetting && !artworkAutomationEnabled(settings))
+    (
+      !bypassSetting &&
+      !artworkAutomationEnabled(
+        settings,
+      )
+    )
   ) {
     return false;
   }
 
-  const available = getAvailableDruidFormProfiles(actor).some(
-    profile => profile.key === profileKey,
-  );
-  if (!available) return false;
+  const available =
+    getAvailableDruidFormProfiles(
+      actor,
+    ).some(
+      profile =>
+        profile.key ===
+          profileKey,
+    );
 
-  const artwork = getDruidFormArtwork(actor, profileKey);
-  if (!artwork) return false;
-
-  const baseline =
-    baselineState(actor) ?? initialArtworkBaseline(actor);
-
-  for (const token of actorSceneTokens(actor, scenes)) {
-    captureTokenBaseline(baseline, token);
+  if (!available) {
+    return false;
   }
 
-  baseline.profileKey = profileKey;
-  baseline.actor.applied = artwork.portrait;
-  baseline.prototypeToken.applied = artwork.token;
-  for (const tokenState of Object.values(baseline.tokens ?? {})) {
-    tokenState.applied = artwork.token;
+  const artwork =
+    getDruidFormArtwork(
+      actor,
+      profileKey,
+    );
+
+  if (!artwork) {
+    return false;
+  }
+
+  const baseline =
+    baselineState(
+      actor,
+    ) ??
+    initialArtworkBaseline(
+      actor,
+    );
+
+  const tokens =
+    actorSceneTokens(
+      actor,
+      scenes,
+    );
+
+  for (
+    const token
+    of tokens
+  ) {
+    captureTokenBaseline(
+      baseline,
+      token,
+    );
+
+    const previous =
+      documentFlag(
+        token,
+        TOKEN_ARTWORK_BASELINE_FLAG,
+      );
+
+    const tokenBaseline =
+      (
+        previous &&
+        typeof previous ===
+          "object" &&
+        !Array.isArray(
+          previous,
+        )
+      )
+        ? structuredClone(
+            previous,
+          )
+        : {
+            original:
+              token?.texture
+                ?.src ??
+              null,
+            applied:
+              null,
+          };
+
+    tokenBaseline.applied =
+      artwork.token;
+
+    await setDocumentFlag(
+      token,
+      TOKEN_ARTWORK_BASELINE_FLAG,
+      tokenBaseline,
+    );
+  }
+
+  baseline.profileKey =
+    profileKey;
+  baseline.actor.applied =
+    artwork.portrait;
+  baseline.prototypeToken.applied =
+    artwork.token;
+
+  for (
+    const tokenState
+    of Object.values(
+      baseline.tokens ??
+      {},
+    )
+  ) {
+    tokenState.applied =
+      artwork.token;
   }
 
   await setDocumentFlag(
@@ -761,227 +847,244 @@ async function applyDruidFormArtworkNow(
     ARTWORK_BASELINE_FLAG,
     baseline,
   );
-  await updateActorArtwork(actor, artwork);
-  for (const token of actorSceneTokens(actor, scenes)) {
-    await updateTokenArtwork(token, artwork.token);
+
+  await updateActorArtwork(
+    actor,
+    artwork,
+  );
+
+  for (
+    const token
+    of tokens
+  ) {
+    await updateTokenArtwork(
+      token,
+      artwork.token,
+    );
   }
+
   return true;
 }
-
 async function restoreDruidHumanoidArtworkNow(
   actor,
   {
     scenes = globalThis.game?.scenes,
   } = {},
 ) {
-  const baseline =
-    baselineState(actor);
-
-  if (!actor || !baseline) {
+  if (!actor) {
     return false;
   }
 
-  const currentProfileArtwork =
-    baseline.profileKey
-      ? getDruidFormArtwork(
-          actor,
-          baseline.profileKey,
-        )
-      : null;
-
-  const managedPortraitSources =
-    new Set(
-      [
-        baseline.actor?.applied,
-        currentProfileArtwork?.portrait,
-      ].filter(
-        value =>
-          typeof value === "string" &&
-          value.length > 0,
-      ),
+  const baseline =
+    baselineState(
+      actor,
     );
 
-  const managedTokenSources =
-    new Set(
-      [
-        baseline.prototypeToken?.applied,
-        currentProfileArtwork?.token,
-      ].filter(
-        value =>
-          typeof value === "string" &&
-          value.length > 0,
-      ),
+  const tokens =
+    actorSceneTokens(
+      actor,
+      scenes,
     );
 
-  const changes = {};
+  const hasTokenBaseline =
+    tokens.some(
+      token => {
+        const value =
+          documentFlag(
+            token,
+            TOKEN_ARTWORK_BASELINE_FLAG,
+          );
+
+        return Boolean(
+          value &&
+          typeof value ===
+            "object" &&
+          !Array.isArray(
+            value,
+          ),
+        );
+      },
+    );
 
   if (
-    managedPortraitSources.has(
-      actor.img,
-    )
+    !baseline &&
+    !hasTokenBaseline
   ) {
-    changes.img =
-      baseline.actor?.original ?? null;
+    return false;
   }
 
-  if (
-    managedTokenSources.has(
-      actor.prototypeToken?.texture?.src,
-    )
-  ) {
-    changes[
-      "prototypeToken.texture.src"
-    ] =
-      baseline.prototypeToken?.original ?? null;
-  }
+  if (baseline) {
+    const currentProfileArtwork =
+      baseline.profileKey
+        ? getDruidFormArtwork(
+            actor,
+            baseline.profileKey,
+          )
+        : null;
 
-  if (
-    Object.keys(
-      changes,
-    ).length > 0
-  ) {
+    const managedPortraitSources =
+      new Set(
+        [
+          baseline.actor?.applied,
+          currentProfileArtwork?.portrait,
+        ].filter(
+          value =>
+            typeof value ===
+              "string" &&
+            value.length > 0,
+        ),
+      );
+
+    const managedPrototypeSources =
+      new Set(
+        [
+          baseline.prototypeToken
+            ?.applied,
+          currentProfileArtwork?.token,
+        ].filter(
+          value =>
+            typeof value ===
+              "string" &&
+            value.length > 0,
+        ),
+      );
+
+    const changes = {};
+
     if (
-      typeof actor.update === "function"
+      managedPortraitSources.has(
+        actor.img,
+      )
     ) {
-      await actor.update(changes);
-    } else {
-      if (
-        Object.hasOwn(
-          changes,
-          "img",
-        )
-      ) {
-        actor.img =
-          changes.img;
-      }
+      changes.img =
+        baseline.actor?.original ??
+        null;
+    }
 
+    if (
+      managedPrototypeSources.has(
+        actor.prototypeToken
+          ?.texture
+          ?.src,
+      )
+    ) {
+      changes[
+        "prototypeToken.texture.src"
+      ] =
+        baseline.prototypeToken
+          ?.original ??
+        null;
+    }
+
+    if (
+      Object.keys(
+        changes,
+      ).length > 0
+    ) {
       if (
-        Object.hasOwn(
-          changes,
-          "prototypeToken.texture.src",
-        )
+        typeof actor.update ===
+          "function"
       ) {
-        actor.prototypeToken.texture.src =
-          changes[
-            "prototypeToken.texture.src"
-          ];
+        await actor.update(
+          changes,
+        );
+      } else {
+        if (
+          Object.hasOwn(
+            changes,
+            "img",
+          )
+        ) {
+          actor.img =
+            changes.img;
+        }
+
+        if (
+          Object.hasOwn(
+            changes,
+            "prototypeToken.texture.src",
+          )
+        ) {
+          actor.prototypeToken
+            .texture
+            .src =
+              changes[
+                "prototypeToken.texture.src"
+              ];
+        }
       }
     }
   }
-
-  const restoredTokenKeys =
-    new Set();
 
   for (
     const token
-    of actorSceneTokens(
+    of tokens
+  ) {
+    const tokenBaseline =
+      documentFlag(
+        token,
+        TOKEN_ARTWORK_BASELINE_FLAG,
+      );
+
+    if (
+      tokenBaseline &&
+      typeof tokenBaseline ===
+        "object" &&
+      !Array.isArray(
+        tokenBaseline,
+      )
+    ) {
+      if (
+        token?.texture
+          ?.src ===
+        tokenBaseline.applied
+      ) {
+        await updateTokenArtwork(
+          token,
+          tokenBaseline.original,
+        );
+      }
+
+      await unsetDocumentFlag(
+        token,
+        TOKEN_ARTWORK_BASELINE_FLAG,
+      );
+
+      continue;
+    }
+
+    if (baseline) {
+      const identity =
+        tokenIdentity(
+          token,
+        );
+      const tokenState =
+        identity
+          ? baseline.tokens?.[
+              identity.key
+            ]
+          : null;
+
+      if (
+        tokenState &&
+        token?.texture
+          ?.src ===
+          tokenState.applied
+      ) {
+        await updateTokenArtwork(
+          token,
+          tokenState.original,
+        );
+      }
+    }
+  }
+
+  if (baseline) {
+    await unsetDocumentFlag(
       actor,
-      scenes,
-    )
-  ) {
-    const identity =
-      tokenIdentity(token);
-
-    if (!identity) {
-      continue;
-    }
-
-    const tokenState =
-      baseline.tokens?.[
-        identity.key
-      ];
-
-    if (!tokenState) {
-      continue;
-    }
-
-    const acceptedSources =
-      new Set(
-        [
-          ...managedTokenSources,
-          tokenState.applied,
-        ].filter(
-          value =>
-            typeof value === "string" &&
-            value.length > 0,
-        ),
-      );
-
-    if (
-      !acceptedSources.has(
-        token?.texture?.src,
-      )
-    ) {
-      continue;
-    }
-
-    await updateTokenArtwork(
-      token,
-      tokenState.original,
-    );
-
-    restoredTokenKeys.add(
-      identity.key,
+      ARTWORK_BASELINE_FLAG,
     );
   }
-
-  for (
-    const [
-      key,
-      tokenState,
-    ]
-    of Object.entries(
-      baseline.tokens ?? {},
-    )
-  ) {
-    if (
-      restoredTokenKeys.has(
-        key,
-      )
-    ) {
-      continue;
-    }
-
-    const token =
-      findSceneToken(
-        tokenState,
-        scenes,
-      );
-
-    if (!token) {
-      continue;
-    }
-
-    const acceptedSources =
-      new Set(
-        [
-          ...managedTokenSources,
-          tokenState.applied,
-        ].filter(
-          value =>
-            typeof value === "string" &&
-            value.length > 0,
-        ),
-      );
-
-    if (
-      !acceptedSources.has(
-        token?.texture?.src,
-      )
-    ) {
-      continue;
-    }
-
-    await updateTokenArtwork(
-      token,
-      tokenState.original,
-    );
-  }
-
-  await unsetDocumentFlag(
-    actor,
-    ARTWORK_BASELINE_FLAG,
-  );
 
   return true;
 }
@@ -1279,42 +1382,101 @@ export async function restoreAllDruidFormArtwork() {
   return true;
 }
 
-export async function onCreateDruidFormArtworkToken(token) {
-  const actor = token?.actor;
-  if (!actor) return false;
-  const user = globalThis.game?.user;
-  if (user?.isGM) {
-    const gm = primaryActiveGM();
-    if (gm && gm.id !== user.id) return false;
+export async function onCreateDruidFormArtworkToken(
+  token,
+) {
+  const actor =
+    token?.actor;
+
+  if (!actor) {
+    return false;
+  }
+
+  const user =
+    globalThis.game?.user;
+
+  if (
+    user?.isGM
+  ) {
+    const gm =
+      primaryActiveGM();
+
+    if (
+      gm &&
+      gm.id !==
+        user.id
+    ) {
+      return false;
+    }
   } else if (user) {
     return false;
   }
 
-  const baseline = baselineState(actor);
-  if (!baseline?.profileKey || !artworkAutomationEnabled()) {
+  const baseline =
+    baselineState(
+      actor,
+    );
+
+  if (
+    !baseline?.profileKey ||
+    !artworkAutomationEnabled()
+  ) {
     return false;
   }
 
-  const artwork = getDruidFormArtwork(
-    actor,
-    baseline.profileKey,
-  );
-  if (!artwork) return false;
+  const artwork =
+    getDruidFormArtwork(
+      actor,
+      baseline.profileKey,
+    );
 
-  captureTokenBaseline(baseline, token);
-  const identity = tokenIdentity(token);
-  if (identity) {
-    baseline.tokens[identity.key].applied = artwork.token;
+  if (!artwork) {
+    return false;
   }
+
+  captureTokenBaseline(
+    baseline,
+    token,
+  );
+
+  const identity =
+    tokenIdentity(
+      token,
+    );
+
+  if (identity) {
+    baseline.tokens[
+      identity.key
+    ].applied =
+      artwork.token;
+  }
+
+  await setDocumentFlag(
+    token,
+    TOKEN_ARTWORK_BASELINE_FLAG,
+    {
+      original:
+        token?.texture
+          ?.src ??
+        null,
+      applied:
+        artwork.token,
+    },
+  );
+
   await setDocumentFlag(
     actor,
     ARTWORK_BASELINE_FLAG,
     baseline,
   );
-  await updateTokenArtwork(token, artwork.token);
+
+  await updateTokenArtwork(
+    token,
+    artwork.token,
+  );
+
   return true;
 }
-
 function escapeArtworkHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
