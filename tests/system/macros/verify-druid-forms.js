@@ -1041,6 +1041,221 @@ notes.push(
   "Scene-token artwork provenance and real Player authority are covered by focused tests before GREEN.",
 );
 
+
+  // BOA 0.11.7 Druid Travel + Maul/Shred mechanics RED/GREEN contract.
+  {
+    for (
+      const functionName
+      of [
+        "getBestDruidNaturalAttackSkill",
+        "buildDruidFormAttackData",
+        "buildDruidTravelMovementEffectData",
+        "reconcileDruidFormMechanics",
+        "reconcileAllDruidFormMechanics",
+        "isDruidFormWeaponUseAllowed",
+      ]
+    ) {
+      boaCheck(
+        checks,
+        `Druid form mechanics API exposes ${functionName}`,
+        typeof api[
+          functionName
+        ] === "function",
+        typeof api[
+          functionName
+        ],
+      );
+    }
+
+    const movementSetting =
+      game.settings.settings?.get?.(
+        `${BOA_TEST_MODULE_ID}.druidFormMovementAutomation`,
+      );
+    const attackSetting =
+      game.settings.settings?.get?.(
+        `${BOA_TEST_MODULE_ID}.druidFormAttackAutomation`,
+      );
+
+    boaCheck(
+      checks,
+      "Druid Travel Movement automation defaults enabled",
+      movementSetting?.default === true,
+      movementSetting?.default ?? null,
+    );
+    boaCheck(
+      checks,
+      "Druid Form Attacks automation defaults enabled",
+      attackSetting?.default === true,
+      attackSetting?.default ?? null,
+    );
+
+    if (
+      typeof api.getBestDruidNaturalAttackSkill === "function" &&
+      typeof api.buildDruidFormAttackData === "function" &&
+      typeof api.buildDruidTravelMovementEffectData === "function"
+    ) {
+      const fakeActor = {
+        uuid:
+          "Actor.BoaDruidMechanics",
+        items: [
+          {
+            type:
+              "skill",
+            name:
+              "Brawling",
+            system: {
+              value:
+                12,
+              skillType:
+                "core",
+            },
+          },
+          {
+            type:
+              "skill",
+            name:
+              "Elementalism",
+            system: {
+              value:
+                15,
+              skillType:
+                "magic",
+            },
+          },
+          {
+            type:
+              "skill",
+            name:
+              "Mentalism",
+            system: {
+              value:
+                17,
+              skillType:
+                "magic",
+            },
+          },
+          {
+            type:
+              "skill",
+            name:
+              "Swords",
+            system: {
+              value:
+                18,
+              skillType:
+                "core",
+            },
+          },
+        ],
+      };
+
+      boaCheckEqual(
+        checks,
+        "Maul/Shred use the highest Brawling or magic-school value",
+        api.getBestDruidNaturalAttackSkill(
+          fakeActor,
+        ),
+        {
+          name:
+            "Mentalism",
+          value:
+            17,
+        },
+      );
+
+      const maul =
+        api.buildDruidFormAttackData(
+          fakeActor,
+          "bear",
+          3,
+        );
+      const shred =
+        api.buildDruidFormAttackData(
+          fakeActor,
+          "cat",
+          2,
+        );
+      const travel =
+        api.buildDruidTravelMovementEffectData(
+          fakeActor,
+        );
+
+      boaCheckEqual(
+        checks,
+        "Bear Form builds managed Maul",
+        {
+          name:
+            maul?.name,
+          damage:
+            maul?.system?.damage,
+          skill:
+            maul?.system?.skill?.name,
+          contentKey:
+            maul?.flags?.[
+              BOA_TEST_MODULE_ID
+            ]?.contentKey,
+        },
+        {
+          name:
+            "Maul",
+          damage:
+            "D6",
+          skill:
+            "Mentalism",
+          contentKey:
+            "druid-form-attacks.maul",
+        },
+      );
+
+      boaCheckEqual(
+        checks,
+        "Cat Form PL2 builds managed 3D6 Shred",
+        {
+          name:
+            shred?.name,
+          damage:
+            shred?.system?.damage,
+          skill:
+            shred?.system?.skill?.name,
+          contentKey:
+            shred?.flags?.[
+              BOA_TEST_MODULE_ID
+            ]?.contentKey,
+        },
+        {
+          name:
+            "Shred",
+          damage:
+            "3D6",
+          skill:
+            "Mentalism",
+          contentKey:
+            "druid-form-attacks.shred",
+        },
+      );
+
+      boaCheckEqual(
+        checks,
+        "Travel Form uses final-phase Movement x2",
+        travel?.system?.changes?.[
+          0
+        ],
+        {
+          key:
+            "system.movement.value",
+          type:
+            "multiply",
+          value:
+            "2",
+          phase:
+            "final",
+          priority:
+            20,
+        },
+      );
+    }
+  }
+
 return boaFinish(
   testKey,
   testName,

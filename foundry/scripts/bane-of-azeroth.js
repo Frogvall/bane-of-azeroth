@@ -1,4 +1,14 @@
 import {
+  buildDruidFormAttackData,
+  buildDruidTravelMovementEffectData,
+  getBestDruidNaturalAttackSkill,
+  isDruidFormWeaponUseAllowed,
+  onUpdateDruidFormMechanicsActor,
+  patchDruidFormWeaponUsage,
+  reconcileAllDruidFormMechanics,
+  reconcileDruidFormMechanics,
+} from "./druid-form-mechanics.js";
+import {
   onRenderControlledMonsterSheet } from "./monster-attack-control.js";
 import {
   registerCommonAnimalStatusSocket,
@@ -269,6 +279,12 @@ Hooks.once("init", () => {
       executeDruidFormLifecycleRequest,
       getDruidIncarnationDefinitions,
       isDruidFormsAutomationEnabled,
+      getBestDruidNaturalAttackSkill,
+      buildDruidFormAttackData,
+      buildDruidTravelMovementEffectData,
+      reconcileDruidFormMechanics,
+      reconcileAllDruidFormMechanics,
+      isDruidFormWeaponUseAllowed,
 };
   }
 
@@ -485,6 +501,19 @@ Hooks.once("ready", async () => {
   } catch (error) {
     console.error(
       `${MODULE_ID} | Failed to initialize Death Knight Runes automation.`,
+      error,
+    );
+  }
+  Hooks.on(
+    "updateActor",
+    onUpdateDruidFormMechanicsActor,
+  );
+  try {
+    await patchDruidFormWeaponUsage();
+    await reconcileAllDruidFormMechanics();
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize Druid form mechanics.`,
       error,
     );
   }

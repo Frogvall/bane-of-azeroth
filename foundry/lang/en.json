@@ -136,11 +136,16 @@
         "deathKnightRunesHint": "Show and manage the rune engraved through Death Knight's Rebirth. Fallen Crusader and Razorice remain manual reminders; Unending Thirst adds +2 Movement while its selected melee weapon is wielded.",
         "druidFormsName": "Druid Forms",
         "druidFormsHint": "Automate Druid incarnation forms and associated configurable form artwork.",
+        "druidFormMovementName": "Druid Travel Movement",
+        "druidFormMovementHint": "Double Movement while Travel Form is active. Water movement, underwater breathing, SWIMMING, and flight remain manual rules.",
+        "druidFormAttackName": "Druid Form Attacks",
+        "druidFormAttackHint": "Create temporary Maul/Shred natural attacks in Bear/Cat Form and prevent use of other weapons while transformed.",
         "druidFormArtworkName": "Druid Form Artwork",
         "druidFormArtworkHint": "Automatically switch Druid portraits and tokens when forms change, while preserving each humanoid and scene-token image."
       }
     },
     "notifications": {
+      "druidFormNaturalAttackOnly": "Only {attack} can be used in this Druid form.",
       "summonCleanupFailed": "The rest completed, but one or more summoned tokens could not be removed. Ask a GM to remove them manually.",
       "abilityActionNotEnoughWp": "Not enough WP to use this ability.",
       "abilityActionNoSourceToken": "A token for the acting character is required for range automation.",

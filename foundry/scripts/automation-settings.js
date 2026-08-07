@@ -12,6 +12,8 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   FROSTREAPER: "frostreaperAutomation",
   DEATH_KNIGHT_RUNES: "deathKnightRunesAutomation",
   DRUID_FORMS: "druidFormsAutomation",
+  DRUID_FORM_MOVEMENT: "druidFormMovementAutomation",
+  DRUID_FORM_ATTACKS: "druidFormAttackAutomation",
   DRUID_FORM_ARTWORK: "druidFormArtworkAutomation",
 });
 
@@ -304,6 +306,52 @@ export function isDruidFormsAutomationEnabled(
   );
 }
 
+function reconcileDruidFormMechanicsOnChange() {
+  queueMicrotask(() => {
+    const reconcile =
+      globalThis.game?.modules
+        ?.get?.(MODULE_ID)
+        ?.api
+        ?.reconcileAllDruidFormMechanics;
+
+    if (
+      typeof reconcile !==
+        "function"
+    ) {
+      return;
+    }
+
+    void Promise.resolve(
+      reconcile(),
+    ).catch(
+      error => {
+        console.error(
+          `${MODULE_ID} | Failed to reconcile Druid form mechanics.`,
+          error,
+        );
+      },
+    );
+  });
+}
+
+export function isDruidFormMovementAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_MOVEMENT,
+    settings,
+  );
+}
+
+export function isDruidFormAttackAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_ATTACKS,
+    settings,
+  );
+}
+
 function restoreDruidArtworkOnChange(value) {
   if (value !== false) return;
   queueMicrotask(() => {
@@ -405,6 +453,18 @@ export class AutomationSettingsForm
       "BOA.settings.automation.druidFormsName",
       "BOA.settings.automation.druidFormsHint",
     ),
+    druidFormMovementAutomation: booleanField(
+      "BOA.settings.automation.druidFormMovementName",
+      "BOA.settings.automation.druidFormMovementHint",
+    ),
+    druidFormAttackAutomation: booleanField(
+      "BOA.settings.automation.druidFormAttackName",
+      "BOA.settings.automation.druidFormAttackHint",
+    ),
+        druidFormMovementAutomation:
+          isDruidFormMovementAutomationEnabled(),
+        druidFormAttackAutomation:
+          isDruidFormAttackAutomationEnabled(),
     druidFormArtworkAutomation: booleanField(
       "BOA.settings.automation.druidFormArtworkName",
       "BOA.settings.automation.druidFormArtworkHint",
@@ -444,6 +504,10 @@ export class AutomationSettingsForm
           isDeathKnightRunesAutomationEnabled(),
         druidFormsAutomation:
           isDruidFormsAutomationEnabled(),
+        druidFormMovementAutomation:
+          isDruidFormMovementAutomationEnabled(),
+        druidFormAttackAutomation:
+          isDruidFormAttackAutomationEnabled(),
         druidFormArtworkAutomation:
           isDruidFormArtworkAutomationEnabled(),
       },
@@ -560,6 +624,24 @@ export class AutomationSettingsForm
         Boolean(
           values[
             AUTOMATION_SETTING_KEYS.DRUID_FORMS
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_FORM_MOVEMENT,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.DRUID_FORM_MOVEMENT
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_FORM_ATTACKS,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.DRUID_FORM_ATTACKS
           ],
         ),
       ),
@@ -696,6 +778,30 @@ export function registerAutomationSettings(
       "BOA.settings.automation.druidFormsName",
       "BOA.settings.automation.druidFormsHint",
     ),
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_MOVEMENT,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.druidFormMovementName",
+        "BOA.settings.automation.druidFormMovementHint",
+      ),
+      onChange:
+        reconcileDruidFormMechanicsOnChange,
+    },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_ATTACKS,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.druidFormAttackName",
+        "BOA.settings.automation.druidFormAttackHint",
+      ),
+      onChange:
+        reconcileDruidFormMechanicsOnChange,
+    },
   );
   settings.register(
     MODULE_ID,

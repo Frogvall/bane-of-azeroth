@@ -15,7 +15,7 @@
     "symbolic-display-reference": 19,
     "symbolic-reference": 64,
     "uuid-link": 66,
-    "uuid-literal": 72
+    "uuid-literal": 73
   },
   "entries": [
     {
@@ -2139,6 +2139,15 @@
       "target": "BOA.deathKnightRunes",
       "classification": "unclassified",
       "snippet": "\"BOA.deathKnightRunes.unendingThirstDescription\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-druid-forms.js",
+      "line": 1099,
+      "column": 12,
+      "target": "Actor.BoaDruidMechanic",
+      "classification": "unclassified",
+      "snippet": "\"Actor.BoaDruidMechanics\","
     },
     {
       "kind": "runtime-uuid-lookup",

@@ -251,7 +251,8 @@ expect(
     expect(renderActorSheetCallbacks).toContain(
       onRenderDruidFormArtworkActorSheet,
     );
-expect(game.settings.register).toHaveBeenCalledTimes(13); // Druid Forms automation registration count // Druid Form Artwork setting
+    // BOA 0.11.7 Druid mechanics automation setting count
+expect(game.settings.register).toHaveBeenCalledTimes(15); // Druid Forms automation registration count // Druid Form Artwork setting
     expect(CONFIG.DoD.weaponFeatureTypes).toMatchObject({
       ammunition: "BOA.weaponFeatureTypes.ammunition",
       armorPiercing: "BOA.weaponFeatureTypes.armorPiercing",

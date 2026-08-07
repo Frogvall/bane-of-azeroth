@@ -193,6 +193,8 @@ describe("ApplicationV2 automation settings form", () => {
       frostreaperAutomation: false,
       deathKnightRunesAutomation: false,
       druidFormsAutomation: false,
+      druidFormMovementAutomation: false,
+      druidFormAttackAutomation: false,
       druidFormArtworkAutomation: false,
     });
     expect(context.buttons).toEqual([
@@ -228,12 +230,15 @@ describe("ApplicationV2 automation settings form", () => {
           frostreaperAutomation: true,
           deathKnightRunesAutomation: true,
           druidFormsAutomation: true,
+          druidFormMovementAutomation: true,
+          druidFormAttackAutomation: true,
           druidFormArtworkAutomation: true,
         },
       },
     );
 
-    expect(set).toHaveBeenCalledTimes(12); // Druid Form Artwork setting
+    // BOA 0.11.7 Druid mechanics setting count
+    expect(set).toHaveBeenCalledTimes(14); // Druid Form Artwork setting
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,
