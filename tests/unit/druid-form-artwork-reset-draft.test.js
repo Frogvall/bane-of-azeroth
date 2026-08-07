@@ -75,33 +75,71 @@ describe(
     );
 
     test(
-      "dialog render binds Reset without persisting Actor data",
+      "reset binder owns the click handler without persisting Actor data",
       () => {
-        const start =
+        const dialogStart =
           source.indexOf(
             "export async function openDruidFormArtworkDialog(",
           );
-        const end =
+        const dialogEnd =
           source.indexOf(
             "\nfunction artworkRoot(",
-            start,
+            dialogStart,
           );
-        const block =
+        const dialogBlock =
           source.slice(
-            start,
-            end,
+            dialogStart,
+            dialogEnd,
           );
 
-        expect(block).toContain(
+        expect(
+          dialogBlock,
+        ).toContain(
           "boaBindDruidResetDraft",
         );
-        expect(block).toContain(
+
+        const binderStart =
+          source.indexOf(
+            "function boaBindDruidResetDraft(",
+          );
+        const binderEnd =
+          source.indexOf(
+            "\nexport async function openDruidFormArtworkDialog(",
+            binderStart,
+          );
+        const binderBlock =
+          source.slice(
+            binderStart,
+            binderEnd,
+          );
+
+        expect(
+          binderStart,
+        ).toBeGreaterThanOrEqual(
+          0,
+        );
+        expect(
+          binderEnd,
+        ).toBeGreaterThan(
+          binderStart,
+        );
+        expect(
+          binderBlock,
+        ).toContain(
           "button.addEventListener",
         );
-        expect(block).not.toMatch(
-          /boaBindDruidResetDraft[\s\S]*?(?:setFlag|resetDruidFormArtwork|setDruidFormArtwork)/,
+        expect(
+          binderBlock,
+        ).toContain(
+          '"click"',
+        );
+        expect(
+          binderBlock,
+        ).not.toMatch(
+          /\b(?:setFlag|unsetFlag|resetDruidFormArtwork|setDruidFormArtwork)\s*\(/,
         );
       },
     );
+
   },
 );
