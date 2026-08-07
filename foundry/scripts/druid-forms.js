@@ -201,37 +201,63 @@ async function persistArtwork(
     return false;
   }
 
+  const nextOverrides =
+    structuredClone(
+      overrides ?? {},
+    );
+
+  /*
+   * Replace the full artwork flag. Foundry merges object-valued flag updates,
+   * so setFlag() alone cannot delete an omitted profile while other profile
+   * overrides remain.
+   */
   if (
-    Object.keys(
-      overrides,
-    ).length ===
-      0 &&
-    typeof actor.unsetFlag ===
-      "function"
+    typeof actor.unsetFlag === "function" &&
+    typeof actor.setFlag === "function"
   ) {
     await actor.unsetFlag(
       MODULE_ID,
       ARTWORK_FLAG,
     );
+
+    if (
+      Object.keys(
+        nextOverrides,
+      ).length > 0
+    ) {
+      await actor.setFlag(
+        MODULE_ID,
+        ARTWORK_FLAG,
+        nextOverrides,
+      );
+    }
+
     return true;
   }
 
-  if (
-    typeof actor.setFlag !==
-      "function"
-  ) {
-    return false;
-  }
+  actor.flags ??= {};
+  actor.flags[MODULE_ID] ??= {};
 
-  await actor.setFlag(
-    MODULE_ID,
-    ARTWORK_FLAG,
-    overrides,
-  );
+  if (
+    Object.keys(
+      nextOverrides,
+    ).length === 0
+  ) {
+    delete actor.flags[
+      MODULE_ID
+    ][
+      ARTWORK_FLAG
+    ];
+  } else {
+    actor.flags[
+      MODULE_ID
+    ][
+      ARTWORK_FLAG
+    ] = nextOverrides;
+  }
 
   return true;
 }
-
 export function getDruidFormProfileDefinitions() {
   return PROFILE_DEFINITIONS.map(
     cloneProfile,
@@ -748,50 +774,217 @@ async function restoreDruidHumanoidArtworkNow(
     scenes = globalThis.game?.scenes,
   } = {},
 ) {
-  const baseline = baselineState(actor);
-  if (!actor || !baseline) return false;
+  const baseline =
+    baselineState(actor);
+
+  if (!actor || !baseline) {
+    return false;
+  }
+
+  const currentProfileArtwork =
+    baseline.profileKey
+      ? getDruidFormArtwork(
+          actor,
+          baseline.profileKey,
+        )
+      : null;
+
+  const managedPortraitSources =
+    new Set(
+      [
+        baseline.actor?.applied,
+        currentProfileArtwork?.portrait,
+      ].filter(
+        value =>
+          typeof value === "string" &&
+          value.length > 0,
+      ),
+    );
+
+  const managedTokenSources =
+    new Set(
+      [
+        baseline.prototypeToken?.applied,
+        currentProfileArtwork?.token,
+      ].filter(
+        value =>
+          typeof value === "string" &&
+          value.length > 0,
+      ),
+    );
 
   const changes = {};
-  if (actor.img === baseline.actor?.applied) {
-    changes.img = baseline.actor?.original ?? null;
-  }
+
   if (
-    actor.prototypeToken?.texture?.src ===
-      baseline.prototypeToken?.applied
+    managedPortraitSources.has(
+      actor.img,
+    )
   ) {
-    changes["prototypeToken.texture.src"] =
+    changes.img =
+      baseline.actor?.original ?? null;
+  }
+
+  if (
+    managedTokenSources.has(
+      actor.prototypeToken?.texture?.src,
+    )
+  ) {
+    changes[
+      "prototypeToken.texture.src"
+    ] =
       baseline.prototypeToken?.original ?? null;
   }
 
-  if (Object.keys(changes).length > 0) {
-    if (typeof actor.update === "function") {
+  if (
+    Object.keys(
+      changes,
+    ).length > 0
+  ) {
+    if (
+      typeof actor.update === "function"
+    ) {
       await actor.update(changes);
     } else {
-      if (Object.hasOwn(changes, "img")) {
-        actor.img = changes.img;
+      if (
+        Object.hasOwn(
+          changes,
+          "img",
+        )
+      ) {
+        actor.img =
+          changes.img;
       }
-      if (Object.hasOwn(changes, "prototypeToken.texture.src")) {
+
+      if (
+        Object.hasOwn(
+          changes,
+          "prototypeToken.texture.src",
+        )
+      ) {
         actor.prototypeToken.texture.src =
-          changes["prototypeToken.texture.src"];
+          changes[
+            "prototypeToken.texture.src"
+          ];
       }
     }
   }
 
-  for (const tokenState of Object.values(baseline.tokens ?? {})) {
-    const token = findSceneToken(tokenState, scenes);
+  const restoredTokenKeys =
+    new Set();
+
+  for (
+    const token
+    of actorSceneTokens(
+      actor,
+      scenes,
+    )
+  ) {
+    const identity =
+      tokenIdentity(token);
+
+    if (!identity) {
+      continue;
+    }
+
+    const tokenState =
+      baseline.tokens?.[
+        identity.key
+      ];
+
+    if (!tokenState) {
+      continue;
+    }
+
+    const acceptedSources =
+      new Set(
+        [
+          ...managedTokenSources,
+          tokenState.applied,
+        ].filter(
+          value =>
+            typeof value === "string" &&
+            value.length > 0,
+        ),
+      );
+
     if (
-      !token ||
-      token?.texture?.src !== tokenState.applied
+      !acceptedSources.has(
+        token?.texture?.src,
+      )
     ) {
       continue;
     }
-    await updateTokenArtwork(token, tokenState.original);
+
+    await updateTokenArtwork(
+      token,
+      tokenState.original,
+    );
+
+    restoredTokenKeys.add(
+      identity.key,
+    );
   }
 
-  await unsetDocumentFlag(actor, ARTWORK_BASELINE_FLAG);
+  for (
+    const [
+      key,
+      tokenState,
+    ]
+    of Object.entries(
+      baseline.tokens ?? {},
+    )
+  ) {
+    if (
+      restoredTokenKeys.has(
+        key,
+      )
+    ) {
+      continue;
+    }
+
+    const token =
+      findSceneToken(
+        tokenState,
+        scenes,
+      );
+
+    if (!token) {
+      continue;
+    }
+
+    const acceptedSources =
+      new Set(
+        [
+          ...managedTokenSources,
+          tokenState.applied,
+        ].filter(
+          value =>
+            typeof value === "string" &&
+            value.length > 0,
+        ),
+      );
+
+    if (
+      !acceptedSources.has(
+        token?.texture?.src,
+      )
+    ) {
+      continue;
+    }
+
+    await updateTokenArtwork(
+      token,
+      tokenState.original,
+    );
+  }
+
+  await unsetDocumentFlag(
+    actor,
+    ARTWORK_BASELINE_FLAG,
+  );
+
   return true;
 }
-
 function primaryActiveGM() {
   const users = globalThis.game?.users;
   if (!users) return null;
