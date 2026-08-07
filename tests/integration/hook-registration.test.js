@@ -233,8 +233,9 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(11);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(11);
+    // BOA 0.11.7 managed effect sheet hook expectation
+        expect(renderActorSheetCallbacks).toHaveLength(12);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(12);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );
