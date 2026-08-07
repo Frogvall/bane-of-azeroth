@@ -574,6 +574,62 @@ async function activateNow(
   };
 }
 
+async function endNow(
+  actor,
+  activationKey,
+  {
+    applyArtwork = applyDruidFormArtwork,
+    restoreArtwork = restoreDruidHumanoidArtwork,
+  } = {},
+) {
+  const definition = Object.values(INCARNATIONS).find(
+    candidate => candidate.key === activationKey,
+  );
+
+  if (!definition) {
+    throw new Error(
+      `Unknown Druid incarnation activation: ${String(activationKey)}`,
+    );
+  }
+
+  const state = cloneState(actor);
+
+  if (state.activations?.[activationKey]?.active !== true) {
+    return {
+      ok: true,
+      action: "end",
+      activationKey,
+      changed: false,
+      currentForm: state.currentForm,
+      state,
+    };
+  }
+
+  delete state.activations[activationKey];
+
+  if (definition.forms.includes(state.currentForm)) {
+    state.currentForm = "humanoid";
+  }
+
+  await persistState(actor, state);
+  await syncArtwork(
+    actor,
+    state,
+    {
+      applyArtwork,
+      restoreArtwork,
+    },
+  );
+
+  return {
+    ok: true,
+    action: "end",
+    activationKey,
+    changed: true,
+    currentForm: state.currentForm,
+    state,
+  };
+}
 async function switchNow(
   actor,
   targetForm,
@@ -1071,6 +1127,28 @@ export function switchDruidForm(
   );
 }
 
+export function endDruidIncarnation(
+  actor,
+  activationKey,
+  options = {},
+) {
+  if (
+    options.bypassAuthority === true ||
+    !currentUserNeedsGM(actor)
+  ) {
+    return endNow(
+      actor,
+      activationKey,
+      options,
+    );
+  }
+
+  return requestLifecycleAction(
+    actor,
+    "end",
+    { activationKey },
+  );
+}
 export function expireDruidIncarnationsForRest(
   actor,
   restType,
@@ -1204,6 +1282,20 @@ export async function executeDruidFormLifecycleRequest(
         mode:
           payload.mode ??
           "action",
+        bypassAuthority:
+          true,
+      },
+    );
+  }
+
+  if (
+    payload?.action ===
+      "end"
+  ) {
+    return endDruidIncarnation(
+      actor,
+      payload.activationKey,
+      {
         bypassAuthority:
           true,
       },
@@ -1982,6 +2074,12 @@ export function patchDruidFormRestLifecycle({
     globalThis.CONFIG?.Actor
       ?.documentClass,
 } = {}) {
+  patchRestMethod(
+    actorClass,
+    "restReset",
+    "shift",
+  );
+
   return {
     restStretch:
       patchRestMethod(

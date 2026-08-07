@@ -563,6 +563,26 @@ export function patchSummonRestLifecycle({
     ),
   };
 
+  const restResetStatus =
+    patchRestMethod(
+      actorClass,
+      "restReset",
+      SUMMON_DURATION_SHIFT,
+      requestCleanupFn,
+      reportFailureFn,
+    );
+
+  if (
+    restResetStatus ===
+      "missing"
+  ) {
+    console.error(
+      `${MODULE_ID} | Dragonbane Actor.`
+      + "restReset is unavailable; "
+      + "summon cleanup was not patched for Pass One Shift.",
+    );
+  }
+
   for (
     const [methodName, status]
     of Object.entries(result)

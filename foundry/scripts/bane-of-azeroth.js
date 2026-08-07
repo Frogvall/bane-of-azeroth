@@ -152,6 +152,7 @@ import {
   setDruidFormArtwork,
 } from "./druid-forms.js";
 import {
+  endDruidIncarnation,
   activateDruidIncarnation,
   executeDruidFormLifecycleRequest,
   expireDruidIncarnationsForRest,
@@ -165,6 +166,14 @@ import {
   registerDruidFormLifecycleSocket,
   switchDruidForm,
 } from "./druid-form-lifecycle.js";
+import {
+  endAllManagedEffects,
+  endManagedEffect,
+  getManagedEffectsForActor,
+  onRenderManagedEffectLifecycleActorSheet,
+  openManagedEffectEndDialog,
+  registerManagedEffectLifecycleSocket,
+} from "./managed-effect-lifecycle.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchEvokersLegacySpellCost,
@@ -252,6 +261,11 @@ Hooks.once("init", () => {
       expireDruidIncarnationsForRest,
       getDruidFormSwitchOptions,
       openDruidFormSwitchDialog,
+      endDruidIncarnation,
+      getManagedEffectsForActor,
+      endManagedEffect,
+      endAllManagedEffects,
+      openManagedEffectEndDialog,
       executeDruidFormLifecycleRequest,
       getDruidIncarnationDefinitions,
       isDruidFormsAutomationEnabled,
@@ -401,6 +415,10 @@ Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderDruidFormLifecycleActorSheet,
   );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderManagedEffectLifecycleActorSheet,
+  );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
@@ -477,6 +495,7 @@ Hooks.once("ready", async () => {
   registerDemonHunterInitiationSocket();
   registerDruidFormArtworkSocket();
   registerDruidFormLifecycleSocket();
+  registerManagedEffectLifecycleSocket();
   patchDruidFormRestLifecycle();
   registerVoidwalkerSufferingSocket();
   registerVoidwalkerSufferingDamageCardHook();
