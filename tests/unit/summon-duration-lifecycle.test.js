@@ -297,6 +297,10 @@ describe("Dragonbane rest integration", () => {
         events.push("original-shift");
         return "shift-result";
       }
+
+      async restReset() {
+        return true;
+      }
     }
 
     expect(
@@ -351,6 +355,10 @@ describe("Dragonbane rest integration", () => {
       async restShift() {
         return undefined;
       }
+
+      async restReset() {
+        return true;
+      }
     }
 
     patchSummonRestLifecycle({
@@ -380,6 +388,10 @@ describe("Dragonbane rest integration", () => {
 
       async restShift() {
         return undefined;
+      }
+
+      async restReset() {
+        return true;
       }
     }
 
