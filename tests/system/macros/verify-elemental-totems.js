@@ -1049,6 +1049,42 @@ try {
   );
 }
 
+// BOA 0.11.7 unified expiration RED/GREEN contract.
+{
+  const summonMarker = Symbol.for(
+    `${BOA_TEST_MODULE_ID}.summonDurationLifecycle`,
+  );
+  const prototype =
+    CONFIG.Actor?.documentClass?.prototype;
+  const lifecycleApi =
+    game.modules.get(
+      BOA_TEST_MODULE_ID,
+    )?.api ?? {};
+
+  boaCheck(
+    checks,
+    "Pass One Shift removes managed summons",
+    Boolean(
+      prototype?.restReset?.[summonMarker],
+    ),
+    prototype?.restReset?.name ?? null,
+  );
+
+  for (const functionName of [
+    "getManagedEffectsForActor",
+    "endManagedEffect",
+    "endAllManagedEffects",
+    "openManagedEffectEndDialog",
+  ]) {
+    boaCheck(
+      checks,
+      `Managed summon lifecycle API exposes ${functionName}`,
+      typeof lifecycleApi[functionName] === "function",
+      typeof lifecycleApi[functionName],
+    );
+  }
+}
+
 return boaFinish(
   "elemental-totems",
   "BOA DEV – Verify Elemental Totems",

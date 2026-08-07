@@ -928,6 +928,50 @@ try {
     }
   }
 
+// BOA 0.11.7 unified expiration RED/GREEN contract.
+  {
+    const summonMarker = Symbol.for(
+      `${BOA_TEST_MODULE_ID}.summonDurationLifecycle`,
+    );
+    const druidMarker = Symbol.for(
+      `${BOA_TEST_MODULE_ID}.druidFormLifecycle.rest`,
+    );
+    const prototype =
+      CONFIG.Actor?.documentClass?.prototype;
+
+    boaCheck(
+      checks,
+      "Pass One Shift uses the shared summon lifecycle",
+      Boolean(
+        prototype?.restReset?.[summonMarker],
+      ),
+      prototype?.restReset?.name ?? null,
+    );
+    boaCheck(
+      checks,
+      "Pass One Shift expires Druid incarnations",
+      Boolean(
+        prototype?.restReset?.[druidMarker],
+      ),
+      prototype?.restReset?.name ?? null,
+    );
+
+    for (const functionName of [
+      "endDruidIncarnation",
+      "getManagedEffectsForActor",
+      "endManagedEffect",
+      "endAllManagedEffects",
+      "openManagedEffectEndDialog",
+    ]) {
+      boaCheck(
+        checks,
+        `Unified effect lifecycle API exposes ${functionName}`,
+        typeof api[functionName] === "function",
+        typeof api[functionName],
+      );
+    }
+  }
+
 } catch (error) {
   boaCheck(
     checks,
