@@ -24,7 +24,7 @@ describe(
   "Druid placed-token humanoid restore contract",
   () => {
     test(
-      "restore enumerates live Actor Scene Tokens and accepts managed current-form provenance",
+      "restore uses TokenDocument-local baseline provenance for live Scene Tokens",
       () => {
         const start =
           source.indexOf(
@@ -45,14 +45,17 @@ describe(
           "actorSceneTokens(",
         );
         expect(block).toContain(
-          "managedTokenSources",
-        );
+      "TOKEN_ARTWORK_BASELINE_FLAG",
+    );
         expect(block).toContain(
-          "currentProfileArtwork",
-        );
+      "tokenBaseline.applied",
+    );
+    expect(block).toContain(
+      "tokenBaseline.original",
+    );
         expect(block).toContain(
-          "restoredTokenKeys",
-        );
+      "unsetDocumentFlag(",
+    );
       },
     );
   },
