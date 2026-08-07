@@ -1467,38 +1467,50 @@ function formChecked(form, name) {
   return form?.elements?.namedItem?.(name)?.checked === true;
 }
 
-function boaBindDruidResetDraft(
+export function boaBindDruidResetDraft(
   actor,
   root,
 ) {
-  const dialogRoot =
+  const wrapper =
     root?.element ??
     root;
 
-  if (!dialogRoot?.querySelectorAll) {
+  const dialogForm =
+    wrapper?.matches?.(
+      "form.boa-druid-form-artwork-dialog",
+    )
+      ? wrapper
+      : (
+        wrapper?.querySelector?.(
+          "form.boa-druid-form-artwork-dialog",
+        ) ??
+        wrapper?.querySelector?.(
+          "form",
+        ) ??
+        null
+      );
+
+  if (
+    !dialogForm?.querySelectorAll ||
+    !dialogForm?.elements
+  ) {
     return false;
   }
-
-  const resetState =
-    profileKey =>
-      dialogRoot.elements
-        ?.namedItem?.(
-          `reset.${profileKey}`,
-        );
 
   const setResetState =
     (
       profileKey,
-      value,
+      active,
     ) => {
       const input =
-        resetState(
-          profileKey,
-        );
+        dialogForm.elements
+          ?.namedItem?.(
+            `reset.${profileKey}`,
+          );
 
       if (input) {
         input.value =
-          value
+          active
             ? "1"
             : "0";
       }
@@ -1515,10 +1527,7 @@ function boaBindDruidResetDraft(
       }
 
       const next =
-        String(
-          value ??
-          "",
-        );
+        String(value ?? "");
 
       picker.value =
         next;
@@ -1538,7 +1547,7 @@ function boaBindDruidResetDraft(
       }
 
       const preview =
-        dialogRoot.querySelector?.(
+        dialogForm.querySelector?.(
           `[id="${previewId}"]`,
         );
 
@@ -1551,15 +1560,14 @@ function boaBindDruidResetDraft(
   for (
     const picker
     of Array.from(
-      dialogRoot.querySelectorAll(
+      dialogForm.querySelectorAll(
         'file-picker[name^="portrait."], '
         + 'file-picker[name^="token."]',
       ),
     )
   ) {
     if (
-      picker?.dataset
-        ?.boaResetDraftPickerBound ===
+      picker?.dataset?.boaResetDraftPickerBound ===
       "true"
     ) {
       continue;
@@ -1580,15 +1588,8 @@ function boaBindDruidResetDraft(
           "";
 
         const profileKey =
-          picker?.dataset
-            ?.profileKey ??
-          String(
-            name,
-          ).split(
-            ".",
-          )[
-            1
-          ];
+          picker?.dataset?.profileKey ??
+          String(name).split(".")[1];
 
         if (profileKey) {
           setResetState(
@@ -1625,14 +1626,13 @@ function boaBindDruidResetDraft(
   for (
     const button
     of Array.from(
-      dialogRoot.querySelectorAll(
+      dialogForm.querySelectorAll(
         ".boa-druid-artwork-reset[data-reset-profile]",
       ),
     )
   ) {
     if (
-      button?.dataset
-        ?.boaResetDraftBound ===
+      button?.dataset?.boaResetDraftBound ===
       "true"
     ) {
       continue;
@@ -1649,36 +1649,31 @@ function boaBindDruidResetDraft(
         event.preventDefault?.();
 
         const profileKey =
-          button?.dataset
-            ?.resetProfile;
+          button?.dataset?.resetProfile;
 
         if (!profileKey) {
           return;
         }
 
         const portrait =
-          dialogRoot.elements
+          dialogForm.elements
             ?.namedItem?.(
               `portrait.${profileKey}`,
             );
         const token =
-          dialogRoot.elements
+          dialogForm.elements
             ?.namedItem?.(
               `token.${profileKey}`,
             );
 
         setPicker(
           portrait,
-          button.dataset
-            ?.defaultPortrait ??
-            "",
+          button.dataset?.defaultPortrait ?? "",
           `boa-druid-artwork-preview-portrait-${profileKey}`,
         );
         setPicker(
           token,
-          button.dataset
-            ?.defaultToken ??
-            "",
+          button.dataset?.defaultToken ?? "",
           `boa-druid-artwork-preview-token-${profileKey}`,
         );
 
@@ -1692,7 +1687,6 @@ function boaBindDruidResetDraft(
 
   return true;
 }
-
 export async function openDruidFormArtworkDialog(actor) {
   if (
     !canManageDruidActor(actor)
