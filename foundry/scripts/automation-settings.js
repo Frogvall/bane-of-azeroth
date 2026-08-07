@@ -461,10 +461,6 @@ export class AutomationSettingsForm
       "BOA.settings.automation.druidFormAttackName",
       "BOA.settings.automation.druidFormAttackHint",
     ),
-        druidFormMovementAutomation:
-          isDruidFormMovementAutomationEnabled(),
-        druidFormAttackAutomation:
-          isDruidFormAttackAutomationEnabled(),
     druidFormArtworkAutomation: booleanField(
       "BOA.settings.automation.druidFormArtworkName",
       "BOA.settings.automation.druidFormArtworkHint",
