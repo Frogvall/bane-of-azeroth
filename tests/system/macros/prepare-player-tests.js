@@ -258,6 +258,38 @@ if (!boaCheck(
   );
 }
 
+const druidSavageContentKey =
+  "spells.savage-incarnation";
+const druidSavageSource =
+  boaFindWorldItem(
+    druidSavageContentKey,
+  )
+  ?? boaCollectionValues(
+    game.items,
+  ).find(
+    item =>
+      boaContentKey(item) ===
+        druidSavageContentKey,
+  )
+  ?? null;
+if (!boaCheck(
+  checks,
+  "Savage Incarnation source spell is imported for the Druid real-Player flow",
+  Boolean(
+    druidSavageSource,
+  ),
+  druidSavageContentKey,
+)) {
+  notes.push(
+    "Import the current Bane of Azeroth Adventure first.",
+  );
+  return boaFinish(
+    testKey,
+    testName,
+    checks,
+    notes,
+  );
+}
 const impTemplate = boaFindWorldActor(
   "actors.summoned-monsters.imp",
 );
@@ -329,6 +361,11 @@ const originalDeathKnightRunesAutomationSetting =
     BOA_TEST_MODULE_ID,
     "deathKnightRunesAutomation",
   );
+const originalDruidFormsAutomationSetting =
+  game.settings.get(
+    BOA_TEST_MODULE_ID,
+    "druidFormsAutomation",
+  );
 const previousActiveSceneId = game.scenes.active?.id ?? null;
 const sessionId =
   `boa-player-${Date.now()}-${foundry.utils.randomID(8)}`;
@@ -389,6 +426,24 @@ try {
     "system.willPoints.value": 10,
   });
 
+  const [druidSavageItem] =
+    await actor.createEmbeddedDocuments(
+      "Item",
+      [
+        markFixture(
+          boaCloneEmbeddedItem(
+            druidSavageSource,
+          ),
+          sessionId,
+          "druid-savage-incarnation",
+        ),
+      ],
+    );
+  if (!druidSavageItem) {
+    throw new Error(
+      "Savage Incarnation could not be embedded for the Druid real-Player flow.",
+    );
+  }
   const shiftActor = await Actor.create(
     markFixture({
       name: `[BOA TEST] Shift Rest Character ${suffix}`,
@@ -847,6 +902,11 @@ try {
     true,
   );
 
+  await game.settings.set(
+    BOA_TEST_MODULE_ID,
+    "druidFormsAutomation",
+    true,
+  );
   const session = {
     schemaVersion: sessionSchemaVersion,
     sessionId,
@@ -878,6 +938,9 @@ try {
       shiftActor.id,
     demonHunterInitiationSourceItemId:
       demonHunterInitiationSourceItem.id,
+    druidSavageItemId:
+      druidSavageItem.id,
+    originalDruidFormsAutomationSetting,
     previousActiveSceneId,
     originalAutomationSetting,
     originalDemonAutomationSetting,
@@ -1157,6 +1220,17 @@ try {
   } catch (settingError) {
     notes.push(
       `Could not restore Death Knight Runes automation: ${settingError.message}`,
+    );
+  }
+  try {
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      "druidFormsAutomation",
+      originalDruidFormsAutomationSetting,
+    );
+  } catch (settingError) {
+    notes.push(
+      `Could not restore Druid Forms automation: ${settingError.message}`,
     );
   }
   try {

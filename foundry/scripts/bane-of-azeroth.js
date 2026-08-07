@@ -151,6 +151,20 @@ import {
   resetDruidFormArtwork,
   setDruidFormArtwork,
 } from "./druid-forms.js";
+import {
+  activateDruidIncarnation,
+  executeDruidFormLifecycleRequest,
+  expireDruidIncarnationsForRest,
+  getDruidFormSwitchOptions,
+  getDruidIncarnationDefinitions,
+  isDruidFormsAutomationEnabled,
+  onCreateDruidFormSpellMessage,
+  onRenderDruidFormLifecycleActorSheet,
+  openDruidFormSwitchDialog,
+  patchDruidFormRestLifecycle,
+  registerDruidFormLifecycleSocket,
+  switchDruidForm,
+} from "./druid-form-lifecycle.js";
 import { registerAutomationSettings } from "./automation-settings.js";
 import {
   patchEvokersLegacySpellCost,
@@ -233,6 +247,14 @@ Hooks.once("init", () => {
       openDruidFormArtworkDialog,
       restoreAllDruidFormArtwork,
       restoreDruidHumanoidArtwork,
+      activateDruidIncarnation,
+      switchDruidForm,
+      expireDruidIncarnationsForRest,
+      getDruidFormSwitchOptions,
+      openDruidFormSwitchDialog,
+      executeDruidFormLifecycleRequest,
+      getDruidIncarnationDefinitions,
+      isDruidFormsAutomationEnabled,
 };
   }
 
@@ -328,6 +350,10 @@ Hooks.on(
     "createChatMessage",
     onCommonAnimalRollDamageChatMessage
   );
+  Hooks.on(
+    "createChatMessage",
+    onCreateDruidFormSpellMessage,
+  );
   Hooks.on("updateChatMessage", onUpdateElementalTotemChatMessage);
   Hooks.on(
     "updateChatMessage",
@@ -370,6 +396,10 @@ Hooks.on(
   Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderDruidFormArtworkActorSheet,
+  );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderDruidFormLifecycleActorSheet,
   );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
 
@@ -446,6 +476,8 @@ Hooks.once("ready", async () => {
   registerWarlockDemonSocket();
   registerDemonHunterInitiationSocket();
   registerDruidFormArtworkSocket();
+  registerDruidFormLifecycleSocket();
+  patchDruidFormRestLifecycle();
   registerVoidwalkerSufferingSocket();
   registerVoidwalkerSufferingDamageCardHook();
   registerCommonAnimalStatusSocket();

@@ -305,6 +305,36 @@ for (const preparedSession of sessions) {
       );
     }
   }
+  if (
+    Object.prototype.hasOwnProperty.call(
+      preparedSession,
+      "originalDruidFormsAutomationSetting",
+    )
+  ) {
+    try {
+      await game.settings.set(
+        BOA_TEST_MODULE_ID,
+        "druidFormsAutomation",
+        preparedSession.originalDruidFormsAutomationSetting,
+      );
+      boaCheckEqual(
+        checks,
+        `Restored Druid Forms automation for ${preparedSession.sessionId}`,
+        game.settings.get(
+          BOA_TEST_MODULE_ID,
+          "druidFormsAutomation",
+        ),
+        preparedSession.originalDruidFormsAutomationSetting,
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        `Restored Druid Forms automation for ${preparedSession.sessionId}`,
+        false,
+        error.stack ?? error.message,
+      );
+    }
+  }
   try {
     const previousScene = preparedSession.previousActiveSceneId
       ? game.scenes.get(preparedSession.previousActiveSceneId)

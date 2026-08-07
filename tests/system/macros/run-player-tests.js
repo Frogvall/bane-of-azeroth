@@ -2187,6 +2187,143 @@ if (
   );
 }
 
+// BOA 0.11.7 Druid lifecycle real-Player authority flow.
+const druidSavageItem =
+  actor?.items?.get?.(
+    session.druidSavageItemId,
+  )
+  ?? boaCollectionValues(
+    actor?.items,
+  ).find(
+    item =>
+      boaContentKey(item) ===
+        "spells.savage-incarnation",
+  )
+  ?? null;
+if (actor && druidSavageItem) {
+  try {
+    const druidApi =
+      game.modules.get(
+        BOA_TEST_MODULE_ID,
+      )?.api ?? {};
+    const activateDruidIncarnation =
+      druidApi.activateDruidIncarnation;
+    const switchDruidForm =
+      druidApi.switchDruidForm;
+    const getDruidFormState =
+      druidApi.getDruidFormState;
+
+    if (
+      typeof activateDruidIncarnation !== "function"
+      || typeof switchDruidForm !== "function"
+      || typeof getDruidFormState !== "function"
+    ) {
+      throw new Error(
+        "The Druid lifecycle Player authority API is unavailable.",
+      );
+    }
+
+    await actor.update({
+      "system.willPoints.value": 10,
+    });
+
+    await activateDruidIncarnation(
+      actor,
+      "spells.savage-incarnation",
+      2,
+      {
+        initialForm: "travel",
+      },
+    );
+
+    await boaWaitFor(
+      () => {
+        const state =
+          getDruidFormState(actor);
+        return (
+          state.currentForm === "travel"
+          && state.activations?.savage?.active === true
+          && state.activations?.savage?.powerLevel === 2
+        )
+          ? state
+          : null;
+      },
+      {
+        timeout: 10000,
+        interval: 100,
+        description:
+          "Savage Incarnation Player activation through the active GM",
+      },
+    );
+
+    boaCheck(
+      checks,
+      "Real Player can activate Savage Incarnation through GM authority",
+      getDruidFormState(actor).currentForm === "travel",
+      getDruidFormState(actor),
+    );
+
+    const wpBeforeFree =
+      Number(
+        actor.system?.willPoints?.value ?? 0,
+      );
+    await switchDruidForm(
+      actor,
+      "humanoid",
+      {
+        mode: "free",
+      },
+    );
+
+    await boaWaitFor(
+      () => (
+        getDruidFormState(actor).currentForm === "humanoid"
+        && Number(actor.system?.willPoints?.value ?? 0)
+          === wpBeforeFree - 1
+      ),
+      {
+        timeout: 10000,
+        interval: 100,
+        description:
+          "Druid free-action form change through the active GM",
+      },
+    );
+
+    boaCheckEqual(
+      checks,
+      "Real Player free-action form change spends exactly 1 WP",
+      {
+        form:
+          getDruidFormState(actor).currentForm,
+        wp:
+          Number(actor.system?.willPoints?.value ?? 0),
+      },
+      {
+        form: "humanoid",
+        wp: wpBeforeFree - 1,
+      },
+    );
+  } catch (error) {
+    boaCheck(
+      checks,
+      "Real-player Druid form lifecycle completed",
+      false,
+      error.stack ?? error.message,
+    );
+  }
+} else {
+  boaCheck(
+    checks,
+    "Prepared Druid real-Player fixture is available",
+    false,
+    {
+      actor:
+        actor?.id ?? null,
+      spell:
+        druidSavageItem?.id ?? null,
+    },
+  );
+}
 notes.push(
   "The player suite ran in a genuine Player User context.",
 );

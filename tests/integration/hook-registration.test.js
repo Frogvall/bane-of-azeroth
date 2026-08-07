@@ -166,14 +166,15 @@ expect([
       "renderDoDActorBaseSheet",
       "preUpdateItem",
     ]);
+    // BOA 0.11.7 Druid lifecycle adds one createChatMessage and one renderDoDActorBaseSheet hook.
     expect(
       createChatMessageCallbacks
-    ).toHaveLength(5);
+    ).toHaveLength(6);
     expect(
       new Set(
         createChatMessageCallbacks
       ).size
-    ).toBe(5);
+    ).toBe(6);
     expect(
       onUpdateCommonAnimalMovementToken
     ).toEqual(expect.any(Function));
@@ -232,8 +233,8 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
-        expect(renderActorSheetCallbacks).toHaveLength(10);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(10);
+        expect(renderActorSheetCallbacks).toHaveLength(11);
+    expect(new Set(renderActorSheetCallbacks).size).toBe(11);
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );

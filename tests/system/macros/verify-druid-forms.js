@@ -95,6 +95,14 @@ for (const functionName of [
   "openDruidFormArtworkDialog",
   "restoreDruidHumanoidArtwork",
   "applyDruidFormArtwork",
+  "activateDruidIncarnation",
+  "switchDruidForm",
+  "expireDruidIncarnationsForRest",
+  "getDruidFormSwitchOptions",
+  "openDruidFormSwitchDialog",
+  "executeDruidFormLifecycleRequest",
+  "getDruidIncarnationDefinitions",
+  "isDruidFormsAutomationEnabled",
 ]) {
   boaCheck(
     checks,
@@ -517,6 +525,182 @@ try {
       ],
     );
   }
+  // BOA 0.11.7 slice 3 lifecycle contract.
+  if (
+    typeof api.activateDruidIncarnation === "function"
+    && typeof api.switchDruidForm === "function"
+    && typeof api.expireDruidIncarnationsForRest === "function"
+    && typeof api.getDruidFormSwitchOptions === "function"
+  ) {
+    await actor.update({
+      "system.willPoints.value": 10,
+    });
+
+    const savageActivation =
+      await api.activateDruidIncarnation(
+        actor,
+        spellContentKeys.savage,
+        2,
+        {
+          initialForm: "travel",
+          bypassAuthority: true,
+        },
+      );
+
+    boaCheckEqual(
+      checks,
+      "Savage Incarnation activates Travel Form at the cast power level",
+      {
+        resultForm:
+          savageActivation?.currentForm ?? null,
+        state:
+          api.getDruidFormState(actor),
+      },
+      {
+        resultForm: "travel",
+        state: {
+          currentForm: "travel",
+          activations: {
+            savage: {
+              active: true,
+              powerLevel: 2,
+              duration: "shift",
+            },
+          },
+        },
+      },
+    );
+
+    const feralActivation =
+      await api.activateDruidIncarnation(
+        actor,
+        spellContentKeys.feral,
+        3,
+        {
+          initialForm: "bear",
+          bypassAuthority: true,
+        },
+      );
+
+    boaCheckEqual(
+      checks,
+      "Feral Incarnation overlaps Savage and makes Bear and Cat available",
+      {
+        resultForm:
+          feralActivation?.currentForm ?? null,
+        forms:
+          api.getDruidFormSwitchOptions(actor)
+            .map(option => option.form),
+      },
+      {
+        resultForm: "bear",
+        forms: [
+          "humanoid",
+          "travel",
+          "bear",
+          "cat",
+        ],
+      },
+    );
+
+    const wpBeforeAction =
+      Number(actor.system?.willPoints?.value ?? 0);
+    await api.switchDruidForm(
+      actor,
+      "cat",
+      {
+        mode: "action",
+        bypassAuthority: true,
+      },
+    );
+    boaCheckEqual(
+      checks,
+      "Changing Druid form as an action costs 0 WP",
+      {
+        form:
+          api.getDruidFormState(actor).currentForm,
+        wp:
+          Number(actor.system?.willPoints?.value ?? 0),
+      },
+      {
+        form: "cat",
+        wp: wpBeforeAction,
+      },
+    );
+
+    const wpBeforeFree =
+      Number(actor.system?.willPoints?.value ?? 0);
+    await api.switchDruidForm(
+      actor,
+      "humanoid",
+      {
+        mode: "free",
+        bypassAuthority: true,
+      },
+    );
+    boaCheckEqual(
+      checks,
+      "Changing Druid form as a free action costs exactly 1 WP",
+      {
+        form:
+          api.getDruidFormState(actor).currentForm,
+        wp:
+          Number(actor.system?.willPoints?.value ?? 0),
+      },
+      {
+        form: "humanoid",
+        wp: wpBeforeFree - 1,
+      },
+    );
+
+    await api.expireDruidIncarnationsForRest(
+      actor,
+      "stretch",
+      {
+        bypassAuthority: true,
+      },
+    );
+    boaCheckEqual(
+      checks,
+      "Stretch rest expires Feral while Savage remains active",
+      api.getDruidFormState(actor),
+      {
+        currentForm: "humanoid",
+        activations: {
+          savage: {
+            active: true,
+            powerLevel: 2,
+            duration: "shift",
+          },
+        },
+      },
+    );
+
+    await api.switchDruidForm(
+      actor,
+      "travel",
+      {
+        mode: "action",
+        bypassAuthority: true,
+      },
+    );
+    await api.expireDruidIncarnationsForRest(
+      actor,
+      "shift",
+      {
+        bypassAuthority: true,
+      },
+    );
+    boaCheckEqual(
+      checks,
+      "Shift rest expires Savage and restores Humanoid Form",
+      api.getDruidFormState(actor),
+      {
+        currentForm: "humanoid",
+        activations: {},
+      },
+    );
+  }
 } catch (error) {
   boaCheck(
     checks,
@@ -573,8 +757,8 @@ try {
 }
 
 notes.push(
-  "Slice 2 adds the RED contract for artwork switching, humanoid restore, and artwork configuration UI. " +
-  "Spell activation, form mechanics, and Maul still come later.",
+  "Slice 3 adds incarnation activation, overlapping form availability, action/free-action switching, " +
+  "rest expiration, artwork synchronization, and Player-to-GM authority. Form-specific combat mechanics and Maul come later.",
 );
 notes.push(
   "Humanoid portrait and token remain Dragonbane-owned data; BoA only captures and restores them while transformed.",
