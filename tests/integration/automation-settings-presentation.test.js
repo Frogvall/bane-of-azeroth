@@ -108,8 +108,9 @@ describe("Automation Settings presentation", () => {
     expect(template).toContain("<legend>");
     expect(
       // BOA 0.11.7 Druid mechanics form-group count
+    // BOA 0.11.7 Druid armor/spell form-group count
       template.match(/\{\{formGroup/g),
-    ).toHaveLength(14); // Druid Form Artwork setting
+    ).toHaveLength(16); // Druid Form Artwork setting
     expect(template).toContain(
       "schema.fields.elementalTotemAutomation",
     );
@@ -139,6 +140,12 @@ describe("Automation Settings presentation", () => {
     );
     expect(template).toContain(
       "schema.fields.druidFormAttackAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.druidFormArmorAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.druidFormSpellRestrictionAutomation",
     );
     expect(template).toContain(
       "schema.fields.druidFormArtworkAutomation",

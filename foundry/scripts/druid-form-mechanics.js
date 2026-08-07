@@ -2,8 +2,10 @@ import {
   MODULE_ID,
 } from "./core/constants.js";
 import {
+  isDruidFormArmorAutomationEnabled,
   isDruidFormAttackAutomationEnabled,
   isDruidFormMovementAutomationEnabled,
+  isDruidFormSpellRestrictionAutomationEnabled,
 } from "./automation-settings.js";
 
 export const DRUID_FORM_MOVEMENT_CONTENT_KEY =
@@ -14,6 +16,12 @@ export const SHRED_CONTENT_KEY =
   "druid-form-attacks.shred";
 export const DRUID_FORM_ATTACK_ICON =
   "modules/bane-of-azeroth/assets/icons/classes/druid.webp";
+export const IRONFUR_CONTENT_KEY =
+  "druid-form-armor.ironfur";
+export const BARKSKIN_CONTENT_KEY =
+  "druid-form-armor.barkskin";
+export const DRUID_FORM_ARMOR_BASELINE_FLAG =
+  "druidFormArmorBaseline";
 
 const STATE_FLAG =
   "druidFormState";
@@ -24,6 +32,10 @@ const WEAPON_TEST_PATCH =
 const DAMAGE_ROLL_PATCH =
   Symbol.for(
     `${MODULE_ID}.druidFormAttack.damageRoll`,
+  );
+const SPELL_TEST_PATCH =
+  Symbol.for(
+    `${MODULE_ID}.druidFormSpellRestriction.spellTest`,
   );
 const reconcileQueues =
   new WeakMap();
@@ -198,6 +210,731 @@ function normalizePowerLevel(powerLevel) {
       3,
       Math.trunc(value),
     ),
+  );
+}
+
+
+function isManagedFormArmor(
+  item,
+) {
+  const key =
+    contentKey(item);
+
+  return (
+    key === IRONFUR_CONTENT_KEY ||
+    key === BARKSKIN_CONTENT_KEY
+  );
+}
+
+function manualArmorItems(
+  actor,
+) {
+  return values(
+    actor?.items,
+  ).filter(
+    item =>
+      (
+        item?.type === "armor" ||
+        item?.type === "helmet"
+      ) &&
+      !isManagedFormArmor(
+        item,
+      ),
+  );
+}
+
+function armorBaseline(
+  actor,
+) {
+  return (
+    actor?.getFlag?.(
+      MODULE_ID,
+      DRUID_FORM_ARMOR_BASELINE_FLAG,
+    ) ??
+    actor?.flags?.[
+      MODULE_ID
+    ]?.[
+      DRUID_FORM_ARMOR_BASELINE_FLAG
+    ] ??
+    null
+  );
+}
+
+function itemById(
+  actor,
+  id,
+) {
+  return (
+    actor?.items?.get?.(
+      id,
+    ) ??
+    values(
+      actor?.items,
+    ).find(
+      item =>
+        item?.id === id,
+    ) ??
+    null
+  );
+}
+
+async function updateItems(
+  actor,
+  updates,
+) {
+  if (
+    updates.length ===
+      0
+  ) {
+    return [];
+  }
+
+  return actor.updateEmbeddedDocuments(
+    "Item",
+    updates,
+  );
+}
+
+async function captureArmorBaseline(
+  actor,
+) {
+  const existing =
+    armorBaseline(
+      actor,
+    );
+
+  if (existing) {
+    return existing;
+  }
+
+  const baseline = {
+    items:
+      manualArmorItems(
+        actor,
+      ).map(
+        item => ({
+          id:
+            item.id,
+          type:
+            item.type,
+          worn:
+            item.system?.worn ===
+              true,
+        }),
+      ),
+  };
+
+  await actor.setFlag(
+    MODULE_ID,
+    DRUID_FORM_ARMOR_BASELINE_FLAG,
+    baseline,
+  );
+
+  return baseline;
+}
+
+async function suppressHumanoidArmor(
+  actor,
+) {
+  return updateItems(
+    actor,
+    manualArmorItems(
+      actor,
+    )
+      .filter(
+        item =>
+          item.system?.worn ===
+            true,
+      )
+      .map(
+        item => ({
+          _id:
+            item.id,
+          "system.worn":
+            false,
+        }),
+      ),
+  );
+}
+
+async function restoreArmorBaseline(
+  actor,
+) {
+  const baseline =
+    armorBaseline(
+      actor,
+    );
+
+  if (!baseline) {
+    return {
+      restored:
+        0,
+    };
+  }
+
+  const manual =
+    manualArmorItems(
+      actor,
+    );
+  const updates = [];
+
+  for (
+    const entry
+    of baseline.items ?? []
+  ) {
+    if (
+      entry?.worn !==
+        true
+    ) {
+      continue;
+    }
+
+    const item =
+      itemById(
+        actor,
+        entry.id,
+      );
+
+    if (
+      !item ||
+      isManagedFormArmor(
+        item,
+      ) ||
+      (
+        item.type !==
+          "armor" &&
+        item.type !==
+          "helmet"
+      ) ||
+      item.system?.worn ===
+        true
+    ) {
+      continue;
+    }
+
+    const conflict =
+      manual.some(
+        other =>
+          other.id !==
+            item.id &&
+          other.type ===
+            item.type &&
+          other.system?.worn ===
+            true,
+      );
+
+    if (conflict) {
+      continue;
+    }
+
+    updates.push({
+      _id:
+        item.id,
+      "system.worn":
+        true,
+    });
+  }
+
+  await updateItems(
+    actor,
+    updates,
+  );
+
+  await actor.unsetFlag(
+    MODULE_ID,
+    DRUID_FORM_ARMOR_BASELINE_FLAG,
+  );
+
+  return {
+    restored:
+      updates.length,
+  };
+}
+
+export function buildDruidFormArmorData(
+  form,
+  powerLevel = 1,
+) {
+  const normalizedPowerLevel =
+    normalizePowerLevel(
+      powerLevel,
+    );
+
+  if (
+    form !==
+      "bear" &&
+    form !==
+      "tree"
+  ) {
+    return null;
+  }
+
+  const isBear =
+    form ===
+      "bear";
+
+  return {
+    name:
+      isBear
+        ? "Ironfur"
+        : "Barkskin",
+    type:
+      "armor",
+    img:
+      DRUID_FORM_ATTACK_ICON,
+    system: {
+      weight:
+        0,
+      quantity:
+        1,
+      cost:
+        "–",
+      supply:
+        "common",
+      worn:
+        true,
+      memento:
+        false,
+      boons:
+        "",
+      banes:
+        "",
+      rating:
+        (
+          isBear
+            ? 3
+            : 2
+        ) *
+        normalizedPowerLevel,
+      bonuses:
+        [],
+      gmDescription:
+        "",
+      itemDescription:
+        isBear
+          ? "Temporary natural armor available only in Bear Form."
+          : "Temporary natural armor available only in Tree Form.",
+      storage:
+        false,
+    },
+    flags: {
+      [MODULE_ID]: {
+        contentKey:
+          isBear
+            ? IRONFUR_CONTENT_KEY
+            : BARKSKIN_CONTENT_KEY,
+        druidFormMechanic: {
+          kind:
+            "naturalArmor",
+          form,
+          powerLevel:
+            normalizedPowerLevel,
+        },
+      },
+    },
+  };
+}
+
+function desiredNaturalArmor(
+  state,
+) {
+  if (
+    state?.currentForm ===
+      "bear"
+  ) {
+    const feral =
+      activeActivation(
+        state,
+        "feral",
+      );
+
+    return feral
+      ? buildDruidFormArmorData(
+          "bear",
+          feral.powerLevel,
+        )
+      : null;
+  }
+
+  if (
+    state?.currentForm ===
+      "tree"
+  ) {
+    const harmony =
+      activeActivation(
+        state,
+        "harmony",
+      );
+
+    return harmony
+      ? buildDruidFormArmorData(
+          "tree",
+          harmony.powerLevel,
+        )
+      : null;
+  }
+
+  return null;
+}
+
+async function reconcileNaturalArmor(
+  actor,
+  state,
+) {
+  const managed =
+    values(
+      actor?.items,
+    ).filter(
+      isManagedFormArmor,
+    );
+  const wanted =
+    desiredNaturalArmor(
+      state,
+    );
+
+  if (!wanted) {
+    await deleteEmbedded(
+      actor,
+      "Item",
+      managed.map(
+        item =>
+          item.id,
+      ),
+    );
+
+    return {
+      active:
+        false,
+      deleted:
+        managed.length,
+    };
+  }
+
+  const wantedKey =
+    contentKey(
+      wanted,
+    );
+  const keep =
+    managed.find(
+      item =>
+        contentKey(
+          item,
+        ) ===
+          wantedKey,
+    ) ??
+    null;
+
+  await deleteEmbedded(
+    actor,
+    "Item",
+    managed
+      .filter(
+        item =>
+          item !==
+            keep,
+      )
+      .map(
+        item =>
+          item.id,
+      ),
+  );
+
+  if (keep) {
+    const updates = {
+      _id:
+        keep.id,
+    };
+
+    if (
+      Number(
+        keep.system?.rating,
+      ) !==
+        Number(
+          wanted.system.rating,
+        )
+    ) {
+      updates[
+        "system.rating"
+      ] =
+        wanted.system.rating;
+    }
+
+    if (
+      keep.system?.worn !==
+        true
+    ) {
+      updates[
+        "system.worn"
+      ] =
+        true;
+    }
+
+    if (
+      Object.keys(
+        updates,
+      ).length >
+        1
+    ) {
+      await updateItems(
+        actor,
+        [updates],
+      );
+    }
+
+    return {
+      active:
+        true,
+      created:
+        false,
+      item:
+        keep,
+    };
+  }
+
+  const created =
+    await actor.createEmbeddedDocuments(
+      "Item",
+      [wanted],
+    );
+
+  return {
+    active:
+      true,
+    created:
+      true,
+    item:
+      created?.[
+        0
+      ] ??
+      null,
+  };
+}
+
+export async function reconcileDruidFormArmor(
+  actor,
+  state =
+    currentState(
+      actor,
+    ),
+  {
+    settings =
+      globalThis.game?.settings,
+  } = {},
+) {
+  const requiredMethods = [
+    "createEmbeddedDocuments",
+    "deleteEmbeddedDocuments",
+    "updateEmbeddedDocuments",
+    "setFlag",
+    "unsetFlag",
+  ];
+
+  if (
+    requiredMethods.some(
+      method =>
+        typeof actor?.[
+          method
+        ] !==
+          "function",
+    )
+  ) {
+    return {
+      skipped:
+        true,
+      reason:
+        "unsupported-actor",
+    };
+  }
+
+  const enabled =
+    isDruidFormArmorAutomationEnabled(
+      settings,
+    );
+  const shifted =
+    state?.currentForm &&
+    state.currentForm !==
+      "humanoid";
+
+  if (
+    !enabled ||
+    !shifted
+  ) {
+    const managed =
+      values(
+        actor?.items,
+      ).filter(
+        isManagedFormArmor,
+      );
+
+    await deleteEmbedded(
+      actor,
+      "Item",
+      managed.map(
+        item =>
+          item.id,
+      ),
+    );
+
+    const restore =
+      await restoreArmorBaseline(
+        actor,
+      );
+
+    return {
+      active:
+        false,
+      deleted:
+        managed.length,
+      ...restore,
+    };
+  }
+
+  await captureArmorBaseline(
+    actor,
+  );
+  await suppressHumanoidArmor(
+    actor,
+  );
+
+  return {
+    active:
+      true,
+    naturalArmor:
+      await reconcileNaturalArmor(
+        actor,
+        state,
+      ),
+  };
+}
+
+function requestsWorn(
+  changes,
+) {
+  return (
+    changes?.[
+      "system.worn"
+    ] === true ||
+    changes?.system?.worn ===
+      true
+  );
+}
+
+function localizedWarning(
+  key,
+  fallback,
+) {
+  const localized =
+    globalThis.game?.i18n
+      ?.localize?.(
+        key,
+      );
+
+  globalThis.ui?.notifications
+    ?.warn?.(
+      localized &&
+      localized !==
+        key
+        ? localized
+        : fallback,
+    );
+}
+
+export function onPreUpdateDruidFormArmorItem(
+  item,
+  changes,
+  {
+    settings =
+      globalThis.game?.settings,
+  } = {},
+) {
+  if (
+    !isDruidFormArmorAutomationEnabled(
+      settings,
+    ) ||
+    (
+      item?.type !==
+        "armor" &&
+      item?.type !==
+        "helmet"
+    ) ||
+    isManagedFormArmor(
+      item,
+    ) ||
+    !requestsWorn(
+      changes,
+    )
+  ) {
+    return true;
+  }
+
+  const actor =
+    item?.parent ??
+    item?.actor ??
+    null;
+  const state =
+    currentState(
+      actor,
+    );
+
+  if (
+    !actor ||
+    actor.type !==
+      "character" ||
+    !state?.currentForm ||
+    state.currentForm ===
+      "humanoid"
+  ) {
+    return true;
+  }
+
+  localizedWarning(
+    "BOA.notifications.druidFormNoHumanoidArmor",
+    "Armor and helmets cannot be worn in this Druid form.",
+  );
+  return false;
+}
+
+export function isDruidFormSpellAllowed(
+  actor,
+  spell,
+  {
+    settings =
+      globalThis.game?.settings,
+  } = {},
+) {
+  if (
+    !isDruidFormSpellRestrictionAutomationEnabled(
+      settings,
+    )
+  ) {
+    return true;
+  }
+
+  const state =
+    currentState(
+      actor,
+    );
+
+  if (
+    ![
+      "travel",
+      "bear",
+      "cat",
+    ].includes(
+      state?.currentForm,
+    )
+  ) {
+    return true;
+  }
+
+  return (
+    String(
+      spell?.system?.requirement ??
+      "",
+    )
+      .trim()
+      .toLowerCase() ===
+    "word"
   );
 }
 
@@ -666,6 +1403,14 @@ export async function reconcileDruidFormMechanics(
       state,
       settings,
     );
+  const armor =
+    await reconcileDruidFormArmor(
+      actor,
+      state,
+      {
+        settings,
+      },
+    );
 
   return {
     skipped:
@@ -675,6 +1420,7 @@ export async function reconcileDruidFormMechanics(
       "humanoid",
     movement,
     attack,
+    armor,
   };
 }
 
@@ -1096,16 +1842,85 @@ function patchActorSheetDamageClass(
   return "patched";
 }
 
+
+function patchSpellTestClass(
+  SpellTestClass,
+) {
+  const prototype =
+    SpellTestClass?.prototype;
+  const original =
+    prototype?.getRollOptions;
+
+  if (
+    typeof original !==
+      "function"
+  ) {
+    return "missing";
+  }
+
+  if (
+    original[
+      SPELL_TEST_PATCH
+    ]
+  ) {
+    return "already";
+  }
+
+  async function boaDruidFormSpellRollOptions(
+    ...args
+  ) {
+    if (
+      !isDruidFormSpellAllowed(
+        this.actor,
+        this.spell,
+      )
+    ) {
+      localizedWarning(
+        "BOA.notifications.druidFormWordOnlySpell",
+        "Only spells requiring Word alone can be cast in this Druid form.",
+      );
+
+      return {
+        cancelled:
+          true,
+      };
+    }
+
+    return original.apply(
+      this,
+      args,
+    );
+  }
+
+  Object.defineProperty(
+    boaDruidFormSpellRollOptions,
+    SPELL_TEST_PATCH,
+    {
+      value:
+        true,
+    },
+  );
+
+  prototype.getRollOptions =
+    boaDruidFormSpellRollOptions;
+
+  return "patched";
+}
+
 export async function patchDruidFormWeaponUsage({
   WeaponTestClass =
     null,
   ActorSheetClass =
+    null,
+  SpellTestClass =
     null,
 } = {}) {
   let weaponTestClass =
     WeaponTestClass;
   let actorSheetClass =
     ActorSheetClass;
+  let spellTestClass =
+    SpellTestClass;
 
   if (!weaponTestClass) {
     const module =
@@ -1125,7 +1940,20 @@ export async function patchDruidFormWeaponUsage({
       module.default;
   }
 
-  return {
+  if (
+    !spellTestClass &&
+    globalThis.game?.system?.id ===
+      "dragonbane"
+  ) {
+    const module =
+      await import(
+        "/systems/dragonbane/modules/tests/spell-test.js"
+      );
+    spellTestClass =
+      module.default;
+  }
+
+  const result = {
     weaponTest:
       patchWeaponTestClass(
         weaponTestClass,
@@ -1135,4 +1963,13 @@ export async function patchDruidFormWeaponUsage({
         actorSheetClass,
       ),
   };
+
+  if (spellTestClass) {
+    result.spellTest =
+      patchSpellTestClass(
+        spellTestClass,
+      );
+  }
+
+  return result;
 }

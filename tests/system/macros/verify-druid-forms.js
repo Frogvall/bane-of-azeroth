@@ -1256,6 +1256,159 @@ notes.push(
     }
   }
 
+
+  // BOA 0.11.7 Druid armor + spell restrictions RED/GREEN contract.
+  {
+    for (
+      const functionName
+      of [
+        "buildDruidFormArmorData",
+        "isDruidFormSpellAllowed",
+        "reconcileDruidFormArmor",
+      ]
+    ) {
+      boaCheck(
+        checks,
+        `Druid armor/spell API exposes ${functionName}`,
+        typeof api[
+          functionName
+        ] === "function",
+        typeof api[
+          functionName
+        ],
+      );
+    }
+
+    const armorSetting =
+      game.settings.settings?.get?.(
+        `${BOA_TEST_MODULE_ID}.druidFormArmorAutomation`,
+      );
+    const spellSetting =
+      game.settings.settings?.get?.(
+        `${BOA_TEST_MODULE_ID}.druidFormSpellRestrictionAutomation`,
+      );
+
+    boaCheck(
+      checks,
+      "Druid Form Armor automation defaults enabled",
+      armorSetting?.default === true,
+      armorSetting?.default ?? null,
+    );
+    boaCheck(
+      checks,
+      "Druid Form Spell Restrictions automation defaults enabled",
+      spellSetting?.default === true,
+      spellSetting?.default ?? null,
+    );
+
+    if (
+      typeof api.buildDruidFormArmorData === "function" &&
+      typeof api.isDruidFormSpellAllowed === "function"
+    ) {
+      const ironfur =
+        api.buildDruidFormArmorData(
+          "bear",
+          2,
+        );
+      const barkskin =
+        api.buildDruidFormArmorData(
+          "tree",
+          3,
+        );
+
+      boaCheck(
+        checks,
+        "Bear PL2 Ironfur is Armor 6",
+        ironfur?.name === "Ironfur" &&
+          ironfur?.system?.rating === 6 &&
+          ironfur?.system?.worn === true,
+        ironfur,
+      );
+      boaCheck(
+        checks,
+        "Tree PL3 Barkskin is Armor 6",
+        barkskin?.name === "Barkskin" &&
+          barkskin?.system?.rating === 6 &&
+          barkskin?.system?.worn === true,
+        barkskin,
+      );
+
+      const bear = {
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            druidFormState: {
+              currentForm:
+                "bear",
+              activations: {},
+            },
+          },
+        },
+      };
+      const tree = {
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            druidFormState: {
+              currentForm:
+                "tree",
+              activations: {},
+            },
+          },
+        },
+      };
+      const word = {
+        system: {
+          requirement:
+            "Word",
+        },
+      };
+      const fireball = {
+        system: {
+          requirement:
+            "Word, gesture",
+        },
+      };
+
+      boaCheck(
+        checks,
+        "Bear permits Word-only spell",
+        api.isDruidFormSpellAllowed(
+          bear,
+          word,
+          {
+            settings:
+              null,
+          },
+        ) === true,
+        null,
+      );
+      boaCheck(
+        checks,
+        "Bear blocks Word + Gesture spell",
+        api.isDruidFormSpellAllowed(
+          bear,
+          fireball,
+          {
+            settings:
+              null,
+          },
+        ) === false,
+        null,
+      );
+      boaCheck(
+        checks,
+        "Tree does not apply Word-only restriction",
+        api.isDruidFormSpellAllowed(
+          tree,
+          fireball,
+          {
+            settings:
+              null,
+          },
+        ) === true,
+        null,
+      );
+    }
+  }
 return boaFinish(
   testKey,
   testName,

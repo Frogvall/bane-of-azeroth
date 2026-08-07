@@ -31,7 +31,8 @@ describe("automation settings registration", () => {
     ).toBe(true);
 
     // BOA 0.11.7 Druid mechanics setting registration count
-    expect(settings.register).toHaveBeenCalledTimes(14); // Druid Form Artwork setting
+    // BOA 0.11.7 Druid armor/spell registration count
+    expect(settings.register).toHaveBeenCalledTimes(16); // Druid Form Artwork setting
     for (const key of Object.values(
       AUTOMATION_SETTING_KEYS,
     )) {

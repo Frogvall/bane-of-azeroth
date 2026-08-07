@@ -140,11 +140,17 @@
         "druidFormMovementHint": "Double Movement while Travel Form is active. Water movement, underwater breathing, SWIMMING, and flight remain manual rules.",
         "druidFormAttackName": "Druid Form Attacks",
         "druidFormAttackHint": "Create temporary Maul/Shred natural attacks in Bear/Cat Form and prevent use of other weapons while transformed.",
+        "druidFormArmorName": "Druid Form Armor",
+        "druidFormArmorHint": "Suppress humanoid armor and helmets while transformed. Bear Form uses Ironfur at Armor 3 x PL and Tree Form uses Barkskin at Armor 2 x PL.",
+        "druidFormSpellRestrictionName": "Druid Form Spell Restrictions",
+        "druidFormSpellRestrictionHint": "In Travel, Bear, and Cat Form, only spells whose requirement is Word alone can be cast.",
         "druidFormArtworkName": "Druid Form Artwork",
         "druidFormArtworkHint": "Automatically switch Druid portraits and tokens when forms change, while preserving each humanoid and scene-token image."
       }
     },
     "notifications": {
+      "druidFormNoHumanoidArmor": "Armor and helmets cannot be worn in this Druid form.",
+      "druidFormWordOnlySpell": "Only spells requiring Word alone can be cast in this Druid form.",
       "druidFormNaturalAttackOnly": "Only {attack} can be used in this Druid form.",
       "summonCleanupFailed": "The rest completed, but one or more summoned tokens could not be removed. Ask a GM to remove them manually.",
       "abilityActionNotEnoughWp": "Not enough WP to use this ability.",

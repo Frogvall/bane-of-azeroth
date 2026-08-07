@@ -1,4 +1,8 @@
 import {
+  buildDruidFormArmorData,
+  isDruidFormSpellAllowed,
+  onPreUpdateDruidFormArmorItem,
+  reconcileDruidFormArmor,
   buildDruidFormAttackData,
   buildDruidTravelMovementEffectData,
   getBestDruidNaturalAttackSkill,
@@ -279,6 +283,9 @@ Hooks.once("init", () => {
       executeDruidFormLifecycleRequest,
       getDruidIncarnationDefinitions,
       isDruidFormsAutomationEnabled,
+      buildDruidFormArmorData,
+      isDruidFormSpellAllowed,
+      reconcileDruidFormArmor,
       getBestDruidNaturalAttackSkill,
       buildDruidFormAttackData,
       buildDruidTravelMovementEffectData,
@@ -436,6 +443,7 @@ Hooks.on(
     onRenderManagedEffectLifecycleActorSheet,
   );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
+  Hooks.on("preUpdateItem", onPreUpdateDruidFormArmorItem);
 
   const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
 

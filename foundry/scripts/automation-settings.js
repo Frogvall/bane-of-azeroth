@@ -14,6 +14,8 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   DRUID_FORMS: "druidFormsAutomation",
   DRUID_FORM_MOVEMENT: "druidFormMovementAutomation",
   DRUID_FORM_ATTACKS: "druidFormAttackAutomation",
+  DRUID_FORM_ARMOR: "druidFormArmorAutomation",
+  DRUID_FORM_SPELL_RESTRICTION: "druidFormSpellRestrictionAutomation",
   DRUID_FORM_ARTWORK: "druidFormArtworkAutomation",
 });
 
@@ -352,6 +354,24 @@ export function isDruidFormAttackAutomationEnabled(
   );
 }
 
+export function isDruidFormArmorAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_ARMOR,
+    settings,
+  );
+}
+
+export function isDruidFormSpellRestrictionAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_SPELL_RESTRICTION,
+    settings,
+  );
+}
+
 function restoreDruidArtworkOnChange(value) {
   if (value !== false) return;
   queueMicrotask(() => {
@@ -461,6 +481,14 @@ export class AutomationSettingsForm
       "BOA.settings.automation.druidFormAttackName",
       "BOA.settings.automation.druidFormAttackHint",
     ),
+    druidFormArmorAutomation: booleanField(
+      "BOA.settings.automation.druidFormArmorName",
+      "BOA.settings.automation.druidFormArmorHint",
+    ),
+    druidFormSpellRestrictionAutomation: booleanField(
+      "BOA.settings.automation.druidFormSpellRestrictionName",
+      "BOA.settings.automation.druidFormSpellRestrictionHint",
+    ),
     druidFormArtworkAutomation: booleanField(
       "BOA.settings.automation.druidFormArtworkName",
       "BOA.settings.automation.druidFormArtworkHint",
@@ -504,6 +532,10 @@ export class AutomationSettingsForm
           isDruidFormMovementAutomationEnabled(),
         druidFormAttackAutomation:
           isDruidFormAttackAutomationEnabled(),
+        druidFormArmorAutomation:
+          isDruidFormArmorAutomationEnabled(),
+        druidFormSpellRestrictionAutomation:
+          isDruidFormSpellRestrictionAutomationEnabled(),
         druidFormArtworkAutomation:
           isDruidFormArtworkAutomationEnabled(),
       },
@@ -640,6 +672,16 @@ export class AutomationSettingsForm
             AUTOMATION_SETTING_KEYS.DRUID_FORM_ATTACKS
           ],
         ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_FORM_ARMOR,
+        Boolean(values[AUTOMATION_SETTING_KEYS.DRUID_FORM_ARMOR]),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_FORM_SPELL_RESTRICTION,
+        Boolean(values[AUTOMATION_SETTING_KEYS.DRUID_FORM_SPELL_RESTRICTION]),
       ),
       settings.set(
         MODULE_ID,
@@ -798,6 +840,26 @@ export function registerAutomationSettings(
       onChange:
         reconcileDruidFormMechanicsOnChange,
     },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_ARMOR,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.druidFormArmorName",
+        "BOA.settings.automation.druidFormArmorHint",
+      ),
+      onChange:
+        reconcileDruidFormMechanicsOnChange,
+    },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_FORM_SPELL_RESTRICTION,
+    settingDefinition(
+      "BOA.settings.automation.druidFormSpellRestrictionName",
+      "BOA.settings.automation.druidFormSpellRestrictionHint",
+    ),
   );
   settings.register(
     MODULE_ID,
