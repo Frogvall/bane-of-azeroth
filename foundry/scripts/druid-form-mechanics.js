@@ -2,6 +2,7 @@ import {
   MODULE_ID,
 } from "./core/constants.js";
 import {
+  isDruidMoonkinSpellCostAutomationEnabled,
   isDruidFormArmorAutomationEnabled,
   isDruidFormAttackAutomationEnabled,
   isDruidFormMovementAutomationEnabled,
@@ -36,6 +37,14 @@ const DAMAGE_ROLL_PATCH =
 const SPELL_TEST_PATCH =
   Symbol.for(
     `${MODULE_ID}.druidFormSpellRestriction.spellTest`,
+  );
+const SPELL_ROLL_PATCH =
+  Symbol.for(
+    `${MODULE_ID}.druidFormSpellRestriction.spellRoll`,
+  );
+const MOONKIN_SPELL_COST_PATCH =
+  Symbol.for(
+    `${MODULE_ID}.druidMoonkinSpellCost`,
   );
 const reconcileQueues =
   new WeakMap();
@@ -936,6 +945,137 @@ export function isDruidFormSpellAllowed(
       .toLowerCase() ===
     "word"
   );
+}
+
+export function getDruidMoonkinSpellCost(
+  item,
+  powerLevel,
+  originalGetSpellCost,
+  settings = globalThis.game?.settings,
+) {
+  const baseCost =
+    originalGetSpellCost.call(
+      item,
+      powerLevel,
+    );
+
+  if (
+    !isDruidMoonkinSpellCostAutomationEnabled(
+      settings,
+    ) ||
+    item?.type !== "spell"
+  ) {
+    return baseCost;
+  }
+
+  const actor =
+    item?.parent ??
+    item?.actor ??
+    null;
+  const state =
+    currentState(
+      actor,
+    );
+
+  if (
+    actor?.type !== "character" ||
+    state?.currentForm !== "moonkin"
+  ) {
+    return baseCost;
+  }
+
+  const stars =
+    activeActivation(
+      state,
+      "stars",
+    );
+
+  if (!stars) {
+    return baseCost;
+  }
+
+  if (
+    Number(
+      item.system?.rank,
+    ) === 0
+  ) {
+    return 0;
+  }
+
+  const numericBaseCost =
+    Number(
+      baseCost,
+    );
+
+  if (
+    !Number.isFinite(
+      numericBaseCost,
+    ) ||
+    numericBaseCost <= 0
+  ) {
+    return baseCost;
+  }
+
+  return Math.max(
+    1,
+    numericBaseCost -
+      normalizePowerLevel(
+        stars.powerLevel,
+      ),
+  );
+}
+
+export function patchDruidMoonkinSpellCost({
+  ItemClass =
+    globalThis.CONFIG?.Item?.documentClass,
+} = {}) {
+  const prototype =
+    ItemClass?.prototype;
+  const current =
+    prototype?.getSpellCost;
+
+  if (
+    typeof current !== "function"
+  ) {
+    console.error(
+      `${MODULE_ID} | Dragonbane Item#getSpellCost was unavailable for Moonkin automation.`,
+    );
+    return false;
+  }
+
+  if (
+    current[
+      MOONKIN_SPELL_COST_PATCH
+    ] === true
+  ) {
+    return true;
+  }
+
+  const originalGetSpellCost =
+    current;
+
+  function boaDruidMoonkinGetSpellCost(
+    powerLevel,
+  ) {
+    return getDruidMoonkinSpellCost(
+      this,
+      powerLevel,
+      originalGetSpellCost,
+    );
+  }
+
+  Object.defineProperty(
+    boaDruidMoonkinGetSpellCost,
+    MOONKIN_SPELL_COST_PATCH,
+    {
+      value: true,
+    },
+  );
+
+  prototype.getSpellCost =
+    boaDruidMoonkinGetSpellCost;
+
+  return true;
 }
 
 export function buildDruidFormAttackData(
@@ -1907,6 +2047,64 @@ function patchSpellTestClass(
   return "patched";
 }
 
+function patchSpellRollClass(
+  SpellTestClass,
+) {
+  const prototype =
+    SpellTestClass?.prototype;
+  const original =
+    prototype?.roll;
+
+  if (
+    typeof original !== "function"
+  ) {
+    return "missing";
+  }
+
+  if (
+    original[
+      SPELL_ROLL_PATCH
+    ]
+  ) {
+    return "already";
+  }
+
+  async function boaDruidFormSpellRoll(
+    ...args
+  ) {
+    if (
+      !isDruidFormSpellAllowed(
+        this.actor,
+        this.spell,
+      )
+    ) {
+      localizedWarning(
+        "BOA.notifications.druidFormWordOnlySpell",
+        "Only spells requiring Word alone can be cast in this Druid form.",
+      );
+      return false;
+    }
+
+    return original.apply(
+      this,
+      args,
+    );
+  }
+
+  Object.defineProperty(
+    boaDruidFormSpellRoll,
+    SPELL_ROLL_PATCH,
+    {
+      value: true,
+    },
+  );
+
+  prototype.roll =
+    boaDruidFormSpellRoll;
+
+  return "patched";
+}
+
 export async function patchDruidFormWeaponUsage({
   WeaponTestClass =
     null,
@@ -1967,6 +2165,10 @@ export async function patchDruidFormWeaponUsage({
   if (spellTestClass) {
     result.spellTest =
       patchSpellTestClass(
+        spellTestClass,
+      );
+    result.spellRoll =
+      patchSpellRollClass(
         spellTestClass,
       );
   }

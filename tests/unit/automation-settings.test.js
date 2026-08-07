@@ -197,6 +197,7 @@ describe("ApplicationV2 automation settings form", () => {
       druidFormAttackAutomation: false,
       druidFormArmorAutomation: false,
       druidFormSpellRestrictionAutomation: false,
+      druidMoonkinSpellCostAutomation: false,
       druidFormArtworkAutomation: false,
     });
     expect(context.buttons).toEqual([
@@ -236,6 +237,7 @@ describe("ApplicationV2 automation settings form", () => {
           druidFormAttackAutomation: true,
           druidFormArmorAutomation: true,
           druidFormSpellRestrictionAutomation: true,
+          druidMoonkinSpellCostAutomation: true,
           druidFormArtworkAutomation: true,
         },
       },
@@ -243,7 +245,8 @@ describe("ApplicationV2 automation settings form", () => {
 
     // BOA 0.11.7 Druid mechanics setting count
     // BOA 0.11.7 Druid armor/spell setting count
-    expect(set).toHaveBeenCalledTimes(16); // Druid Form Artwork setting
+    // BOA 0.11.7 Druid Moonkin spell-cost setting count
+    expect(set).toHaveBeenCalledTimes(17); // Druid Form Artwork setting
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,

@@ -1,4 +1,6 @@
 import {
+  getDruidMoonkinSpellCost,
+  patchDruidMoonkinSpellCost,
   buildDruidFormArmorData,
   isDruidFormSpellAllowed,
   onPreUpdateDruidFormArmorItem,
@@ -283,6 +285,7 @@ Hooks.once("init", () => {
       executeDruidFormLifecycleRequest,
       getDruidIncarnationDefinitions,
       isDruidFormsAutomationEnabled,
+      getDruidMoonkinSpellCost,
       buildDruidFormArmorData,
       isDruidFormSpellAllowed,
       reconcileDruidFormArmor,
@@ -518,6 +521,7 @@ Hooks.once("ready", async () => {
   );
   try {
     await patchDruidFormWeaponUsage();
+    patchDruidMoonkinSpellCost();
     await reconcileAllDruidFormMechanics();
   } catch (error) {
     console.error(

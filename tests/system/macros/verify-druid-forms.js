@@ -1409,6 +1409,164 @@ notes.push(
       );
     }
   }
+
+  // BOA 0.11.7 Druid tricks + Moonkin spell-cost RED/GREEN contract.
+  {
+    boaCheck(
+      checks,
+      "Druid Moonkin spell-cost API is exposed",
+      typeof api.getDruidMoonkinSpellCost === "function",
+      typeof api.getDruidMoonkinSpellCost,
+    );
+
+    const moonkinSetting =
+      game.settings.settings?.get?.(
+        `${BOA_TEST_MODULE_ID}.druidMoonkinSpellCostAutomation`,
+      );
+
+    boaCheck(
+      checks,
+      "Druid Moonkin Spell Cost automation defaults enabled",
+      moonkinSetting?.default === true,
+      moonkinSetting?.default ?? null,
+    );
+
+    if (
+      typeof api.isDruidFormSpellAllowed === "function"
+    ) {
+      const bear = {
+        type: "character",
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            druidFormState: {
+              currentForm: "bear",
+              activations: {},
+            },
+          },
+        },
+      };
+      const puffOfSmoke = {
+        type: "spell",
+        system: {
+          rank: 0,
+          requirement: "Gesture",
+        },
+      };
+      const wordTrick = {
+        type: "spell",
+        system: {
+          rank: 0,
+          requirement: "Word",
+        },
+      };
+
+      boaCheck(
+        checks,
+        "Bear blocks Gesture-only magic tricks",
+        api.isDruidFormSpellAllowed(
+          bear,
+          puffOfSmoke,
+          { settings: null },
+        ) === false,
+        null,
+      );
+      boaCheck(
+        checks,
+        "Bear permits Word-only magic tricks",
+        api.isDruidFormSpellAllowed(
+          bear,
+          wordTrick,
+          { settings: null },
+        ) === true,
+        null,
+      );
+    }
+
+    if (
+      typeof api.getDruidMoonkinSpellCost === "function"
+    ) {
+      const moonkin = {
+        type: "character",
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            druidFormState: {
+              currentForm: "moonkin",
+              activations: {
+                stars: {
+                  active: true,
+                  powerLevel: 2,
+                },
+              },
+            },
+          },
+        },
+      };
+      const bearWithStars = {
+        type: "character",
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            druidFormState: {
+              currentForm: "bear",
+              activations: {
+                stars: {
+                  active: true,
+                  powerLevel: 3,
+                },
+              },
+            },
+          },
+        },
+      };
+
+      boaCheckEqual(
+        checks,
+        "Moonkin PL2 reduces a 6 WP spell to 4 WP",
+        api.getDruidMoonkinSpellCost(
+          {
+            type: "spell",
+            parent: moonkin,
+            system: { rank: 2 },
+          },
+          3,
+          () => 6,
+          null,
+        ),
+        4,
+      );
+
+      boaCheckEqual(
+        checks,
+        "Moonkin magic tricks cost 0 WP",
+        api.getDruidMoonkinSpellCost(
+          {
+            type: "spell",
+            parent: moonkin,
+            system: { rank: 0 },
+          },
+          0,
+          () => 1,
+          null,
+        ),
+        0,
+      );
+
+      boaCheckEqual(
+        checks,
+        "Stars gives no spell discount while current form is Bear",
+        api.getDruidMoonkinSpellCost(
+          {
+            type: "spell",
+            parent: bearWithStars,
+            system: { rank: 2 },
+          },
+          2,
+          () => 4,
+          null,
+        ),
+        4,
+      );
+    }
+  }
 return boaFinish(
   testKey,
   testName,

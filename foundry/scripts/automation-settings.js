@@ -16,6 +16,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   DRUID_FORM_ATTACKS: "druidFormAttackAutomation",
   DRUID_FORM_ARMOR: "druidFormArmorAutomation",
   DRUID_FORM_SPELL_RESTRICTION: "druidFormSpellRestrictionAutomation",
+  DRUID_MOONKIN_SPELL_COST: "druidMoonkinSpellCostAutomation",
   DRUID_FORM_ARTWORK: "druidFormArtworkAutomation",
 });
 
@@ -372,6 +373,15 @@ export function isDruidFormSpellRestrictionAutomationEnabled(
   );
 }
 
+export function isDruidMoonkinSpellCostAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELL_COST,
+    settings,
+  );
+}
+
 function restoreDruidArtworkOnChange(value) {
   if (value !== false) return;
   queueMicrotask(() => {
@@ -489,6 +499,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.druidFormSpellRestrictionName",
       "BOA.settings.automation.druidFormSpellRestrictionHint",
     ),
+    druidMoonkinSpellCostAutomation: booleanField(
+      "BOA.settings.automation.druidMoonkinSpellCostName",
+      "BOA.settings.automation.druidMoonkinSpellCostHint",
+    ),
     druidFormArtworkAutomation: booleanField(
       "BOA.settings.automation.druidFormArtworkName",
       "BOA.settings.automation.druidFormArtworkHint",
@@ -536,6 +550,8 @@ export class AutomationSettingsForm
           isDruidFormArmorAutomationEnabled(),
         druidFormSpellRestrictionAutomation:
           isDruidFormSpellRestrictionAutomationEnabled(),
+        druidMoonkinSpellCostAutomation:
+          isDruidMoonkinSpellCostAutomationEnabled(),
         druidFormArtworkAutomation:
           isDruidFormArtworkAutomationEnabled(),
       },
@@ -682,6 +698,15 @@ export class AutomationSettingsForm
         MODULE_ID,
         AUTOMATION_SETTING_KEYS.DRUID_FORM_SPELL_RESTRICTION,
         Boolean(values[AUTOMATION_SETTING_KEYS.DRUID_FORM_SPELL_RESTRICTION]),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELL_COST,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELL_COST
+          ],
+        ),
       ),
       settings.set(
         MODULE_ID,
@@ -859,6 +884,14 @@ export function registerAutomationSettings(
     settingDefinition(
       "BOA.settings.automation.druidFormSpellRestrictionName",
       "BOA.settings.automation.druidFormSpellRestrictionHint",
+    ),
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELL_COST,
+    settingDefinition(
+      "BOA.settings.automation.druidMoonkinSpellCostName",
+      "BOA.settings.automation.druidMoonkinSpellCostHint",
     ),
   );
   settings.register(

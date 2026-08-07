@@ -109,8 +109,9 @@ describe("Automation Settings presentation", () => {
     expect(
       // BOA 0.11.7 Druid mechanics form-group count
     // BOA 0.11.7 Druid armor/spell form-group count
+    // BOA 0.11.7 Druid Moonkin spell-cost form-group count
       template.match(/\{\{formGroup/g),
-    ).toHaveLength(16); // Druid Form Artwork setting
+    ).toHaveLength(17); // Druid Form Artwork setting
     expect(template).toContain(
       "schema.fields.elementalTotemAutomation",
     );
@@ -146,6 +147,9 @@ describe("Automation Settings presentation", () => {
     );
     expect(template).toContain(
       "schema.fields.druidFormSpellRestrictionAutomation",
+    );
+    expect(template).toContain(
+      "schema.fields.druidMoonkinSpellCostAutomation",
     );
     expect(template).toContain(
       "schema.fields.druidFormArtworkAutomation",
