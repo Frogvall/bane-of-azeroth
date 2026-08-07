@@ -102,6 +102,7 @@ a.boa-death-knight-rune-slot:focus {
   box-sizing: border-box;
   align-items: center;
   justify-content: flex-start;
+  gap: 0.35rem;
   width: 100%;
   margin: 0.2rem 0 0.3rem;
 }
@@ -119,6 +120,19 @@ a.boa-death-knight-rune-slot:focus {
   cursor: pointer;
   white-space: nowrap;
 }
+.boa-druid-form-switch-button {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .boa-druid-form-artwork-dialog {
   box-sizing: border-box;
   width: 100%;

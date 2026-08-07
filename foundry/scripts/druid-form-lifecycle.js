@@ -19,6 +19,10 @@ const RESULT_TYPE =
   "druid-form-lifecycle-result";
 const REQUEST_TIMEOUT_MS =
   10000;
+const SUMMON_REST_PATCH_MARKER =
+  Symbol.for(
+    `${MODULE_ID}.summonDurationLifecycle`,
+  );
 const REST_PATCH_MARKER =
   Symbol.for(
     `${MODULE_ID}.druidFormLifecycle.rest`,
@@ -349,50 +353,45 @@ async function persistState(
     );
   }
 
-  const changes = {
-    [`flags.${MODULE_ID}.${STATE_FLAG}`]:
-      structuredClone(
-        state,
-      ),
-  };
-
-  if (
-    willpower !== null
-  ) {
-    changes[
-      "system.willPoints.value"
-    ] = willpower;
-  }
-
-  if (
-    typeof actor.update ===
-      "function"
-  ) {
-    await actor.update(
-      changes,
+  const nextState =
+    structuredClone(
+      state,
     );
-    return true;
+
+  // Foundry recursively merges object-valued updates. Missing activation
+  // keys would therefore survive a rest. Replace the whole flag explicitly.
+  if (
+    typeof actor.unsetFlag === "function" &&
+    typeof actor.setFlag === "function"
+  ) {
+    await actor.unsetFlag(
+      MODULE_ID,
+      STATE_FLAG,
+    );
+    await actor.setFlag(
+      MODULE_ID,
+      STATE_FLAG,
+      nextState,
+    );
+  } else {
+    actor.flags ??= {};
+    actor.flags[MODULE_ID] ??= {};
+    actor.flags[MODULE_ID][STATE_FLAG] =
+      nextState;
   }
 
-  actor.flags ??= {};
-  actor.flags[
-    MODULE_ID
-  ] ??= {};
-  actor.flags[
-    MODULE_ID
-  ][
-    STATE_FLAG
-  ] = structuredClone(
-    state,
-  );
-
-  if (
-    willpower !== null
-  ) {
-    actor.system ??= {};
-    actor.system.willPoints ??= {};
-    actor.system.willPoints.value =
-      willpower;
+  if (willpower !== null) {
+    if (typeof actor.update === "function") {
+      await actor.update({
+        "system.willPoints.value":
+          willpower,
+      });
+    } else {
+      actor.system ??= {};
+      actor.system.willPoints ??= {};
+      actor.system.willPoints.value =
+        willpower;
+    }
   }
 
   return true;
@@ -1884,6 +1883,25 @@ function patchRestMethod(
       );
       return result;
     };
+
+  const summonLifecycleMetadata =
+    original[
+      SUMMON_REST_PATCH_MARKER
+    ];
+
+  if (summonLifecycleMetadata) {
+    Object.defineProperty(
+      wrapped,
+      SUMMON_REST_PATCH_MARKER,
+      {
+        configurable: false,
+        enumerable: false,
+        value:
+          summonLifecycleMetadata,
+        writable: false,
+      },
+    );
+  }
 
   Object.defineProperty(
     wrapped,

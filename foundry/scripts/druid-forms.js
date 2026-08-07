@@ -1746,30 +1746,40 @@ export async function openDruidFormArtworkDialog(actor) {
   if (!form) return false;
 
   for (const profile of profiles) {
-    if (
+    const portrait =
       formValue(
         form,
-        `reset.${profile.key}`,
-      ) === "1"
+        `portrait.${profile.key}`,
+      );
+    const token =
+      formValue(
+        form,
+        `token.${profile.key}`,
+      );
+
+    // Reset is a draft operation. If the submitted draft contains the two
+    // built-in defaults, remove the custom profile override on Save.
+    if (
+      portrait === profile.defaultPortrait &&
+      token === profile.defaultToken
     ) {
-      await resetDruidFormArtwork(actor, profile.key);
+      await resetDruidFormArtwork(
+        actor,
+        profile.key,
+      );
       continue;
     }
+
     await setDruidFormArtwork(
       actor,
       profile.key,
       {
-        portrait: formValue(
-          form,
-          `portrait.${profile.key}`,
-        ),
-        token: formValue(
-          form,
-          `token.${profile.key}`,
-        ),
+        portrait,
+        token,
       },
     );
   }
+
   return true;
 }
 
@@ -1818,7 +1828,7 @@ export function onRenderDruidFormArtworkActorSheet(
 
   root
     .querySelector(
-      ".boa-druid-form-artwork-controls",
+      ".boa-druid-form-artwork-button",
     )
     ?.remove?.();
 
@@ -1837,11 +1847,30 @@ export function onRenderDruidFormArtworkActorSheet(
     return false;
   }
 
-  const controls =
-    globalThis.document
-      ?.createElement?.(
-        "div",
+  let controls =
+    root.querySelector(
+      ".boa-druid-form-artwork-controls",
+    );
+
+  if (!controls) {
+    controls =
+      globalThis.document
+        ?.createElement?.(
+          "div",
+        );
+
+    if (controls) {
+      controls.classList.add(
+        "boa-druid-form-artwork-controls",
       );
+      tabs.parentElement
+        .insertBefore(
+          controls,
+          tabs,
+        );
+    }
+  }
+
   const button =
     globalThis.document
       ?.createElement?.(
@@ -1855,9 +1884,6 @@ export function onRenderDruidFormArtworkActorSheet(
     return false;
   }
 
-  controls.classList.add(
-    "boa-druid-form-artwork-controls",
-  );
 
   button.type =
     "button";
@@ -1889,11 +1915,6 @@ export function onRenderDruidFormArtworkActorSheet(
     button,
   );
 
-  tabs.parentElement
-    .insertBefore(
-      controls,
-      tabs,
-    );
 
   return true;
 }

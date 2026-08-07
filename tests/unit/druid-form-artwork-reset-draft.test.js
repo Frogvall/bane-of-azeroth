@@ -48,7 +48,7 @@ describe(
     );
 
     test(
-      "Save consumes reset draft state as a value rather than checkbox state",
+      "Save resets when both submitted artwork paths equal the profile defaults",
       () => {
         const start =
           source.indexOf(
@@ -65,10 +65,34 @@ describe(
             end,
           );
 
-        expect(block).toMatch(
-          /formValue\([\s\S]*?`reset\.\$\{profile\.key\}`[\s\S]*?===\s*"1"/,
+        expect(
+          block,
+        ).toContain(
+          "portrait ===",
         );
-        expect(block).not.toMatch(
+        expect(
+          block,
+        ).toContain(
+          "profile.defaultPortrait",
+        );
+        expect(
+          block,
+        ).toContain(
+          "token ===",
+        );
+        expect(
+          block,
+        ).toContain(
+          "profile.defaultToken",
+        );
+        expect(
+          block,
+        ).toContain(
+          "await resetDruidFormArtwork(",
+        );
+        expect(
+          block,
+        ).not.toMatch(
           /formChecked\([\s\S]*?`reset\.\$\{profile\.key\}`/,
         );
       },
