@@ -2336,6 +2336,112 @@ if (
         true;
     }
 
+    // BOA 0.11.7 rendered Token sourceElement RED.
+    function normalizeRenderedDruidSource(
+      value,
+    ) {
+      if (
+        typeof value !== "string" ||
+        value.length === 0
+      ) {
+        return null;
+      }
+
+      try {
+        const base =
+          globalThis.location?.href ??
+          "http://foundry.invalid/";
+        const url = new URL(
+          value,
+          base,
+        );
+        return decodeURIComponent(
+          url.pathname,
+        ).replace(
+          /^\/+/,
+          "",
+        );
+      } catch (_error) {
+        return value.replace(
+          /^\/+/,
+          "",
+        );
+      }
+    }
+
+    function renderedDruidTokenSource() {
+      const placeable =
+        liveDruidPlaceable();
+      const sourceElement =
+        placeable?.sourceElement ??
+        null;
+
+      return (
+        sourceElement?.currentSrc ??
+        sourceElement?.src ??
+        sourceElement?.getAttribute?.(
+          "src",
+        ) ??
+        null
+      );
+    }
+
+    function renderedDruidTokenSourceDiagnostic(
+      expectedSrc,
+    ) {
+      const placeable =
+        liveDruidPlaceable();
+      const sourceElement =
+        placeable?.sourceElement ??
+        null;
+      const renderedSrc =
+        renderedDruidTokenSource();
+      const normalizedRenderedSrc =
+        normalizeRenderedDruidSource(
+          renderedSrc,
+        );
+      const normalizedExpectedSrc =
+        normalizeRenderedDruidSource(
+          expectedSrc,
+        );
+
+      return {
+        activeSceneId:
+          globalThis.canvas?.scene?.id ??
+          null,
+        expectedSceneId:
+          scene.id,
+        tokenId:
+          token.id,
+        placeableExists:
+          Boolean(placeable),
+        sourceElementExists:
+          Boolean(sourceElement),
+        sourceElementType:
+          sourceElement?.constructor?.name ??
+          null,
+        documentSrc:
+          placeable?.document?.texture?.src ??
+          null,
+        renderedSrc,
+        expectedSrc,
+        normalizedRenderedSrc,
+        normalizedExpectedSrc,
+        pathMatches:
+          normalizedRenderedSrc !== null &&
+          normalizedRenderedSrc ===
+            normalizedExpectedSrc,
+      };
+    }
+
+    function renderedDruidTokenSourceMatches(
+      expectedSrc,
+    ) {
+      return renderedDruidTokenSourceDiagnostic(
+        expectedSrc,
+      ).pathMatches === true;
+    }
+
     const preparedHumanoidArtwork =
       session.druidHumanoidArtwork;
     if (
@@ -2533,6 +2639,49 @@ if (
     }
 
     // BOA 0.11.7 token-local Druid artwork provenance contract.
+    let travelRenderedSourceWaitError = null;
+    try {
+      await boaWaitFor(
+        () =>
+          renderedDruidTokenSourceMatches(
+            travelExpected.sceneToken,
+          )
+            ? true
+            : null,
+        {
+          timeout: 10000,
+          interval: 100,
+          description:
+            "Druid Travel rendered Token sourceElement",
+        },
+      );
+    } catch (error) {
+      travelRenderedSourceWaitError =
+        error.message ??
+        String(error);
+    }
+
+    boaCheck(
+      checks,
+      "Real Player Travel rendered Token source matches the expected artwork",
+      renderedDruidTokenSourceMatches(
+        travelExpected.sceneToken,
+      ),
+      renderedDruidTokenSourceDiagnostic(
+        travelExpected.sceneToken,
+      ),
+    );
+
+    if (travelRenderedSourceWaitError) {
+      notes.push(
+        `Travel rendered Token source wait: ${travelRenderedSourceWaitError}; diagnostic=${JSON.stringify(
+          renderedDruidTokenSourceDiagnostic(
+            travelExpected.sceneToken,
+          ),
+        )}`,
+      );
+    }
+
     const travelProvenance =
       druidArtworkSnapshot();
     const travelTokenBaseline =
@@ -2690,6 +2839,49 @@ if (
         )}`,
       );
     }
+    let humanoidRenderedSourceWaitError = null;
+    try {
+      await boaWaitFor(
+        () =>
+          renderedDruidTokenSourceMatches(
+            humanoidExpected.sceneToken,
+          )
+            ? true
+            : null,
+        {
+          timeout: 10000,
+          interval: 100,
+          description:
+            "Druid Humanoid rendered Token sourceElement",
+        },
+      );
+    } catch (error) {
+      humanoidRenderedSourceWaitError =
+        error.message ??
+        String(error);
+    }
+
+    boaCheck(
+      checks,
+      "Real Player Humanoid rendered Token source matches the restored artwork",
+      renderedDruidTokenSourceMatches(
+        humanoidExpected.sceneToken,
+      ),
+      renderedDruidTokenSourceDiagnostic(
+        humanoidExpected.sceneToken,
+      ),
+    );
+
+    if (humanoidRenderedSourceWaitError) {
+      notes.push(
+        `Humanoid rendered Token source wait: ${humanoidRenderedSourceWaitError}; diagnostic=${JSON.stringify(
+          renderedDruidTokenSourceDiagnostic(
+            humanoidExpected.sceneToken,
+          ),
+        )}`,
+      );
+    }
+
     boaCheck(
       checks,
       "Humanoid restore clears Druid artwork provenance only after all managed artwork is restored",
