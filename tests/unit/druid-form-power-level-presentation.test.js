@@ -32,7 +32,7 @@ describe("Druid form PL presentation", () => {
         .map(option => [option.form, option]),
     );
 
-    expect(options.humanoid.displayLabel).toBe("Humanoid");
+    expect(options.humanoid.displayLabel).toBe("Humanoid Form");
     expect(options.travel.displayLabel).toBe("Travel Form — PL1");
     expect(options.bear.displayLabel).toBe("Bear Form — PL2");
     expect(options.cat.displayLabel).toBe("Cat Form — PL2");

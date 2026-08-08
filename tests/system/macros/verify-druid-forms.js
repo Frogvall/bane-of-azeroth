@@ -1619,6 +1619,319 @@ notes.push(
       );
     }
   }
+  // BOA 0.11.7 shared spellcasting post-GREEN regression contract.
+  {
+    const sharedSpellCostSymbol = Symbol.for(
+      `${BOA_TEST_MODULE_ID}.spellcasting.cost`,
+    );
+    const installedSpellCost =
+      globalThis.CONFIG
+        ?.Item
+        ?.documentClass
+        ?.prototype
+        ?.getSpellCost;
+
+    boaCheck(
+      checks,
+      "Shared spellcasting owns the installed Dragonbane Item#getSpellCost wrapper",
+      Boolean(
+        typeof installedSpellCost === "function" &&
+        installedSpellCost[sharedSpellCostSymbol] === true
+      ),
+      typeof installedSpellCost,
+    );
+
+    const featureSpecificSpellCostSymbols = [
+      Symbol.for(
+        `${BOA_TEST_MODULE_ID}.mage-brilliance.spell-cost`,
+      ),
+      Symbol.for(
+        `${BOA_TEST_MODULE_ID}.evokers-legacy.spell-cost`,
+      ),
+      Symbol.for(
+        `${BOA_TEST_MODULE_ID}.druidMoonkinSpellCost`,
+      ),
+    ];
+
+    boaCheck(
+      checks,
+      "Installed spell-cost wrapper is not a feature-specific Mage, Evoker, or Druid wrapper",
+      Boolean(
+        typeof installedSpellCost === "function" &&
+        featureSpecificSpellCostSymbols.every(
+          symbol => installedSpellCost[symbol] !== true,
+        )
+      ),
+      featureSpecificSpellCostSymbols.map(
+        symbol => installedSpellCost?.[symbol] ?? false,
+      ),
+    );
+
+    if (
+      typeof api.getBoASpellCost === "function" &&
+      typeof api.canBoACastSpell === "function"
+    ) {
+      const regressionSettingKeys = [
+        "mageBrillianceAutomation",
+        "evokersLegacyAutomation",
+        "druidMoonkinSpellCostAutomation",
+        "druidFormSpellRestrictionAutomation",
+      ];
+      const previousRegressionSettings = new Map();
+      const registeredRegressionSettings =
+        regressionSettingKeys.filter(
+          key => Boolean(
+            game.settings?.settings?.get?.(
+              `${BOA_TEST_MODULE_ID}.${key}`,
+            ),
+          ),
+        );
+
+      boaCheckEqual(
+        checks,
+        "Shared spellcasting regression settings are registered",
+        registeredRegressionSettings,
+        regressionSettingKeys,
+      );
+
+      try {
+        if (
+          registeredRegressionSettings.length ===
+          regressionSettingKeys.length
+        ) {
+          for (const key of regressionSettingKeys) {
+            previousRegressionSettings.set(
+              key,
+              game.settings.get(
+                BOA_TEST_MODULE_ID,
+                key,
+              ),
+            );
+            await game.settings.set(
+              BOA_TEST_MODULE_ID,
+              key,
+              true,
+            );
+          }
+
+          const ability = contentKey => ({
+            type: "ability",
+            getFlag(moduleId, key) {
+              return (
+                moduleId === BOA_TEST_MODULE_ID &&
+                key === "contentKey"
+              )
+                ? contentKey
+                : undefined;
+            },
+          });
+
+          const actor = ({
+            contentKey = null,
+            state = null,
+          } = {}) => ({
+            documentName: "Actor",
+            type: "character",
+            items: contentKey
+              ? [ability(contentKey)]
+              : [],
+            getFlag(moduleId, key) {
+              if (
+                moduleId === BOA_TEST_MODULE_ID &&
+                key === "druidFormState"
+              ) {
+                return state ?? undefined;
+              }
+              return undefined;
+            },
+          });
+
+          const mageActor = actor({
+            contentKey:
+              "heroic-class-ability.mage.mages-brilliance",
+          });
+          const senseMagic = {
+            name: "Sense Magic",
+            type: "spell",
+            parent: mageActor,
+            system: {
+              rank: 0,
+              requirement: "Word",
+            },
+          };
+
+          boaCheckEqual(
+            checks,
+            "Shared spell-cost policies keep Mage's Brilliance Sense Magic free",
+            api.getBoASpellCost(
+              senseMagic,
+              0,
+              1,
+            ),
+            0,
+          );
+
+          const evokerActor = actor({
+            contentKey:
+              "heroic-class-ability.evoker.evokers-legacy",
+          });
+          const evokerSpell = {
+            name: "[BOA TEST] Evoker spell",
+            type: "spell",
+            parent: evokerActor,
+            system: {
+              rank: 1,
+              requirement: "Word, gesture",
+            },
+          };
+
+          boaCheckEqual(
+            checks,
+            "Shared spell-cost policies preserve Evoker's Legacy PL3 cost",
+            api.getBoASpellCost(
+              evokerSpell,
+              3,
+              6,
+            ),
+            4,
+          );
+
+          const moonkinActor = actor({
+            state: {
+              currentForm: "moonkin",
+              activations: {
+                stars: {
+                  active: true,
+                  powerLevel: 2,
+                },
+              },
+            },
+          });
+          const moonkinSpell = {
+            name: "[BOA TEST] Moonkin spell",
+            type: "spell",
+            parent: moonkinActor,
+            system: {
+              rank: 2,
+              requirement: "Word, gesture",
+            },
+          };
+          const moonkinTrick = {
+            name: "[BOA TEST] Moonkin trick",
+            type: "spell",
+            parent: moonkinActor,
+            system: {
+              rank: 0,
+              requirement: "Gesture",
+            },
+          };
+
+          boaCheckEqual(
+            checks,
+            "Shared spell-cost policies apply Moonkin PL2 to normal spells",
+            api.getBoASpellCost(
+              moonkinSpell,
+              2,
+              5,
+            ),
+            3,
+          );
+          boaCheckEqual(
+            checks,
+            "Shared spell-cost policies make Moonkin rank-0 tricks free",
+            api.getBoASpellCost(
+              moonkinTrick,
+              0,
+              1,
+            ),
+            0,
+          );
+
+          const bearActor = actor({
+            state: {
+              currentForm: "bear",
+              activations: {
+                feral: {
+                  active: true,
+                  powerLevel: 2,
+                },
+              },
+            },
+          });
+          const gestureTrick = {
+            name: "Puff of Smoke",
+            type: "spell",
+            parent: bearActor,
+            system: {
+              rank: 0,
+              requirement: "Gesture",
+            },
+          };
+          const wordTrick = {
+            name: "[BOA TEST] Word trick",
+            type: "spell",
+            parent: bearActor,
+            system: {
+              rank: 0,
+              requirement: "Word",
+            },
+          };
+
+          boaCheckEqual(
+            checks,
+            "Shared cast policies block Gesture-only rank-0 tricks in Bear Form",
+            api.canBoACastSpell(
+              bearActor,
+              gestureTrick,
+            ),
+            {
+              allowed: false,
+              policyId: "druid-form-word-only",
+            },
+          );
+          boaCheckEqual(
+            checks,
+            "Shared cast policies allow Word-only rank-0 tricks in Bear Form",
+            api.canBoACastSpell(
+              bearActor,
+              wordTrick,
+            ),
+            {
+              allowed: true,
+              policyId: null,
+            },
+          );
+
+          if (
+            typeof api.getDruidFormSwitchOptions === "function"
+          ) {
+            boaCheckEqual(
+              checks,
+              "Humanoid form switch option preserves the established Humanoid Form label",
+              api
+                .getDruidFormSwitchOptions(bearActor)
+                .find(
+                  option => option.form === "humanoid",
+                )
+                ?.displayLabel,
+              "Humanoid Form",
+            );
+          }
+        }
+      } finally {
+        for (
+          const [key, value]
+          of previousRegressionSettings
+        ) {
+          await game.settings.set(
+            BOA_TEST_MODULE_ID,
+            key,
+            value,
+          );
+        }
+      }
+    }
+  }
 return boaFinish(
   testKey,
   testName,
