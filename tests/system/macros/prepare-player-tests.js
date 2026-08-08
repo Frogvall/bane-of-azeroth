@@ -366,6 +366,12 @@ const originalDruidFormsAutomationSetting =
     BOA_TEST_MODULE_ID,
     "druidFormsAutomation",
   );
+// BOA 0.11.7 Druid artwork real-Player regression setup.
+const originalDruidFormArtworkAutomationSetting =
+  game.settings.get(
+    BOA_TEST_MODULE_ID,
+    "druidFormArtworkAutomation",
+  );
 const previousActiveSceneId = game.scenes.active?.id ?? null;
 const sessionId =
   `boa-player-${Date.now()}-${foundry.utils.randomID(8)}`;
@@ -907,6 +913,11 @@ try {
     "druidFormsAutomation",
     true,
   );
+  await game.settings.set(
+    BOA_TEST_MODULE_ID,
+    "druidFormArtworkAutomation",
+    true,
+  );
   const session = {
     schemaVersion: sessionSchemaVersion,
     sessionId,
@@ -950,6 +961,7 @@ try {
     runeTestWeaponId: runeTestWeapon.id,
     requiredAbilityKeys: requiredAbilities.map(entry => entry.key),
     createdAt: new Date().toISOString(),
+    originalDruidFormArtworkAutomationSetting,
   };
 
   await user.update({
@@ -1150,6 +1162,24 @@ try {
     ),
     true,
   );
+  boaCheckEqual(
+    checks,
+    "Druid Forms automation is enabled for player tests",
+    game.settings.get(
+      BOA_TEST_MODULE_ID,
+      "druidFormsAutomation",
+    ),
+    true,
+  );
+  boaCheckEqual(
+    checks,
+    "Druid form artwork automation is enabled for player tests",
+    game.settings.get(
+      BOA_TEST_MODULE_ID,
+      "druidFormArtworkAutomation",
+    ),
+    true,
+  );
   notes.push(`Session: ${sessionId}`);
   notes.push(
     "The password was shown only in the GM-whispered credentials message.",
@@ -1231,6 +1261,17 @@ try {
   } catch (settingError) {
     notes.push(
       `Could not restore Druid Forms automation: ${settingError.message}`,
+    );
+  }
+  try {
+    await game.settings.set(
+      BOA_TEST_MODULE_ID,
+      "druidFormArtworkAutomation",
+      originalDruidFormArtworkAutomationSetting,
+    );
+  } catch (settingError) {
+    notes.push(
+      `Could not restore Druid form artwork automation: ${settingError.message}`,
     );
   }
   try {

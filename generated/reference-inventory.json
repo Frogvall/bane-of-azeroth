@@ -1805,7 +1805,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/cleanup-player-tests.js",
-      "line": 529,
+      "line": 560,
       "column": 11,
       "target": "${report.uuid}",
       "classification": "unclassified",
@@ -1815,7 +1815,7 @@
     {
       "kind": "uuid-literal",
       "path": "tests/system/macros/prepare-player-tests.js",
-      "line": 827,
+      "line": 833,
       "column": 25,
       "target": "Actor.BoaOtherPlayerTe",
       "classification": "unclassified",

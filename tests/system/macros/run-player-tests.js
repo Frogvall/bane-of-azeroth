@@ -2187,7 +2187,7 @@ if (
   );
 }
 
-// BOA 0.11.7 Druid lifecycle real-Player authority flow.
+// BOA 0.11.7 Druid lifecycle + artwork real-Player authority flow.
 const druidSavageItem =
   actor?.items?.get?.(
     session.druidSavageItemId,
@@ -2200,7 +2200,12 @@ const druidSavageItem =
         "spells.savage-incarnation",
   )
   ?? null;
-if (actor && druidSavageItem) {
+if (
+  actor &&
+  druidSavageItem &&
+  scene &&
+  token
+) {
   try {
     const druidApi =
       game.modules.get(
@@ -2212,16 +2217,93 @@ if (actor && druidSavageItem) {
       druidApi.switchDruidForm;
     const getDruidFormState =
       druidApi.getDruidFormState;
-
+    const getDruidFormArtwork =
+      druidApi.getDruidFormArtwork;
     if (
       typeof activateDruidIncarnation !== "function"
       || typeof switchDruidForm !== "function"
       || typeof getDruidFormState !== "function"
+      || typeof getDruidFormArtwork !== "function"
     ) {
       throw new Error(
-        "The Druid lifecycle Player authority API is unavailable.",
+        "The Druid lifecycle/artwork Player authority API is unavailable.",
       );
     }
+
+    function liveDruidToken() {
+      return scene.tokens.get(
+        token.id,
+      ) ?? null;
+    }
+    function druidArtworkSnapshot() {
+      const liveToken =
+        liveDruidToken();
+      return {
+        portrait:
+          actor.img ?? null,
+        prototypeToken:
+          actor.prototypeToken
+            ?.texture
+            ?.src ?? null,
+        sceneToken:
+          liveToken?.texture
+            ?.src ?? null,
+        actorBaseline:
+          boaGetFlag(
+            actor,
+            "druidFormArtworkBaseline",
+          ) ?? null,
+        tokenBaseline:
+          liveToken
+            ? boaGetFlag(
+                liveToken,
+                "druidFormTokenArtworkBaseline",
+              ) ?? null
+            : null,
+      };
+    }
+    function artworkMatches(
+      actual,
+      expected,
+    ) {
+      return (
+        actual?.portrait ===
+          expected?.portrait &&
+        actual?.prototypeToken ===
+          expected?.prototypeToken &&
+        actual?.sceneToken ===
+          expected?.sceneToken
+      );
+    }
+
+    const humanoidArtwork =
+      druidArtworkSnapshot();
+    const humanoidExpected = {
+      portrait:
+        humanoidArtwork.portrait,
+      prototypeToken:
+        humanoidArtwork.prototypeToken,
+      sceneToken:
+        humanoidArtwork.sceneToken,
+    };
+    const travelArtwork =
+      getDruidFormArtwork(
+        actor,
+        "travelPl2",
+      );
+    if (!travelArtwork) {
+      throw new Error(
+        "Travel Form PL2 artwork is unavailable for the Player fixture.",
+      );
+    }
+    const travelExpected = {
+      portrait:
+        travelArtwork.portrait,
+      prototypeToken:
+        travelArtwork.token,
+      sceneToken:
+        travelArtwork.token,
+    };
 
     await actor.update({
       "system.willPoints.value": 10,
@@ -2235,7 +2317,6 @@ if (actor && druidSavageItem) {
         initialForm: "travel",
       },
     );
-
     await boaWaitFor(
       () => {
         const state =
@@ -2255,13 +2336,58 @@ if (actor && druidSavageItem) {
           "Savage Incarnation Player activation through the active GM",
       },
     );
-
     boaCheck(
       checks,
       "Real Player can activate Savage Incarnation through GM authority",
       getDruidFormState(actor).currentForm === "travel",
       getDruidFormState(actor),
     );
+
+    let travelArtworkWaitError = null;
+    try {
+      await boaWaitFor(
+        () => {
+          const snapshot =
+            druidArtworkSnapshot();
+          return artworkMatches(
+            snapshot,
+            travelExpected,
+          )
+            ? snapshot
+            : null;
+        },
+        {
+          timeout: 10000,
+          interval: 100,
+          description:
+            "Druid Travel Form artwork on Actor, prototype Token, and live Scene Token",
+        },
+      );
+    } catch (error) {
+      travelArtworkWaitError =
+        error.message ??
+        String(error);
+    }
+    boaCheckEqual(
+      checks,
+      "Real Player Travel Form updates portrait, prototype Token, and live Scene Token through GM authority",
+      {
+        portrait:
+          druidArtworkSnapshot().portrait,
+        prototypeToken:
+          druidArtworkSnapshot().prototypeToken,
+        sceneToken:
+          druidArtworkSnapshot().sceneToken,
+      },
+      travelExpected,
+    );
+    if (travelArtworkWaitError) {
+      notes.push(
+        `Travel artwork wait: ${travelArtworkWaitError}; snapshot=${JSON.stringify(
+          druidArtworkSnapshot(),
+        )}`,
+      );
+    }
 
     const wpBeforeFree =
       Number(
@@ -2274,7 +2400,6 @@ if (actor && druidSavageItem) {
         mode: "free",
       },
     );
-
     await boaWaitFor(
       () => (
         getDruidFormState(actor).currentForm === "humanoid"
@@ -2288,7 +2413,6 @@ if (actor && druidSavageItem) {
           "Druid free-action form change through the active GM",
       },
     );
-
     boaCheckEqual(
       checks,
       "Real Player free-action form change spends exactly 1 WP",
@@ -2303,10 +2427,67 @@ if (actor && druidSavageItem) {
         wp: wpBeforeFree - 1,
       },
     );
+
+    let humanoidArtworkWaitError = null;
+    try {
+      await boaWaitFor(
+        () => {
+          const snapshot =
+            druidArtworkSnapshot();
+          return artworkMatches(
+            snapshot,
+            humanoidExpected,
+          )
+            ? snapshot
+            : null;
+        },
+        {
+          timeout: 10000,
+          interval: 100,
+          description:
+            "Druid Humanoid artwork restore on Actor, prototype Token, and live Scene Token",
+        },
+      );
+    } catch (error) {
+      humanoidArtworkWaitError =
+        error.message ??
+        String(error);
+    }
+    const restoredArtwork =
+      druidArtworkSnapshot();
+    boaCheckEqual(
+      checks,
+      "Real Player returns to Humanoid and restores portrait, prototype Token, and live Scene Token",
+      {
+        portrait:
+          restoredArtwork.portrait,
+        prototypeToken:
+          restoredArtwork.prototypeToken,
+        sceneToken:
+          restoredArtwork.sceneToken,
+      },
+      humanoidExpected,
+    );
+    boaCheck(
+      checks,
+      "Humanoid restore clears Druid artwork provenance after all managed artwork is restored",
+      (
+        restoredArtwork.actorBaseline === null
+        && restoredArtwork.tokenBaseline === null
+      ),
+      restoredArtwork,
+    );
+    if (humanoidArtworkWaitError) {
+      notes.push(
+        `Humanoid artwork wait: ${humanoidArtworkWaitError}; snapshot=${JSON.stringify(
+          restoredArtwork,
+        )}`,
+      );
+    }
   } catch (error) {
     boaCheck(
       checks,
-      "Real-player Druid form lifecycle completed",
+      "Real-player Druid form lifecycle and artwork restore completed",
       false,
       error.stack ?? error.message,
     );
@@ -2321,6 +2502,10 @@ if (actor && druidSavageItem) {
         actor?.id ?? null,
       spell:
         druidSavageItem?.id ?? null,
+      scene:
+        scene?.id ?? null,
+      token:
+        token?.id ?? null,
     },
   );
 }

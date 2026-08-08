@@ -335,6 +335,37 @@ for (const preparedSession of sessions) {
       );
     }
   }
+  // BOA 0.11.7 Druid artwork Player-test setting cleanup.
+  if (
+    Object.prototype.hasOwnProperty.call(
+      preparedSession,
+      "originalDruidFormArtworkAutomationSetting",
+    )
+  ) {
+    try {
+      await game.settings.set(
+        BOA_TEST_MODULE_ID,
+        "druidFormArtworkAutomation",
+        preparedSession.originalDruidFormArtworkAutomationSetting,
+      );
+      boaCheckEqual(
+        checks,
+        `Restored Druid form artwork automation for ${preparedSession.sessionId}`,
+        game.settings.get(
+          BOA_TEST_MODULE_ID,
+          "druidFormArtworkAutomation",
+        ),
+        preparedSession.originalDruidFormArtworkAutomationSetting,
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        `Restored Druid form artwork automation for ${preparedSession.sessionId}`,
+        false,
+        error.stack ?? error.message,
+      );
+    }
+  }
   try {
     const previousScene = preparedSession.previousActiveSceneId
       ? game.scenes.get(preparedSession.previousActiveSceneId)
