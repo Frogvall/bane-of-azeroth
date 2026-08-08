@@ -977,6 +977,418 @@ function currentUserNeedsGM(
   return true;
 }
 
+// BOA 0.11.7 Player lifecycle convergence acknowledgement.
+function lifecycleCollectionValues(
+  collection,
+) {
+  if (!collection) {
+    return [];
+  }
+
+  if (
+    typeof collection.values ===
+      "function"
+  ) {
+    return Array.from(
+      collection.values(),
+    );
+  }
+
+  return Array.from(
+    collection,
+  );
+}
+
+function lifecycleSceneTokenSnapshots(
+  actor,
+  scenes =
+    globalThis.game?.scenes,
+) {
+  const snapshots =
+    [];
+
+  for (
+    const scene
+    of lifecycleCollectionValues(
+      scenes,
+    )
+  ) {
+    const tokens =
+      lifecycleCollectionValues(
+        scene?.tokens,
+      );
+
+    for (
+      const token
+      of tokens
+    ) {
+      if (
+        token?.actorId !==
+          actor?.id &&
+        token?.actor?.id !==
+          actor?.id
+      ) {
+        continue;
+      }
+
+      const sceneId =
+        scene?.id ??
+        token?.parent?.id ??
+        token?.scene?.id ??
+        null;
+      const tokenId =
+        token?.id ??
+        null;
+
+      if (
+        !sceneId ||
+        !tokenId
+      ) {
+        continue;
+      }
+
+      snapshots.push({
+        key:
+          `${sceneId}.${tokenId}`,
+        sceneId,
+        tokenId,
+        src:
+          token?.texture
+            ?.src ??
+          null,
+      });
+    }
+  }
+
+  return snapshots;
+}
+
+export function captureDruidFormLifecycleConvergence(
+  actor,
+  {
+    scenes =
+      globalThis.game?.scenes,
+  } = {},
+) {
+  if (!actor) {
+    return null;
+  }
+
+  return {
+    actorId:
+      actor.id ??
+      null,
+    state:
+      structuredClone(
+        getDruidFormState(
+          actor,
+        ),
+      ),
+    actorImg:
+      actor.img ??
+      null,
+    prototypeTokenSrc:
+      actor.prototypeToken
+        ?.texture
+        ?.src ??
+      null,
+    tokens:
+      lifecycleSceneTokenSnapshots(
+        actor,
+        scenes,
+      ),
+  };
+}
+
+function lifecycleStateMatches(
+  actual,
+  expected,
+) {
+  const deepEqual =
+    globalThis.foundry
+      ?.utils
+      ?.deepEqual;
+
+  if (
+    typeof deepEqual ===
+      "function"
+  ) {
+    return deepEqual(
+      actual,
+      expected,
+    );
+  }
+
+  return (
+    JSON.stringify(
+      actual,
+    ) ===
+    JSON.stringify(
+      expected,
+    )
+  );
+}
+
+function findLifecycleSceneToken(
+  sceneId,
+  tokenId,
+  scenes =
+    globalThis.game?.scenes,
+) {
+  for (
+    const scene
+    of lifecycleCollectionValues(
+      scenes,
+    )
+  ) {
+    if (
+      scene?.id !==
+        sceneId
+    ) {
+      continue;
+    }
+
+    const direct =
+      scene?.tokens
+        ?.get?.(
+          tokenId,
+        );
+
+    if (direct) {
+      return direct;
+    }
+
+    return lifecycleCollectionValues(
+      scene?.tokens,
+    ).find(
+      token =>
+        token?.id ===
+          tokenId,
+    ) ?? null;
+  }
+
+  return null;
+}
+
+function druidFormLifecycleConvergenceDiagnostic(
+  convergence,
+  {
+    actors =
+      globalThis.game?.actors,
+    scenes =
+      globalThis.game?.scenes,
+    requiredTokenKeys =
+      null,
+  } = {},
+) {
+  const actor =
+    collectionGet(
+      actors,
+      convergence
+        ?.actorId,
+    );
+  const actualState =
+    actor
+      ? getDruidFormState(
+          actor,
+        )
+      : null;
+  const stateMatches =
+    Boolean(
+      actor &&
+      lifecycleStateMatches(
+        actualState,
+        convergence?.state,
+      ),
+    );
+  const actorImg =
+    actor?.img ??
+    null;
+  const prototypeTokenSrc =
+    actor?.prototypeToken
+      ?.texture
+      ?.src ??
+    null;
+  const actorArtworkMatches =
+    Boolean(
+      actor &&
+      actorImg ===
+        convergence
+          ?.actorImg &&
+      prototypeTokenSrc ===
+        convergence
+          ?.prototypeTokenSrc,
+    );
+
+  const expectedTokens =
+    new Map(
+      (
+        convergence?.tokens ??
+        []
+      ).map(
+        token => [
+          token.key,
+          token,
+        ],
+      ),
+    );
+
+  const keys =
+    Array.isArray(
+      requiredTokenKeys,
+    )
+      ? requiredTokenKeys
+      : [
+          ...expectedTokens.keys(),
+        ];
+
+  const tokenChecks =
+    keys.map(
+      key => {
+        const expected =
+          expectedTokens.get(
+            key,
+          ) ??
+          null;
+        const token =
+          expected
+            ? findLifecycleSceneToken(
+                expected.sceneId,
+                expected.tokenId,
+                scenes,
+              )
+            : null;
+        const actual =
+          token?.texture
+            ?.src ??
+          null;
+        const expectedSrc =
+          expected?.src ??
+          null;
+
+        return {
+          key,
+          expected:
+            expectedSrc,
+          actual,
+          matches:
+            Boolean(
+              expected &&
+              token &&
+              actual ===
+                expectedSrc,
+            ),
+        };
+      },
+    );
+
+  return {
+    matches:
+      Boolean(
+        stateMatches &&
+        actorArtworkMatches &&
+        tokenChecks.every(
+          check =>
+            check.matches,
+        ),
+      ),
+    actorId:
+      convergence
+        ?.actorId ??
+      null,
+    stateMatches,
+    actualState,
+    expectedState:
+      convergence
+        ?.state ??
+      null,
+    actorImg,
+    expectedActorImg:
+      convergence
+        ?.actorImg ??
+      null,
+    prototypeTokenSrc,
+    expectedPrototypeTokenSrc:
+      convergence
+        ?.prototypeTokenSrc ??
+      null,
+    tokenChecks,
+  };
+}
+
+export async function waitForDruidFormLifecycleConvergence(
+  convergence,
+  {
+    actors =
+      globalThis.game?.actors,
+    scenes =
+      globalThis.game?.scenes,
+    requiredTokenKeys =
+      null,
+    timeoutMs =
+      REQUEST_TIMEOUT_MS,
+    intervalMs =
+      25,
+    nowFn =
+      () => Date.now(),
+    sleepFn =
+      delay =>
+        new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              delay,
+            ),
+        ),
+  } = {},
+) {
+  if (!convergence) {
+    return {
+      matches: true,
+      skipped: true,
+      tokenChecks: [],
+    };
+  }
+
+  const deadline =
+    nowFn() +
+    timeoutMs;
+  let diagnostic =
+    null;
+
+  do {
+    diagnostic =
+      druidFormLifecycleConvergenceDiagnostic(
+        convergence,
+        {
+          actors,
+          scenes,
+          requiredTokenKeys,
+        },
+      );
+
+    if (
+      diagnostic.matches
+    ) {
+      return diagnostic;
+    }
+
+    await sleepFn(
+      intervalMs,
+    );
+  } while (
+    nowFn() <
+      deadline
+  );
+
+  throw new Error(
+    "The Druid form lifecycle update did not converge on the requesting client. "
+    + JSON.stringify(
+      diagnostic,
+    ),
+  );
+}
+
 function requestLifecycleAction(
   actor,
   action,
@@ -1039,6 +1451,13 @@ function requestLifecycleAction(
       "function"
       ? randomID()
       : `${Date.now()}-${Math.random()}`;
+  const localTokenKeys =
+    lifecycleSceneTokenSnapshots(
+      actor,
+    ).map(
+      token =>
+        token.key,
+    );
 
   return new Promise(
     (resolve, reject) => {
@@ -1063,6 +1482,9 @@ function requestLifecycleAction(
           resolve,
           reject,
           timeoutId,
+          actorId:
+            actor.id,
+          localTokenKeys,
         },
       );
 
@@ -1345,7 +1767,7 @@ export async function executeDruidFormLifecycleRequest(
   );
 }
 
-function handleResult(
+async function handleResult(
   payload,
 ) {
   if (
@@ -1367,22 +1789,43 @@ function handleResult(
   clearTimeout(
     pending.timeoutId,
   );
-  pendingRequests.delete(
-    payload.requestId,
-  );
 
   if (
-    payload.success === true
+    payload.success !== true
   ) {
-    pending.resolve(
-      payload.result,
+    pendingRequests.delete(
+      payload.requestId,
     );
-  } else {
     pending.reject(
       new Error(
         payload.error ??
         "The GM could not update Druid form state.",
       ),
+    );
+    return;
+  }
+
+  try {
+    await waitForDruidFormLifecycleConvergence(
+      payload.convergence,
+      {
+        requiredTokenKeys:
+          pending.localTokenKeys,
+      },
+    );
+
+    pendingRequests.delete(
+      payload.requestId,
+    );
+    pending.resolve(
+      payload.result,
+    );
+  } catch (error) {
+    pendingRequests.delete(
+      payload.requestId,
+    );
+    pending.reject(
+      error,
     );
   }
 }
@@ -1409,6 +1852,16 @@ async function handleRequest(
       await executeDruidFormLifecycleRequest(
         payload,
       );
+    const actor =
+      collectionGet(
+        globalThis.game?.actors,
+        result?.actorId ??
+          payload?.actorId,
+      );
+    const convergence =
+      captureDruidFormLifecycleConvergence(
+        actor,
+      );
 
     globalThis.game?.socket
       ?.emit?.(
@@ -1422,6 +1875,7 @@ async function handleRequest(
             payload.requesterUserId,
           success: true,
           result,
+          convergence,
         },
       );
   } catch (error) {
@@ -1429,6 +1883,7 @@ async function handleRequest(
       `${MODULE_ID} | Druid form lifecycle request failed.`,
       error,
     );
+
     globalThis.game?.socket
       ?.emit?.(
         SOCKET_NAME,
@@ -1461,7 +1916,7 @@ function onSocketMessage(
     payload?.type ===
       RESULT_TYPE
   ) {
-    handleResult(
+    void handleResult(
       payload,
     );
   }
