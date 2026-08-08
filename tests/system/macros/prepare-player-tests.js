@@ -951,6 +951,18 @@ try {
       demonHunterInitiationSourceItem.id,
     druidSavageItemId:
       druidSavageItem.id,
+    // BOA 0.11.7 prepared Humanoid artwork baseline for rendered-token RED.
+    druidHumanoidArtwork: {
+      portrait:
+        actor.img ?? null,
+      prototypeToken:
+        actor.prototypeToken
+          ?.texture
+          ?.src ?? null,
+      sceneToken:
+        token.texture
+          ?.src ?? null,
+    },
     originalDruidFormsAutomationSetting,
     previousActiveSceneId,
     originalAutomationSetting,
