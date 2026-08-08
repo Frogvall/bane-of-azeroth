@@ -2336,110 +2336,262 @@ if (
         true;
     }
 
-    // BOA 0.11.7 rendered Token sourceElement RED.
-    function normalizeRenderedDruidSource(
+    // BOA 0.11.7 rendered Token pixel fingerprint RED.
+    function cachedDruidTexture(
+      src,
+    ) {
+      const cached =
+        globalThis.foundry
+          ?.canvas
+          ?.getTexture?.(
+            src,
+          ) ??
+        null;
+
+      if (
+        cached?.source
+      ) {
+        return cached;
+      }
+
+      if (
+        cached?.texture
+          ?.source
+      ) {
+        return cached.texture;
+      }
+
+      return null;
+    }
+
+    function druidTextureHash(
       value,
     ) {
       if (
-        typeof value !== "string" ||
-        value.length === 0
+        typeof value !==
+          "string"
+      ) {
+        return null;
+      }
+
+      let hash =
+        2166136261;
+
+      for (
+        let index = 0;
+        index < value.length;
+        index += 1
+      ) {
+        hash ^=
+          value.charCodeAt(
+            index,
+          );
+        hash =
+          Math.imul(
+            hash,
+            16777619,
+          );
+      }
+
+      return (
+        hash >>> 0
+      )
+        .toString(16)
+        .padStart(
+          8,
+          "0",
+        );
+    }
+
+    async function druidTexturePng(
+      texture,
+    ) {
+      const ImageHelper =
+        globalThis.foundry
+          ?.helpers
+          ?.media
+          ?.ImageHelper ??
+        globalThis.ImageHelper ??
+        null;
+
+      if (
+        typeof ImageHelper
+          ?.textureToImage !==
+          "function" ||
+        !texture
       ) {
         return null;
       }
 
       try {
-        const base =
-          globalThis.location?.href ??
-          "http://foundry.invalid/";
-        const url = new URL(
-          value,
-          base,
-        );
-        return decodeURIComponent(
-          url.pathname,
-        ).replace(
-          /^\/+/,
-          "",
-        );
+        return await ImageHelper
+          .textureToImage(
+            texture,
+            {
+              format:
+                "image/png",
+            },
+          );
       } catch (_error) {
-        return value.replace(
-          /^\/+/,
-          "",
-        );
+        return null;
       }
     }
 
-    function renderedDruidTokenSource() {
-      const placeable =
-        liveDruidPlaceable();
-      const sourceElement =
-        placeable?.sourceElement ??
-        null;
-
-      return (
-        sourceElement?.currentSrc ??
-        sourceElement?.src ??
-        sourceElement?.getAttribute?.(
-          "src",
-        ) ??
-        null
-      );
-    }
-
-    function renderedDruidTokenSourceDiagnostic(
+    async function renderedDruidPixelDiagnostic(
       expectedSrc,
     ) {
       const placeable =
         liveDruidPlaceable();
-      const sourceElement =
-        placeable?.sourceElement ??
+      const renderedTexture =
+        placeable
+          ?.mesh
+          ?.texture ??
+        placeable
+          ?.texture ??
         null;
-      const renderedSrc =
-        renderedDruidTokenSource();
-      const normalizedRenderedSrc =
-        normalizeRenderedDruidSource(
-          renderedSrc,
-        );
-      const normalizedExpectedSrc =
-        normalizeRenderedDruidSource(
+      const expectedTexture =
+        cachedDruidTexture(
           expectedSrc,
         );
 
+      const [
+        renderedPng,
+        expectedPng,
+      ] =
+        await Promise.all([
+          druidTexturePng(
+            renderedTexture,
+          ),
+          druidTexturePng(
+            expectedTexture,
+          ),
+        ]);
+
       return {
         activeSceneId:
-          globalThis.canvas?.scene?.id ??
-          null,
+          globalThis.canvas
+            ?.scene
+            ?.id ?? null,
         expectedSceneId:
           scene.id,
         tokenId:
           token.id,
         placeableExists:
-          Boolean(placeable),
-        sourceElementExists:
-          Boolean(sourceElement),
-        sourceElementType:
-          sourceElement?.constructor?.name ??
-          null,
+          Boolean(
+            placeable,
+          ),
         documentSrc:
-          placeable?.document?.texture?.src ??
+          placeable
+            ?.document
+            ?.texture
+            ?.src ??
           null,
-        renderedSrc,
         expectedSrc,
-        normalizedRenderedSrc,
-        normalizedExpectedSrc,
-        pathMatches:
-          normalizedRenderedSrc !== null &&
-          normalizedRenderedSrc ===
-            normalizedExpectedSrc,
+        renderedTextureExists:
+          Boolean(
+            renderedTexture,
+          ),
+        expectedTextureExists:
+          Boolean(
+            expectedTexture,
+          ),
+        renderedSourceType:
+          renderedTexture
+            ?.source
+            ?.resource
+            ?.constructor
+            ?.name ??
+          null,
+        expectedSourceType:
+          expectedTexture
+            ?.source
+            ?.resource
+            ?.constructor
+            ?.name ??
+          null,
+        renderedWidth:
+          renderedTexture
+            ?.width ??
+          null,
+        renderedHeight:
+          renderedTexture
+            ?.height ??
+          null,
+        expectedWidth:
+          expectedTexture
+            ?.width ??
+          null,
+        expectedHeight:
+          expectedTexture
+            ?.height ??
+          null,
+        renderedPngLength:
+          renderedPng
+            ?.length ??
+          null,
+        expectedPngLength:
+          expectedPng
+            ?.length ??
+          null,
+        renderedHash:
+          druidTextureHash(
+            renderedPng,
+          ),
+        expectedHash:
+          druidTextureHash(
+            expectedPng,
+          ),
+        pixelFingerprintMatches:
+          Boolean(
+            renderedPng &&
+            expectedPng &&
+            renderedPng ===
+              expectedPng,
+          ),
       };
     }
 
-    function renderedDruidTokenSourceMatches(
+    async function waitForRenderedDruidPixels(
       expectedSrc,
+      {
+        timeout =
+          10000,
+        interval =
+          100,
+      } = {},
     ) {
-      return renderedDruidTokenSourceDiagnostic(
-        expectedSrc,
-      ).pathMatches === true;
+      const deadline =
+        Date.now() +
+        timeout;
+      let diagnostic =
+        null;
+
+      do {
+        diagnostic =
+          await renderedDruidPixelDiagnostic(
+            expectedSrc,
+          );
+
+        if (
+          diagnostic
+            .pixelFingerprintMatches
+        ) {
+          return diagnostic;
+        }
+
+        await new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              interval,
+            ),
+        );
+      } while (
+        Date.now() <
+          deadline
+      );
+
+      return diagnostic;
     }
 
     const preparedHumanoidArtwork =
@@ -2479,6 +2631,20 @@ if (
       },
       humanoidExpected,
     );
+    const initialHumanoidRenderedPixels =
+      await waitForRenderedDruidPixels(
+        humanoidExpected.sceneToken,
+      );
+
+    boaCheck(
+      checks,
+      "Real Player rendered-token pixel fingerprint calibrates on the prepared Humanoid artwork",
+      initialHumanoidRenderedPixels
+        ?.pixelFingerprintMatches ===
+        true,
+      initialHumanoidRenderedPixels,
+    );
+
     boaCheck(
       checks,
       "Real Player canvas TokenDocument starts with the prepared Humanoid texture",
@@ -2639,48 +2805,19 @@ if (
     }
 
     // BOA 0.11.7 token-local Druid artwork provenance contract.
-    let travelRenderedSourceWaitError = null;
-    try {
-      await boaWaitFor(
-        () =>
-          renderedDruidTokenSourceMatches(
-            travelExpected.sceneToken,
-          )
-            ? true
-            : null,
-        {
-          timeout: 10000,
-          interval: 100,
-          description:
-            "Druid Travel rendered Token sourceElement",
-        },
+    const travelRenderedPixels =
+      await waitForRenderedDruidPixels(
+        travelExpected.sceneToken,
       );
-    } catch (error) {
-      travelRenderedSourceWaitError =
-        error.message ??
-        String(error);
-    }
 
     boaCheck(
       checks,
-      "Real Player Travel rendered Token source matches the expected artwork",
-      renderedDruidTokenSourceMatches(
-        travelExpected.sceneToken,
-      ),
-      renderedDruidTokenSourceDiagnostic(
-        travelExpected.sceneToken,
-      ),
+      "Real Player rendered-token pixel fingerprint matches Travel artwork",
+      travelRenderedPixels
+        ?.pixelFingerprintMatches ===
+        true,
+      travelRenderedPixels,
     );
-
-    if (travelRenderedSourceWaitError) {
-      notes.push(
-        `Travel rendered Token source wait: ${travelRenderedSourceWaitError}; diagnostic=${JSON.stringify(
-          renderedDruidTokenSourceDiagnostic(
-            travelExpected.sceneToken,
-          ),
-        )}`,
-      );
-    }
 
     const travelProvenance =
       druidArtworkSnapshot();
@@ -2839,48 +2976,19 @@ if (
         )}`,
       );
     }
-    let humanoidRenderedSourceWaitError = null;
-    try {
-      await boaWaitFor(
-        () =>
-          renderedDruidTokenSourceMatches(
-            humanoidExpected.sceneToken,
-          )
-            ? true
-            : null,
-        {
-          timeout: 10000,
-          interval: 100,
-          description:
-            "Druid Humanoid rendered Token sourceElement",
-        },
+    const humanoidRenderedPixels =
+      await waitForRenderedDruidPixels(
+        humanoidExpected.sceneToken,
       );
-    } catch (error) {
-      humanoidRenderedSourceWaitError =
-        error.message ??
-        String(error);
-    }
 
     boaCheck(
       checks,
-      "Real Player Humanoid rendered Token source matches the restored artwork",
-      renderedDruidTokenSourceMatches(
-        humanoidExpected.sceneToken,
-      ),
-      renderedDruidTokenSourceDiagnostic(
-        humanoidExpected.sceneToken,
-      ),
+      "Real Player rendered-token pixel fingerprint returns to Humanoid artwork",
+      humanoidRenderedPixels
+        ?.pixelFingerprintMatches ===
+        true,
+      humanoidRenderedPixels,
     );
-
-    if (humanoidRenderedSourceWaitError) {
-      notes.push(
-        `Humanoid rendered Token source wait: ${humanoidRenderedSourceWaitError}; diagnostic=${JSON.stringify(
-          renderedDruidTokenSourceDiagnostic(
-            humanoidExpected.sceneToken,
-          ),
-        )}`,
-      );
-    }
 
     boaCheck(
       checks,
