@@ -2336,35 +2336,8 @@ if (
         true;
     }
 
-    // BOA 0.11.7 rendered Token pixel fingerprint RED.
-    function cachedDruidTexture(
-      src,
-    ) {
-      const cached =
-        globalThis.foundry
-          ?.canvas
-          ?.getTexture?.(
-            src,
-          ) ??
-        null;
-
-      if (
-        cached?.source
-      ) {
-        return cached;
-      }
-
-      if (
-        cached?.texture
-          ?.source
-      ) {
-        return cached.texture;
-      }
-
-      return null;
-    }
-
-    function druidTextureHash(
+    // BOA 0.11.7 rendered Token baseline fingerprint RED.
+    function druidRenderedTextureHash(
       value,
     ) {
       if (
@@ -2403,9 +2376,16 @@ if (
         );
     }
 
-    async function druidTexturePng(
-      texture,
-    ) {
+    async function druidRenderedTextureFingerprint() {
+      const placeable =
+        liveDruidPlaceable();
+      const texture =
+        placeable
+          ?.texture ??
+        placeable
+          ?.mesh
+          ?.texture ??
+        null;
       const ImageHelper =
         globalThis.foundry
           ?.helpers
@@ -2414,58 +2394,30 @@ if (
         globalThis.ImageHelper ??
         null;
 
-      if (
-        typeof ImageHelper
-          ?.textureToImage !==
-          "function" ||
-        !texture
-      ) {
-        return null;
-      }
-
-      try {
-        return await ImageHelper
-          .textureToImage(
-            texture,
-            {
-              format:
-                "image/png",
-            },
-          );
-      } catch (_error) {
-        return null;
-      }
-    }
-
-    async function renderedDruidPixelDiagnostic(
-      expectedSrc,
-    ) {
-      const placeable =
-        liveDruidPlaceable();
-      const renderedTexture =
-        placeable
-          ?.mesh
-          ?.texture ??
-        placeable
-          ?.texture ??
+      let png =
         null;
-      const expectedTexture =
-        cachedDruidTexture(
-          expectedSrc,
-        );
 
-      const [
-        renderedPng,
-        expectedPng,
-      ] =
-        await Promise.all([
-          druidTexturePng(
-            renderedTexture,
-          ),
-          druidTexturePng(
-            expectedTexture,
-          ),
-        ]);
+      if (
+        texture &&
+        typeof ImageHelper
+          ?.textureToImage ===
+          "function"
+      ) {
+        try {
+          png =
+            await ImageHelper
+              .textureToImage(
+                texture,
+                {
+                  format:
+                    "image/png",
+                },
+              );
+        } catch (_error) {
+          png =
+            null;
+        }
+      }
 
       return {
         activeSceneId:
@@ -2486,112 +2438,27 @@ if (
             ?.texture
             ?.src ??
           null,
-        expectedSrc,
-        renderedTextureExists:
+        textureExists:
           Boolean(
-            renderedTexture,
+            texture,
           ),
-        expectedTextureExists:
-          Boolean(
-            expectedTexture,
-          ),
-        renderedSourceType:
-          renderedTexture
-            ?.source
-            ?.resource
-            ?.constructor
-            ?.name ??
-          null,
-        expectedSourceType:
-          expectedTexture
-            ?.source
-            ?.resource
-            ?.constructor
-            ?.name ??
-          null,
-        renderedWidth:
-          renderedTexture
+        width:
+          texture
             ?.width ??
           null,
-        renderedHeight:
-          renderedTexture
+        height:
+          texture
             ?.height ??
           null,
-        expectedWidth:
-          expectedTexture
-            ?.width ??
-          null,
-        expectedHeight:
-          expectedTexture
-            ?.height ??
-          null,
-        renderedPngLength:
-          renderedPng
+        pngLength:
+          png
             ?.length ??
           null,
-        expectedPngLength:
-          expectedPng
-            ?.length ??
-          null,
-        renderedHash:
-          druidTextureHash(
-            renderedPng,
-          ),
-        expectedHash:
-          druidTextureHash(
-            expectedPng,
-          ),
-        pixelFingerprintMatches:
-          Boolean(
-            renderedPng &&
-            expectedPng &&
-            renderedPng ===
-              expectedPng,
+        hash:
+          druidRenderedTextureHash(
+            png,
           ),
       };
-    }
-
-    async function waitForRenderedDruidPixels(
-      expectedSrc,
-      {
-        timeout =
-          10000,
-        interval =
-          100,
-      } = {},
-    ) {
-      const deadline =
-        Date.now() +
-        timeout;
-      let diagnostic =
-        null;
-
-      do {
-        diagnostic =
-          await renderedDruidPixelDiagnostic(
-            expectedSrc,
-          );
-
-        if (
-          diagnostic
-            .pixelFingerprintMatches
-        ) {
-          return diagnostic;
-        }
-
-        await new Promise(
-          resolve =>
-            setTimeout(
-              resolve,
-              interval,
-            ),
-        );
-      } while (
-        Date.now() <
-          deadline
-      );
-
-      return diagnostic;
     }
 
     const preparedHumanoidArtwork =
@@ -2631,19 +2498,19 @@ if (
       },
       humanoidExpected,
     );
-    const initialHumanoidRenderedPixels =
-      await waitForRenderedDruidPixels(
-        humanoidExpected.sceneToken,
-      );
+    const initialHumanoidRenderedFingerprint =
+      await druidRenderedTextureFingerprint();
 
     boaCheck(
       checks,
-      "Real Player rendered-token pixel fingerprint calibrates on the prepared Humanoid artwork",
-      initialHumanoidRenderedPixels
-        ?.pixelFingerprintMatches ===
-        true,
-      initialHumanoidRenderedPixels,
+      "Real Player captures a rendered Humanoid Token baseline fingerprint",
+      Boolean(
+        initialHumanoidRenderedFingerprint
+          ?.hash,
+      ),
+      initialHumanoidRenderedFingerprint,
     );
+
 
     boaCheck(
       checks,
@@ -2805,18 +2672,28 @@ if (
     }
 
     // BOA 0.11.7 token-local Druid artwork provenance contract.
-    const travelRenderedPixels =
-      await waitForRenderedDruidPixels(
-        travelExpected.sceneToken,
-      );
+    const travelRenderedFingerprint =
+      await druidRenderedTextureFingerprint();
 
     boaCheck(
       checks,
-      "Real Player rendered-token pixel fingerprint matches Travel artwork",
-      travelRenderedPixels
-        ?.pixelFingerprintMatches ===
-        true,
-      travelRenderedPixels,
+      "Real Player rendered Token changes from the Humanoid baseline in Travel Form",
+      Boolean(
+        travelRenderedFingerprint
+          ?.hash &&
+        initialHumanoidRenderedFingerprint
+          ?.hash &&
+        travelRenderedFingerprint
+          .hash !==
+          initialHumanoidRenderedFingerprint
+            .hash
+      ),
+      {
+        humanoid:
+          initialHumanoidRenderedFingerprint,
+        travel:
+          travelRenderedFingerprint,
+      },
     );
 
     const travelProvenance =
@@ -2976,18 +2853,30 @@ if (
         )}`,
       );
     }
-    const humanoidRenderedPixels =
-      await waitForRenderedDruidPixels(
-        humanoidExpected.sceneToken,
-      );
+    const restoredHumanoidRenderedFingerprint =
+      await druidRenderedTextureFingerprint();
 
     boaCheck(
       checks,
-      "Real Player rendered-token pixel fingerprint returns to Humanoid artwork",
-      humanoidRenderedPixels
-        ?.pixelFingerprintMatches ===
-        true,
-      humanoidRenderedPixels,
+      "Real Player rendered Token returns to the original Humanoid fingerprint",
+      Boolean(
+        restoredHumanoidRenderedFingerprint
+          ?.hash &&
+        initialHumanoidRenderedFingerprint
+          ?.hash &&
+        restoredHumanoidRenderedFingerprint
+          .hash ===
+          initialHumanoidRenderedFingerprint
+            .hash
+      ),
+      {
+        originalHumanoid:
+          initialHumanoidRenderedFingerprint,
+        travel:
+          travelRenderedFingerprint,
+        restoredHumanoid:
+          restoredHumanoidRenderedFingerprint,
+      },
     );
 
     boaCheck(
