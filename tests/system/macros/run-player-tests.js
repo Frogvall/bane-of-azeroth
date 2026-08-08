@@ -2532,37 +2532,21 @@ if (
       );
     }
 
+    // BOA 0.11.7 token-local Druid artwork provenance contract.
     const travelProvenance =
       druidArtworkSnapshot();
     const travelTokenBaseline =
       travelProvenance.tokenBaseline;
-    const travelActorBaseline =
-      travelProvenance.actorBaseline;
-    const travelActorTokenBaseline =
-      Object.values(
-        travelActorBaseline
-          ?.tokens ?? {},
-      ).find(
-        entry =>
-          entry?.applied ===
-            travelExpected.sceneToken,
-      ) ?? null;
 
     boaCheckEqual(
       checks,
-      "Real Player Travel Token provenance preserves the prepared Humanoid original",
+      "Real Player Travel Token-local provenance preserves the prepared Humanoid original",
       {
         tokenOriginal:
           travelTokenBaseline
             ?.original ?? null,
         tokenApplied:
           travelTokenBaseline
-            ?.applied ?? null,
-        actorTokenOriginal:
-          travelActorTokenBaseline
-            ?.original ?? null,
-        actorTokenApplied:
-          travelActorTokenBaseline
             ?.applied ?? null,
         currentSceneToken:
           travelProvenance
@@ -2573,12 +2557,6 @@ if (
           humanoidExpected
             .sceneToken,
         tokenApplied:
-          travelExpected
-            .sceneToken,
-        actorTokenOriginal:
-          humanoidExpected
-            .sceneToken,
-        actorTokenApplied:
           travelExpected
             .sceneToken,
         currentSceneToken:
