@@ -9,6 +9,11 @@ import {
   isDruidFormSpellRestrictionAutomationEnabled,
 } from "./automation-settings.js";
 
+import {
+  patchBoASpellCost,
+  registerBoASpellCastPolicy,
+  registerBoASpellCostPolicy,
+} from "./spellcasting.js";
 export const DRUID_FORM_MOVEMENT_CONTENT_KEY =
   "druid-form-mechanics.travel-movement";
 export const MAUL_CONTENT_KEY =
@@ -1026,56 +1031,26 @@ export function getDruidMoonkinSpellCost(
 }
 
 export function patchDruidMoonkinSpellCost({
-  ItemClass =
-    globalThis.CONFIG?.Item?.documentClass,
+  ItemClass = globalThis.CONFIG?.Item?.documentClass,
 } = {}) {
-  const prototype =
-    ItemClass?.prototype;
-  const current =
-    prototype?.getSpellCost;
-
-  if (
-    typeof current !== "function"
-  ) {
-    console.error(
-      `${MODULE_ID} | Dragonbane Item#getSpellCost was unavailable for Moonkin automation.`,
-    );
-    return false;
-  }
-
-  if (
-    current[
-      MOONKIN_SPELL_COST_PATCH
-    ] === true
-  ) {
-    return true;
-  }
-
-  const originalGetSpellCost =
-    current;
-
-  function boaDruidMoonkinGetSpellCost(
-    powerLevel,
-  ) {
-    return getDruidMoonkinSpellCost(
-      this,
-      powerLevel,
-      originalGetSpellCost,
-    );
-  }
-
-  Object.defineProperty(
-    boaDruidMoonkinGetSpellCost,
-    MOONKIN_SPELL_COST_PATCH,
-    {
-      value: true,
-    },
+  registerBoASpellCostPolicy(
+    "druid-moonkin",
+    ({ item, powerLevel, cost }) =>
+      getDruidMoonkinSpellCost(
+        item,
+        powerLevel,
+        () => cost,
+      ),
   );
-
-  prototype.getSpellCost =
-    boaDruidMoonkinGetSpellCost;
-
-  return true;
+  registerBoASpellCastPolicy(
+    "druid-form-word-only",
+    ({ actor, spell }) =>
+      isDruidFormSpellAllowed(
+        actor,
+        spell,
+      ),
+  );
+  return patchBoASpellCost({ ItemClass });
 }
 
 export function buildDruidFormAttackData(

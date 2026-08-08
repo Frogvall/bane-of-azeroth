@@ -6,6 +6,11 @@ import {
   getModuleFlag,
 } from "./core/documents.js";
 
+import {
+  attachBoALegacyMagicTrickAdapter,
+  patchBoASpellCost,
+  registerBoASpellCostPolicy,
+} from "./spellcasting.js";
 export const MAGES_BRILLIANCE_CONTENT_KEY =
   "heroic-class-ability.mage.mages-brilliance";
 export const SENSE_MAGIC_UUID =
@@ -99,48 +104,16 @@ export function getMagesBrillianceSpellCost(
  * legacy adapter below handles only that detected exception.
  */
 export function patchMageBrillianceSpellCost({
-  ItemClass =
-    globalThis.CONFIG?.Item?.documentClass,
+  ItemClass = globalThis.CONFIG?.Item?.documentClass,
 } = {}) {
-  const prototype = ItemClass?.prototype;
-  const current = prototype?.getSpellCost;
-
-  if (typeof current !== "function") {
-    console.error(
-      "bane-of-azeroth | Dragonbane Item#getSpellCost " +
-      "was not available for Mage's Brilliance automation.",
-    );
-    return false;
-  }
-
-  if (current[SPELL_COST_PATCH] === true) {
-    return true;
-  }
-
-  const originalGetSpellCost = current;
-
-  function boaMagesBrillianceGetSpellCost(
-    powerLevel,
-  ) {
-    return getMagesBrillianceSpellCost(
-      this,
-      powerLevel,
-      originalGetSpellCost,
-    );
-  }
-
-  Object.defineProperty(
-    boaMagesBrillianceGetSpellCost,
-    SPELL_COST_PATCH,
-    {
-      value: true,
-    },
+  registerBoASpellCostPolicy(
+    "mage-brilliance",
+    ({ item, cost }) =>
+      isFreeMagesBrillianceSenseMagic(item)
+        ? 0
+        : cost,
   );
-
-  prototype.getSpellCost =
-    boaMagesBrillianceGetSpellCost;
-
-  return true;
+  return patchBoASpellCost({ ItemClass });
 }
 
 const LEGACY_MAGIC_TRICK_ADAPTER_STATE =
@@ -331,114 +304,34 @@ function findSheetItem(app, actionTarget) {
  */
 export function attachMageBrillianceLegacyMagicTrickAdapter(
   app,
-  {
-    cast =
-      castLegacyFreeSenseMagicTrick,
-  } = {},
+  options = {},
 ) {
-  const element = app?.element;
-  if (
-    typeof element?.addEventListener !==
-    "function"
-  ) {
-    return false;
-  }
-
-  const nativeHandler =
-    getSkillRollHandler(app);
-
-  if (
-    !isLegacyDragonbaneMagicTrickHandler(
-      nativeHandler,
-    )
-  ) {
-    return false;
-  }
-
-  const existing =
-    app[LEGACY_MAGIC_TRICK_ADAPTER_STATE];
-
-  if (existing?.element === element) {
-    return true;
-  }
-
-  if (
-    existing?.element &&
-    typeof existing.element
-      .removeEventListener === "function"
-  ) {
-    existing.element.removeEventListener(
-      "click",
-      existing.listener,
-      true,
-    );
-  }
-
-  const listener = async event => {
-    if (
-      event?.type !== "click" ||
-      (
-        event.button !== undefined &&
-        event.button !== 0
-      )
-    ) {
-      return;
-    }
-
-    const actionTarget =
-      findSkillRollActionTarget(event);
-
-    if (!actionTarget) return;
-
-    const item =
-      findSheetItem(
-        app,
-        actionTarget,
-      );
-
-    if (
-      app.actor?.type === "monster" ||
-      Number(item?.system?.rank) !== 0 ||
-      !isFreeMagesBrillianceSenseMagic(
-        item,
-      )
-    ) {
-      return;
-    }
-
-    event.preventDefault?.();
-    event.stopImmediatePropagation?.();
-
-    if (!app.actor?.isObserver) {
-      return;
-    }
-
-    try {
-      await cast(
-        app.actor,
-        item,
-      );
-    } catch (error) {
-      console.error(
-        "bane-of-azeroth | Failed to cast free " +
-        "Sense Magic through the Dragonbane legacy adapter.",
-        error,
-      );
-    }
-  };
-
-  element.addEventListener(
-    "click",
-    listener,
-    true,
+  // Keep the historical Mage adapter API useful in isolation while
+  // delegating the actual legacy Dragonbane path to shared code.
+  registerBoASpellCostPolicy(
+    "mage-brilliance",
+    ({ item, cost }) =>
+      isFreeMagesBrillianceSenseMagic(item)
+        ? 0
+        : cost,
   );
 
-  app[LEGACY_MAGIC_TRICK_ADAPTER_STATE] = {
-    element,
-    listener,
-  };
+  const {
+    cast,
+    ...sharedOptions
+  } = options;
 
-  return true;
+  if (typeof cast === "function") {
+    // The historical injected cast callback receives exactly
+    // (actor, item). Preserve that contract for existing callers/tests.
+    sharedOptions.cast = (actor, item) =>
+      cast(actor, item);
+  }
+
+  return attachBoALegacyMagicTrickAdapter(
+    app,
+    sharedOptions,
+  );
 }
 
 export function onRenderMageBrillianceActorSheet(

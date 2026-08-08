@@ -1567,6 +1567,58 @@ notes.push(
       );
     }
   }
+
+  // BOA 0.11.7 shared spellcasting + Druid PL RED/GREEN contract.
+  {
+    boaCheck(
+      checks,
+      "Shared spellcasting API exposes getBoASpellCost",
+      typeof api.getBoASpellCost === "function",
+      typeof api.getBoASpellCost,
+    );
+    boaCheck(
+      checks,
+      "Shared spellcasting API exposes canBoACastSpell",
+      typeof api.canBoACastSpell === "function",
+      typeof api.canBoACastSpell,
+    );
+
+    if (typeof api.getDruidFormSwitchOptions === "function") {
+      const actor = {
+        type: "character",
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            druidFormState: {
+              currentForm: "bear",
+              activations: {
+                feral: { active: true, powerLevel: 2 },
+                stars: { active: true, powerLevel: 3 },
+              },
+            },
+          },
+        },
+        getFlag(moduleId, key) {
+          return this.flags?.[moduleId]?.[key];
+        },
+      };
+
+      const options = api.getDruidFormSwitchOptions(actor);
+      boaCheckEqual(
+        checks,
+        "Bear form option displays Feral PL2",
+        options.find(option => option.form === "bear")
+          ?.displayLabel,
+        "Bear Form — PL2",
+      );
+      boaCheckEqual(
+        checks,
+        "Moonkin form option displays Stars PL3",
+        options.find(option => option.form === "moonkin")
+          ?.displayLabel,
+        "Moonkin Form — PL3",
+      );
+    }
+  }
 return boaFinish(
   testKey,
   testName,

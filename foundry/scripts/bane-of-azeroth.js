@@ -203,6 +203,10 @@ import {
   registerMageBrillianceLegacyMagicTrickAdapter,
 } from "./mage-brilliance.js";
 
+import {
+  canBoACastSpell,
+  getBoASpellCost,
+} from "./spellcasting.js";
 Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
@@ -295,6 +299,8 @@ Hooks.once("init", () => {
       reconcileDruidFormMechanics,
       reconcileAllDruidFormMechanics,
       isDruidFormWeaponUseAllowed,
+      getBoASpellCost,
+      canBoACastSpell,
 };
   }
 

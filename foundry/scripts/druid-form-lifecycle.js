@@ -294,33 +294,57 @@ function availableFormsFromState(
   return forms;
 }
 
-export function getDruidFormSwitchOptions(
-  actor,
-) {
-  const state =
-    cloneState(
-      actor,
-    );
+function powerLevelForForm(state, form) {
+  const key = {
+    travel: "savage",
+    bear: "feral",
+    cat: "feral",
+    tree: "harmony",
+    moonkin: "stars",
+  }[form];
 
-  return availableFormsFromState(
-    state,
-  ).map(
-    form => ({
-      form,
-      label:
-        FORM_LABELS[
-          form
-        ] ?? form,
-      profileKey:
-        profileKeyForForm(
+  if (!key) return null;
+
+  const activation = state?.activations?.[key];
+  if (activation?.active !== true) return null;
+
+  const value = Number(activation.powerLevel);
+  return Number.isFinite(value) ? value : null;
+}
+
+function formDisplayLabel(state, form) {
+  const label = FORM_LABELS[form] ?? form;
+  const powerLevel = powerLevelForForm(state, form);
+  return powerLevel === null
+    ? label
+    : `${label} — PL${powerLevel}`;
+}
+
+export function getDruidFormSwitchOptions(actor) {
+  const state = cloneState(actor);
+
+  return availableFormsFromState(state)
+    .map(form => {
+      const powerLevel = powerLevelForForm(
+        state,
+        form,
+      );
+
+      return {
+        form,
+        label: FORM_LABELS[form] ?? form,
+        displayLabel: formDisplayLabel(
           state,
           form,
         ),
-      current:
-        state.currentForm ===
+        powerLevel,
+        profileKey: profileKeyForForm(
+          state,
           form,
-    }),
-  );
+        ),
+        current: state.currentForm === form,
+      };
+    });
 }
 
 function currentWillpower(
@@ -1736,7 +1760,7 @@ export async function openDruidFormSwitchDialog(
         + `<select name="targetForm">`
         + targets.map(
           option =>
-            `<option value="${option.form}">${option.label}</option>`,
+            `<option value="${option.form}">${option.displayLabel}</option>`,
         ).join("")
         + `</select></div>`
         + `<div class="form-group"><label>Change as</label>`
@@ -1935,8 +1959,19 @@ export function onRenderDruidFormLifecycleActorSheet(
   button.classList.add(
     "boa-druid-form-switch-button",
   );
+  const currentOption =
+    getDruidFormSwitchOptions(actor)
+      .find(
+        option =>
+          option.current === true,
+      );
+  const currentLabel =
+    currentOption?.displayLabel ??
+    "Humanoid";
+
   button.innerHTML =
-    '<i class="fa-solid fa-paw"></i> Change Form';
+    '<i class="fa-solid fa-paw"></i> '
+    + `Change Form · ${currentLabel}`;
   button.title =
     "Change between currently active Druid forms.";
 

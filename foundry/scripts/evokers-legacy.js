@@ -5,6 +5,10 @@ import {
   getContentKey,
 } from "./core/documents.js";
 
+import {
+  patchBoASpellCost,
+  registerBoASpellCostPolicy,
+} from "./spellcasting.js";
 export const EVOKERS_LEGACY_CONTENT_KEY =
   "heroic-class-ability.evoker.evokers-legacy";
 
@@ -79,55 +83,16 @@ export function getEvokersLegacySpellCost(
  * both paths stay synchronized.
  */
 export function patchEvokersLegacySpellCost({
-  ItemClass =
-    globalThis.CONFIG
-      ?.Item
-      ?.documentClass,
+  ItemClass = globalThis.CONFIG?.Item?.documentClass,
 } = {}) {
-  const prototype =
-    ItemClass?.prototype;
-  const current =
-    prototype?.getSpellCost;
-
-  if (
-    typeof current !== "function"
-  ) {
-    console.error(
-      "bane-of-azeroth | Dragonbane Item#getSpellCost " +
-      "was not available for Evoker's Legacy automation.",
-    );
-    return false;
-  }
-
-  if (
-    current[SPELL_COST_PATCH] === true
-  ) {
-    return true;
-  }
-
-  const originalGetSpellCost =
-    current;
-
-  function boaEvokersLegacyGetSpellCost(
-    powerLevel,
-  ) {
-    return getEvokersLegacySpellCost(
-      this,
-      powerLevel,
-      originalGetSpellCost,
-    );
-  }
-
-  Object.defineProperty(
-    boaEvokersLegacyGetSpellCost,
-    SPELL_COST_PATCH,
-    {
-      value: true,
-    },
+  registerBoASpellCostPolicy(
+    "evokers-legacy",
+    ({ item, powerLevel, cost }) =>
+      getEvokersLegacySpellCost(
+        item,
+        powerLevel,
+        () => cost,
+      ),
   );
-
-  prototype.getSpellCost =
-    boaEvokersLegacyGetSpellCost;
-
-  return true;
+  return patchBoASpellCost({ ItemClass });
 }
