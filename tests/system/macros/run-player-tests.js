@@ -2276,7 +2276,7 @@ if (
       );
     }
 
-    // BOA 0.11.7 rendered Player canvas Token RED.
+    // BOA 0.11.7 Druid Player Token provenance RED.
     function liveDruidPlaceable() {
       if (
         globalThis.canvas?.scene?.id !==
@@ -2292,28 +2292,19 @@ if (
         ) ?? null;
     }
 
-    function renderedDruidTokenDiagnostic(
+    function playerDruidTokenDocumentDiagnostic(
       expectedSrc,
     ) {
       const placeable =
         liveDruidPlaceable();
-      const actualTexture =
-        placeable?.texture ??
-        placeable?.mesh?.texture ??
+      const documentSrc =
+        placeable
+          ?.document
+          ?.texture
+          ?.src ??
+        token.texture
+          ?.src ??
         null;
-      const getTexture =
-        globalThis.foundry
-          ?.canvas
-          ?.getTexture ??
-        globalThis.getTexture ??
-        null;
-      const expectedTexture =
-        typeof getTexture ===
-          "function"
-          ? getTexture(
-              expectedSrc,
-            )
-          : null;
 
       return {
         activeSceneId:
@@ -2328,39 +2319,20 @@ if (
           Boolean(
             placeable,
           ),
-        documentSrc:
-          placeable
-            ?.document
-            ?.texture
-            ?.src ??
-          token.texture
-            ?.src ??
-          null,
+        documentSrc,
         expectedSrc,
-        actualTextureAvailable:
-          Boolean(
-            actualTexture,
-          ),
-        expectedTextureAvailable:
-          Boolean(
-            expectedTexture,
-          ),
-        textureIdentityMatches:
-          Boolean(
-            actualTexture &&
-            expectedTexture &&
-            actualTexture ===
-              expectedTexture,
-          ),
+        pathMatches:
+          documentSrc ===
+            expectedSrc,
       };
     }
 
-    function renderedDruidTokenMatches(
+    function playerDruidTokenDocumentMatches(
       expectedSrc,
     ) {
-      return renderedDruidTokenDiagnostic(
+      return playerDruidTokenDocumentDiagnostic(
         expectedSrc,
-      ).textureIdentityMatches ===
+      ).pathMatches ===
         true;
     }
 
@@ -2403,11 +2375,11 @@ if (
     );
     boaCheck(
       checks,
-      "Real Player starts with the prepared Humanoid texture on the rendered canvas Token",
-      renderedDruidTokenMatches(
+      "Real Player canvas TokenDocument starts with the prepared Humanoid texture",
+      playerDruidTokenDocumentMatches(
         humanoidExpected.sceneToken,
       ),
-      renderedDruidTokenDiagnostic(
+      playerDruidTokenDocumentDiagnostic(
         humanoidExpected.sceneToken,
       ),
     );
@@ -2512,7 +2484,7 @@ if (
     try {
       await boaWaitFor(
         () =>
-          renderedDruidTokenMatches(
+          playerDruidTokenDocumentMatches(
             travelExpected.sceneToken,
           )
             ? true
@@ -2521,7 +2493,7 @@ if (
           timeout: 10000,
           interval: 100,
           description:
-            "Druid Travel rendered canvas Token texture",
+            "Druid Travel Player-side TokenDocument texture",
         },
       );
     } catch (error) {
@@ -2531,11 +2503,11 @@ if (
     }
     boaCheck(
       checks,
-      "Real Player Travel rendered canvas Token uses the expected texture",
-      renderedDruidTokenMatches(
+      "Real Player canvas TokenDocument uses the expected Travel texture",
+      playerDruidTokenDocumentMatches(
         travelExpected.sceneToken,
       ),
-      renderedDruidTokenDiagnostic(
+      playerDruidTokenDocumentDiagnostic(
         travelExpected.sceneToken,
       ),
     );
@@ -2543,10 +2515,10 @@ if (
       TravelRenderedTokenWaitError
     ) {
       notes.push(
-        `Travel rendered Token wait: ${
+        `Travel Player-side TokenDocument wait: ${
           TravelRenderedTokenWaitError
         }; diagnostic=${JSON.stringify(
-          renderedDruidTokenDiagnostic(
+          playerDruidTokenDocumentDiagnostic(
             travelExpected.sceneToken,
           ),
         )}`,
@@ -2559,6 +2531,61 @@ if (
         )}`,
       );
     }
+
+    const travelProvenance =
+      druidArtworkSnapshot();
+    const travelTokenBaseline =
+      travelProvenance.tokenBaseline;
+    const travelActorBaseline =
+      travelProvenance.actorBaseline;
+    const travelActorTokenBaseline =
+      Object.values(
+        travelActorBaseline
+          ?.tokens ?? {},
+      ).find(
+        entry =>
+          entry?.applied ===
+            travelExpected.sceneToken,
+      ) ?? null;
+
+    boaCheckEqual(
+      checks,
+      "Real Player Travel Token provenance preserves the prepared Humanoid original",
+      {
+        tokenOriginal:
+          travelTokenBaseline
+            ?.original ?? null,
+        tokenApplied:
+          travelTokenBaseline
+            ?.applied ?? null,
+        actorTokenOriginal:
+          travelActorTokenBaseline
+            ?.original ?? null,
+        actorTokenApplied:
+          travelActorTokenBaseline
+            ?.applied ?? null,
+        currentSceneToken:
+          travelProvenance
+            .sceneToken,
+      },
+      {
+        tokenOriginal:
+          humanoidExpected
+            .sceneToken,
+        tokenApplied:
+          travelExpected
+            .sceneToken,
+        actorTokenOriginal:
+          humanoidExpected
+            .sceneToken,
+        actorTokenApplied:
+          travelExpected
+            .sceneToken,
+        currentSceneToken:
+          travelExpected
+            .sceneToken,
+      },
+    );
 
     const wpBeforeFree =
       Number(
@@ -2645,7 +2672,7 @@ if (
     try {
       await boaWaitFor(
         () =>
-          renderedDruidTokenMatches(
+          playerDruidTokenDocumentMatches(
             humanoidExpected.sceneToken,
           )
             ? true
@@ -2654,7 +2681,7 @@ if (
           timeout: 10000,
           interval: 100,
           description:
-            "Druid Humanoid rendered canvas Token texture",
+            "Druid Humanoid Player-side TokenDocument texture",
         },
       );
     } catch (error) {
@@ -2664,11 +2691,11 @@ if (
     }
     boaCheck(
       checks,
-      "Real Player Humanoid rendered canvas Token uses the expected texture",
-      renderedDruidTokenMatches(
+      "Real Player canvas TokenDocument uses the restored Humanoid texture",
+      playerDruidTokenDocumentMatches(
         humanoidExpected.sceneToken,
       ),
-      renderedDruidTokenDiagnostic(
+      playerDruidTokenDocumentDiagnostic(
         humanoidExpected.sceneToken,
       ),
     );
@@ -2676,10 +2703,10 @@ if (
       HumanoidRenderedTokenWaitError
     ) {
       notes.push(
-        `Humanoid rendered Token wait: ${
+        `Humanoid Player-side TokenDocument wait: ${
           HumanoidRenderedTokenWaitError
         }; diagnostic=${JSON.stringify(
-          renderedDruidTokenDiagnostic(
+          playerDruidTokenDocumentDiagnostic(
             humanoidExpected.sceneToken,
           ),
         )}`,
@@ -2687,9 +2714,13 @@ if (
     }
     boaCheck(
       checks,
-      "Humanoid restore clears Druid artwork provenance after all managed artwork is restored",
+      "Humanoid restore clears Druid artwork provenance only after all managed artwork is restored",
       (
-        restoredArtwork.actorBaseline === null
+        artworkMatches(
+          restoredArtwork,
+          humanoidExpected,
+        )
+        && restoredArtwork.actorBaseline === null
         && restoredArtwork.tokenBaseline === null
       ),
       restoredArtwork,
