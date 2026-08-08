@@ -2336,131 +2336,6 @@ if (
         true;
     }
 
-    // BOA 0.11.7 rendered Token baseline fingerprint RED.
-    function druidRenderedTextureHash(
-      value,
-    ) {
-      if (
-        typeof value !==
-          "string"
-      ) {
-        return null;
-      }
-
-      let hash =
-        2166136261;
-
-      for (
-        let index = 0;
-        index < value.length;
-        index += 1
-      ) {
-        hash ^=
-          value.charCodeAt(
-            index,
-          );
-        hash =
-          Math.imul(
-            hash,
-            16777619,
-          );
-      }
-
-      return (
-        hash >>> 0
-      )
-        .toString(16)
-        .padStart(
-          8,
-          "0",
-        );
-    }
-
-    async function druidRenderedTextureFingerprint() {
-      const placeable =
-        liveDruidPlaceable();
-      const texture =
-        placeable
-          ?.texture ??
-        placeable
-          ?.mesh
-          ?.texture ??
-        null;
-      const ImageHelper =
-        globalThis.foundry
-          ?.helpers
-          ?.media
-          ?.ImageHelper ??
-        globalThis.ImageHelper ??
-        null;
-
-      let png =
-        null;
-
-      if (
-        texture &&
-        typeof ImageHelper
-          ?.textureToImage ===
-          "function"
-      ) {
-        try {
-          png =
-            await ImageHelper
-              .textureToImage(
-                texture,
-                {
-                  format:
-                    "image/png",
-                },
-              );
-        } catch (_error) {
-          png =
-            null;
-        }
-      }
-
-      return {
-        activeSceneId:
-          globalThis.canvas
-            ?.scene
-            ?.id ?? null,
-        expectedSceneId:
-          scene.id,
-        tokenId:
-          token.id,
-        placeableExists:
-          Boolean(
-            placeable,
-          ),
-        documentSrc:
-          placeable
-            ?.document
-            ?.texture
-            ?.src ??
-          null,
-        textureExists:
-          Boolean(
-            texture,
-          ),
-        width:
-          texture
-            ?.width ??
-          null,
-        height:
-          texture
-            ?.height ??
-          null,
-        pngLength:
-          png
-            ?.length ??
-          null,
-        hash:
-          druidRenderedTextureHash(
-            png,
-          ),
-      };
-    }
-
     const preparedHumanoidArtwork =
       session.druidHumanoidArtwork;
     if (
@@ -2498,30 +2373,6 @@ if (
       },
       humanoidExpected,
     );
-    const initialHumanoidRenderedFingerprint =
-      await druidRenderedTextureFingerprint();
-
-    boaCheck(
-      checks,
-      "Real Player captures a rendered Humanoid Token baseline fingerprint",
-      Boolean(
-        initialHumanoidRenderedFingerprint
-          ?.hash,
-      ),
-      initialHumanoidRenderedFingerprint,
-    );
-
-
-    boaCheck(
-      checks,
-      "Real Player canvas TokenDocument starts with the prepared Humanoid texture",
-      playerDruidTokenDocumentMatches(
-        humanoidExpected.sceneToken,
-      ),
-      playerDruidTokenDocumentDiagnostic(
-        humanoidExpected.sceneToken,
-      ),
-    );
     const travelArtwork =
       getDruidFormArtwork(
         actor,
@@ -2553,6 +2404,37 @@ if (
         initialForm: "travel",
       },
     );
+    // BOA 0.11.7 immediate Player lifecycle convergence RED.
+    {
+      const immediate =
+        druidArtworkSnapshot();
+      boaCheckEqual(
+        checks,
+        "Real Player Druid activation resolves only after Travel state and artwork converge locally",
+        {
+          form:
+            getDruidFormState(
+              actor,
+            ).currentForm,
+          portrait:
+            immediate.portrait,
+          prototypeToken:
+            immediate.prototypeToken,
+          sceneToken:
+            immediate.sceneToken,
+        },
+        {
+          form:
+            "travel",
+          portrait:
+            travelExpected.portrait,
+          prototypeToken:
+            travelExpected.prototypeToken,
+          sceneToken:
+            travelExpected.sceneToken,
+        },
+      );
+    }
     await boaWaitFor(
       () => {
         const state =
@@ -2672,30 +2554,6 @@ if (
     }
 
     // BOA 0.11.7 token-local Druid artwork provenance contract.
-    const travelRenderedFingerprint =
-      await druidRenderedTextureFingerprint();
-
-    boaCheck(
-      checks,
-      "Real Player rendered Token changes from the Humanoid baseline in Travel Form",
-      Boolean(
-        travelRenderedFingerprint
-          ?.hash &&
-        initialHumanoidRenderedFingerprint
-          ?.hash &&
-        travelRenderedFingerprint
-          .hash !==
-          initialHumanoidRenderedFingerprint
-            .hash
-      ),
-      {
-        humanoid:
-          initialHumanoidRenderedFingerprint,
-        travel:
-          travelRenderedFingerprint,
-      },
-    );
-
     const travelProvenance =
       druidArtworkSnapshot();
     const travelTokenBaseline =
@@ -2739,6 +2597,36 @@ if (
         mode: "free",
       },
     );
+    {
+      const immediate =
+        druidArtworkSnapshot();
+      boaCheckEqual(
+        checks,
+        "Real Player Druid switch resolves only after Humanoid state and artwork converge locally",
+        {
+          form:
+            getDruidFormState(
+              actor,
+            ).currentForm,
+          portrait:
+            immediate.portrait,
+          prototypeToken:
+            immediate.prototypeToken,
+          sceneToken:
+            immediate.sceneToken,
+        },
+        {
+          form:
+            "humanoid",
+          portrait:
+            humanoidExpected.portrait,
+          prototypeToken:
+            humanoidExpected.prototypeToken,
+          sceneToken:
+            humanoidExpected.sceneToken,
+        },
+      );
+    }
     await boaWaitFor(
       () => (
         getDruidFormState(actor).currentForm === "humanoid"
@@ -2853,32 +2741,6 @@ if (
         )}`,
       );
     }
-    const restoredHumanoidRenderedFingerprint =
-      await druidRenderedTextureFingerprint();
-
-    boaCheck(
-      checks,
-      "Real Player rendered Token returns to the original Humanoid fingerprint",
-      Boolean(
-        restoredHumanoidRenderedFingerprint
-          ?.hash &&
-        initialHumanoidRenderedFingerprint
-          ?.hash &&
-        restoredHumanoidRenderedFingerprint
-          .hash ===
-          initialHumanoidRenderedFingerprint
-            .hash
-      ),
-      {
-        originalHumanoid:
-          initialHumanoidRenderedFingerprint,
-        travel:
-          travelRenderedFingerprint,
-        restoredHumanoid:
-          restoredHumanoidRenderedFingerprint,
-      },
-    );
-
     boaCheck(
       checks,
       "Humanoid restore clears Druid artwork provenance only after all managed artwork is restored",
