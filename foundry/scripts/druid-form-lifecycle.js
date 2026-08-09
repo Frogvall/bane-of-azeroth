@@ -1389,6 +1389,470 @@ export async function waitForDruidFormLifecycleConvergence(
   );
 }
 
+
+// BOA 0.11.7 Druid lifecycle trace diagnostics.
+const DRUID_TRACE_PREFIX =
+  "[BOA DRUID TRACE]";
+const DRUID_TRACE_HOOK_MARKER =
+  Symbol.for(
+    `${MODULE_ID}.druidLifecycleTraceHooks`,
+  );
+const druidTraceActors =
+  new Map();
+
+function druidTraceNow() {
+  return (
+    globalThis.performance
+      ?.now?.() ??
+    Date.now()
+  );
+}
+
+function druidTraceClient() {
+  const user =
+    globalThis.game?.user;
+
+  return {
+    userId:
+      user?.id ??
+      null,
+    userName:
+      user?.name ??
+      null,
+    isGM:
+      user?.isGM === true,
+  };
+}
+
+function druidTraceTokenRows(
+  actorId,
+  scenes =
+    globalThis.game?.scenes,
+) {
+  const rows =
+    [];
+
+  for (
+    const scene
+    of lifecycleCollectionValues(
+      scenes,
+    )
+  ) {
+    for (
+      const token
+      of lifecycleCollectionValues(
+        scene?.tokens,
+      )
+    ) {
+      if (
+        token?.actorId !==
+          actorId &&
+        token?.actor?.id !==
+          actorId
+      ) {
+        continue;
+      }
+
+      const sceneId =
+        scene?.id ??
+        token?.parent?.id ??
+        null;
+      const tokenId =
+        token?.id ??
+        null;
+      const placeable =
+        globalThis.canvas
+          ?.scene
+          ?.id === sceneId
+          ? globalThis.canvas
+              ?.tokens
+              ?.get?.(
+                tokenId,
+              ) ??
+            null
+          : null;
+      const texture =
+        placeable?.texture ??
+        placeable?.mesh
+          ?.texture ??
+        null;
+
+      rows.push({
+        sceneId,
+        tokenId,
+        documentSrc:
+          token?.texture
+            ?.src ??
+          null,
+        canvasDocumentSrc:
+          placeable
+            ?.document
+            ?.texture
+            ?.src ??
+          null,
+        canvasTextureWidth:
+          texture?.width ??
+          null,
+        canvasTextureHeight:
+          texture?.height ??
+          null,
+        canvasSourceType:
+          placeable
+            ?.sourceElement
+            ?.constructor
+            ?.name ??
+          null,
+      });
+    }
+  }
+
+  return rows;
+}
+
+function druidTraceSnapshot(
+  actorId,
+) {
+  const actor =
+    collectionGet(
+      globalThis.game?.actors,
+      actorId,
+    );
+
+  return {
+    actorId,
+    form:
+      actor
+        ? getDruidFormState(
+            actor,
+          ).currentForm
+        : null,
+    actorImg:
+      actor?.img ??
+      null,
+    prototypeTokenSrc:
+      actor?.prototypeToken
+        ?.texture
+        ?.src ??
+      null,
+    tokens:
+      druidTraceTokenRows(
+        actorId,
+      ),
+  };
+}
+
+function druidTraceActiveRequests(
+  actorId,
+) {
+  if (!actorId) {
+    return [];
+  }
+
+  const rows =
+    druidTraceActors.get(
+      actorId,
+    ) ??
+    [];
+  const now =
+    druidTraceNow();
+  const active =
+    rows.filter(
+      row =>
+        row.expiresAt >
+          now,
+    );
+
+  if (
+    active.length > 0
+  ) {
+    druidTraceActors.set(
+      actorId,
+      active,
+    );
+  } else {
+    druidTraceActors.delete(
+      actorId,
+    );
+  }
+
+  return active.map(
+    row => ({
+      requestId:
+        row.requestId,
+      action:
+        row.action,
+      startedAt:
+        row.startedAt,
+    }),
+  );
+}
+
+function druidTraceMark(
+  actorId,
+  requestId,
+  action,
+  lifetimeMs =
+    5000,
+) {
+  if (
+    !actorId ||
+    !requestId
+  ) {
+    return;
+  }
+
+  const now =
+    druidTraceNow();
+  const rows =
+    druidTraceActors.get(
+      actorId,
+    ) ??
+    [];
+
+  rows.push({
+    requestId,
+    action,
+    startedAt:
+      now,
+    expiresAt:
+      now +
+      lifetimeMs,
+  });
+
+  druidTraceActors.set(
+    actorId,
+    rows.slice(
+      -8,
+    ),
+  );
+}
+
+function druidTrace(
+  stage,
+  {
+    actorId = null,
+    requestId = null,
+    action = null,
+    data = null,
+  } = {},
+) {
+  const entry = {
+    t:
+      druidTraceNow(),
+    wall:
+      new Date()
+        .toISOString(),
+    client:
+      druidTraceClient(),
+    stage,
+    requestId,
+    action,
+    actorId,
+    activeRequests:
+      druidTraceActiveRequests(
+        actorId,
+      ),
+    snapshot:
+      actorId
+        ? druidTraceSnapshot(
+            actorId,
+          )
+        : null,
+    data,
+  };
+
+  console.log(
+    DRUID_TRACE_PREFIX,
+    entry,
+  );
+
+  return entry;
+}
+
+function scheduleDruidTraceSnapshots(
+  actorId,
+  requestId,
+  action,
+  stage,
+) {
+  for (
+    const delay
+    of [
+      0,
+      25,
+      50,
+      100,
+      250,
+      500,
+      1000,
+      2000,
+    ]
+  ) {
+    setTimeout(
+      () =>
+        druidTrace(
+          `${stage}+${delay}ms`,
+          {
+            actorId,
+            requestId,
+            action,
+          },
+        ),
+      delay,
+    );
+  }
+}
+
+function installDruidLifecycleTraceHooks() {
+  const Hooks =
+    globalThis.Hooks;
+
+  if (
+    !Hooks?.on ||
+    globalThis[
+      DRUID_TRACE_HOOK_MARKER
+    ] === true
+  ) {
+    return;
+  }
+
+  globalThis[
+    DRUID_TRACE_HOOK_MARKER
+  ] =
+    true;
+
+  Hooks.on(
+    "updateActor",
+    (
+      actor,
+      changes,
+      _options,
+      userId,
+    ) => {
+      const actorId =
+        actor?.id ??
+        null;
+
+      if (
+        druidTraceActiveRequests(
+          actorId,
+        ).length === 0
+      ) {
+        return;
+      }
+
+      druidTrace(
+        "hook:updateActor",
+        {
+          actorId,
+          data: {
+            userId,
+            changes,
+          },
+        },
+      );
+    },
+  );
+
+  Hooks.on(
+    "updateToken",
+    (
+      token,
+      changes,
+      _options,
+      userId,
+    ) => {
+      const actorId =
+        token?.actorId ??
+        token?.actor?.id ??
+        null;
+
+      if (
+        druidTraceActiveRequests(
+          actorId,
+        ).length === 0
+      ) {
+        return;
+      }
+
+      druidTrace(
+        "hook:updateToken",
+        {
+          actorId,
+          data: {
+            userId,
+            tokenId:
+              token?.id ??
+              null,
+            changes,
+            documentSrc:
+              token?.texture
+                ?.src ??
+              null,
+          },
+        },
+      );
+    },
+  );
+
+  Hooks.on(
+    "refreshToken",
+    token => {
+      const actorId =
+        token?.document
+          ?.actorId ??
+        token?.actor?.id ??
+        null;
+
+      if (
+        druidTraceActiveRequests(
+          actorId,
+        ).length === 0
+      ) {
+        return;
+      }
+
+      const texture =
+        token?.texture ??
+        token?.mesh
+          ?.texture ??
+        null;
+
+      druidTrace(
+        "hook:refreshToken",
+        {
+          actorId,
+          data: {
+            tokenId:
+              token?.id ??
+              token?.document
+                ?.id ??
+              null,
+            documentSrc:
+              token?.document
+                ?.texture
+                ?.src ??
+              null,
+            textureWidth:
+              texture?.width ??
+              null,
+            textureHeight:
+              texture?.height ??
+              null,
+            sourceType:
+              token?.sourceElement
+                ?.constructor
+                ?.name ??
+              null,
+          },
+        },
+      );
+    },
+  );
+}
+
+installDruidLifecycleTraceHooks();
+
 function requestLifecycleAction(
   actor,
   action,
@@ -1458,6 +1922,24 @@ function requestLifecycleAction(
       token =>
         token.key,
     );
+
+  druidTraceMark(
+    actor.id,
+    requestId,
+    action,
+  );
+  druidTrace(
+    "player:request-send",
+    {
+      actorId:
+        actor.id,
+      requestId,
+      action,
+      data: {
+        localTokenKeys,
+      },
+    },
+  );
 
   return new Promise(
     (resolve, reject) => {
@@ -1790,6 +2272,34 @@ async function handleResult(
     pending.timeoutId,
   );
 
+  druidTraceMark(
+    pending.actorId,
+    payload.requestId,
+    payload?.result
+      ?.action ??
+      null,
+  );
+  druidTrace(
+    "player:result-received",
+    {
+      actorId:
+        pending.actorId,
+      requestId:
+        payload.requestId,
+      action:
+        payload?.result
+          ?.action ??
+        null,
+      data: {
+        success:
+          payload.success,
+        convergence:
+          payload.convergence ??
+          null,
+      },
+    },
+  );
+
   if (
     payload.success !== true
   ) {
@@ -1806,12 +2316,53 @@ async function handleResult(
   }
 
   try {
-    await waitForDruidFormLifecycleConvergence(
-      payload.convergence,
+    druidTrace(
+      "player:convergence-wait-start",
       {
-        requiredTokenKeys:
-          pending.localTokenKeys,
+        actorId:
+          pending.actorId,
+        requestId:
+          payload.requestId,
+        action:
+          payload?.result
+            ?.action ??
+          null,
       },
+    );
+
+    const convergenceResult =
+      await waitForDruidFormLifecycleConvergence(
+        payload.convergence,
+        {
+          requiredTokenKeys:
+            pending.localTokenKeys,
+        },
+      );
+
+    druidTrace(
+      "player:convergence-wait-complete",
+      {
+        actorId:
+          pending.actorId,
+        requestId:
+          payload.requestId,
+        action:
+          payload?.result
+            ?.action ??
+          null,
+        data: {
+          convergenceResult,
+        },
+      },
+    );
+
+    scheduleDruidTraceSnapshots(
+      pending.actorId,
+      payload.requestId,
+      payload?.result
+        ?.action ??
+        null,
+      "player:post-resolve",
     );
 
     pendingRequests.delete(
@@ -1848,10 +2399,42 @@ async function handleRequest(
   }
 
   try {
+    druidTraceMark(
+      payload.actorId,
+      payload.requestId,
+      payload.action,
+    );
+    druidTrace(
+      "gm:request-received",
+      {
+        actorId:
+          payload.actorId,
+        requestId:
+          payload.requestId,
+        action:
+          payload.action,
+      },
+    );
+
     const result =
       await executeDruidFormLifecycleRequest(
         payload,
       );
+
+    druidTrace(
+      "gm:execute-complete",
+      {
+        actorId:
+          payload.actorId,
+        requestId:
+          payload.requestId,
+        action:
+          payload.action,
+        data: {
+          result,
+        },
+      },
+    );
     const actor =
       collectionGet(
         globalThis.game?.actors,
@@ -1862,6 +2445,27 @@ async function handleRequest(
       captureDruidFormLifecycleConvergence(
         actor,
       );
+
+    druidTrace(
+      "gm:result-emit",
+      {
+        actorId:
+          payload.actorId,
+        requestId:
+          payload.requestId,
+        action:
+          payload.action,
+        data: {
+          convergence,
+        },
+      },
+    );
+    scheduleDruidTraceSnapshots(
+      payload.actorId,
+      payload.requestId,
+      payload.action,
+      "gm:post-emit",
+    );
 
     globalThis.game?.socket
       ?.emit?.(
