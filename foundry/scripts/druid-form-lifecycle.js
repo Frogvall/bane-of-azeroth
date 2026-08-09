@@ -1393,6 +1393,9 @@ export async function waitForDruidFormLifecycleConvergence(
 // BOA 0.11.7 Druid lifecycle trace diagnostics.
 const DRUID_TRACE_PREFIX =
   "[BOA DRUID TRACE]";
+// BOA 0.11.7 copyable Druid lifecycle trace.
+const DRUID_TRACE_BUFFER_KEY =
+  "__boaDruidTraceEntries";
 const DRUID_TRACE_HOOK_MARKER =
   Symbol.for(
     `${MODULE_ID}.druidLifecycleTraceHooks`,
@@ -1661,13 +1664,65 @@ function druidTrace(
     data,
   };
 
-  console.log(
-    DRUID_TRACE_PREFIX,
+  const buffer =
+    Array.isArray(
+      globalThis[
+        DRUID_TRACE_BUFFER_KEY
+      ],
+    )
+      ? globalThis[
+          DRUID_TRACE_BUFFER_KEY
+        ]
+      : [];
+
+  buffer.push(
     entry,
+  );
+
+  if (
+    buffer.length >
+      2000
+  ) {
+    buffer.splice(
+      0,
+      buffer.length -
+        2000,
+    );
+  }
+
+  globalThis[
+    DRUID_TRACE_BUFFER_KEY
+  ] =
+    buffer;
+
+  console.log(
+    `${DRUID_TRACE_PREFIX} ${JSON.stringify(
+      entry,
+    )}`,
   );
 
   return entry;
 }
+
+globalThis.boaExportDruidTrace =
+  function boaExportDruidTrace() {
+    return JSON.stringify(
+      globalThis[
+        DRUID_TRACE_BUFFER_KEY
+      ] ?? [],
+      null,
+      2,
+    );
+  };
+
+globalThis.boaClearDruidTrace =
+  function boaClearDruidTrace() {
+    globalThis[
+      DRUID_TRACE_BUFFER_KEY
+    ] = [];
+
+    return 0;
+  };
 
 function scheduleDruidTraceSnapshots(
   actorId,
