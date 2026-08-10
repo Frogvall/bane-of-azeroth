@@ -60,6 +60,13 @@ const ADVENTURE = join(
   "_Adventure.json",
 );
 
+const COMMON_ANIMALS_SOURCE_LINK =
+  "@Ref[dragonbane-core:journal-page.common-animals]"
+  + "{list of such animals}";
+const COMMON_ANIMALS_GENERATED_LINK =
+  "@UUID[JournalEntry.RSi75ZLYMyFhBqPi."
+  + "JournalEntryPage.9gOpHO89C6YKsgH1]"
+  + "{list of such animals}";
 const BOOK_ORDER = [
   {
     key: "crocolisk",
@@ -250,9 +257,10 @@ describe("Appendices Companions Journal page", () => {
       + "companions in a multitude of places.",
     );
     expect(html).toContain(
-      "@UUID[JournalEntry.RSi75ZLYMyFhBqPi."
-      + "JournalEntryPage.9gOpHO89C6YKsgH1]"
-      + "{list of such animals}",
+      COMMON_ANIMALS_SOURCE_LINK,
+    );
+    expect(html).not.toContain(
+      COMMON_ANIMALS_GENERATED_LINK,
     );
     expect(html).toContain(
       "If an animal has more than one attack "
@@ -367,8 +375,28 @@ describe("Appendices Companions Journal page", () => {
       },
     });
     expect(
+      sourcePage.source.content,
+    ).toContain(
+      COMMON_ANIMALS_SOURCE_LINK,
+    );
+    expect(
       journal.pages[0].text.content,
-    ).toBe(sourcePage.source.content);
+    ).toBe(
+      sourcePage.source.content.replace(
+        COMMON_ANIMALS_SOURCE_LINK,
+        COMMON_ANIMALS_GENERATED_LINK,
+      ),
+    );
+    expect(
+      journal.pages[0].text.content,
+    ).toContain(
+      COMMON_ANIMALS_GENERATED_LINK,
+    );
+    expect(
+      journal.pages[0].text.content,
+    ).not.toContain(
+      COMMON_ANIMALS_SOURCE_LINK,
+    );
     expect(
       adventure.journal.filter(
         value => value === journalPath,

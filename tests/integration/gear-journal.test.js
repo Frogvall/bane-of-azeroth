@@ -55,7 +55,10 @@ const TABLE_TYPES = new Map([
   ["trade-goods", "trade"],
 ]);
 
-const FIND_WEAK_SPOT_LINK =
+const FIND_WEAK_SPOT_SOURCE_LINK =
+  "@Ref[dragonbane-core:rule.find-weak-spot]"
+  + "{Find Weak Spot}";
+const FIND_WEAK_SPOT_GENERATED_LINK =
   "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
   + "JournalEntryPage.KAxnhLbO8N7kcvMl"
   + "#special-attacks]{Find Weak Spot}";
@@ -240,7 +243,7 @@ describe("Character Options Gear Journal page", () => {
       "<strong>Freehanded:</strong>",
       "<strong>Returning:</strong>",
       "<strong>Armor Piercing:</strong>",
-      FIND_WEAK_SPOT_LINK,
+      FIND_WEAK_SPOT_SOURCE_LINK,
       "<strong>Scattershot:</strong>",
     ]) {
       expect(html).toContain(marker);
@@ -282,12 +285,27 @@ describe("Character Options Gear Journal page", () => {
         },
       },
     });
-    expect(page.text.content).toBe(
+    expect(
       pageSource.source.content,
+    ).toContain(
+      FIND_WEAK_SPOT_SOURCE_LINK,
+    );
+    expect(page.text.content).toBe(
+      pageSource.source.content.replace(
+        FIND_WEAK_SPOT_SOURCE_LINK,
+        FIND_WEAK_SPOT_GENERATED_LINK,
+      ),
     );
     expect(
       page.text.content,
-    ).toContain(FIND_WEAK_SPOT_LINK);
+    ).toContain(
+      FIND_WEAK_SPOT_GENERATED_LINK,
+    );
+    expect(
+      page.text.content,
+    ).not.toContain(
+      FIND_WEAK_SPOT_SOURCE_LINK,
+    );
     expect(
       occurrences(
         page.text.content,

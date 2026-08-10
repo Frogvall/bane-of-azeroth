@@ -25,8 +25,7 @@ const JOURNAL = resolve(
 );
 
 const LINK =
-  "@UUID[JournalEntry.SbbSMsuvWeo3HaID." +
-  "JournalEntryPage.6WPxPxUjh4W80RNy#cold]" +
+  "@Ref[dragonbane-core:rule.resist-cold]" +
   "{resist cold}";
 
 describe(

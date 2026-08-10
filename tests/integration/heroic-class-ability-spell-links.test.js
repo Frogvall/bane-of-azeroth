@@ -20,6 +20,12 @@ const HEROIC_SOURCE = resolve(
   "content",
   "heroic-class-abilities.json",
 );
+const EXTERNAL_REFERENCES = resolve(
+  "foundry",
+  "config",
+  "references",
+  "external-references.json",
+);
 const SPELL_SOURCE = resolve(
   "foundry",
   "content",
@@ -121,8 +127,11 @@ function occurrences(value, marker) {
 }
 
 describe("spell-granting Heroic Class Abilities", () => {
-  test("records the external Sense Magic grant for Mage's Brilliance", () => {
+  test("records the external Sense Magic grant symbolically for Mage's Brilliance", () => {
     const heroic = readJson(HEROIC_SOURCE);
+    const references = readJson(
+      EXTERNAL_REFERENCES,
+    );
     const mage = heroic.classes.find(
       entry => entry.key === "mage",
     );
@@ -130,9 +139,23 @@ describe("spell-granting Heroic Class Abilities", () => {
       ability => ability.key === "mages-brilliance",
     );
 
-    expect(brilliance?.grantsSpellUuid).toBe(
-      "Item.RPnxXYVb8z7EG5Wl",
+    expect(
+      brilliance?.grantsExternalSpell,
+    ).toBe(
+      "dragonbane-core:spell.sense-magic",
     );
+    expect(brilliance).not.toHaveProperty(
+      "grantsSpellUuid",
+    );
+    expect(
+      references.references[
+        brilliance.grantsExternalSpell
+      ],
+    ).toMatchObject({
+      source: "dragonbane-core",
+      uuid: "Item.RPnxXYVb8z7EG5Wl",
+      documentType: "Item",
+    });
   });
 
   test("uses one symbolic Spell reference in each source description", () => {

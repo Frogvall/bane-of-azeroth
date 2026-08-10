@@ -99,22 +99,31 @@ function generatorEntry(
 }
 
 describe("external UUID system verification", () => {
-  test("registers the Dragonbane Core poison rule once", () => {
+  test("registers the migrated Dragonbane Core references including poison", () => {
     const source = readJson(
       REFERENCES,
     );
 
-    expect(source).toEqual({
-      schemaVersion: 1,
-      references: {
-        [REFERENCE_KEY]: {
-          source: "dragonbane-core",
-          uuid: REFERENCE_UUID,
-          documentType:
-            "JournalEntryPage",
-        },
-      },
+    expect(source.schemaVersion).toBe(1);
+    expect(
+      Object.keys(source.references),
+    ).toHaveLength(17);
+    expect(
+      source.references[REFERENCE_KEY],
+    ).toEqual({
+      source: "dragonbane-core",
+      uuid: REFERENCE_UUID,
+      documentType:
+        "JournalEntryPage",
     });
+    for (
+      const reference
+      of Object.values(source.references)
+    ) {
+      expect(reference.source).toBe(
+        "dragonbane-core",
+      );
+    }
   });
 
   test("derives runtime and generated content from the registry", () => {

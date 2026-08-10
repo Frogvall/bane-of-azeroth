@@ -116,6 +116,72 @@ const LINKS = {
     + "{Dual Wield}",
 };
 
+const SOURCE_LINKS = new Map([
+  [
+    LINKS.falling,
+    "@Ref[dragonbane-core:rule.falling]{falling}",
+  ],
+  [
+    LINKS.magicTricks,
+    "@Ref[dragonbane-core:rule.magic-tricks]{Magic Tricks}",
+  ],
+  [
+    LINKS.hardToCatch,
+    "@Ref[dragonbane-core:kin-ability.hard-to-catch]{Hard to Catch}",
+  ],
+  [
+    LINKS.rally,
+    "@Ref[dragonbane-core:rule.death]{rally}",
+  ],
+  [
+    LINKS.fastHealer,
+    "@Ref[dragonbane-core:kin-ability.fast-healer]{Fast Healer}",
+  ],
+  [
+    LINKS.deathRoll,
+    "@Ref[dragonbane-core:rule.death]{Death Roll}",
+  ],
+  [
+    LINKS.pushing,
+    "@Ref[dragonbane-core:rule.pushing-your-roll]{Pushing your Roll}",
+  ],
+  [
+    LINKS.dash,
+    "@Ref[dragonbane-core:rule.dash]{dash}",
+  ],
+  [
+    LINKS.twinShot,
+    "@Ref[dragonbane-core:heroic-ability.twin-shot]{Twin Shot}",
+  ],
+  [
+    LINKS.senseMagic,
+    "@Ref[dragonbane-core:spell.sense-magic]{Sense Magic}",
+  ],
+  [
+    LINKS.ironFist,
+    "@Ref[dragonbane-core:heroic-ability.iron-fist]{Iron Fist}",
+  ],
+  [
+    LINKS.sneakAttack,
+    "@Ref[dragonbane-core:rule.sneak-attack]{sneak attack}",
+  ],
+  [
+    LINKS.poison,
+    "@Ref[dragonbane-core:journal-page.combat-damage.poison]{poison}",
+  ],
+  [
+    LINKS.powerFromBody,
+    "@Ref[dragonbane-core:rule.power-from-the-body]{Power from the Body}",
+  ],
+  [
+    LINKS.dualWield,
+    "@Ref[dragonbane-core:heroic-ability.dual-wield]{Dual Wield}",
+  ],
+]);
+
+function sourceReference(link) {
+  return SOURCE_LINKS.get(link) ?? link;
+}
 const KIN_SPECS = [
   ["draconic-wings-falling", LINKS.falling],
   ["arcane-affinity", LINKS.magicTricks],
@@ -293,8 +359,12 @@ describe("Ability rule-reference links", () => {
         `ability.${key}`,
       );
 
-      expect(occurrences(sourceText, link))
-        .toBe(1);
+      expect(
+        occurrences(
+          sourceText,
+          sourceReference(link),
+        ),
+      ).toBe(1);
       expect(
         occurrences(
           item.system.itemDescription,
@@ -302,7 +372,10 @@ describe("Ability rule-reference links", () => {
         ),
       ).toBe(1);
       expect(
-        occurrences(journalSource, link),
+        occurrences(
+          journalSource,
+          sourceReference(link),
+        ),
       ).toBe(1);
       expect(
         occurrences(generatedJournal, link),
@@ -337,8 +410,12 @@ describe("Ability rule-reference links", () => {
         + `${classKey}.${abilityKey}`,
       );
 
-      expect(occurrences(sourceText, link))
-        .toBe(1);
+      expect(
+        occurrences(
+          sourceText,
+          sourceReference(link),
+        ),
+      ).toBe(1);
       expect(
         occurrences(
           item.system.itemDescription,
@@ -346,7 +423,10 @@ describe("Ability rule-reference links", () => {
         ),
       ).toBe(1);
       expect(
-        occurrences(journalSource, link),
+        occurrences(
+          journalSource,
+          sourceReference(link),
+        ),
       ).toBe(1);
       expect(
         occurrences(generatedJournal, link),

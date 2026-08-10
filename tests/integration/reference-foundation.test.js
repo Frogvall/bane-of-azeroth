@@ -145,14 +145,35 @@ describe("reference foundation", () => {
       },
     });
     expect(references.schemaVersion).toBe(1);
-    expect(references.references).toEqual({
-      "dragonbane-core:journal-page.combat-damage.poison": {
-        source: "dragonbane-core",
-        uuid:
-          "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
-        documentType: "JournalEntryPage",
-      },
-    });
+    const externalEntries = Object.entries(
+      references.references,
+    );
+    expect(externalEntries).toHaveLength(17);
+    for (const [key, reference] of externalEntries) {
+      expect(key).toMatch(
+        /^dragonbane-core:/,
+      );
+      expect(
+        sources.sources,
+      ).toHaveProperty(
+        reference.source,
+      );
+      expect(reference.uuid).toEqual(
+        expect.any(String),
+      );
+      expect(reference.uuid.length).toBeGreaterThan(0);
+      expect(
+        reference.documentType,
+      ).toEqual(
+        expect.any(String),
+      );
+      expect(reference).not.toHaveProperty(
+        "testedVersion",
+      );
+      expect(reference).not.toHaveProperty(
+        "verifiedVersion",
+      );
+    }
 
     const serializedRegistries = JSON.stringify({
       sources,
