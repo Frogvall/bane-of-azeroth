@@ -115,7 +115,7 @@ describe("reference foundation", () => {
           },
           "yze-combat": {
             version: "1.7.0",
-            required: true,
+            required: false,
           },
         },
       },

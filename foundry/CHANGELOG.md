@@ -6,6 +6,11 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Changed
+- Audited and locked the supported Foundry/Dragonbane dependency baseline: Foundry V14 with Dragonbane 4.0.1 remains the hard runtime contract, while the verified whole-module environment remains Foundry 14.365 / Dragonbane 4.0.1 / Dragonbane Core Set 2.2 / YZE Combat 1.7.0.
+- YZE Combat is now explicitly recorded as optional in compatibility metadata and remains absent from hard manifest dependencies.
+- Documented Dragonbane Core Set 2.2 separately as the external content source used by registered Dragonbane Core references.
+
 
 ## [0.12.1] - 2026-08-11
 ### Changed

@@ -95,7 +95,7 @@ The current version has been developed and verified with:
 | Dragonbane Core Set | 2.2 |
 | YZE Combat | 1.7.0 |
 
-The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.0.1. YZE Combat is included in the verified test environment because it is the combat module recommended for Dragonbane, but Bane of Azeroth does not require YZE Combat to be installed or enabled. Compatibility with other versions has not yet been verified.
+The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.0.1. **Dragonbane system 4.0.1 is the only hard Foundry runtime dependency declared by Bane of Azeroth.** Dragonbane Core Set 2.2 is the required external content source for the registered Dragonbane Core references used by generated Bane of Azeroth content; those links are verified against Core Set content imported into the test world. **YZE Combat 1.7.0 is optional** and is included in the verified environment because it is the combat module recommended for Dragonbane; Bane of Azeroth does not require YZE Combat to be installed or enabled. Compatibility with other versions has not yet been verified.
 
 ## Installation
 
