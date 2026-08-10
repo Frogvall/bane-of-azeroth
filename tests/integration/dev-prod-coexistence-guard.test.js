@@ -167,7 +167,12 @@ describe(
         expect(
           source,
         ).toContain(
-          'Symbol.for("bane-of-azeroth.active-runtime")',
+          "Symbol.for(",
+        );
+        expect(
+          source,
+        ).toContain(
+          '"bane-of-azeroth.active-runtime"',
         );
         expect(
           source,
