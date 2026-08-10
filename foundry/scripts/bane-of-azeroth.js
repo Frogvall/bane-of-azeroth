@@ -181,6 +181,10 @@ import {
   patchDruidFormRestLifecycle,
   registerDruidFormLifecycleSocket,
   switchDruidForm,
+  setDruidLifecycleTraceEnabled,
+  isDruidLifecycleTraceEnabled,
+  exportDruidLifecycleTrace,
+  clearDruidLifecycleTrace,
 } from "./druid-form-lifecycle.js";
 import {
   endAllManagedEffects,
@@ -191,6 +195,12 @@ import {
   registerManagedEffectLifecycleSocket,
 } from "./managed-effect-lifecycle.js";
 import { registerAutomationSettings } from "./automation-settings.js";
+// BOA developer diagnostics settings.
+import {
+  applyDeveloperSettings,
+  isDevelopmentBuild,
+  registerDeveloperSettings,
+} from "./developer-settings.js";
 import {
   patchEvokersLegacySpellCost,
 } from "./evokers-legacy.js";
@@ -211,6 +221,7 @@ Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
   registerAutomationSettings();
+  registerDeveloperSettings();
   patchMageBrillianceSpellCost();
   patchEvokersLegacySpellCost();
 
@@ -238,6 +249,12 @@ Hooks.once("init", () => {
   if (boaModule) {
     boaModule.api = {
       ...(boaModule.api ?? {}),
+      setDruidLifecycleTraceEnabled,
+      isDruidLifecycleTraceEnabled,
+      exportDruidLifecycleTrace,
+      clearDruidLifecycleTrace,
+      isDevelopmentBuild,
+
       takeMageBrillianceLanguagesTen,
       castLegacyFreeSenseMagicTrick,
       processCommonAnimalAttackResult,
@@ -542,6 +559,7 @@ Hooks.once("ready", async () => {
   registerDemonHunterInitiationSocket();
   registerDruidFormArtworkSocket();
   registerDruidFormLifecycleSocket();
+  applyDeveloperSettings();
   registerManagedEffectLifecycleSocket();
   patchDruidFormRestLifecycle();
   registerVoidwalkerSufferingSocket();

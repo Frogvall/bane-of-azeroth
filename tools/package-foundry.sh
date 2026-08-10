@@ -220,6 +220,8 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
   jq \
     --arg packName "$DEV_TEST_PACK_NAME" \
     '
+      .flags["bane-of-azeroth"].developmentBuild = true
+      |
       .scripts = (
         (((.scripts // []) |
           map(select(. != "scripts/boa-dev-system-tests.js")))
@@ -262,6 +264,8 @@ else
   jq \
     --arg packName "$DEV_TEST_PACK_NAME" \
     '
+      del(.flags["bane-of-azeroth"].developmentBuild)
+      |
       .scripts = (
         (.scripts // []) |
         map(select(. != "scripts/boa-dev-system-tests.js"))

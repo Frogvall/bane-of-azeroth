@@ -1797,120 +1797,48 @@ export async function waitForDruidFormLifecycleConvergence(
 
 
 // BOA 0.11.7 Druid lifecycle trace diagnostics.
-const DRUID_TRACE_PREFIX =
-  "[BOA DRUID TRACE]";
-// BOA 0.11.7 copyable Druid lifecycle trace.
-const DRUID_TRACE_BUFFER_KEY =
-  "__boaDruidTraceEntries";
-const DRUID_TRACE_HOOK_MARKER =
-  Symbol.for(
-    `${MODULE_ID}.druidLifecycleTraceHooks`,
-  );
-const druidTraceActors =
-  new Map();
+const DRUID_TRACE_PREFIX = "[BOA DRUID TRACE]";
+const DRUID_TRACE_BUFFER_KEY = "__boaDruidTraceEntries";
+const druidTraceActors = new Map();
+
+let druidTraceEnabled = false;
+let druidTraceHookIds = [];
 
 function druidTraceNow() {
-  return (
-    globalThis.performance
-      ?.now?.() ??
-    Date.now()
-  );
+  return globalThis.performance?.now?.() ?? Date.now();
 }
 
 function druidTraceClient() {
-  const user =
-    globalThis.game?.user;
-
+  const user = globalThis.game?.user;
   return {
-    userId:
-      user?.id ??
-      null,
-    userName:
-      user?.name ??
-      null,
-    isGM:
-      user?.isGM === true,
+    userId: user?.id ?? null,
+    userName: user?.name ?? null,
+    isGM: user?.isGM === true,
   };
 }
 
-function druidTraceTokenRows(
-  actorId,
-  scenes =
-    globalThis.game?.scenes,
-) {
-  const rows =
-    [];
+function druidTraceTokenRows(actorId, scenes = globalThis.game?.scenes) {
+  const rows = [];
 
-  for (
-    const scene
-    of lifecycleCollectionValues(
-      scenes,
-    )
-  ) {
-    for (
-      const token
-      of lifecycleCollectionValues(
-        scene?.tokens,
-      )
-    ) {
-      if (
-        token?.actorId !==
-          actorId &&
-        token?.actor?.id !==
-          actorId
-      ) {
-        continue;
-      }
+  for (const scene of lifecycleCollectionValues(scenes)) {
+    for (const token of lifecycleCollectionValues(scene?.tokens)) {
+      if (token?.actorId !== actorId && token?.actor?.id !== actorId) continue;
 
-      const sceneId =
-        scene?.id ??
-        token?.parent?.id ??
-        null;
-      const tokenId =
-        token?.id ??
-        null;
-      const placeable =
-        globalThis.canvas
-          ?.scene
-          ?.id === sceneId
-          ? globalThis.canvas
-              ?.tokens
-              ?.get?.(
-                tokenId,
-              ) ??
-            null
-          : null;
-      const texture =
-        placeable?.texture ??
-        placeable?.mesh
-          ?.texture ??
-        null;
+      const sceneId = scene?.id ?? token?.parent?.id ?? null;
+      const tokenId = token?.id ?? null;
+      const placeable = globalThis.canvas?.scene?.id === sceneId
+        ? globalThis.canvas?.tokens?.get?.(tokenId) ?? null
+        : null;
+      const texture = placeable?.texture ?? placeable?.mesh?.texture ?? null;
 
       rows.push({
         sceneId,
         tokenId,
-        documentSrc:
-          token?.texture
-            ?.src ??
-          null,
-        canvasDocumentSrc:
-          placeable
-            ?.document
-            ?.texture
-            ?.src ??
-          null,
-        canvasTextureWidth:
-          texture?.width ??
-          null,
-        canvasTextureHeight:
-          texture?.height ??
-          null,
-        canvasSourceType:
-          placeable
-            ?.sourceElement
-            ?.constructor
-            ?.name ??
-          null,
+        documentSrc: token?.texture?.src ?? null,
+        canvasDocumentSrc: placeable?.document?.texture?.src ?? null,
+        canvasTextureWidth: texture?.width ?? null,
+        canvasTextureHeight: texture?.height ?? null,
+        canvasSourceType: placeable?.sourceElement?.constructor?.name ?? null,
       });
     }
   }
@@ -1918,401 +1846,180 @@ function druidTraceTokenRows(
   return rows;
 }
 
-function druidTraceSnapshot(
-  actorId,
-) {
-  const actor =
-    collectionGet(
-      globalThis.game?.actors,
-      actorId,
-    );
-
+function druidTraceSnapshot(actorId) {
+  const actor = collectionGet(globalThis.game?.actors, actorId);
   return {
     actorId,
-    form:
-      actor
-        ? getDruidFormState(
-            actor,
-          ).currentForm
-        : null,
-    actorImg:
-      actor?.img ??
-      null,
-    prototypeTokenSrc:
-      actor?.prototypeToken
-        ?.texture
-        ?.src ??
-      null,
-    tokens:
-      druidTraceTokenRows(
-        actorId,
-      ),
+    form: actor ? getDruidFormState(actor).currentForm : null,
+    actorImg: actor?.img ?? null,
+    prototypeTokenSrc: actor?.prototypeToken?.texture?.src ?? null,
+    tokens: druidTraceTokenRows(actorId),
   };
 }
 
-function druidTraceActiveRequests(
-  actorId,
-) {
-  if (!actorId) {
-    return [];
-  }
+function druidTraceActiveRequests(actorId) {
+  if (!druidTraceEnabled || !actorId) return [];
 
-  const rows =
-    druidTraceActors.get(
-      actorId,
-    ) ??
-    [];
-  const now =
-    druidTraceNow();
-  const active =
-    rows.filter(
-      row =>
-        row.expiresAt >
-          now,
-    );
+  const rows = druidTraceActors.get(actorId) ?? [];
+  const now = druidTraceNow();
+  const active = rows.filter((row) => row.expiresAt > now);
 
-  if (
-    active.length > 0
-  ) {
-    druidTraceActors.set(
-      actorId,
-      active,
-    );
-  } else {
-    druidTraceActors.delete(
-      actorId,
-    );
-  }
+  if (active.length > 0) druidTraceActors.set(actorId, active);
+  else druidTraceActors.delete(actorId);
 
-  return active.map(
-    row => ({
-      requestId:
-        row.requestId,
-      action:
-        row.action,
-      startedAt:
-        row.startedAt,
-    }),
-  );
+  return active.map((row) => ({
+    requestId: row.requestId,
+    action: row.action,
+    startedAt: row.startedAt,
+  }));
 }
 
-function druidTraceMark(
-  actorId,
-  requestId,
-  action,
-  lifetimeMs =
-    5000,
-) {
-  if (
-    !actorId ||
-    !requestId
-  ) {
-    return;
-  }
+function druidTraceMark(actorId, requestId, action, lifetimeMs = 5000) {
+  if (!druidTraceEnabled || !actorId || !requestId) return;
 
-  const now =
-    druidTraceNow();
-  const rows =
-    druidTraceActors.get(
-      actorId,
-    ) ??
-    [];
-
+  const now = druidTraceNow();
+  const rows = druidTraceActors.get(actorId) ?? [];
   rows.push({
     requestId,
     action,
-    startedAt:
-      now,
-    expiresAt:
-      now +
-      lifetimeMs,
+    startedAt: now,
+    expiresAt: now + lifetimeMs,
   });
-
-  druidTraceActors.set(
-    actorId,
-    rows.slice(
-      -8,
-    ),
-  );
+  druidTraceActors.set(actorId, rows.slice(-8));
 }
 
-function druidTrace(
-  stage,
-  {
-    actorId = null,
-    requestId = null,
-    action = null,
-    data = null,
-  } = {},
-) {
+function druidTrace(stage, {
+  actorId = null,
+  requestId = null,
+  action = null,
+  data = null,
+} = {}) {
+  if (!druidTraceEnabled) return null;
+
   const entry = {
-    t:
-      druidTraceNow(),
-    wall:
-      new Date()
-        .toISOString(),
-    client:
-      druidTraceClient(),
+    t: druidTraceNow(),
+    wall: new Date().toISOString(),
+    client: druidTraceClient(),
     stage,
     requestId,
     action,
     actorId,
-    activeRequests:
-      druidTraceActiveRequests(
-        actorId,
-      ),
-    snapshot:
-      actorId
-        ? druidTraceSnapshot(
-            actorId,
-          )
-        : null,
+    activeRequests: druidTraceActiveRequests(actorId),
+    snapshot: actorId ? druidTraceSnapshot(actorId) : null,
     data,
   };
 
-  const buffer =
-    Array.isArray(
-      globalThis[
-        DRUID_TRACE_BUFFER_KEY
-      ],
-    )
-      ? globalThis[
-          DRUID_TRACE_BUFFER_KEY
-        ]
-      : [];
+  const buffer = Array.isArray(globalThis[DRUID_TRACE_BUFFER_KEY])
+    ? globalThis[DRUID_TRACE_BUFFER_KEY]
+    : [];
+  buffer.push(entry);
+  if (buffer.length > 2000) buffer.splice(0, buffer.length - 2000);
+  globalThis[DRUID_TRACE_BUFFER_KEY] = buffer;
 
-  buffer.push(
-    entry,
-  );
-
-  if (
-    buffer.length >
-      2000
-  ) {
-    buffer.splice(
-      0,
-      buffer.length -
-        2000,
-    );
-  }
-
-  globalThis[
-    DRUID_TRACE_BUFFER_KEY
-  ] =
-    buffer;
-
-  console.log(
-    `${DRUID_TRACE_PREFIX} ${JSON.stringify(
-      entry,
-    )}`,
-  );
-
+  console.log(`${DRUID_TRACE_PREFIX} ${JSON.stringify(entry)}`);
   return entry;
 }
 
-globalThis.boaExportDruidTrace =
-  function boaExportDruidTrace() {
-    return JSON.stringify(
-      globalThis[
-        DRUID_TRACE_BUFFER_KEY
-      ] ?? [],
-      null,
-      2,
-    );
-  };
+function scheduleDruidTraceSnapshots(actorId, requestId, action, stage) {
+  if (!druidTraceEnabled) return;
 
-globalThis.boaClearDruidTrace =
-  function boaClearDruidTrace() {
-    globalThis[
-      DRUID_TRACE_BUFFER_KEY
-    ] = [];
-
-    return 0;
-  };
-
-function scheduleDruidTraceSnapshots(
-  actorId,
-  requestId,
-  action,
-  stage,
-) {
-  for (
-    const delay
-    of [
-      0,
-      25,
-      50,
-      100,
-      250,
-      500,
-      1000,
-      2000,
-    ]
-  ) {
-    setTimeout(
-      () =>
-        druidTrace(
-          `${stage}+${delay}ms`,
-          {
-            actorId,
-            requestId,
-            action,
-          },
-        ),
-      delay,
-    );
+  for (const delay of [0, 25, 50, 100, 250, 500, 1000, 2000]) {
+    setTimeout(() => {
+      if (!druidTraceEnabled) return;
+      druidTrace(`${stage}+${delay}ms`, { actorId, requestId, action });
+    }, delay);
   }
 }
 
-function installDruidLifecycleTraceHooks() {
-  const Hooks =
-    globalThis.Hooks;
+function installDruidLifecycleTraceHooks(Hooks = globalThis.Hooks) {
+  if (!druidTraceEnabled || !Hooks?.on || druidTraceHookIds.length > 0) return false;
 
-  if (
-    !Hooks?.on ||
-    globalThis[
-      DRUID_TRACE_HOOK_MARKER
-    ] === true
-  ) {
-    return;
-  }
-
-  globalThis[
-    DRUID_TRACE_HOOK_MARKER
-  ] =
-    true;
-
-  Hooks.on(
-    "updateActor",
-    (
-      actor,
-      changes,
-      _options,
-      userId,
-    ) => {
-      const actorId =
-        actor?.id ??
-        null;
-
-      if (
-        druidTraceActiveRequests(
-          actorId,
-        ).length === 0
-      ) {
-        return;
-      }
-
-      druidTrace(
-        "hook:updateActor",
-        {
-          actorId,
-          data: {
-            userId,
-            changes,
-          },
+  const registrations = [
+    ["updateActor", (actor, changes, _options, userId) => {
+      const actorId = actor?.id ?? null;
+      if (druidTraceActiveRequests(actorId).length === 0) return;
+      druidTrace("hook:updateActor", { actorId, data: { userId, changes } });
+    }],
+    ["updateToken", (token, changes, _options, userId) => {
+      const actorId = token?.actorId ?? token?.actor?.id ?? null;
+      if (druidTraceActiveRequests(actorId).length === 0) return;
+      druidTrace("hook:updateToken", {
+        actorId,
+        data: {
+          userId,
+          tokenId: token?.id ?? null,
+          changes,
+          documentSrc: token?.texture?.src ?? null,
         },
-      );
-    },
-  );
-
-  Hooks.on(
-    "updateToken",
-    (
-      token,
-      changes,
-      _options,
-      userId,
-    ) => {
-      const actorId =
-        token?.actorId ??
-        token?.actor?.id ??
-        null;
-
-      if (
-        druidTraceActiveRequests(
-          actorId,
-        ).length === 0
-      ) {
-        return;
-      }
-
-      druidTrace(
-        "hook:updateToken",
-        {
-          actorId,
-          data: {
-            userId,
-            tokenId:
-              token?.id ??
-              null,
-            changes,
-            documentSrc:
-              token?.texture
-                ?.src ??
-              null,
-          },
+      });
+    }],
+    ["refreshToken", (token) => {
+      const actorId = token?.document?.actorId ?? token?.actor?.id ?? null;
+      if (druidTraceActiveRequests(actorId).length === 0) return;
+      const texture = token?.texture ?? token?.mesh?.texture ?? null;
+      druidTrace("hook:refreshToken", {
+        actorId,
+        data: {
+          tokenId: token?.id ?? token?.document?.id ?? null,
+          documentSrc: token?.document?.texture?.src ?? null,
+          textureWidth: texture?.width ?? null,
+          textureHeight: texture?.height ?? null,
+          sourceType: token?.sourceElement?.constructor?.name ?? null,
         },
-      );
-    },
-  );
+      });
+    }],
+  ];
 
-  Hooks.on(
-    "refreshToken",
-    token => {
-      const actorId =
-        token?.document
-          ?.actorId ??
-        token?.actor?.id ??
-        null;
-
-      if (
-        druidTraceActiveRequests(
-          actorId,
-        ).length === 0
-      ) {
-        return;
-      }
-
-      const texture =
-        token?.texture ??
-        token?.mesh
-          ?.texture ??
-        null;
-
-      druidTrace(
-        "hook:refreshToken",
-        {
-          actorId,
-          data: {
-            tokenId:
-              token?.id ??
-              token?.document
-                ?.id ??
-              null,
-            documentSrc:
-              token?.document
-                ?.texture
-                ?.src ??
-              null,
-            textureWidth:
-              texture?.width ??
-              null,
-            textureHeight:
-              texture?.height ??
-              null,
-            sourceType:
-              token?.sourceElement
-                ?.constructor
-                ?.name ??
-              null,
-          },
-        },
-      );
-    },
-  );
+  druidTraceHookIds = registrations.map(([event, handler]) => ({
+    event,
+    id: Hooks.on(event, handler),
+  }));
+  return true;
 }
 
-installDruidLifecycleTraceHooks();
+function uninstallDruidLifecycleTraceHooks(Hooks = globalThis.Hooks) {
+  if (!Hooks?.off) {
+    druidTraceHookIds = [];
+    return false;
+  }
+
+  for (const { event, id } of druidTraceHookIds) Hooks.off(event, id);
+  druidTraceHookIds = [];
+  return true;
+}
+
+export function isDruidLifecycleTraceEnabled() {
+  return druidTraceEnabled;
+}
+
+export function clearDruidLifecycleTrace() {
+  globalThis[DRUID_TRACE_BUFFER_KEY] = [];
+  return 0;
+}
+
+export function exportDruidLifecycleTrace() {
+  return JSON.stringify(globalThis[DRUID_TRACE_BUFFER_KEY] ?? [], null, 2);
+}
+
+export function setDruidLifecycleTraceEnabled(enabled, { Hooks = globalThis.Hooks } = {}) {
+  const next = enabled === true;
+  if (druidTraceEnabled === next) return next;
+
+  druidTraceEnabled = next;
+  druidTraceActors.clear();
+
+  if (druidTraceEnabled) {
+    clearDruidLifecycleTrace();
+    installDruidLifecycleTraceHooks(Hooks);
+  } else {
+    uninstallDruidLifecycleTraceHooks(Hooks);
+  }
+
+  return druidTraceEnabled;
+}
+
+globalThis.boaExportDruidTrace = exportDruidLifecycleTrace;
+globalThis.boaClearDruidTrace = clearDruidLifecycleTrace;
 
 function requestLifecycleAction(
   actor,

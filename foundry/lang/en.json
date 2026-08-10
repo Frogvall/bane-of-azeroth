@@ -148,6 +148,15 @@
         "druidMoonkinSpellCostHint": "While Moonkin Form is active, magic tricks cost 0 WP and other spells cost 1 WP less per Stars Incarnation power level, minimum 1 WP.",
         "druidFormArtworkName": "Druid Form Artwork",
         "druidFormArtworkHint": "Automatically switch Druid portraits and tokens when forms change, while preserving each humanoid and scene-token image."
+      },
+      "developer": {
+        "menuName": "Developer / Diagnostics",
+        "menuLabel": "Developer / Diagnostics",
+        "menuHint": "Development-only diagnostics. This menu is available only in branch development packages.",
+        "groupDiagnostics": "Diagnostics",
+        "druidLifecycleTraceName": "Druid Lifecycle Trace",
+        "druidLifecycleTraceHint": "Trace Druid lifecycle requests, document propagation, and token refreshes on this client. Disabled by default.",
+        "traceExportHint": "When tracing is enabled, copy the buffer from the browser console with copy(boaExportDruidTrace()). Clear it with boaClearDruidTrace()."
       }
     },
     "notifications": {

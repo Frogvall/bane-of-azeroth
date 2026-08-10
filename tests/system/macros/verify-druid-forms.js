@@ -85,6 +85,22 @@ for (const [key, contentKey] of Object.entries(spellContentKeys)) {
 const api =
   game.modules.get(BOA_TEST_MODULE_ID)?.api ?? {};
 
+// BOA 0.11.7 developer diagnostics RED/GREEN contract.
+for (const functionName of [
+  "setDruidLifecycleTraceEnabled",
+  "isDruidLifecycleTraceEnabled",
+  "exportDruidLifecycleTrace",
+  "clearDruidLifecycleTrace",
+]) {
+  boaCheck(
+    checks,
+    `Developer diagnostics API exposes ${functionName}`,
+    typeof api[functionName] === "function",
+    typeof api[functionName],
+  );
+}
+
+
 for (const functionName of [
   "getDruidFormProfileDefinitions",
   "getAvailableDruidFormProfiles",
