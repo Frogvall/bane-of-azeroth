@@ -1007,6 +1007,31 @@ def folder_relative_path() -> str:
     )
 
 
+def merge_exact_managed_path(
+    *,
+    existing: list[str],
+    managed_path: str,
+    include: bool,
+) -> list[str]:
+    """Preserve one managed path in place without moving unrelated paths."""
+    merged: list[str] = []
+    inserted = False
+
+    for value in existing:
+        if value == managed_path:
+            if include and not inserted:
+                merged.append(managed_path)
+                inserted = True
+            continue
+
+        merged.append(value)
+
+    if include and not inserted:
+        merged.append(managed_path)
+
+    return merged
+
+
 def render_adventure(
     adventure_path: Path,
     documents: list[dict[str, object]],
@@ -1060,15 +1085,11 @@ def render_adventure(
     )
 
     expected_folder = folder_relative_path()
-    updated_folders = [
-        value
-        for value in folders
-        if value != expected_folder
-    ]
-    if expected_journals:
-        updated_folders.append(
-            expected_folder
-        )
+    updated_folders = merge_exact_managed_path(
+        existing=folders,
+        managed_path=expected_folder,
+        include=bool(expected_journals),
+    )
 
     rendered = replace_adventure_array(
         original,

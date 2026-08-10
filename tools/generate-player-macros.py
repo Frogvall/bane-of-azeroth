@@ -471,6 +471,31 @@ def merge_managed_paths(
     return merged
 
 
+def merge_exact_managed_path(
+    *,
+    existing: list[str],
+    managed_path: str,
+    include: bool,
+) -> list[str]:
+    """Preserve one managed path in place without moving unrelated paths."""
+    merged: list[str] = []
+    inserted = False
+
+    for value in existing:
+        if value == managed_path:
+            if include and not inserted:
+                merged.append(managed_path)
+                inserted = True
+            continue
+
+        merged.append(value)
+
+    if include and not inserted:
+        merged.append(managed_path)
+
+    return merged
+
+
 def expected_outputs(
     *,
     source_path: Path,
@@ -606,12 +631,14 @@ def expected_outputs(
         .relative_to(adventure_directory)
         .as_posix()
     )
-    merged_folders = [
-        str(value)
-        for value in existing_folders
-        if str(value) != folder_relative
-    ]
-    merged_folders.append(folder_relative)
+    merged_folders = merge_exact_managed_path(
+        existing=[
+            str(value)
+            for value in existing_folders
+        ],
+        managed_path=folder_relative,
+        include=True,
+    )
 
     expected_adventure = (
         replace_json_array(
