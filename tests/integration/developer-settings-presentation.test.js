@@ -7,10 +7,22 @@ function read(path) {
 }
 
 describe("developer diagnostics presentation and packaging", () => {
-  test("branch packages set an explicit development-build manifest flag and production packages remove it", () => {
+  test("branch packages set the development-build flag in the active package namespace and production removes its canonical flag", () => {
     const source = read("tools/package-foundry.sh");
-    expect(source).toContain('.flags["bane-of-azeroth"].developmentBuild = true');
-    expect(source).toContain('del(.flags["bane-of-azeroth"].developmentBuild)');
+
+    expect(source).toContain(
+      '--arg activeModuleId "$MODULE_ID"',
+    );
+    expect(source).toContain(
+      ".flags[$activeModuleId].developmentBuild = true",
+    );
+    expect(source).toContain(
+      "($activeModuleId): {",
+    );
+
+    expect(source).toContain(
+      'del(.flags["bane-of-azeroth"].developmentBuild)',
+    );
   });
 
   test("provides a reusable Developer / Diagnostics settings surface", () => {
