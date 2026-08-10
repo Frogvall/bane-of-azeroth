@@ -6,6 +6,45 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+## [0.11.7] - 2026-08-10
+
+### Added
+- Added **Druid Forms** automation for Savage Incarnation, Feral Incarnation, Incarnation of Harmony, and Incarnation of the Stars.
+- Added configurable and persistent portrait/token artwork for Travel PL1–PL3, Bear, Cat, Tree, and Moonkin forms, including live Scene-token switching and exact Humanoid artwork restoration.
+- Added Druid form controls on character sheets plus the player-facing **Change Druid Form** and generic **End Effects** Macros in the blue **Bane of Azeroth** Macro folder.
+- Added granular Druid automation settings for movement, natural attacks, armor, spell restrictions, Moonkin spell costs, Cat SNEAKING boons, Moonkin spellcasting boons, Maul Marked, and form artwork.
+- Added development-only **Developer / Diagnostics** settings with opt-in Druid lifecycle tracing for branch packages.
+
+### Changed
+- Druid incarnation state now allows several Incarnations to remain active while one physical form is selected, including manual switching back to **Humanoid Form**.
+- Travel Form doubles Movement; Bear/Cat forms use generated natural attacks and suppress ordinary armor/helmets; Tree and Bear use their form armor; Bear/Cat/Travel enforce Word-only spellcasting according to their rules.
+- Moonkin Form now makes magic tricks free and reduces other spell WP costs by Incarnation of the Stars power level, while preserving Dragonbane's minimum normal spell cost.
+- Mage, Evoker, Moonkin, and Dragonbane 4.0.1 rank-0 spell-cost compatibility now share the same Bane of Azeroth spellcasting adapter.
+- Cat Form adds a default-selected SNEAKING boon, and Moonkin Form adds a default-selected boon to normal spellcasting rolls.
+- Maul can apply the **Marked** reminder status without automatically removing or replacing an existing Marked source.
+- Developer system-test Macros now use their own **Bane of Azeroth - System Tests** root folder so shipped player Macros can use the canonical **Bane of Azeroth** folder.
+- English Dragonbane Core Set **Great Helm** data is reconciled on a best-effort basis so **Firearms** appears in Details → Banes alongside the other ranged-weapon skills.
+
+### Fixed
+- Fixed Player/GM Scene-token convergence so Druid artwork waits for the intended token state rather than accepting a stale observed state.
+- Fixed Humanoid artwork restoration for active Scene tokens after rapid form switching, scene propagation, and effect ending.
+- Fixed Druid armor/helmet restoration races where Bane of Azeroth could block its own `worn: true` restore after rapid form changes.
+- Armor restoration now retains its baseline until the requested equipped state has actually landed.
+- Fixed generated Adventure folder ordering so Journal and player-Macro generators converge regardless of generator execution order.
+- Fixed Dragonbane 4.0.1 legacy magic-trick casting so Bear/Cat/Travel restrictions and Moonkin/Mage free-trick costs apply to the old direct sheet path.
+
+### Notes
+- Incarnation of Harmony **Rejuvenation** remains manually tracked: repeat the exact healing received on each of the target's next turns for a number of turns equal to Tree Form power level.
+- **Marked** remains a reminder status and is never automatically removed because several Druids or other sources may contribute it.
+- Great Helm + Firearms compatibility intentionally targets the supported English Core Set signature; Bane of Azeroth does not currently provide a Swedish localization layer.
+
+### Testing
+- Added focused unit/integration coverage for Druid lifecycle, artwork, active-token convergence, armor restoration, natural attacks, spell restrictions/costs, roll boons, Maul Marked, player convenience Macros, Macro folders, and Great Helm Firearms compatibility.
+- Expanded **BOA DEV – Verify Druid Forms** and real-Player coverage, including GM/Player form switching, active-token convergence, artwork restoration, Druid roll boons, Maul Marked, and managed-effect ending.
+- Verified Druid token/portrait restoration without lifecycle tracing enabled and separately verified GM-only, Player-only, and dual-client diagnostic tracing.
+- Manually verified player convenience Macros, Druid armor restoration, and Cat/Moonkin boons; Maul Marked was verified as both GM and Player.
+
+
 ## [0.11.6] - 2026-08-06
 
 ### Added

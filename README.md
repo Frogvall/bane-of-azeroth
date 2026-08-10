@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Active development / prerelease testing
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 0.11.7
+> **Current Foundry module version:** 0.11.8
 
 ## Project goals
 
@@ -78,6 +78,10 @@ Implemented content and automation include:
 - Optional per-world automation settings for Elemental Totems and Warlock demons
 - Imp Phase Shift and Sayaad Seductive defense banes
 - Voidwalker Suffering with rounded-up damage sharing, native Dragonbane damage cards, and corrected chat presentation
+- Heroic/class automation for Mage's Brilliance, Evoker's Legacy, War Stomp, Eye Beam, Monk's Serenity, Demon Hunter Initiation, Frostreaper, and Death Knight Runes
+- Druid incarnation/form automation with persistent configurable artwork, movement, natural attacks, armor, spell restrictions/costs, roll boons, Maul Marked, and managed Stretch/Shift lifecycle
+- Player convenience Macros for changing active Druid form and opening the shared End Effects dialog
+- Best-effort English Core Set compatibility that extends Great Helm's ranged-attack Banes to the Bane of Azeroth Firearms skill
 Generated content uses stable Foundry document identifiers and is checked against its structured source during development and packaging.
 
 ## Compatibility
