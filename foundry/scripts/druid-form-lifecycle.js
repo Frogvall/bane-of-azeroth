@@ -1100,6 +1100,381 @@ export function captureDruidFormLifecycleConvergence(
   };
 }
 
+// BOA 0.11.7 intended Druid lifecycle convergence.
+const LIFECYCLE_ARTWORK_BASELINE_FLAG =
+  "druidFormArtworkBaseline";
+const LIFECYCLE_TOKEN_ARTWORK_BASELINE_FLAG =
+  "druidFormTokenArtworkBaseline";
+
+function lifecycleClone(
+  value,
+) {
+  if (
+    value ===
+      undefined
+  ) {
+    return undefined;
+  }
+
+  if (
+    typeof structuredClone ===
+      "function"
+  ) {
+    return structuredClone(
+      value,
+    );
+  }
+
+  return JSON.parse(
+    JSON.stringify(
+      value,
+    ),
+  );
+}
+
+function lifecycleDocumentFlag(
+  document,
+  key,
+) {
+  if (
+    typeof document
+      ?.getFlag ===
+      "function"
+  ) {
+    return (
+      document.getFlag(
+        MODULE_ID,
+        key,
+      ) ??
+      null
+    );
+  }
+
+  return (
+    document?.flags?.[
+      MODULE_ID
+    ]?.[
+      key
+    ] ??
+    null
+  );
+}
+
+function lifecycleActorBaselineToken(
+  baseline,
+  sceneId,
+  tokenId,
+) {
+  return (
+    baseline
+      ?.tokens?.[
+        sceneId
+      ]?.[
+        tokenId
+      ] ??
+    null
+  );
+}
+
+export function captureDruidFormLifecycleIntentSeed(
+  actor,
+  {
+    scenes =
+      globalThis.game?.scenes,
+  } = {},
+) {
+  if (!actor) {
+    return null;
+  }
+
+  const actorArtworkBaseline =
+    lifecycleClone(
+      lifecycleDocumentFlag(
+        actor,
+        LIFECYCLE_ARTWORK_BASELINE_FLAG,
+      ),
+    );
+  const tokens =
+    [];
+
+  for (
+    const snapshot
+    of lifecycleSceneTokenSnapshots(
+      actor,
+      scenes,
+    )
+  ) {
+    const token =
+      findLifecycleSceneToken(
+        snapshot.sceneId,
+        snapshot.tokenId,
+        scenes,
+      );
+
+    tokens.push({
+      ...snapshot,
+      tokenArtworkBaseline:
+        lifecycleClone(
+          lifecycleDocumentFlag(
+            token,
+            LIFECYCLE_TOKEN_ARTWORK_BASELINE_FLAG,
+          ),
+        ),
+    });
+  }
+
+  return {
+    actorId:
+      actor.id ??
+      null,
+    actorImg:
+      actor.img ??
+      null,
+    prototypeTokenSrc:
+      actor.prototypeToken
+        ?.texture
+        ?.src ??
+      null,
+    actorArtworkBaseline,
+    tokens,
+  };
+}
+
+function lifecycleTokenSeedMap(
+  before,
+  actor,
+  scenes,
+) {
+  const seeds =
+    new Map();
+
+  for (
+    const token
+    of before?.tokens ??
+    []
+  ) {
+    if (
+      !token?.sceneId ||
+      !token?.tokenId
+    ) {
+      continue;
+    }
+
+    const key =
+      token.key ??
+      `${token.sceneId}.${token.tokenId}`;
+
+    seeds.set(
+      key,
+      {
+        ...token,
+        key,
+      },
+    );
+  }
+
+  for (
+    const snapshot
+    of lifecycleSceneTokenSnapshots(
+      actor,
+      scenes,
+    )
+  ) {
+    const key =
+      snapshot.key ??
+      `${snapshot.sceneId}.${snapshot.tokenId}`;
+
+    if (
+      !seeds.has(
+        key,
+      )
+    ) {
+      seeds.set(
+        key,
+        {
+          ...snapshot,
+          key,
+          tokenArtworkBaseline:
+            null,
+        },
+      );
+    }
+  }
+
+  return seeds;
+}
+
+export function buildDruidFormLifecycleConvergenceTarget(
+  actor,
+  result,
+  {
+    before =
+      null,
+    scenes =
+      globalThis.game?.scenes,
+  } = {},
+) {
+  if (!actor) {
+    return null;
+  }
+
+  const intendedState =
+    lifecycleClone(
+      result?.state ??
+      getDruidFormState(
+        actor,
+      ),
+    );
+  const intendedForm =
+    result?.currentForm ??
+    intendedState
+      ?.currentForm ??
+    getDruidFormState(
+      actor,
+    ).currentForm;
+  const returningHumanoid =
+    intendedForm ===
+      "humanoid";
+  const beforeActorBaseline =
+    before
+      ?.actorArtworkBaseline ??
+    null;
+  const afterActorBaseline =
+    lifecycleDocumentFlag(
+      actor,
+      LIFECYCLE_ARTWORK_BASELINE_FLAG,
+    );
+  const actorImg =
+    returningHumanoid
+      ? (
+          beforeActorBaseline
+            ?.actor
+            ?.original ??
+          actor.img ??
+          before?.actorImg ??
+          null
+        )
+      : (
+          afterActorBaseline
+            ?.actor
+            ?.applied ??
+          actor.img ??
+          null
+        );
+  const prototypeTokenSrc =
+    returningHumanoid
+      ? (
+          beforeActorBaseline
+            ?.prototypeToken
+            ?.original ??
+          actor.prototypeToken
+            ?.texture
+            ?.src ??
+          before
+            ?.prototypeTokenSrc ??
+          null
+        )
+      : (
+          afterActorBaseline
+            ?.prototypeToken
+            ?.applied ??
+          actor.prototypeToken
+            ?.texture
+            ?.src ??
+          null
+        );
+  const tokenSeeds =
+    lifecycleTokenSeedMap(
+      before,
+      actor,
+      scenes,
+    );
+  const tokens =
+    [];
+
+  for (
+    const [
+      key,
+      seed,
+    ]
+    of tokenSeeds
+  ) {
+    const currentToken =
+      findLifecycleSceneToken(
+        seed.sceneId,
+        seed.tokenId,
+        scenes,
+      );
+    const currentTokenBaseline =
+      lifecycleDocumentFlag(
+        currentToken,
+        LIFECYCLE_TOKEN_ARTWORK_BASELINE_FLAG,
+      );
+    const beforeActorToken =
+      lifecycleActorBaselineToken(
+        beforeActorBaseline,
+        seed.sceneId,
+        seed.tokenId,
+      );
+    const afterActorToken =
+      lifecycleActorBaselineToken(
+        afterActorBaseline,
+        seed.sceneId,
+        seed.tokenId,
+      );
+    let src =
+      null;
+
+    if (
+      returningHumanoid
+    ) {
+      src =
+        seed
+          ?.tokenArtworkBaseline
+          ?.original ??
+        beforeActorToken
+          ?.original ??
+        seed?.src ??
+        currentToken
+          ?.texture
+          ?.src ??
+        prototypeTokenSrc;
+    } else {
+      src =
+        afterActorToken
+          ?.applied ??
+        currentTokenBaseline
+          ?.applied ??
+        prototypeTokenSrc ??
+        currentToken
+          ?.texture
+          ?.src ??
+        seed?.src ??
+        null;
+    }
+
+    tokens.push({
+      key,
+      sceneId:
+        seed.sceneId,
+      tokenId:
+        seed.tokenId,
+      src,
+    });
+  }
+
+  return {
+    actorId:
+      actor.id ??
+      null,
+    state:
+      intendedState,
+    actorImg,
+    prototypeTokenSrc,
+    tokens,
+  };
+}
+
 function lifecycleStateMatches(
   actual,
   expected,
@@ -1329,6 +1704,8 @@ export async function waitForDruidFormLifecycleConvergence(
       REQUEST_TIMEOUT_MS,
     intervalMs =
       25,
+    stableMatches =
+      2,
     nowFn =
       () => Date.now(),
     sleepFn =
@@ -1347,14 +1724,25 @@ export async function waitForDruidFormLifecycleConvergence(
       matches: true,
       skipped: true,
       tokenChecks: [],
+      stableMatches: 0,
     };
   }
 
+  const requiredStableMatches =
+    Math.max(
+      1,
+      Number(
+        stableMatches,
+      ) ||
+        1,
+    );
   const deadline =
     nowFn() +
     timeoutMs;
   let diagnostic =
     null;
+  let consecutiveMatches =
+    0;
 
   do {
     diagnostic =
@@ -1370,7 +1758,22 @@ export async function waitForDruidFormLifecycleConvergence(
     if (
       diagnostic.matches
     ) {
-      return diagnostic;
+      consecutiveMatches +=
+        1;
+
+      if (
+        consecutiveMatches >=
+          requiredStableMatches
+      ) {
+        return {
+          ...diagnostic,
+          stableMatches:
+            consecutiveMatches,
+        };
+      }
+    } else {
+      consecutiveMatches =
+        0;
     }
 
     await sleepFn(
@@ -1383,9 +1786,12 @@ export async function waitForDruidFormLifecycleConvergence(
 
   throw new Error(
     "The Druid form lifecycle update did not converge on the requesting client. "
-    + JSON.stringify(
-      diagnostic,
-    ),
+    + JSON.stringify({
+      ...diagnostic,
+      stableMatches:
+        consecutiveMatches,
+      requiredStableMatches,
+    }),
   );
 }
 
@@ -2471,6 +2877,16 @@ async function handleRequest(
       },
     );
 
+    const requestActor =
+      collectionGet(
+        globalThis.game?.actors,
+        payload.actorId,
+      );
+    const intentSeed =
+      captureDruidFormLifecycleIntentSeed(
+        requestActor,
+      );
+
     const result =
       await executeDruidFormLifecycleRequest(
         payload,
@@ -2497,8 +2913,13 @@ async function handleRequest(
           payload?.actorId,
       );
     const convergence =
-      captureDruidFormLifecycleConvergence(
+      buildDruidFormLifecycleConvergenceTarget(
         actor,
+        result,
+        {
+          before:
+            intentSeed,
+        },
       );
 
     druidTrace(
