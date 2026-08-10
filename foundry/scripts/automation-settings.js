@@ -21,6 +21,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   DRUID_MOONKIN_SPELLCASTING_BOON: "druidMoonkinSpellcastingBoonAutomation",
   DRUID_MAUL_MARKED: "druidMaulMarkedAutomation",
   DRUID_FORM_ARTWORK: "druidFormArtworkAutomation",
+  SHADOWFORM_VISUAL: "shadowformVisualAutomation",
 });
 
 const {
@@ -429,6 +430,43 @@ export function isDruidFormArtworkAutomationEnabled(
   );
 }
 
+function reconcileShadowformVisualsOnChange() {
+  queueMicrotask(() => {
+    const reconcile =
+      globalThis.game?.modules
+        ?.get?.(MODULE_ID)
+        ?.api
+        ?.reconcileShadowformVisuals;
+
+    if (
+      typeof reconcile !==
+        "function"
+    ) {
+      return;
+    }
+
+    void Promise.resolve(
+      reconcile(),
+    ).catch(
+      error => {
+        console.error(
+          `${MODULE_ID} | Failed to reconcile Shadowform visuals.`,
+          error,
+        );
+      },
+    );
+  });
+}
+
+export function isShadowformVisualAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.SHADOWFORM_VISUAL,
+    settings,
+  );
+}
+
 export class AutomationSettingsForm
   extends BaseAutomationSettingsApplication {
   static DEFAULT_OPTIONS = {
@@ -549,6 +587,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.druidFormArtworkName",
       "BOA.settings.automation.druidFormArtworkHint",
     ),
+    shadowformVisualAutomation: booleanField(
+      "BOA.settings.automation.shadowformVisualName",
+      "BOA.settings.automation.shadowformVisualHint",
+    ),
   });
 
   static get schema() {
@@ -602,6 +644,8 @@ export class AutomationSettingsForm
           isDruidMaulMarkedAutomationEnabled(),
         druidFormArtworkAutomation:
           isDruidFormArtworkAutomationEnabled(),
+        shadowformVisualAutomation:
+          isShadowformVisualAutomationEnabled(),
       },
       buttons: [
         {
@@ -781,6 +825,15 @@ export class AutomationSettingsForm
         Boolean(
           values[
             AUTOMATION_SETTING_KEYS.DRUID_FORM_ARTWORK
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.SHADOWFORM_VISUAL,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.SHADOWFORM_VISUAL
           ],
         ),
       ),
@@ -994,6 +1047,18 @@ export function registerAutomationSettings(
         "BOA.settings.automation.druidFormArtworkHint",
       ),
       onChange: restoreDruidArtworkOnChange,
+    },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.SHADOWFORM_VISUAL,
+    {
+      ...settingDefinition(
+        "BOA.settings.automation.shadowformVisualName",
+        "BOA.settings.automation.shadowformVisualHint",
+      ),
+      onChange:
+        reconcileShadowformVisualsOnChange,
     },
   );
   if (settings.registerMenu) {

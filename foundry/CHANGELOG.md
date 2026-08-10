@@ -6,6 +6,11 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Added
+- Added **Shadowform Visuals** automation, enabled by default, using a static dark-violet treatment on active Scene tokens and the character-sheet portrait without replacing any images.
+- Shadowform visual state follows successful casts, reconciles newly drawn tokens and active-scene changes, appears in the existing **End Effects** workflow, and expires on Stretch/Shift lifecycle boundaries.
+
+
 ## [0.11.7] - 2026-08-10
 
 ### Added

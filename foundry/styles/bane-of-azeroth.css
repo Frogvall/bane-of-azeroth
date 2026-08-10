@@ -281,3 +281,19 @@ a.boa-death-knight-rune-slot:focus {
   margin: 0;
   white-space: nowrap;
 }
+
+/*
+ * Shadowform is intentionally static: no animation, image replacement,
+ * or persisted token/portrait presentation changes.
+ */
+.boa-shadowform-active img.profile-img,
+.boa-shadowform-active img[data-edit="img"] {
+  filter:
+    grayscale(0.72)
+    brightness(0.48)
+    sepia(0.28)
+    hue-rotate(224deg)
+    saturate(1.85);
+  opacity: 0.9;
+  box-shadow: 0 0 0.65rem rgb(96 56 145 / 55%);
+}

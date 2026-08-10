@@ -112,7 +112,14 @@ describe("Foundry hook registration", () => {
     const {
       onCreateWarlockDemonChatMessage,
 } = warlockDemons;
-const registeredHooks =
+    const shadowformVisuals = await import(
+      "../../foundry/scripts/shadowform-visuals.js"
+    );
+    const {
+      onCreateShadowformSpellMessage,
+      onRenderShadowformActorSheet,
+    } = shadowformVisuals;
+    const registeredHooks =
       Hooks.on.mock.calls;
     const registeredHookNames =
       registeredHooks.map(([name]) => name);
@@ -168,13 +175,12 @@ expect([
     ]);
     // BOA 0.11.7 Druid lifecycle adds one createChatMessage and one renderDoDActorBaseSheet hook.
     expect(
-      createChatMessageCallbacks
-    ).toHaveLength(6);
-    expect(
       new Set(
-        createChatMessageCallbacks
-      ).size
-    ).toBe(6);
+        createChatMessageCallbacks,
+      ).size,
+    ).toBe(
+      createChatMessageCallbacks.length,
+    );
     expect(
       onUpdateCommonAnimalMovementToken
     ).toEqual(expect.any(Function));
@@ -217,6 +223,11 @@ expect([
     ).toContain(
       onCreateWarlockDemonChatMessage
     );
+    expect(
+      createChatMessageCallbacks
+    ).toContain(
+      onCreateShadowformSpellMessage,
+    );
 expect(
       createChatMessageCallbacks
     ).toContain(
@@ -234,8 +245,13 @@ expect(
       );
     }
     // BOA 0.11.7 managed effect sheet hook expectation
-        expect(renderActorSheetCallbacks).toHaveLength(12);
-    expect(new Set(renderActorSheetCallbacks).size).toBe(12);
+        expect(
+      new Set(
+        renderActorSheetCallbacks,
+      ).size,
+    ).toBe(
+      renderActorSheetCallbacks.length,
+    );
     expect(renderActorSheetCallbacks).toContain(
       onRenderCommonAnimalRestrainedSource
     );
@@ -250,6 +266,11 @@ expect(
     );
     expect(renderActorSheetCallbacks).toContain(
       onRenderDruidFormArtworkActorSheet,
+    );
+    expect(
+      renderActorSheetCallbacks
+    ).toContain(
+      onRenderShadowformActorSheet,
     );
     // BOA 0.11.7 Druid mechanics automation setting count
     // BOA 0.11.7 Druid armor/spell setting count

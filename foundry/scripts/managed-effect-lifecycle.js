@@ -1,4 +1,8 @@
 import { MODULE_ID } from "./core/constants.js";
+import {
+  endShadowform,
+  isShadowformActive,
+} from "./shadowform-visuals.js";
 import { deleteSummonsExpiredByRest } from "./core/summon-duration-lifecycle.js";
 import { getPrimaryActiveGMUser, isPrimaryActiveGM } from "./core/users.js";
 import { getDruidFormState } from "./druid-forms.js";
@@ -69,6 +73,15 @@ export function getManagedEffectsForActor(
 ) {
   if (!actor) return [];
   const effects = [];
+  if (isShadowformActive(actor)) {
+    effects.push({
+      id: "shadowform",
+      type: "shadowform",
+      key: "shadowform",
+      label: "Shadowform",
+      duration: "stretch",
+    });
+  }
   const state = getDruidFormState(actor);
 
   for (const [key, activation] of Object.entries(state?.activations ?? {})) {
@@ -129,6 +142,9 @@ export async function endManagedEffectNow(
   if (effect.type === "druid") {
     return endDruidIncarnation(actor, effect.key, { bypassAuthority: true });
   }
+  if (effect.type === "shadowform") {
+    return endShadowform(actor);
+  }
 
   const scene = collectionGet(scenes, effect.sceneId);
   const token = collectionGet(scene?.tokens, effect.tokenId);
@@ -147,6 +163,9 @@ export async function endAllManagedEffectsNow(
   { scenes = globalThis.game?.scenes } = {},
 ) {
   const before = getManagedEffectsForActor(actor, { scenes });
+  if (isShadowformActive(actor)) {
+    await endShadowform(actor);
+  }
   const state = getDruidFormState(actor);
 
   if (Object.values(state?.activations ?? {}).some(a => a?.active === true)) {

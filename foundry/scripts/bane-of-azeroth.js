@@ -236,6 +236,20 @@ import {
   onCreateGreatHelmFirearmsItem,
   reconcileGreatHelmFirearms,
 } from "./great-helm-firearms.js";
+import {
+  activateShadowform,
+  endShadowform,
+  getShadowformState,
+  isShadowformActive,
+  onCreateShadowformSpellMessage,
+  onDrawShadowformToken,
+  onRenderShadowformActorSheet,
+  onUpdateShadowformActor,
+  patchShadowformRestLifecycle,
+  reconcileShadowformCanvas,
+  reconcileShadowformVisuals,
+} from "./shadowform-visuals.js";
+
 Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
@@ -246,6 +260,7 @@ Hooks.once("init", () => {
 
   Hooks.on("drawToken", drawElementalTotemAura);
   Hooks.on("drawToken", drawFrostreaperAura);
+  Hooks.on("drawToken", onDrawShadowformToken);
   Hooks.on("updateToken", onUpdateElementalTotemAura);
   Hooks.on("updateToken", onUpdateFrostreaperToken);
   Hooks.on(
@@ -259,6 +274,7 @@ Hooks.once("init", () => {
   );
   Hooks.on("canvasReady", drawAllElementalTotemAuras);
   Hooks.on("canvasReady", drawAllFrostreaperAuras);
+  Hooks.on("canvasReady", reconcileShadowformCanvas);
 
   registerSettings();
 
@@ -346,6 +362,12 @@ Hooks.once("init", () => {
       isDruidFormWeaponUseAllowed,
       getBoASpellCost,
       canBoACastSpell,
+      getShadowformState,
+      isShadowformActive,
+      activateShadowform,
+      endShadowform,
+      reconcileShadowformCanvas,
+      reconcileShadowformVisuals,
 };
   }
 
@@ -446,6 +468,10 @@ Hooks.on(
     "createChatMessage",
     onCreateDruidFormSpellMessage,
   );
+  Hooks.on(
+    "createChatMessage",
+    onCreateShadowformSpellMessage,
+  );
   Hooks.on("updateChatMessage", onUpdateElementalTotemChatMessage);
   Hooks.on(
     "updateChatMessage",
@@ -496,6 +522,10 @@ Hooks.on(
   Hooks.on(
     "renderDoDActorBaseSheet",
     onRenderManagedEffectLifecycleActorSheet,
+  );
+  Hooks.on(
+    "renderDoDActorBaseSheet",
+    onRenderShadowformActorSheet,
   );
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
   Hooks.on("preUpdateItem", onPreUpdateDruidFormArmorItem);
@@ -589,6 +619,7 @@ Hooks.once("ready", async () => {
     "updateActor",
     onUpdateDruidFormMechanicsActor,
   );
+  Hooks.on("updateActor", onUpdateShadowformActor);
   try {
     await patchDruidFormWeaponUsage();
     patchDruidMoonkinSpellCost();
@@ -609,6 +640,8 @@ Hooks.once("ready", async () => {
   applyDeveloperSettings();
   registerManagedEffectLifecycleSocket();
   patchDruidFormRestLifecycle();
+  patchShadowformRestLifecycle();
+  reconcileShadowformVisuals();
   registerVoidwalkerSufferingSocket();
   registerVoidwalkerSufferingDamageCardHook();
   registerCommonAnimalStatusSocket();

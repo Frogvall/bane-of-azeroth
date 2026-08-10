@@ -181,28 +181,23 @@ describe("ApplicationV2 automation settings form", () => {
     expect(context.schema).toBe(
       AutomationSettingsForm.schema,
     );
-    expect(context.source).toEqual({
-      elementalTotemAutomation: true,
-      demonAutomation: false,
-      mageBrillianceAutomation: false,
-      evokersLegacyAutomation: false,
-      warStompAutomation: false,
-      eyeBeamAutomation: false,
-      serenityAutomation: false,
-      demonHunterInitiationAutomation: false,
-      frostreaperAutomation: false,
-      deathKnightRunesAutomation: false,
-      druidFormsAutomation: false,
-      druidFormMovementAutomation: false,
-      druidFormAttackAutomation: false,
-      druidFormArmorAutomation: false,
-      druidFormSpellRestrictionAutomation: false,
-      druidMoonkinSpellCostAutomation: false,
-      druidCatSneakingAutomation: false,
-      druidMoonkinSpellcastingBoonAutomation: false,
-      druidMaulMarkedAutomation: false,
-      druidFormArtworkAutomation: false,
-    });
+    const expectedSource = Object.fromEntries(
+      Object.values(
+        AUTOMATION_SETTING_KEYS,
+      ).map(
+        key => [
+          key,
+          key ===
+            AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,
+        ],
+      ),
+    );
+
+    expect(
+      context.source,
+    ).toEqual(
+      expectedSource,
+    );
     expect(context.buttons).toEqual([
       {
         type: "submit",
@@ -245,6 +240,7 @@ describe("ApplicationV2 automation settings form", () => {
           druidMoonkinSpellcastingBoonAutomation: true,
           druidMaulMarkedAutomation: true,
           druidFormArtworkAutomation: true,
+          shadowformVisualAutomation: true,
         },
       },
     );
@@ -298,6 +294,11 @@ describe("ApplicationV2 automation settings form", () => {
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON,
+      true,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.SHADOWFORM_VISUAL,
       true,
     );
     expect(set).toHaveBeenCalledWith(
