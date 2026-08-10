@@ -1,10 +1,90 @@
 {
   "schemaVersion": 1,
   "references": {
+    "dragonbane-core:heroic-ability.dual-wield": {
+      "source": "dragonbane-core",
+      "uuid": "Item.JrQqkQrSOFJzR7H9",
+      "documentType": "Item"
+    },
+    "dragonbane-core:heroic-ability.iron-fist": {
+      "source": "dragonbane-core",
+      "uuid": "Item.O7p7ZWnZNgxP8PFw",
+      "documentType": "Item"
+    },
+    "dragonbane-core:heroic-ability.twin-shot": {
+      "source": "dragonbane-core",
+      "uuid": "Item.J6l8QwCJhBirvg03",
+      "documentType": "Item"
+    },
     "dragonbane-core:journal-page.combat-damage.poison": {
       "source": "dragonbane-core",
       "uuid": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
       "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:journal-page.common-animals": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:kin-ability.fast-healer": {
+      "source": "dragonbane-core",
+      "uuid": "Item.SY62xmX9uBVml786",
+      "documentType": "Item"
+    },
+    "dragonbane-core:kin-ability.hard-to-catch": {
+      "source": "dragonbane-core",
+      "uuid": "Item.GiE0TwixaYnxFT6i",
+      "documentType": "Item"
+    },
+    "dragonbane-core:rule.dash": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#movement",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:rule.death": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.CJjqkHzpow39ViUi#death",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:rule.falling": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:rule.find-weak-spot": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KAxnhLbO8N7kcvMl#special-attacks",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:rule.magic-tricks": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.cvFSLoFtdJOQcxtU#magic-tricks",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:rule.power-from-the-body": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.C0stUmhj95JFgL4f#power-level",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:rule.pushing-your-roll": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.V4R4dCuKSK2mi8RF.JournalEntryPage.eIQgHhYPUczg7kbZ#pushing-your-roll",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:rule.resist-cold": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#cold",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:rule.sneak-attack": {
+      "source": "dragonbane-core",
+      "uuid": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#sneak-attack",
+      "documentType": "JournalEntryPage"
+    },
+    "dragonbane-core:spell.sense-magic": {
+      "source": "dragonbane-core",
+      "uuid": "Item.RPnxXYVb8z7EG5Wl",
+      "documentType": "Item"
     }
   }
 }

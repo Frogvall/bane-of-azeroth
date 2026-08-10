@@ -6,6 +6,12 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Changed
+- External Dragonbane/Core references used by canonical content now resolve through `external-references.json` instead of duplicated UUID literals in Heroic Class Ability, Kin, Journal, and Mage runtime source.
+- Heroic Class Ability and Kin generation now resolve external `@Ref[...]` through the shared reference infrastructure.
+- Mage's Brilliance now gets the Sense Magic UUID from the generated external-reference runtime registry.
+- Reference inventory generation now rejects registered external UUIDs that leak back into authoritative source roots.
+
 ## [0.12.0] - 2026-08-10
 ### Fixed
 - Development now remains authoritative if both production and development packages are enabled: production becomes inert before registering BoA runtime behavior, while Development continues and emits a clear warning.

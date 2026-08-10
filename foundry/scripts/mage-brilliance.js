@@ -11,10 +11,15 @@ import {
   patchBoASpellCost,
   registerBoASpellCostPolicy,
 } from "./spellcasting.js";
+import {
+  externalReferenceUuid,
+} from "../generated/external-references.js";
 export const MAGES_BRILLIANCE_CONTENT_KEY =
   "heroic-class-ability.mage.mages-brilliance";
 export const SENSE_MAGIC_UUID =
-  "Item.RPnxXYVb8z7EG5Wl";
+  externalReferenceUuid(
+    "dragonbane-core:spell.sense-magic",
+  );
 
 const SPELL_COST_PATCH =
   Symbol.for(

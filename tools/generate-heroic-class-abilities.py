@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import importlib.util
 import json
 import re
 import sys
@@ -205,6 +206,41 @@ def paragraphs_to_html(paragraphs: Sequence[str]) -> str:
     )
 
 
+
+def load_reference_helpers(
+    repo_root: Path,
+):
+    path = (
+        repo_root
+        / "tools"
+        / "boa-references.py"
+    )
+
+    spec = importlib.util.spec_from_file_location(
+        "boa_references",
+        path,
+    )
+
+    if (
+        spec is None
+        or spec.loader is None
+    ):
+        raise GenerationError(
+            f"Could not load reference helpers from {path}."
+        )
+
+    module = importlib.util.module_from_spec(
+        spec
+    )
+    sys.modules[
+        spec.name
+    ] = module
+    spec.loader.exec_module(
+        module
+    )
+
+    return module
+
 def load_spell_references(
     path: Path,
 ) -> dict[str, dict[str, str]]:
@@ -270,6 +306,8 @@ def resolve_spell_references(
     ) -> str:
         key = match.group("key")
         label = match.group("label")
+        if not key.startswith("boa:item.spells."):
+            return match.group(0)
         reference = references.get(key)
 
         if reference is None:
@@ -288,9 +326,9 @@ def resolve_spell_references(
         content,
     )
 
-    if "@Ref[" in rendered:
+    if "@Ref[boa:item.spells." in rendered:
         raise GenerationError(
-            "Unresolved symbolic reference remains "
+            "Unresolved internal Spell reference remains "
             "in Heroic Class Ability description."
         )
 
@@ -303,19 +341,17 @@ def resolve_granted_spell_description(
     references: dict[str, dict[str, str]],
 ) -> str:
     grants_spell = ability.get("grantsSpell")
-    matches = list(
-        REF_PATTERN.finditer(
+    matches = [
+        match
+        for match in REF_PATTERN.finditer(
             description_html
         )
-    )
+        if match.group("key").startswith(
+            "boa:item.spells."
+        )
+    ]
 
     if grants_spell is None:
-        if matches:
-            raise GenerationError(
-                f"ability {ability.get('name')!r} "
-                "contains a Spell reference but "
-                "does not define grantsSpell."
-            )
         return description_html
 
     spell_key = require_string(
@@ -430,6 +466,8 @@ def build_ability_document(
         dict[str, str],
     ],
     sort: int,
+    external_references: dict[str, Any],
+    reference_helpers: Any,
 ) -> dict[str, Any]:
     class_key = require_string(class_entry.get("key"), "class.key")
     ability_key = require_string(
@@ -481,6 +519,15 @@ def build_ability_document(
             spell_references,
         )
     )
+    try:
+        description_html = (
+            reference_helpers.resolve_external_symbolic_references(
+                description_html,
+                external_references,
+            )
+        )
+    except reference_helpers.ReferenceError as error:
+        raise GenerationError(str(error)) from error
 
     image = require_string(
         ability.get("image", default_image),
@@ -914,6 +961,15 @@ def main() -> int:
         spell_references = load_spell_references(
             args.spells_content
         )
+        repo_root = Path(__file__).resolve().parents[1]
+        reference_helpers = load_reference_helpers(
+            repo_root
+        )
+        external_references = (
+            reference_helpers.load_external_reference_targets(
+                repo_root
+            )
+        )
 
         adventure_file = find_single_file(
             args.pack_root,
@@ -967,6 +1023,8 @@ def main() -> int:
                     ability_image,
                     spell_references,
                     (ability_index + 1) * 100000,
+                    external_references=external_references,
+                    reference_helpers=reference_helpers,
                 )
                 ability_path = class_dir / document_filename(
                     ability_document["name"],

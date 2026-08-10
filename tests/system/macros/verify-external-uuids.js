@@ -197,7 +197,7 @@ boaCheckEqual(
   checks,
   "All registered external UUIDs were checked",
   Object.keys(references).length,
-  1,
+  17,
 );
 
 return boaFinish(

@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import importlib.util
 import json
 import re
 import sys
@@ -169,6 +170,41 @@ def paragraphs_to_html(paragraphs: Sequence[str]) -> str:
     )
 
 
+
+def load_reference_helpers(
+    repo_root: Path,
+):
+    path = (
+        repo_root
+        / "tools"
+        / "boa-references.py"
+    )
+
+    spec = importlib.util.spec_from_file_location(
+        "boa_references",
+        path,
+    )
+
+    if (
+        spec is None
+        or spec.loader is None
+    ):
+        raise GenerationError(
+            f"Could not load reference helpers from {path}."
+        )
+
+    module = importlib.util.module_from_spec(
+        spec
+    )
+    sys.modules[
+        spec.name
+    ] = module
+    spec.loader.exec_module(
+        module
+    )
+
+    return module
+
 def safe_filename(name: str, document_id: str) -> str:
     stem = re.sub(r"[^A-Za-z0-9]+", "_", name).strip("_")
 
@@ -206,6 +242,8 @@ def build_kin_document(
     folder_id: str,
     default_image: str,
     sort: int,
+    external_references: dict[str, Any],
+    reference_helpers: Any,
 ) -> dict[str, Any]:
     key = require_string(kin.get("key"), "kin.key")
     document_id = require_id(kin.get("id"), f"kin {key!r}.id")
@@ -250,7 +288,10 @@ def build_kin_document(
         "_id": document_id,
         "img": image,
         "system": {
-            "itemDescription": paragraphs_to_html(paragraphs),
+            "itemDescription": reference_helpers.resolve_external_symbolic_references(
+                paragraphs_to_html(paragraphs),
+                external_references,
+            ),
             "gmDescription": "",
             "abilities": ", ".join(ability_names),
             "movement": movement,
@@ -269,6 +310,8 @@ def build_ability_document(
     folder_id: str,
     default_image: str,
     sort: int,
+    external_references: dict[str, Any],
+    reference_helpers: Any,
 ) -> dict[str, Any]:
     key = require_string(ability.get("key"), f"ability for {kin_name}.key")
     document_id = require_id(
@@ -301,7 +344,10 @@ def build_ability_document(
         "_id": document_id,
         "img": image,
         "system": {
-            "itemDescription": paragraphs_to_html(paragraphs),
+            "itemDescription": reference_helpers.resolve_external_symbolic_references(
+                paragraphs_to_html(paragraphs),
+                external_references,
+            ),
             "gmDescription": "",
             "abilityType": "",
             "requirement": requirement,
@@ -554,6 +600,15 @@ def main() -> int:
     try:
         content = load_json(args.content)
         kin_entries, kin_image, ability_image = validate_content(content)
+        repo_root = Path(__file__).resolve().parents[1]
+        reference_helpers = load_reference_helpers(
+            repo_root
+        )
+        external_references = (
+            reference_helpers.load_external_reference_targets(
+                repo_root
+            )
+        )
 
         adventure_file = find_single_file(args.pack_root, "_Adventure.json")
         adventure_dir = adventure_file.parent
@@ -576,6 +631,8 @@ def main() -> int:
                 kin_folder_id,
                 kin_image,
                 (kin_index + 1) * 100000,
+                external_references=external_references,
+                reference_helpers=reference_helpers,
             )
             kin_path = kin_dir / safe_filename(
                 kin_document["name"],
@@ -594,6 +651,8 @@ def main() -> int:
                     ability_folder_id,
                     ability_image,
                     (len(ability_paths) + 1) * 100000,
+                    external_references=external_references,
+                    reference_helpers=reference_helpers,
                 )
                 ability_path = ability_dir / safe_filename(
                     ability_document["name"],

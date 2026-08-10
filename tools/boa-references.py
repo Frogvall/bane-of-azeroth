@@ -298,6 +298,19 @@ def resolve_symbolic_references(
     )
 
 
+
+def resolve_external_symbolic_references(
+    text: str,
+    external_references: Mapping[str, ReferenceTarget],
+) -> str:
+    # Resolve @Ref entries using only the validated external registry.
+    return resolve_symbolic_references(
+        text,
+        internal_references={},
+        external_references=external_references,
+    )
+
+
 def load_external_reference_targets(
     repo_root: Path,
 ) -> dict[str, ReferenceTarget]:

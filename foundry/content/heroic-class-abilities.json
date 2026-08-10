@@ -42,7 +42,7 @@
           "requirement": "Death Knight's Rebirth",
           "wp": "2",
           "description": [
-            "By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you has its movement rate halved, and if it ends its turn within the aura, it must roll BUSHCRAFT to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#cold]{resist cold}."
+            "By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you has its movement rate halved, and if it ends its turn within the aura, it must roll BUSHCRAFT to @Ref[dragonbane-core:rule.resist-cold]{resist cold}."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp"
         },
@@ -212,7 +212,7 @@
           "requirement": "Evoker's Legacy",
           "wp": "1",
           "description": [
-            "You can activate this ability on your turn to make the @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#movement]{dash} action a free action during that turn."
+            "You can activate this ability on your turn to make the @Ref[dragonbane-core:rule.dash]{dash} action a free action during that turn."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp"
         }
@@ -242,7 +242,7 @@
           "requirement": "Hunter's Instincts",
           "wp": "3",
           "description": [
-            "A strike with a two-handed ranged weapon inflicts D8 additional points of damage, but you cannot move in the same round. You can activate this ability after the roll to hit, but not if you moved. This can be combined with @UUID[Item.J6l8QwCJhBirvg03]{Twin Shot}."
+            "A strike with a two-handed ranged weapon inflicts D8 additional points of damage, but you cannot move in the same round. You can activate this ability after the roll to hit, but not if you moved. This can be combined with @Ref[dragonbane-core:heroic-ability.twin-shot]{Twin Shot}."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp"
         },
@@ -284,10 +284,10 @@
           "requirement": "One School of Magic",
           "wp": "",
           "description": [
-            "You know the @UUID[Item.RPnxXYVb8z7EG5Wl]{Sense Magic} magic trick and can cast it without spending WP. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling."
+            "You know the @Ref[dragonbane-core:spell.sense-magic]{Sense Magic} magic trick and can cast it without spending WP. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling."
           ],
-          "grantsSpellUuid": "Item.RPnxXYVb8z7EG5Wl",
-          "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp"
+          "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
+          "grantsExternalSpell": "dragonbane-core:spell.sense-magic"
         },
         {
           "key": "ice-block",
@@ -337,7 +337,7 @@
           "requirement": "Brawling 12",
           "wp": "",
           "description": [
-            "The damage of your unarmed attacks increases to D10. If you use @UUID[Item.O7p7ZWnZNgxP8PFw]{Iron Fist}, the damage increases to 2D10 for that unarmed attack. You can also parry both melee and ranged attacks unarmed. When parrying, you roll against your skill level for BRAWLING."
+            "The damage of your unarmed attacks increases to D10. If you use @Ref[dragonbane-core:heroic-ability.iron-fist]{Iron Fist}, the damage increases to 2D10 for that unarmed attack. You can also parry both melee and ranged attacks unarmed. When parrying, you roll against your skill level for BRAWLING."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/monk.webp"
         },
@@ -494,7 +494,7 @@
           "requirement": "Knives 12",
           "wp": "",
           "description": [
-            "Whenever you deal @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#sneak-attack]{sneak attack} damage to a target, the dice increase for damage is increased by two dice instead of one (for example, 3D8 instead of 2D8 for a weapon that deals D8 damage)."
+            "Whenever you deal @Ref[dragonbane-core:rule.sneak-attack]{sneak attack} damage to a target, the dice increase for damage is increased by two dice instead of one (for example, 3D8 instead of 2D8 for a weapon that deals D8 damage)."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp"
         },
@@ -516,7 +516,7 @@
           "requirement": "Roguish Cunning",
           "wp": "2",
           "description": [
-            "When you hit with a piercing or slashing weapon, you can activate this ability to also apply one dose of @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison]{poison} that you are carrying, as if it was ingested by the target. You can activate this ability after the roll to hit."
+            "When you hit with a piercing or slashing weapon, you can activate this ability to also apply one dose of @Ref[dragonbane-core:journal-page.combat-damage.poison]{poison} that you are carrying, as if it was ingested by the target. You can activate this ability after the roll to hit."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp"
         },
@@ -600,7 +600,7 @@
           "requirement": "One School of Magic",
           "wp": "",
           "description": [
-            "When you use @UUID[JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.C0stUmhj95JFgL4f#power-level]{Power from the Body}, you get to keep any excess WP you do not use when casting the spell, up to your maximum WP."
+            "When you use @Ref[dragonbane-core:rule.power-from-the-body]{Power from the Body}, you get to keep any excess WP you do not use when casting the spell, up to your maximum WP."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp"
         },
@@ -652,7 +652,7 @@
           "requirement": "Axes, Hammers, or Swords 12",
           "wp": "",
           "description": [
-            "You can wield a two-handed melee weapon in one hand. This can be combined with @UUID[Item.JrQqkQrSOFJzR7H9]{Dual Wield}."
+            "You can wield a two-handed melee weapon in one hand. This can be combined with @Ref[dragonbane-core:heroic-ability.dual-wield]{Dual Wield}."
           ],
           "image": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp"
         },

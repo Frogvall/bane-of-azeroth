@@ -102,6 +102,104 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+
+def load_registered_external_uuids(
+    repo_root: Path,
+) -> set[str]:
+    path = (
+        repo_root
+        / "foundry"
+        / "config"
+        / "references"
+        / "external-references.json"
+    )
+
+    data = json.loads(
+        path.read_text(
+            encoding="utf-8",
+        )
+    )
+
+    references = data.get(
+        "references"
+    )
+
+    if not isinstance(
+        references,
+        dict,
+    ):
+        raise RuntimeError(
+            "External reference registry has no references object."
+        )
+
+    return {
+        str(reference["uuid"])
+        for reference in references.values()
+        if isinstance(
+            reference,
+            dict,
+        )
+        and isinstance(
+            reference.get("uuid"),
+            str,
+        )
+    }
+
+
+def assert_no_registered_external_uuid_leaks(
+    repo_root: Path,
+    entries: list[dict[str, object]],
+) -> None:
+    registered = load_registered_external_uuids(
+        repo_root
+    )
+
+    authoritative_roots = (
+        "foundry/content/",
+        "foundry/scripts/",
+        "tools/",
+    )
+
+    leaks = [
+        entry
+        for entry in entries
+        if entry.get("kind")
+        in {
+            "uuid-link",
+            "uuid-literal",
+        }
+        and entry.get("target")
+        in registered
+        and str(
+            entry.get(
+                "path",
+                "",
+            )
+        ).startswith(
+            authoritative_roots
+        )
+    ]
+
+    if not leaks:
+        return
+
+    details = "\n".join(
+        "  "
+        + str(entry.get("path"))
+        + ":"
+        + str(entry.get("line"))
+        + " -> "
+        + str(entry.get("target"))
+        for entry in leaks
+    )
+
+    raise RuntimeError(
+        "Registered external UUID literals leaked into authoritative source; "
+        "use @Ref[...] or generated externalReferenceUuid():\n"
+        + details
+    )
+
+
 def source_files(repo_root: Path) -> list[Path]:
     files: list[Path] = []
 
@@ -261,6 +359,10 @@ def build_inventory(
     repo_root: Path,
 ) -> dict[str, object]:
     entries = inventory_entries(repo_root)
+    assert_no_registered_external_uuid_leaks(
+        repo_root,
+        entries,
+    )
     counts: dict[str, int] = {}
     for entry in entries:
         kind = str(entry["kind"])

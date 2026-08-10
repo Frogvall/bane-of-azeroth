@@ -33,7 +33,7 @@
           "name": "Draconic Wings (falling)",
           "wp": "1",
           "description": [
-            "When @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling]{falling}, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height."
+            "When @Ref[dragonbane-core:rule.falling]{falling}, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height."
           ]
         },
         {
@@ -129,7 +129,7 @@
           "name": "Arcane Affinity",
           "wp": "2",
           "description": [
-            "You cast one of the @UUID[JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.cvFSLoFtdJOQcxtU#magic-tricks]{Magic Tricks} listed under General Magic. To determine success, roll against any school of magic, or INT, whichever is higher."
+            "You cast one of the @Ref[dragonbane-core:rule.magic-tricks]{Magic Tricks} listed under General Magic. To determine success, roll against any school of magic, or INT, whichever is higher."
           ]
         }
       ],
@@ -173,7 +173,7 @@
           "wp": "2",
           "description": [
             "You get a boon on opposing a grapple attempt. Or you get a boon on breaking free from a grapple, which can be attempted as a free action.",
-            "If the optional rules for grappling are not used, the gnome can use the @UUID[Item.GiE0TwixaYnxFT6i]{Hard to Catch} kin ability from the core rules instead."
+            "If the optional rules for grappling are not used, the gnome can use the @Ref[dragonbane-core:kin-ability.hard-to-catch]{Hard to Catch} kin ability from the core rules instead."
           ]
         }
       ],
@@ -237,7 +237,7 @@
           "name": "Relentless",
           "wp": "3",
           "description": [
-            "If you have zero HP, you can activate this ability to automatically @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.CJjqkHzpow39ViUi#death]{rally} (no action), without rolling against WIL or being PERSUADED by someone else."
+            "If you have zero HP, you can activate this ability to automatically @Ref[dragonbane-core:rule.death]{rally} (no action), without rolling against WIL or being PERSUADED by someone else."
           ]
         }
       ],
@@ -300,7 +300,7 @@
           "name": "Regeneration",
           "wp": "3",
           "description": [
-            "By activating this ability (a free action in combat) you recover [[/roll D6]] HP. This can be combined with @UUID[Item.SY62xmX9uBVml786]{Fast Healer} for [[/roll 2D6]] HP recovered."
+            "By activating this ability (a free action in combat) you recover [[/roll D6]] HP. This can be combined with @Ref[dragonbane-core:kin-ability.fast-healer]{Fast Healer} for [[/roll 2D6]] HP recovered."
           ]
         }
       ],
@@ -321,7 +321,7 @@
           "name": "Touch of the Grave",
           "wp": "3",
           "description": [
-            "Instead of making a @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.CJjqkHzpow39ViUi#death]{Death Roll} you can activate this ability to automatically succeed as if you had rolled a dragon."
+            "Instead of making a @Ref[dragonbane-core:rule.death]{Death Roll} you can activate this ability to automatically succeed as if you had rolled a dragon."
           ]
         },
         {
@@ -351,7 +351,7 @@
           "name": "Luck",
           "wp": "3",
           "description": [
-            "You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with @UUID[JournalEntry.V4R4dCuKSK2mi8RF.JournalEntryPage.eIQgHhYPUczg7kbZ#pushing-your-roll]{Pushing your Roll}, potentially re-rolling the same roll twice."
+            "You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with @Ref[dragonbane-core:rule.pushing-your-roll]{Pushing your Roll}, potentially re-rolling the same roll twice."
           ]
         }
       ],
