@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Active development / prerelease testing
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 0.11.8
+> **Current Foundry module version:** 0.12.0
 
 ## Project goals
 
@@ -82,6 +82,7 @@ Implemented content and automation include:
 - Druid incarnation/form automation with persistent configurable artwork, movement, natural attacks, armor, spell restrictions/costs, roll boons, Maul Marked, and managed Stretch/Shift lifecycle
 - Player convenience Macros for changing active Druid form and opening the shared End Effects dialog
 - Best-effort English Core Set compatibility that extends Great Helm's ranged-attack Banes to the Bane of Azeroth Firearms skill
+- Static Shadowform visual state for active Scene tokens and character-sheet portraits, integrated with End Effects and Stretch/Shift lifecycle cleanup
 Generated content uses stable Foundry document identifiers and is checked against its structured source during development and packaging.
 
 ## Compatibility
@@ -95,7 +96,7 @@ The current version has been developed and verified with:
 | Dragonbane Core Set | 2.2 |
 | YZE Combat | 1.7.0 |
 
-The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.0.1. Compatibility with other versions has not yet been verified.
+The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.0.1. YZE Combat is included in the verified test environment because it is the combat module recommended for Dragonbane, but Bane of Azeroth does not require YZE Combat to be installed or enabled. Compatibility with other versions has not yet been verified.
 
 ## Installation
 

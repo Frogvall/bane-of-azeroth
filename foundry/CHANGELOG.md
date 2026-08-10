@@ -6,10 +6,26 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
-### Added
-- Added **Shadowform Visuals** automation, enabled by default, using a static dark-violet treatment on active Scene tokens and the character-sheet portrait without replacing any images.
-- Shadowform visual state follows successful casts, reconciles newly drawn tokens and active-scene changes, appears in the existing **End Effects** workflow, and expires on Stretch/Shift lifecycle boundaries.
+## [0.11.8] - 2026-08-10
 
+### Added
+- Added **Shadowform Visuals** automation, enabled by default.
+- Active Shadowform now gives current Scene tokens a static dark-violet/shadow treatment without replacing or modifying their token image.
+- Open character sheets apply a matching static treatment to the character portrait while leaving the stored Actor portrait unchanged.
+- Added Shadowform to the existing **End Effects** workflow.
+- Added active-Scene reconciliation for newly drawn Shadowform tokens and Scene activation/reload.
+
+### Changed
+- Shadowform visual state is stored as Bane of Azeroth-managed Actor state and follows the spell's existing Stretch duration.
+- Stretch Rest and Shift Rest now expire Bane of Azeroth-managed Shadowform state through the shared lifecycle.
+- Shadowform presentation intentionally affects only current Scene tokens and the character-sheet portrait; Directory, Chat, Compendium, prototype-token, and stored image presentation remain unchanged.
+- Shadowform presentation is intentionally static and does not use animation.
+
+### Testing
+- Added focused unit and integration coverage for Shadowform state, static token filters, sheet presentation, setting behavior, spell activation, rest expiration, managed-effect integration, and runtime hook registration.
+- Added **BOA DEV – Verify Shadowform Visuals** to the Foundry Developer Test suite.
+- Verified the complete automated test suite after updating stale generic hook/settings-count contracts for the new Shadowform registration.
+- Visually verified Shadowform token and character-portrait presentation in Foundry.
 
 ## [0.11.7] - 2026-08-10
 
