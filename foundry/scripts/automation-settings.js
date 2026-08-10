@@ -19,6 +19,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   DRUID_MOONKIN_SPELL_COST: "druidMoonkinSpellCostAutomation",
   DRUID_CAT_SNEAKING: "druidCatSneakingAutomation",
   DRUID_MOONKIN_SPELLCASTING_BOON: "druidMoonkinSpellcastingBoonAutomation",
+  DRUID_MAUL_MARKED: "druidMaulMarkedAutomation",
   DRUID_FORM_ARTWORK: "druidFormArtworkAutomation",
 });
 
@@ -402,6 +403,15 @@ export function isDruidMoonkinSpellcastingBoonAutomationEnabled(
   );
 }
 
+export function isDruidMaulMarkedAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_MAUL_MARKED,
+    settings,
+  );
+}
+
 function restoreDruidArtworkOnChange(value) {
   if (value !== false) return;
   queueMicrotask(() => {
@@ -531,6 +541,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.druidMoonkinSpellcastingBoonName",
       "BOA.settings.automation.druidMoonkinSpellcastingBoonHint",
     ),
+    druidMaulMarkedAutomation: booleanField(
+      "BOA.settings.automation.druidMaulMarkedName",
+      "BOA.settings.automation.druidMaulMarkedHint",
+    ),
     druidFormArtworkAutomation: booleanField(
       "BOA.settings.automation.druidFormArtworkName",
       "BOA.settings.automation.druidFormArtworkHint",
@@ -584,6 +598,8 @@ export class AutomationSettingsForm
           isDruidCatSneakingAutomationEnabled(),
         druidMoonkinSpellcastingBoonAutomation:
           isDruidMoonkinSpellcastingBoonAutomationEnabled(),
+        druidMaulMarkedAutomation:
+          isDruidMaulMarkedAutomationEnabled(),
         druidFormArtworkAutomation:
           isDruidFormArtworkAutomationEnabled(),
       },
@@ -749,6 +765,15 @@ export class AutomationSettingsForm
         MODULE_ID,
         AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON,
         Boolean(values[AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON]),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_MAUL_MARKED,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.DRUID_MAUL_MARKED
+          ],
+        ),
       ),
       settings.set(
         MODULE_ID,
@@ -950,6 +975,14 @@ export function registerAutomationSettings(
     settingDefinition(
       "BOA.settings.automation.druidMoonkinSpellcastingBoonName",
       "BOA.settings.automation.druidMoonkinSpellcastingBoonHint",
+    ),
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_MAUL_MARKED,
+    settingDefinition(
+      "BOA.settings.automation.druidMaulMarkedName",
+      "BOA.settings.automation.druidMaulMarkedHint",
     ),
   );
   settings.register(

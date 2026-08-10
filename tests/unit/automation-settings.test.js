@@ -200,6 +200,7 @@ describe("ApplicationV2 automation settings form", () => {
       druidMoonkinSpellCostAutomation: false,
       druidCatSneakingAutomation: false,
       druidMoonkinSpellcastingBoonAutomation: false,
+      druidMaulMarkedAutomation: false,
       druidFormArtworkAutomation: false,
     });
     expect(context.buttons).toEqual([
@@ -242,6 +243,7 @@ describe("ApplicationV2 automation settings form", () => {
           druidMoonkinSpellCostAutomation: true,
           druidCatSneakingAutomation: true,
           druidMoonkinSpellcastingBoonAutomation: true,
+          druidMaulMarkedAutomation: true,
           druidFormArtworkAutomation: true,
         },
       },
@@ -296,6 +298,11 @@ describe("ApplicationV2 automation settings form", () => {
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON,
+      true,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.DRUID_MAUL_MARKED,
       true,
     );
   });

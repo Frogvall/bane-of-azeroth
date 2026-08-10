@@ -1138,6 +1138,15 @@ export function buildDruidFormAttackData(
           isBear
             ? MAUL_CONTENT_KEY
             : SHRED_CONTENT_KEY,
+        attackEffects:
+          isBear
+            ? [
+                {
+                  type: "marked",
+                  settingKey: "druidMaulMarkedAutomation",
+                },
+              ]
+            : [],
         druidFormMechanic: {
           kind:
             "naturalAttack",

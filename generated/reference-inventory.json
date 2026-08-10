@@ -1607,7 +1607,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "foundry/scripts/common-animal-status-effects.js",
-      "line": 80,
+      "line": 82,
       "column": 26,
       "function": "fromUuid",
       "classification": "runtime",
@@ -2143,7 +2143,7 @@
     {
       "kind": "uuid-literal",
       "path": "tests/system/macros/verify-druid-forms.js",
-      "line": 1115,
+      "line": 1178,
       "column": 12,
       "target": "Actor.BoaDruidMechanic",
       "classification": "unclassified",

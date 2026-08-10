@@ -13,6 +13,40 @@ if (!game.user.isGM) {
   return boaFinish(testKey, testName, checks, notes);
 }
 
+
+// BOA 0.11.7 Maul -> Marked RED/GREEN contract.
+const maulMarkedSettingKey =
+  "druidMaulMarkedAutomation";
+const maulMarkedSettingDefinition =
+  game.settings?.settings?.get?.(
+    `${BOA_TEST_MODULE_ID}.${maulMarkedSettingKey}`,
+  ) ?? null;
+
+boaCheck(
+  checks,
+  "Druid Maul Marked automation setting is registered",
+  Boolean(maulMarkedSettingDefinition),
+  `${BOA_TEST_MODULE_ID}.${maulMarkedSettingKey}`,
+);
+if (maulMarkedSettingDefinition) {
+  boaCheckEqual(
+    checks,
+    "Druid Maul Marked automation defaults to enabled",
+    maulMarkedSettingDefinition.default,
+    true,
+  );
+}
+
+const markedStatusDefinition =
+  Array.from(CONFIG.statusEffects ?? [])
+    .find(status => status?.id === "marked") ??
+  null;
+boaCheck(
+  checks,
+  "Druid Maul registers the Marked reminder status",
+  Boolean(markedStatusDefinition),
+  markedStatusDefinition ?? null,
+);
 const settingKey = "druidFormsAutomation";
 const settingDefinition =
   game.settings?.settings?.get?.(
@@ -619,6 +653,35 @@ try {
       },
     );
 
+
+    const managedBearMaul =
+      Array.from(actor.items ?? []).find(
+        item =>
+          item?.getFlag?.(
+            BOA_TEST_MODULE_ID,
+            "contentKey",
+          ) === "druid-form-attacks.maul",
+      ) ?? null;
+    boaCheck(
+      checks,
+      "Bear Form creates managed Maul for Marked automation",
+      Boolean(managedBearMaul),
+      managedBearMaul?.name ?? null,
+    );
+    boaCheckEqual(
+      checks,
+      "Managed Maul declares Marked through the shared attack-effect contract",
+      managedBearMaul?.getFlag?.(
+        BOA_TEST_MODULE_ID,
+        "attackEffects",
+      ) ?? null,
+      [
+        {
+          type: "marked",
+          settingKey: "druidMaulMarkedAutomation",
+        },
+      ],
+    );
     const wpBeforeAction =
       Number(actor.system?.willPoints?.value ?? 0);
     await api.switchDruidForm(

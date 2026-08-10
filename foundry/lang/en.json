@@ -151,7 +151,9 @@
         "druidCatSneakingName": "Druid Cat Sneaking",
         "druidCatSneakingHint": "Add one default-selected boon to SNEAKING rolls while Cat Form is the current physical form and Feral Incarnation is active.",
         "druidMoonkinSpellcastingBoonName": "Druid Moonkin Spellcasting Boon",
-        "druidMoonkinSpellcastingBoonHint": "Add one default-selected boon to spellcasting rolls while Moonkin Form is the current physical form and Incarnation of the Stars is active."
+        "druidMoonkinSpellcastingBoonHint": "Add one default-selected boon to spellcasting rolls while Moonkin Form is the current physical form and Incarnation of the Stars is active.",
+        "druidMaulMarkedName": "Druid Maul — Marked",
+        "druidMaulMarkedHint": "When a Bear Form Maul damage roll has a target, apply the Marked reminder status. Marked is never removed automatically."
       },
       "developer": {
         "menuName": "Developer / Diagnostics",
@@ -208,6 +210,9 @@
     "rollBoons": {
       "druidCatSneaking": "Cat Form",
       "druidMoonkinSpellcasting": "Moonkin Form"
+    },
+    "statuses": {
+      "marked": "Marked"
     }
   },
   "DoD": {

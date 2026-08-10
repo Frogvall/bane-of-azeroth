@@ -5,11 +5,13 @@ import {
 } from "./core/users.js";
 
 export const COMMON_ANIMAL_RESTRAIN_STATUS_ID = "restrain";
+export const DRUID_MARKED_STATUS_ID = "marked";
 
 const COMMON_ANIMAL_STATUS_SOCKET = `module.${MODULE_ID}`;
 const COMMON_ANIMAL_STATUS_SOCKET_TIMEOUT_MS = 30000;
 const ALLOWED_STATUS_IDS = new Set([
   COMMON_ANIMAL_RESTRAIN_STATUS_ID,
+  DRUID_MARKED_STATUS_ID,
 ]);
 const pendingStatusRequests = new Map();
 let commonAnimalStatusSocketRegistered = false;
@@ -81,8 +83,26 @@ async function actorFromUuid(uuid) {
   return normalizeTargetActor(document);
 }
 
+function attackEffectSettingEnabled(
+  effect,
+  settings = globalThis.game?.settings,
+) {
+  const key = String(effect?.settingKey ?? "").trim();
+  if (!key || !settings?.get) {
+    return true;
+  }
+  try {
+    return settings.get(MODULE_ID, key) !== false;
+  } catch (_error) {
+    return true;
+  }
+}
+
 export function statusIdsForCommonAnimalAttackEffects(
-  effects = []
+  effects = [],
+  {
+    settings = globalThis.game?.settings,
+  } = {},
 ) {
   if (!Array.isArray(effects)) {
     return [];
@@ -92,6 +112,15 @@ export function statusIdsForCommonAnimalAttackEffects(
   for (const effect of effects) {
     if (effect?.type === "restrain") {
       statusIds.push(COMMON_ANIMAL_RESTRAIN_STATUS_ID);
+    }
+    if (
+      effect?.type === "marked" &&
+      attackEffectSettingEnabled(
+        effect,
+        settings,
+      )
+    ) {
+      statusIds.push(DRUID_MARKED_STATUS_ID);
     }
   }
   return Array.from(new Set(statusIds));
@@ -129,6 +158,7 @@ export async function applyCommonAnimalStatusIdsLocally(
     );
     if (
       origin &&
+      statusId !== DRUID_MARKED_STATUS_ID &&
       toggledEffect &&
       typeof toggledEffect === "object" &&
       typeof toggledEffect.update === "function" &&
@@ -229,7 +259,32 @@ export function onCommonAnimalStatusSocketMessage(payload) {
   }
 }
 
+export function registerCommonAnimalAttackStatusEffects(
+  statusEffects = globalThis.CONFIG?.statusEffects,
+) {
+  if (!Array.isArray(statusEffects)) {
+    return false;
+  }
+  if (
+    statusEffects.some(
+      status => status?.id === DRUID_MARKED_STATUS_ID,
+    )
+  ) {
+    return true;
+  }
+  const image =
+    "modules/bane-of-azeroth/assets/icons/classes/druid.webp";
+  statusEffects.push({
+    id: DRUID_MARKED_STATUS_ID,
+    name: "BOA.statuses.marked",
+    icon: image,
+    img: image,
+  });
+  return true;
+}
+
 export function registerCommonAnimalStatusSocket() {
+  registerCommonAnimalAttackStatusEffects();
   if (commonAnimalStatusSocketRegistered) {
     return;
   }
@@ -309,7 +364,9 @@ export async function applyCommonAnimalAttackStatuses({
   targets = [],
   sourceActor = null,
 } = {}) {
-  const statusIds = statusIdsForCommonAnimalAttackEffects(effects);
+  const statusIds = statusIdsForCommonAnimalAttackEffects(
+    effects,
+  );
   if (statusIds.length === 0 || !Array.isArray(targets)) {
     return [];
   }
