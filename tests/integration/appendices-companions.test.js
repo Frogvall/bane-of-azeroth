@@ -202,8 +202,31 @@ function generatedActors() {
   return result;
 }
 
-function cardMarker(spec) {
+function sourceCardMarker(spec) {
+  return (
+    "@DisplayNpcCardRef[boa:actor."
+    + `actors.common-animals.${spec.key}]`
+  );
+}
+
+function generatedCardMarker(spec) {
   return `@DisplayNpcCard[Actor.${spec.id}]`;
+}
+
+function materializeCompanionSource(content) {
+  let rendered = content.replace(
+    COMMON_ANIMALS_SOURCE_LINK,
+    COMMON_ANIMALS_GENERATED_LINK,
+  );
+
+  for (const spec of BOOK_ORDER) {
+    rendered = rendered.replace(
+      sourceCardMarker(spec),
+      generatedCardMarker(spec),
+    );
+  }
+
+  return rendered;
 }
 
 describe("Appendices Companions Journal page", () => {
@@ -282,7 +305,7 @@ describe("Appendices Companions Journal page", () => {
     expect(
       occurrences(
         html,
-        "@DisplayNpcCard[Actor.",
+        "@DisplayNpcCardRef[boa:actor.",
       ),
     ).toBe(14);
     expect(html).not.toContain("Appendix A");
@@ -306,7 +329,7 @@ describe("Appendices Companions Journal page", () => {
 
     for (const spec of BOOK_ORDER) {
       const companion = byKey.get(spec.key);
-      const marker = cardMarker(spec);
+      const marker = sourceCardMarker(spec);
 
       expect(companion).toBeDefined();
       expect(companion.id).toBe(spec.id);
@@ -382,9 +405,8 @@ describe("Appendices Companions Journal page", () => {
     expect(
       journal.pages[0].text.content,
     ).toBe(
-      sourcePage.source.content.replace(
-        COMMON_ANIMALS_SOURCE_LINK,
-        COMMON_ANIMALS_GENERATED_LINK,
+      materializeCompanionSource(
+        sourcePage.source.content,
       ),
     );
     expect(
@@ -397,6 +419,18 @@ describe("Appendices Companions Journal page", () => {
     ).not.toContain(
       COMMON_ANIMALS_SOURCE_LINK,
     );
+    for (const spec of BOOK_ORDER) {
+      expect(
+        journal.pages[0].text.content,
+      ).toContain(
+        generatedCardMarker(spec),
+      );
+      expect(
+        journal.pages[0].text.content,
+      ).not.toContain(
+        sourceCardMarker(spec),
+      );
+    }
     expect(
       adventure.journal.filter(
         value => value === journalPath,

@@ -181,18 +181,18 @@ describe(
           journal.source.content;
 
         for (
-          const id
+          const key
           of [
-            "SavIncarn6e7f8g9",
-            "FeralInc2OpQrS3t",
-            "Harmony4UvWxY5zQ",
-            "StarsInc6AbCdE7f",
+            "savage-incarnation",
+            "feral-incarnation",
+            "incarnation-of-harmony",
+            "incarnation-of-the-stars",
           ]
         ) {
           expect(
             content,
           ).toContain(
-            `@DisplaySpell[Item.${id}]`,
+            `@DisplaySpellRef[boa:item.spells.${key}]`,
           );
         }
       },

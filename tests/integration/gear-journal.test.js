@@ -135,6 +135,36 @@ function gearEntries(source) {
   );
 }
 
+function sourceGearMarker(entry) {
+  return (
+    `@GearRef[boa:item.gear.${entry.key}]`
+    + `{${entry.name}}`
+  );
+}
+
+function generatedGearMarker(entry) {
+  return (
+    `@Gear[Item.${entry.id}]`
+    + `{${entry.name}}`
+  );
+}
+
+function materializeGearSource(content, entries) {
+  let rendered = content.replace(
+    FIND_WEAK_SPOT_SOURCE_LINK,
+    FIND_WEAK_SPOT_GENERATED_LINK,
+  );
+
+  for (const entry of entries) {
+    rendered = rendered.replace(
+      sourceGearMarker(entry),
+      generatedGearMarker(entry),
+    );
+  }
+
+  return rendered;
+}
+
 describe("Character Options Gear Journal page", () => {
   test("defines one visible page after Heroic Class Abilities", () => {
     const page = readJson(PAGE_SOURCE);
@@ -202,7 +232,7 @@ describe("Character Options Gear Journal page", () => {
       occurrences(html, "@GearTableEnd"),
     ).toBe(3);
     expect(
-      occurrences(html, "@Gear[Item."),
+      occurrences(html, "@GearRef[boa:item.gear."),
     ).toBe(8);
 
     for (const category of gear.categories) {
@@ -220,8 +250,7 @@ describe("Character Options Gear Journal page", () => {
       expect(
         occurrences(
           html,
-          `@Gear[Item.${entry.id}]`
-          + `{${entry.name}}`,
+          sourceGearMarker(entry),
         ),
       ).toBe(1);
     }
@@ -290,10 +319,13 @@ describe("Character Options Gear Journal page", () => {
     ).toContain(
       FIND_WEAK_SPOT_SOURCE_LINK,
     );
+    const entries = gearEntries(
+      readJson(GEAR_SOURCE),
+    );
     expect(page.text.content).toBe(
-      pageSource.source.content.replace(
-        FIND_WEAK_SPOT_SOURCE_LINK,
-        FIND_WEAK_SPOT_GENERATED_LINK,
+      materializeGearSource(
+        pageSource.source.content,
+        entries,
       ),
     );
     expect(
@@ -312,6 +344,14 @@ describe("Character Options Gear Journal page", () => {
         "@Gear[Item.",
       ),
     ).toBe(8);
+    for (const entry of entries) {
+      expect(page.text.content).toContain(
+        generatedGearMarker(entry),
+      );
+      expect(page.text.content).not.toContain(
+        sourceGearMarker(entry),
+      );
+    }
   });
 
   test("targets the generated Gear Items by stable ID and content key", () => {

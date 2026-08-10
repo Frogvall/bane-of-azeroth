@@ -125,6 +125,9 @@ describe(
           );
 
         expect(shared).toContain(
+          "def resolve_symbolic_references(",
+        );
+        expect(shared).toContain(
           "def resolve_external_symbolic_references(",
         );
 
@@ -139,7 +142,7 @@ describe(
             "load_external_reference_targets",
           );
           expect(source).toContain(
-            "resolve_external_symbolic_references",
+            "resolve_symbolic_references",
           );
         }
       },

@@ -109,13 +109,32 @@ function generatedSpells() {
   return result;
 }
 
-function displayMarker(spell) {
+function sourceDisplayMarker(spell) {
+  return (
+    `@DisplaySpellRef[boa:item.spells.${spell.key}]`
+    + `{${spell.name}}`
+  );
+}
+
+function generatedDisplayMarker(spell) {
   return (
     `@DisplaySpell[Item.${spell.id}]`
     + `{${spell.name}}`
   );
 }
 
+function materializeSpellSource(content, spells) {
+  let rendered = content;
+
+  for (const spell of spells) {
+    rendered = rendered.replace(
+      sourceDisplayMarker(spell),
+      generatedDisplayMarker(spell),
+    );
+  }
+
+  return rendered;
+}
 describe("Character Options Spells Journal page", () => {
   test("defines the book's Spells page without Spell List headings", () => {
     const page = readJson(PAGE_SOURCE);
@@ -200,14 +219,14 @@ describe("Character Options Spells Journal page", () => {
     expect(
       occurrences(
         html,
-        "@DisplaySpell[Item.",
+        "@DisplaySpellRef[boa:item.spells.",
       ),
     ).toBe(6);
 
     let previousIndex = -1;
 
     for (const spell of spells) {
-      const marker = displayMarker(spell);
+      const marker = sourceDisplayMarker(spell);
 
       expect(
         occurrences(html, marker),
@@ -257,8 +276,14 @@ describe("Character Options Spells Journal page", () => {
         },
       },
     });
+    const spells = readJson(
+      SPELL_SOURCE,
+    ).spells;
     expect(page.text.content).toBe(
-      pageSource.source.content,
+      materializeSpellSource(
+        pageSource.source.content,
+        spells,
+      ),
     );
     expect(
       occurrences(
@@ -266,6 +291,14 @@ describe("Character Options Spells Journal page", () => {
         "@DisplaySpell[Item.",
       ),
     ).toBe(6);
+    for (const spell of spells) {
+      expect(page.text.content).toContain(
+        generatedDisplayMarker(spell),
+      );
+      expect(page.text.content).not.toContain(
+        sourceDisplayMarker(spell),
+      );
+    }
   });
 
   test("targets every generated Spell Item by stable ID and content key", () => {

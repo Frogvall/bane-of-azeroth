@@ -151,20 +151,52 @@ function generatedDocuments(prefix) {
   return result;
 }
 
-function monsterMarker(spec) {
+function sourceMonsterMarker(spec) {
+  return (
+    "@DisplayMonsterRef[boa:actor."
+    + `actors.summoned-monsters.${spec.key}]`
+    + `{${spec.name}}`
+  );
+}
+
+function generatedMonsterMarker(spec) {
   return (
     `@DisplayMonster[Actor.${spec.actorId}]`
     + `{${spec.name}}`
   );
 }
 
-function tableMarker(spec) {
+function sourceTableMarker(spec) {
+  return (
+    "@DisplayRef[boa:table."
+    + `tables.monster-attacks.${spec.key}]`
+    + `{${spec.tableName}}`
+  );
+}
+
+function generatedTableMarker(spec) {
   return (
     `@DisplayTable[RollTable.${spec.tableId}]`
     + `{${spec.tableName}}`
   );
 }
 
+function materializeDemonSource(content) {
+  let rendered = content;
+
+  for (const spec of BOOK_ORDER) {
+    rendered = rendered.replace(
+      sourceMonsterMarker(spec),
+      generatedMonsterMarker(spec),
+    );
+    rendered = rendered.replace(
+      sourceTableMarker(spec),
+      generatedTableMarker(spec),
+    );
+  }
+
+  return rendered;
+}
 describe("Appendices Demons Journal page", () => {
   test("defines Demons as the second curated Appendices page", () => {
     expect(
@@ -207,13 +239,13 @@ describe("Appendices Demons Journal page", () => {
     expect(
       occurrences(
         html,
-        "@DisplayMonster[Actor.",
+        "@DisplayMonsterRef[boa:actor.",
       ),
     ).toBe(4);
     expect(
       occurrences(
         html,
-        "@DisplayTable[RollTable.",
+        "@DisplayRef[boa:table.",
       ),
     ).toBe(4);
     expect(
@@ -230,8 +262,8 @@ describe("Appendices Demons Journal page", () => {
     ).toBe(0);
 
     for (const spec of BOOK_ORDER) {
-      const monster = monsterMarker(spec);
-      const table = tableMarker(spec);
+      const monster = sourceMonsterMarker(spec);
+      const table = sourceTableMarker(spec);
 
       expect(
         occurrences(html, monster),
@@ -383,7 +415,25 @@ describe("Appendices Demons Journal page", () => {
     });
     expect(
       page.text.content,
-    ).toBe(pageSource.source.content);
+    ).toBe(
+      materializeDemonSource(
+        pageSource.source.content,
+      ),
+    );
+    for (const spec of BOOK_ORDER) {
+      expect(page.text.content).toContain(
+        generatedMonsterMarker(spec),
+      );
+      expect(page.text.content).toContain(
+        generatedTableMarker(spec),
+      );
+      expect(page.text.content).not.toContain(
+        sourceMonsterMarker(spec),
+      );
+      expect(page.text.content).not.toContain(
+        sourceTableMarker(spec),
+      );
+    }
   });
 
   test("extends the Foundry runtime contract", () => {

@@ -146,6 +146,14 @@ const SOURCE_LINKS = new Map([
     "@Ref[dragonbane-core:rule.pushing-your-roll]{Pushing your Roll}",
   ],
   [
+    LINKS.human,
+    "@Ref[boa:journal-page.player-options.kin#human]{Human}",
+  ],
+  [
+    LINKS.ghoul,
+    "@Ref[boa:actor.actors.summoned-monsters.ghoul]{ghoul}",
+  ],
+  [
     LINKS.dash,
     "@Ref[dragonbane-core:rule.dash]{dash}",
   ],
