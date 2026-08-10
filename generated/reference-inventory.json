@@ -1616,7 +1616,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/core/constants.js",
-      "line": 10,
+      "line": 12,
       "column": 16,
       "target": "BOA.weaponFeatureTyp",
       "classification": "unclassified",
@@ -1625,7 +1625,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/core/constants.js",
-      "line": 11,
+      "line": 13,
       "column": 15,
       "target": "BOA.weaponFeatureTyp",
       "classification": "unclassified",
@@ -1634,7 +1634,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/core/constants.js",
-      "line": 12,
+      "line": 14,
       "column": 16,
       "target": "BOA.weaponFeatureTyp",
       "classification": "unclassified",
@@ -1643,7 +1643,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/core/constants.js",
-      "line": 13,
+      "line": 15,
       "column": 19,
       "target": "BOA.weaponFeatureTyp",
       "classification": "unclassified",
@@ -1652,7 +1652,7 @@
     {
       "kind": "uuid-literal",
       "path": "foundry/scripts/core/constants.js",
-      "line": 14,
+      "line": 16,
       "column": 17,
       "target": "BOA.weaponFeatureTyp",
       "classification": "unclassified",

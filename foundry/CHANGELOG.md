@@ -6,6 +6,11 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Changed
+- Development prerelease packages now use the distinct Foundry package identity `bane-of-azeroth-dev` and title **Bane of Azeroth - Development**, allowing production and development packages to be installed side-by-side.
+- Development packaging rewrites package-qualified runtime/content namespaces only in staged prerelease output; the source manifest remains production-canonical.
+- The Adventure pack name remains `bane-of-azeroth`, producing development pack id `bane-of-azeroth-dev.bane-of-azeroth`.
+
 ## [0.11.8] - 2026-08-10
 
 ### Added

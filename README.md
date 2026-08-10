@@ -100,6 +100,8 @@ The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.
 
 ## Installation
 
+> **Package identities:** Production/release packages use `bane-of-azeroth` (**Bane of Azeroth**). Development prerelease packages use the separate Foundry package id `bane-of-azeroth-dev` (**Bane of Azeroth - Development**). They can therefore be installed side-by-side. Only one should be enabled in a given world; development worlds should use the development package and its Adventure content consistently.
+
 There is currently no stable public release. Development builds are distributed as rolling branch prereleases and may change without notice.
 
 For a manual development installation, place the packaged module contents in:

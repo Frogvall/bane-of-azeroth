@@ -10,6 +10,10 @@ MODULE_DIR="${ROOT_DIR}/foundry"
 PACK_NAME="bane-of-azeroth"
 DEV_TEST_PACK_NAME="bane-of-azeroth-dev-tests"
 INCLUDE_DEV_TESTS="${BOA_INCLUDE_DEV_TESTS:-false}"
+PRODUCTION_MODULE_ID="bane-of-azeroth"
+DEVELOPMENT_MODULE_ID="bane-of-azeroth-dev"
+DEVELOPMENT_MODULE_TITLE="Bane of Azeroth - Development"
+REBRAND_TOOL="${ROOT_DIR}/tools/rebrand-foundry-package.py"
 PACK_SOURCE="${MODULE_DIR}/pack-src/${PACK_NAME}"
 
 DIST_DIR="${ROOT_DIR}/dist"
@@ -34,13 +38,30 @@ if [[ ! -d "$PACK_SOURCE" ]]; then
   exit 1
 fi
 
+echo "Verifying package rebrand tool..."
+python3 "$REBRAND_TOOL" --self-test
+
 echo "Verifying generated Foundry content..."
 python3 \
   "${ROOT_DIR}/tools/check-foundry-generators.py"
 
 
-MODULE_ID="$(jq -er '.id' "$MODULE_JSON")"
+SOURCE_MODULE_ID="$(jq -er '.id' "$MODULE_JSON")"
+SOURCE_MODULE_TITLE="$(jq -er '.title' "$MODULE_JSON")"
 SOURCE_VERSION="$(jq -er '.version' "$MODULE_JSON")"
+
+if [[ "$SOURCE_MODULE_ID" != "$PRODUCTION_MODULE_ID" ]]; then
+  echo "Source manifest id must remain ${PRODUCTION_MODULE_ID}." >&2
+  exit 1
+fi
+
+if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
+  MODULE_ID="$DEVELOPMENT_MODULE_ID"
+  MODULE_TITLE="$DEVELOPMENT_MODULE_TITLE"
+else
+  MODULE_ID="$SOURCE_MODULE_ID"
+  MODULE_TITLE="$SOURCE_MODULE_TITLE"
+fi
 
 BUILD_VERSION="${BOA_BUILD_VERSION:-$SOURCE_VERSION}"
 MANIFEST_URL="${BOA_MANIFEST_URL:-}"
@@ -60,6 +81,8 @@ if [[ "$ZIP_NAME" == */* || "$ZIP_NAME" == "." || "$ZIP_NAME" == ".." ]]; then
 fi
 
 echo "Building ${MODULE_ID} ${BUILD_VERSION}"
+echo "Package title: ${MODULE_TITLE}"
+echo "Source id: ${SOURCE_MODULE_ID}"
 echo "Source version: ${SOURCE_VERSION}"
 
 if [[ -n "$MANIFEST_URL" ]]; then
@@ -81,14 +104,26 @@ tar \
   -cf - . |
 tar -C "$STAGE_DIR" -xf -
 
+if [[ "$MODULE_ID" != "$SOURCE_MODULE_ID" ]]; then
+  echo "Rebranding staged runtime for ${MODULE_ID}..."
+  python3 "$REBRAND_TOOL" \
+    --root "$STAGE_DIR" \
+    --target-id "$MODULE_ID" \
+    --exclude-relative module.json
+fi
+
 echo "Generating delivery manifest..."
 
 jq \
+  --arg moduleId "$MODULE_ID" \
+  --arg moduleTitle "$MODULE_TITLE" \
   --arg version "$BUILD_VERSION" \
   --arg manifest "$MANIFEST_URL" \
   --arg download "$DOWNLOAD_URL" \
   '
-    .version = $version
+    .id = $moduleId
+    | .title = $moduleTitle
+    | .version = $version
     | if $manifest == ""
         then del(.manifest)
         else .manifest = $manifest
@@ -105,10 +140,22 @@ mv \
   "${STAGE_DIR}/module.json.tmp" \
   "${STAGE_DIR}/module.json"
 
+PACK_BUILD_SOURCE="$PACK_SOURCE"
+if [[ "$MODULE_ID" != "$SOURCE_MODULE_ID" ]]; then
+  PACK_BUILD_ROOT="${DIST_DIR}/rebranded-pack-src"
+  PACK_BUILD_SOURCE="${PACK_BUILD_ROOT}/${PACK_NAME}"
+  rm -rf "$PACK_BUILD_ROOT"
+  mkdir -p "$PACK_BUILD_SOURCE"
+  cp -a "${PACK_SOURCE}/." "$PACK_BUILD_SOURCE/"
+  python3 "$REBRAND_TOOL" \
+    --root "$PACK_BUILD_SOURCE" \
+    --target-id "$MODULE_ID"
+fi
+
 echo "Building Foundry compendium..."
 
 fvtt package pack "$PACK_NAME" \
-  --inputDirectory "$PACK_SOURCE" \
+  --inputDirectory "$PACK_BUILD_SOURCE" \
   --outputDirectory "${STAGE_DIR}/packs" \
   --recursive
 
@@ -142,6 +189,13 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
   python3 \
     "${ROOT_DIR}/tools/generate-system-test-macros.py" \
     --output-directory "$DEV_TEST_SOURCE"
+
+  if [[ "$MODULE_ID" != "$SOURCE_MODULE_ID" ]]; then
+    echo "Rebranding developer-test Macro source for ${MODULE_ID}..."
+    python3 "$REBRAND_TOOL" \
+      --root "$DEV_TEST_SOURCE" \
+      --target-id "$MODULE_ID"
+  fi
 
   DEV_TEST_SOURCE_COUNT="$(
     find "$DEV_TEST_SOURCE" \
@@ -216,11 +270,18 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
     -m 0644 \
     "${ROOT_DIR}/tests/system/runtime/import-system-test-macros.js" \
     "${STAGE_DIR}/scripts/boa-dev-system-tests.js"
+  if [[ "$MODULE_ID" != "$SOURCE_MODULE_ID" ]]; then
+    echo "Rebranding developer-test runtime for ${MODULE_ID}..."
+    python3 "$REBRAND_TOOL" \
+      --root "${STAGE_DIR}/scripts/boa-dev-system-tests.js" \
+      --target-id "$MODULE_ID"
+  fi
 
   jq \
     --arg packName "$DEV_TEST_PACK_NAME" \
+    --arg activeModuleId "$MODULE_ID" \
     '
-      .flags["bane-of-azeroth"].developmentBuild = true
+      .flags[$activeModuleId].developmentBuild = true
       |
       .scripts = (
         (((.scripts // []) |
@@ -243,7 +304,7 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
               "ASSISTANT": "OWNER"
             },
             "flags": {
-              "bane-of-azeroth": {
+              ($activeModuleId): {
                 "developmentOnly": true
               }
             }
@@ -329,9 +390,11 @@ fi
 
 if ! unzip -p "$ZIP_FILE" module.json |
   jq -e \
+    --arg moduleId "$MODULE_ID" \
+    --arg moduleTitle "$MODULE_TITLE" \
     --arg version "$BUILD_VERSION" \
-    '.version == $version' >/dev/null; then
-  echo "The packaged module version is incorrect." >&2
+    '.id == $moduleId and .title == $moduleTitle and .version == $version' >/dev/null; then
+  echo "The packaged module identity or version is incorrect." >&2
   exit 1
 fi
 

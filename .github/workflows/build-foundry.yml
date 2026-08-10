@@ -239,6 +239,12 @@ jobs:
 
           zip_file="dist/bane-of-azeroth.zip"
           manifest_file="dist/module.json"
+          expected_module_id="bane-of-azeroth"
+          expected_module_title="Bane of Azeroth"
+          if [[ "$BOA_INCLUDE_DEV_TESTS" == "true" ]]; then
+            expected_module_id="bane-of-azeroth-dev"
+            expected_module_title="Bane of Azeroth - Development"
+          fi
 
           if [[ ! -f "$zip_file" ]]; then
             echo "Missing generated package: $zip_file" >&2
@@ -248,11 +254,15 @@ jobs:
           unzip -p "$zip_file" module.json > "$manifest_file"
 
           jq -e \
+            --arg moduleId "$expected_module_id" \
+            --arg moduleTitle "$expected_module_title" \
             --arg version "$BOA_BUILD_VERSION" \
             --arg manifest "$BOA_MANIFEST_URL" \
             --arg download "$BOA_DOWNLOAD_URL" \
             '
-              .version == $version
+              .id == $moduleId
+              and .title == $moduleTitle
+              and .version == $version
               and .manifest == $manifest
               and .download == $download
             ' \
@@ -337,11 +347,15 @@ jobs:
           test -f release/bane-of-azeroth.zip.sha256
 
           jq -e \
+            --arg moduleId "bane-of-azeroth-dev" \
+            --arg moduleTitle "Bane of Azeroth - Development" \
             --arg version "$BUILD_VERSION" \
             --arg manifest "$MANIFEST_URL" \
             --arg download "$DOWNLOAD_URL" \
             '
-              .version == $version
+              .id == $moduleId
+              and .title == $moduleTitle
+              and .version == $version
               and .manifest == $manifest
               and .download == $download
             ' \
@@ -436,11 +450,15 @@ jobs:
             --dir "$verify_dir"
 
           jq -e \
+            --arg moduleId "bane-of-azeroth-dev" \
+            --arg moduleTitle "Bane of Azeroth - Development" \
             --arg version "$BUILD_VERSION" \
             --arg manifest "$MANIFEST_URL" \
             --arg download "$DOWNLOAD_URL" \
             '
-              .version == $version
+              .id == $moduleId
+              and .title == $moduleTitle
+              and .version == $version
               and .manifest == $manifest
               and .download == $download
             ' \

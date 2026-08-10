@@ -244,6 +244,16 @@ MACROS = [
         "img": "icons/svg/mystery-man.svg",
     },
     {
+        "key": "package-identity",
+        "id": "BoaDevPkgIdent01",
+        "name": "BOA DEV – Verify Package Identity",
+        "file": "verify-package-identity.js",
+        "order": 27,
+        "suiteOrder": 22,
+        "suiteMember": True,
+        "img": "icons/svg/package.svg",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",
