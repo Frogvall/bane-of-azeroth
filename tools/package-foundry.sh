@@ -117,6 +117,8 @@ echo "Generating delivery manifest..."
 jq \
   --arg moduleId "$MODULE_ID" \
   --arg moduleTitle "$MODULE_TITLE" \
+  --arg productionModuleId "$PRODUCTION_MODULE_ID" \
+  --arg developmentModuleId "$DEVELOPMENT_MODULE_ID" \
   --arg version "$BUILD_VERSION" \
   --arg manifest "$MANIFEST_URL" \
   --arg download "$DOWNLOAD_URL" \
@@ -124,6 +126,21 @@ jq \
     .id = $moduleId
     | .title = $moduleTitle
     | .version = $version
+    | .relationships.conflicts = (
+        ((.relationships.conflicts // [])
+          | map(select(.id != $productionModuleId and .id != $developmentModuleId)))
+        + [
+            {
+              "id": (
+                if $moduleId == $developmentModuleId
+                then $productionModuleId
+                else $developmentModuleId
+                end
+              ),
+              "type": "module"
+            }
+          ]
+      )
     | if $manifest == ""
         then del(.manifest)
         else .manifest = $manifest

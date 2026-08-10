@@ -38,6 +38,12 @@
           "verified": "4.0.1"
         }
       }
+    ],
+    "conflicts": [
+      {
+        "id": "bane-of-azeroth-dev",
+        "type": "module"
+      }
     ]
   },
   "flags": {

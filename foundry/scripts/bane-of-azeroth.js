@@ -1,4 +1,9 @@
 import {
+  claimPackageRuntime,
+  notifyPackageConflictIfNeeded,
+  shouldActivatePackageRuntime,
+} from "./package-identity.js";
+import {
   getDruidMoonkinSpellCost,
   patchDruidMoonkinSpellCost,
   buildDruidFormArmorData,
@@ -253,6 +258,7 @@ import {
 Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
+  if (!claimPackageRuntime()) return;
   registerAutomationSettings();
   registerDeveloperSettings();
   patchMageBrillianceSpellCost();
@@ -552,6 +558,8 @@ Hooks.on(
 
 Hooks.once("ready", async () => {
   if (game.system.id !== "dragonbane") return;
+  if (!shouldActivatePackageRuntime()) return;
+  notifyPackageConflictIfNeeded();
 
   try {
     await reconcileGreatHelmFirearms();

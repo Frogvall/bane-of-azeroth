@@ -17,18 +17,30 @@ const production =
   ) ??
   null;
 
+const activeRuntimeId =
+  globalThis[
+    Symbol.for(
+      "bane-of-azeroth.active-runtime",
+    )
+  ] ??
+  null;
+
 boaCheck(
   checks,
   "Development package uses a distinct Foundry package id",
   Boolean(
     development?.active &&
-    development.id === DEVELOPMENT_ID
+    development.id ===
+      DEVELOPMENT_ID
   ),
   development
     ? {
-        id: development.id,
-        title: development.title,
-        active: development.active,
+        id:
+          development.id,
+        title:
+          development.title,
+        active:
+          development.active,
       }
     : null,
 );
@@ -54,11 +66,14 @@ boaCheck(
     game.packs,
   )
     .map(
-      pack => pack.collection,
+      pack =>
+        pack.collection,
     )
     .filter(
       id =>
-        String(id).includes(
+        String(
+          id,
+        ).includes(
           "bane-of-azeroth",
         ),
     ),
@@ -66,22 +81,34 @@ boaCheck(
 
 boaCheck(
   checks,
-  "Production and development packages are not both active",
-  !production?.active,
-  production
-    ? {
-        id: production.id,
-        title: production.title,
-        active: production.active,
-      }
-    : "Production package is not installed.",
+  "Development runtime is authoritative",
+  activeRuntimeId ===
+    DEVELOPMENT_ID,
+  {
+    activeRuntimeId,
+    productionActive:
+      production?.active ??
+      false,
+    developmentActive:
+      development?.active ??
+      false,
+  },
 );
 
-notes.push(
-  "Manual: install both production and development manifests. "
-  + "Verify Foundry Setup shows two separate module entries and enable "
-  + "only Bane of Azeroth - Development in the development world."
-);
+if (
+  production?.active &&
+  development?.active
+) {
+  notes.push(
+    "Both packages are enabled. Development owns the BoA runtime and "
+    + "the production runtime is inert. Disable one before the next session."
+  );
+} else {
+  notes.push(
+    "Production and Development can be installed side-by-side. "
+    + "Only Development is enabled in this world."
+  );
+}
 
 return boaFinish(
   "package-identity",

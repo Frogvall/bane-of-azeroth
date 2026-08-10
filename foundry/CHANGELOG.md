@@ -6,6 +6,10 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+### Fixed
+- Development now remains authoritative if both production and development packages are enabled: production becomes inert before registering BoA runtime behavior, while Development continues and emits a clear warning.
+- Production and development delivery manifests declare each other through `relationships.conflicts`, giving Foundry a known-conflict warning while retaining the runtime safety guard.
+
 ### Changed
 - Development prerelease packages now use the distinct Foundry package identity `bane-of-azeroth-dev` and title **Bane of Azeroth - Development**, allowing production and development packages to be installed side-by-side.
 - Development packaging rewrites package-qualified runtime/content namespaces only in staged prerelease output; the source manifest remains production-canonical.
