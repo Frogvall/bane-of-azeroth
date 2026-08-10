@@ -6,6 +6,8 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 
+
+## [0.12.1] - 2026-08-11
 ### Changed
 - The hardcoded-reference baseline is now empty and the policy is absolute: any raw Foundry UUID in authoritative content or runtime source fails the reference inventory/build gate, regardless of the presentation directive in which it appears.
 - Internal Actor, Item, JournalEntryPage, and RollTable references now use symbolic keys. Journal-specific Dragonbane presentation directives use typed symbolic forms that materialize only in generated Adventure content.
