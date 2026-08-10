@@ -231,6 +231,11 @@ import {
   canBoACastSpell,
   getBoASpellCost,
 } from "./spellcasting.js";
+// BOA Great Helm + Firearms compatibility.
+import {
+  onCreateGreatHelmFirearmsItem,
+  reconcileGreatHelmFirearms,
+} from "./great-helm-firearms.js";
 Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
@@ -365,6 +370,7 @@ Hooks.once("init", () => {
     onCreateDruidFormArtworkToken,
   );
   Hooks.on("createItem", onCreateItem);
+  Hooks.on("createItem", onCreateGreatHelmFirearmsItem);
   Hooks.on(
     "createItem",
     onCreateAbilityActionItem,
@@ -516,6 +522,15 @@ Hooks.on(
 
 Hooks.once("ready", async () => {
   if (game.system.id !== "dragonbane") return;
+
+  try {
+    await reconcileGreatHelmFirearms();
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to reconcile Great Helm Firearms banes.`,
+      error,
+    );
+  }
 
   try {
     await registerDruidRollBoonAdapter();

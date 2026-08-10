@@ -215,6 +215,120 @@ try {
       ) === definition.key
     );
   }
+
+// BOA Great Helm + Firearms compatibility RED/GREEN contract.
+{
+  let greatHelmProbe =
+    null;
+
+  try {
+    greatHelmProbe =
+      await Item.create(
+        {
+          name:
+            "Great Helm",
+          type:
+            "helmet",
+          img:
+            "icons/svg/helmet.svg",
+          system: {
+            weight:
+              1,
+            quantity:
+              1,
+            cost:
+              "100 gold",
+            supply:
+              "rare",
+            worn:
+              false,
+            memento:
+              false,
+            boons:
+              "",
+            banes:
+              "Awareness, Bows, Crossbows, Slings",
+            rating:
+              2,
+            gmDescription:
+              "",
+            itemDescription:
+              "<p>Bane on all ranged attacks</p>",
+            storage:
+              false,
+          },
+        },
+        {
+          renderSheet:
+            false,
+        },
+      );
+
+    const startedAt =
+      Date.now();
+
+    while (
+      !String(
+        greatHelmProbe
+          ?.system
+          ?.banes ??
+          "",
+      )
+        .split(",")
+        .map(
+          value =>
+            value.trim(),
+        )
+        .includes(
+          "Firearms",
+        ) &&
+      Date.now() -
+        startedAt <
+        1500
+    ) {
+      await new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            25,
+          ),
+      );
+    }
+
+    const banes =
+      String(
+        greatHelmProbe
+          ?.system
+          ?.banes ??
+          "",
+      )
+        .split(",")
+        .map(
+          value =>
+            value.trim(),
+        )
+        .filter(Boolean);
+
+    boaCheck(
+      checks,
+      "Great Helm Details includes Firearms as a Bane",
+      banes.includes(
+        "Firearms",
+      ),
+      banes.join(
+        ", ",
+      ),
+    );
+  } finally {
+    if (
+      greatHelmProbe
+        ?.id
+    ) {
+      await greatHelmProbe.delete();
+    }
+  }
+}
+
 } catch (error) {
   boaCheck(
     checks,
