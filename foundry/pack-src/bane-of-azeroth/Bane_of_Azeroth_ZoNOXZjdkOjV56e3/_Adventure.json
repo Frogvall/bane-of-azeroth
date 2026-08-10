@@ -167,7 +167,10 @@
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Character_Options_BoATblPlayerOpt1/Name_Vulpera_BoANameVulpera01.json",
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Character_Options_BoATblPlayerOpt1/Name_Worgen_BoANameWorgen001.json"
   ],
-  "macros": [],
+  "macros": [
+    "Macro/Change_Druid_Form_BoADruidForm0001.json",
+    "Macro/End_Effects_BoAEndEffects001.json"
+  ],
   "cards": [],
   "playlists": [],
   "folders": [

@@ -195,6 +195,12 @@ import {
   registerManagedEffectLifecycleSocket,
 } from "./managed-effect-lifecycle.js";
 import { registerAutomationSettings } from "./automation-settings.js";
+// BOA player convenience Macros.
+import {
+  resolvePlayerConvenienceActor,
+  runChangeDruidFormMacro,
+  runEndEffectsMacro,
+} from "./player-convenience.js";
 // BOA Druid shared roll-boon adapter.
 import {
   applyDruidRollBoonsToDialog,
@@ -257,6 +263,10 @@ Hooks.once("init", () => {
   if (boaModule) {
     boaModule.api = {
       ...(boaModule.api ?? {}),
+      resolvePlayerConvenienceActor,
+      runChangeDruidFormMacro,
+      runEndEffectsMacro,
+
       getDruidRollBoons,
       applyDruidRollBoonsToDialog,
       isDruidSneakingSkill,

@@ -119,6 +119,23 @@ for (const [key, contentKey] of Object.entries(spellContentKeys)) {
 const api =
   game.modules.get(BOA_TEST_MODULE_ID)?.api ?? {};
 
+// BOA 0.11.7 Player convenience Macro RED/GREEN contract.
+for (
+  const functionName
+  of [
+    "resolvePlayerConvenienceActor",
+    "runChangeDruidFormMacro",
+    "runEndEffectsMacro",
+  ]
+) {
+  boaCheck(
+    checks,
+    `Player convenience API exposes ${functionName}`,
+    typeof api?.[functionName] === "function",
+    typeof api?.[functionName],
+  );
+}
+
 // BOA 0.11.7 developer diagnostics RED/GREEN contract.
 for (const functionName of [
   "setDruidLifecycleTraceEnabled",
