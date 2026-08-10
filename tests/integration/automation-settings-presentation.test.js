@@ -10,6 +10,9 @@ import {
   expect,
   test,
 } from "vitest";
+import {
+  AutomationSettingsForm,
+} from "../../foundry/scripts/automation-settings.js";
 
 const MANIFEST = resolve(
   "foundry",
@@ -107,11 +110,12 @@ describe("Automation Settings presentation", () => {
     expect(template).toContain("<fieldset>");
     expect(template).toContain("<legend>");
     expect(
-      // BOA 0.11.7 Druid mechanics form-group count
-    // BOA 0.11.7 Druid armor/spell form-group count
-    // BOA 0.11.7 Druid Moonkin spell-cost form-group count
       template.match(/\{\{formGroup/g),
-    ).toHaveLength(17); // Druid Form Artwork setting
+    ).toHaveLength(
+      Object.keys(
+        AutomationSettingsForm.schema.fields,
+      ).length,
+    );
     expect(template).toContain(
       "schema.fields.elementalTotemAutomation",
     );

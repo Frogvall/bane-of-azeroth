@@ -198,6 +198,8 @@ describe("ApplicationV2 automation settings form", () => {
       druidFormArmorAutomation: false,
       druidFormSpellRestrictionAutomation: false,
       druidMoonkinSpellCostAutomation: false,
+      druidCatSneakingAutomation: false,
+      druidMoonkinSpellcastingBoonAutomation: false,
       druidFormArtworkAutomation: false,
     });
     expect(context.buttons).toEqual([
@@ -238,6 +240,8 @@ describe("ApplicationV2 automation settings form", () => {
           druidFormArmorAutomation: true,
           druidFormSpellRestrictionAutomation: true,
           druidMoonkinSpellCostAutomation: true,
+          druidCatSneakingAutomation: true,
+          druidMoonkinSpellcastingBoonAutomation: true,
           druidFormArtworkAutomation: true,
         },
       },
@@ -246,7 +250,9 @@ describe("ApplicationV2 automation settings form", () => {
     // BOA 0.11.7 Druid mechanics setting count
     // BOA 0.11.7 Druid armor/spell setting count
     // BOA 0.11.7 Druid Moonkin spell-cost setting count
-    expect(set).toHaveBeenCalledTimes(17); // Druid Form Artwork setting
+    expect(set).toHaveBeenCalledTimes(
+      Object.values(AUTOMATION_SETTING_KEYS).length,
+    );
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.ELEMENTAL_TOTEMS,
@@ -280,6 +286,16 @@ describe("ApplicationV2 automation settings form", () => {
     expect(set).toHaveBeenCalledWith(
       MODULE_ID,
       AUTOMATION_SETTING_KEYS.DRUID_FORMS,
+      true,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.DRUID_CAT_SNEAKING,
+      true,
+    );
+    expect(set).toHaveBeenCalledWith(
+      MODULE_ID,
+      AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON,
       true,
     );
   });

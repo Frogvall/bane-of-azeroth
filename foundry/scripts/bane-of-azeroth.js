@@ -195,6 +195,14 @@ import {
   registerManagedEffectLifecycleSocket,
 } from "./managed-effect-lifecycle.js";
 import { registerAutomationSettings } from "./automation-settings.js";
+// BOA Druid shared roll-boon adapter.
+import {
+  applyDruidRollBoonsToDialog,
+  getDruidRollBoons,
+  isDruidSneakingSkill,
+  patchDruidRollBoons,
+  registerDruidRollBoonAdapter,
+} from "./druid-roll-boons.js";
 // BOA developer diagnostics settings.
 import {
   applyDeveloperSettings,
@@ -249,6 +257,11 @@ Hooks.once("init", () => {
   if (boaModule) {
     boaModule.api = {
       ...(boaModule.api ?? {}),
+      getDruidRollBoons,
+      applyDruidRollBoonsToDialog,
+      isDruidSneakingSkill,
+      patchDruidRollBoons,
+      registerDruidRollBoonAdapter,
       setDruidLifecycleTraceEnabled,
       isDruidLifecycleTraceEnabled,
       exportDruidLifecycleTrace,
@@ -493,6 +506,15 @@ Hooks.on(
 
 Hooks.once("ready", async () => {
   if (game.system.id !== "dragonbane") return;
+
+  try {
+    await registerDruidRollBoonAdapter();
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize the shared Druid roll-boon adapter.`,
+      error,
+    );
+  }
 
 
   try {

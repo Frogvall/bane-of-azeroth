@@ -1584,6 +1584,146 @@ notes.push(
     }
   }
 
+  // BOA 0.11.7 Cat + Moonkin shared roll-boon RED/GREEN contract.
+  {
+    boaCheck(
+      checks,
+      "Shared Druid roll-boon API is exposed",
+      typeof api.getDruidRollBoons === "function",
+      typeof api.getDruidRollBoons,
+    );
+
+    const catSetting = game.settings.settings?.get?.(
+      `${BOA_TEST_MODULE_ID}.druidCatSneakingAutomation`,
+    );
+    const moonkinSetting = game.settings.settings?.get?.(
+      `${BOA_TEST_MODULE_ID}.druidMoonkinSpellcastingBoonAutomation`,
+    );
+
+    boaCheck(
+      checks,
+      "Druid Cat Sneaking automation defaults enabled",
+      catSetting?.default === true,
+      catSetting?.default ?? null,
+    );
+    boaCheck(
+      checks,
+      "Druid Moonkin Spellcasting Boon automation defaults enabled",
+      moonkinSetting?.default === true,
+      moonkinSetting?.default ?? null,
+    );
+
+    if (typeof api.getDruidRollBoons === "function") {
+      const makeActor = (currentForm, activations) => ({
+        type: "character",
+        flags: {
+          [BOA_TEST_MODULE_ID]: {
+            druidFormState: { currentForm, activations },
+          },
+        },
+        getFlag(moduleId, key) {
+          return this.flags?.[moduleId]?.[key];
+        },
+      });
+      const sneaking = {
+        type: "skill",
+        name: "Sneaking",
+        system: { attribute: "agl", value: 12 },
+      };
+      const magicSkill = {
+        type: "skill",
+        name: "Animism",
+        system: { attribute: "wil", value: 12 },
+      };
+      const spell = {
+        type: "spell",
+        name: "[BOA TEST] Moonkin spell",
+      };
+
+      boaCheckEqual(
+        checks,
+        "Cat Form with active Feral gives SNEAKING one boon",
+        api.getDruidRollBoons({
+          actor: makeActor("cat", {
+            feral: { active: true, powerLevel: 2 },
+          }),
+          skill: sneaking,
+          settings: null,
+        }).map(boon => boon.id),
+        ["cat-sneaking"],
+      );
+
+      boaCheckEqual(
+        checks,
+        "Feral gives no SNEAKING boon while current form is Bear",
+        api.getDruidRollBoons({
+          actor: makeActor("bear", {
+            feral: { active: true, powerLevel: 2 },
+          }),
+          skill: sneaking,
+          settings: null,
+        }).map(boon => boon.id),
+        [],
+      );
+
+      boaCheckEqual(
+        checks,
+        "Moonkin with active Stars gives spellcasting one boon",
+        api.getDruidRollBoons({
+          actor: makeActor("moonkin", {
+            stars: { active: true, powerLevel: 2 },
+          }),
+          skill: magicSkill,
+          spell,
+          settings: null,
+        }).map(boon => boon.id),
+        ["moonkin-spellcasting"],
+      );
+
+      boaCheckEqual(
+        checks,
+        "Stars gives no spellcasting boon while current form is Humanoid",
+        api.getDruidRollBoons({
+          actor: makeActor("humanoid", {
+            stars: { active: true, powerLevel: 2 },
+          }),
+          skill: magicSkill,
+          spell,
+          settings: null,
+        }).map(boon => boon.id),
+        [],
+      );
+    }
+
+    try {
+      const path =
+        "systems/dragonbane/modules/tests/skill-test.js";
+      const route = foundry.utils.getRoute?.(path) ?? `/${path}`;
+      const { default: SkillTestClass } = await import(route);
+      const patchSymbol = Symbol.for(
+        `${BOA_TEST_MODULE_ID}.druidRollBoons.skillTest`,
+      );
+
+      boaCheck(
+        checks,
+        "Dragonbane DoDSkillTest uses the shared Druid roll-boon adapter",
+        SkillTestClass?.prototype?.updateDialogData?.[
+          patchSymbol
+        ] === true,
+        SkillTestClass?.prototype?.updateDialogData?.[
+          patchSymbol
+        ] ?? false,
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        "Dragonbane DoDSkillTest uses the shared Druid roll-boon adapter",
+        false,
+        String(error),
+      );
+    }
+  }
+
   // BOA 0.11.7 shared spellcasting + Druid PL RED/GREEN contract.
   {
     boaCheck(

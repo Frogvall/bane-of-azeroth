@@ -17,6 +17,8 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   DRUID_FORM_ARMOR: "druidFormArmorAutomation",
   DRUID_FORM_SPELL_RESTRICTION: "druidFormSpellRestrictionAutomation",
   DRUID_MOONKIN_SPELL_COST: "druidMoonkinSpellCostAutomation",
+  DRUID_CAT_SNEAKING: "druidCatSneakingAutomation",
+  DRUID_MOONKIN_SPELLCASTING_BOON: "druidMoonkinSpellcastingBoonAutomation",
   DRUID_FORM_ARTWORK: "druidFormArtworkAutomation",
 });
 
@@ -382,6 +384,24 @@ export function isDruidMoonkinSpellCostAutomationEnabled(
   );
 }
 
+export function isDruidCatSneakingAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_CAT_SNEAKING,
+    settings,
+  );
+}
+
+export function isDruidMoonkinSpellcastingBoonAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON,
+    settings,
+  );
+}
+
 function restoreDruidArtworkOnChange(value) {
   if (value !== false) return;
   queueMicrotask(() => {
@@ -503,6 +523,14 @@ export class AutomationSettingsForm
       "BOA.settings.automation.druidMoonkinSpellCostName",
       "BOA.settings.automation.druidMoonkinSpellCostHint",
     ),
+    druidCatSneakingAutomation: booleanField(
+      "BOA.settings.automation.druidCatSneakingName",
+      "BOA.settings.automation.druidCatSneakingHint",
+    ),
+    druidMoonkinSpellcastingBoonAutomation: booleanField(
+      "BOA.settings.automation.druidMoonkinSpellcastingBoonName",
+      "BOA.settings.automation.druidMoonkinSpellcastingBoonHint",
+    ),
     druidFormArtworkAutomation: booleanField(
       "BOA.settings.automation.druidFormArtworkName",
       "BOA.settings.automation.druidFormArtworkHint",
@@ -552,6 +580,10 @@ export class AutomationSettingsForm
           isDruidFormSpellRestrictionAutomationEnabled(),
         druidMoonkinSpellCostAutomation:
           isDruidMoonkinSpellCostAutomationEnabled(),
+        druidCatSneakingAutomation:
+          isDruidCatSneakingAutomationEnabled(),
+        druidMoonkinSpellcastingBoonAutomation:
+          isDruidMoonkinSpellcastingBoonAutomationEnabled(),
         druidFormArtworkAutomation:
           isDruidFormArtworkAutomationEnabled(),
       },
@@ -707,6 +739,16 @@ export class AutomationSettingsForm
             AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELL_COST
           ],
         ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_CAT_SNEAKING,
+        Boolean(values[AUTOMATION_SETTING_KEYS.DRUID_CAT_SNEAKING]),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON,
+        Boolean(values[AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON]),
       ),
       settings.set(
         MODULE_ID,
@@ -892,6 +934,22 @@ export function registerAutomationSettings(
     settingDefinition(
       "BOA.settings.automation.druidMoonkinSpellCostName",
       "BOA.settings.automation.druidMoonkinSpellCostHint",
+    ),
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_CAT_SNEAKING,
+    settingDefinition(
+      "BOA.settings.automation.druidCatSneakingName",
+      "BOA.settings.automation.druidCatSneakingHint",
+    ),
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.DRUID_MOONKIN_SPELLCASTING_BOON,
+    settingDefinition(
+      "BOA.settings.automation.druidMoonkinSpellcastingBoonName",
+      "BOA.settings.automation.druidMoonkinSpellcastingBoonHint",
     ),
   );
   settings.register(

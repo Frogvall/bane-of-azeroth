@@ -147,7 +147,11 @@
         "druidMoonkinSpellCostName": "Druid Moonkin Spell Cost",
         "druidMoonkinSpellCostHint": "While Moonkin Form is active, magic tricks cost 0 WP and other spells cost 1 WP less per Stars Incarnation power level, minimum 1 WP.",
         "druidFormArtworkName": "Druid Form Artwork",
-        "druidFormArtworkHint": "Automatically switch Druid portraits and tokens when forms change, while preserving each humanoid and scene-token image."
+        "druidFormArtworkHint": "Automatically switch Druid portraits and tokens when forms change, while preserving each humanoid and scene-token image.",
+        "druidCatSneakingName": "Druid Cat Sneaking",
+        "druidCatSneakingHint": "Add one default-selected boon to SNEAKING rolls while Cat Form is the current physical form and Feral Incarnation is active.",
+        "druidMoonkinSpellcastingBoonName": "Druid Moonkin Spellcasting Boon",
+        "druidMoonkinSpellcastingBoonHint": "Add one default-selected boon to spellcasting rolls while Moonkin Form is the current physical form and Incarnation of the Stars is active."
       },
       "developer": {
         "menuName": "Developer / Diagnostics",
@@ -200,6 +204,10 @@
       "reset": "Reset to Default",
       "save": "Save",
       "cancel": "Cancel"
+    },
+    "rollBoons": {
+      "druidCatSneaking": "Cat Form",
+      "druidMoonkinSpellcasting": "Moonkin Form"
     }
   },
   "DoD": {
