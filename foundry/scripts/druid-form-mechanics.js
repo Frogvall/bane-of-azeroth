@@ -28,6 +28,8 @@ export const BARKSKIN_CONTENT_KEY =
   "druid-form-armor.barkskin";
 export const DRUID_FORM_ARMOR_BASELINE_FLAG =
   "druidFormArmorBaseline";
+export const DRUID_FORM_ARMOR_INTERNAL_UPDATE_OPTION =
+  "boaDruidFormArmorInternal";
 
 const STATE_FLAG =
   "druidFormState";
@@ -295,6 +297,7 @@ function itemById(
 async function updateItems(
   actor,
   updates,
+  options = {},
 ) {
   if (
     updates.length ===
@@ -306,6 +309,7 @@ async function updateItems(
   return actor.updateEmbeddedDocuments(
     "Item",
     updates,
+    options,
   );
 }
 
@@ -452,7 +456,36 @@ async function restoreArmorBaseline(
   await updateItems(
     actor,
     updates,
+    {
+      [
+        DRUID_FORM_ARMOR_INTERNAL_UPDATE_OPTION
+      ]:
+        true,
+    },
   );
+
+  const pending =
+    updates.filter(
+      update =>
+        itemById(
+          actor,
+          update._id,
+        )?.system?.worn !==
+          true,
+    );
+
+  if (
+    pending.length >
+      0
+  ) {
+    return {
+      restored:
+        updates.length -
+        pending.length,
+      pending:
+        pending.length,
+    };
+  }
 
   await actor.unsetFlag(
     MODULE_ID,
@@ -462,6 +495,8 @@ async function restoreArmorBaseline(
   return {
     restored:
       updates.length,
+    pending:
+      0,
   };
 }
 
@@ -856,11 +891,22 @@ function localizedWarning(
 export function onPreUpdateDruidFormArmorItem(
   item,
   changes,
-  {
+  options = {},
+) {
+  const {
     settings =
       globalThis.game?.settings,
-  } = {},
-) {
+  } =
+    options;
+
+  if (
+    options?.[
+      DRUID_FORM_ARMOR_INTERNAL_UPDATE_OPTION
+    ] === true
+  ) {
+    return true;
+  }
+
   if (
     !isDruidFormArmorAutomationEnabled(
       settings,

@@ -168,8 +168,8 @@
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Character_Options_BoATblPlayerOpt1/Name_Worgen_BoANameWorgen001.json"
   ],
   "macros": [
-    "Macro/Change_Druid_Form_BoADruidForm0001.json",
-    "Macro/End_Effects_BoAEndEffects001.json"
+    "Macro/Bane_of_Azeroth_BoAMacros0000001/Change_Druid_Form_BoADruidForm0001.json",
+    "Macro/Bane_of_Azeroth_BoAMacros0000001/End_Effects_BoAEndEffects001.json"
   ],
   "cards": [],
   "playlists": [],
@@ -208,7 +208,8 @@
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/_Folder.json",
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Monster_Attacks_MonstAtk8vN3Qx2P/_Folder.json",
     "RollTable/Bane_of_Azeroth_BoATables7pQ2mX9/Character_Options_BoATblPlayerOpt1/_Folder.json",
-    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/_Folder.json"
+    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/_Folder.json",
+    "Macro/Bane_of_Azeroth_BoAMacros0000001/_Folder.json"
   ],
   "_id": "ZoNOXZjdkOjV56e3",
   "folder": null,

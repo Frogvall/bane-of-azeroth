@@ -5,7 +5,7 @@
   "command": "const boa = game.modules.get(\"bane-of-azeroth\")?.api;\nif (typeof boa?.runChangeDruidFormMacro !== \"function\") {\n  ui.notifications?.error?.(\n    \"Bane of Azeroth macro support is unavailable.\",\n  );\n  return;\n}\nawait boa.runChangeDruidFormMacro();\n",
   "img": "icons/svg/pawprint.svg",
   "author": null,
-  "folder": null,
+  "folder": "BoAMacros0000001",
   "sort": 100000,
   "ownership": {
     "default": 2

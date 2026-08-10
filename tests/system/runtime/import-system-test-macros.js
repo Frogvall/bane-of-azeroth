@@ -4,8 +4,9 @@
   const MODULE_ID = "bane-of-azeroth";
   const PACK_ID =
     "bane-of-azeroth.bane-of-azeroth-dev-tests";
-  const ROOT_FOLDER_NAME = "Bane of Azeroth";
-  const TEST_FOLDER_NAME = "System Tests";
+  const TEST_FOLDER_NAME = "Bane of Azeroth - System Tests";
+  const LEGACY_ROOT_FOLDER_NAME = "Bane of Azeroth";
+  const LEGACY_TEST_FOLDER_NAME = "System Tests";
   const IMPORTED_FLAG = "managedSystemTestMacro";
 
   function collectionValues(collection) {
@@ -54,6 +55,60 @@
       sorting: "a",
       color,
     });
+  }
+
+  function macroFolderChildren(
+    folder
+  ) {
+    return collectionValues(game.folders)
+      .filter(candidate =>
+        candidate.type === "Macro" &&
+        parentFolderId(candidate) === folder.id
+      );
+  }
+
+  function macrosInFolder(
+    folder
+  ) {
+    return collectionValues(game.macros)
+      .filter(macro =>
+        parentFolderId(macro) === folder.id
+      );
+  }
+
+  async function cleanupLegacyMacroFolders() {
+    const legacyRoots =
+      collectionValues(game.folders)
+        .filter(folder =>
+          folder.type === "Macro" &&
+          folder.name === LEGACY_ROOT_FOLDER_NAME &&
+          parentFolderId(folder) === null
+        );
+
+    for (const root of legacyRoots) {
+      const legacyChildren =
+        macroFolderChildren(root)
+          .filter(folder =>
+            folder.name === LEGACY_TEST_FOLDER_NAME
+          );
+
+      for (const child of legacyChildren) {
+        if (
+          macrosInFolder(child).length === 0 &&
+          macroFolderChildren(child).length === 0
+        ) {
+          await child.delete();
+        }
+      }
+
+      if (
+        root.color === "#1f5fbf" &&
+        macrosInFolder(root).length === 0 &&
+        macroFolderChildren(root).length === 0
+      ) {
+        await root.delete();
+      }
+    }
   }
 
   function isPrimaryActiveGM() {
@@ -157,16 +212,10 @@
       return;
     }
 
-    const rootFolder = await ensureMacroFolder(
-      ROOT_FOLDER_NAME,
-      null,
-      "#1f5fbf"
-    );
-
     const testFolder = await ensureMacroFolder(
       TEST_FOLDER_NAME,
-      rootFolder,
-      null
+      null,
+      "#1f5fbf"
     );
 
     const managedWorldMacros =
@@ -216,6 +265,8 @@
         updatedCount += 1;
       }
     }
+
+    await cleanupLegacyMacroFolders();
 
     if (createdCount > 0 || updatedCount > 0) {
       ui.notifications.info(

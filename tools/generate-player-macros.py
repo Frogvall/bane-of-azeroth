@@ -13,6 +13,12 @@ import sys
 
 MODULE_ID = "bane-of-azeroth"
 GENERATOR_NAME = "tools/generate-player-macros.py"
+MACRO_FOLDER_ID = "BoAMacros0000001"
+MACRO_FOLDER_NAME = "Bane of Azeroth"
+MACRO_FOLDER_COLOR = "#0000ff"
+MACRO_FOLDER_DIRECTORY_NAME = (
+    f"Bane_of_Azeroth_{MACRO_FOLDER_ID}"
+)
 SOURCE_PATH = Path(
     "foundry/content/macros/player-convenience.json"
 )
@@ -271,6 +277,31 @@ def base_stats() -> dict[str, object]:
     }
 
 
+def build_macro_folder() -> dict[str, object]:
+    stats = base_stats()
+    stats["duplicateSource"] = (
+        f"Folder.{MACRO_FOLDER_ID}"
+    )
+
+    return {
+        "type": "Macro",
+        "folder": None,
+        "name": MACRO_FOLDER_NAME,
+        "color": MACRO_FOLDER_COLOR,
+        "sorting": "m",
+        "_id": MACRO_FOLDER_ID,
+        "description": "",
+        "sort": 0,
+        "flags": {
+            MODULE_ID: {
+                "generatedBy": GENERATOR_NAME,
+                "contentKey": "macros.folder.bane-of-azeroth",
+            },
+        },
+        "_stats": stats,
+    }
+
+
 def build_macro(
     macro: dict[str, object],
 ) -> dict[str, object]:
@@ -286,7 +317,7 @@ def build_macro(
         ),
         "img": str(macro["img"]),
         "author": None,
-        "folder": None,
+        "folder": MACRO_FOLDER_ID,
         "sort": int(macro["sort"]),
         "ownership": {
             "default": int(
@@ -452,9 +483,13 @@ def expected_outputs(
     source = read_json(source_path)
     macros = validate_source(source)
 
-    macro_directory = (
+    macro_root_directory = (
         adventure_directory
         / "Macro"
+    )
+    macro_directory = (
+        macro_root_directory
+        / MACRO_FOLDER_DIRECTORY_NAME
     )
     outputs: dict[
         Path,
@@ -463,6 +498,15 @@ def expected_outputs(
     macro_paths: list[str] = []
     managed_ids: set[str] = set()
     expected_files: set[Path] = set()
+
+    folder_path = (
+        macro_directory
+        / "_Folder.json"
+    )
+    outputs[folder_path] = dump_json(
+        build_macro_folder()
+    )
+    expected_files.add(folder_path)
 
     for macro in sorted(
         macros,
@@ -546,6 +590,37 @@ def expected_outputs(
         )
     )
 
+    existing_folders = adventure.get(
+        "folders"
+    )
+    if not isinstance(
+        existing_folders,
+        list,
+    ):
+        raise GenerationError(
+            "Adventure folders must be an array."
+        )
+
+    folder_relative = (
+        folder_path
+        .relative_to(adventure_directory)
+        .as_posix()
+    )
+    merged_folders = [
+        str(value)
+        for value in existing_folders
+        if str(value) != folder_relative
+    ]
+    merged_folders.append(folder_relative)
+
+    expected_adventure = (
+        replace_json_array(
+            expected_adventure,
+            "folders",
+            merged_folders,
+        )
+    )
+
     return (
         outputs,
         expected_adventure,
@@ -561,7 +636,7 @@ def generated_macro_files(
 
     managed: set[Path] = set()
 
-    for path in macro_directory.glob(
+    for path in macro_directory.rglob(
         "*.json"
     ):
         try:

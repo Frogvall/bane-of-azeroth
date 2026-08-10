@@ -119,6 +119,99 @@ for (const [key, contentKey] of Object.entries(spellContentKeys)) {
 const api =
   game.modules.get(BOA_TEST_MODULE_ID)?.api ?? {};
 
+// BOA 0.11.7 Macro folder separation RED/GREEN contract.
+{
+  const macroFolders =
+    Array.from(
+      game.folders ?? [],
+    ).filter(
+      folder =>
+        folder?.type === "Macro",
+    );
+
+  const playerMacroFolder =
+    macroFolders.find(
+      folder =>
+        folder?.id ===
+          "BoAMacros0000001" &&
+        folder?.name ===
+          "Bane of Azeroth" &&
+        (
+          folder?.folder?.id ??
+          folder?.folder ??
+          null
+        ) === null,
+    ) ??
+    null;
+
+  const systemTestFolder =
+    macroFolders.find(
+      folder =>
+        folder?.name ===
+          "Bane of Azeroth - System Tests" &&
+        (
+          folder?.folder?.id ??
+          folder?.folder ??
+          null
+        ) === null,
+    ) ??
+    null;
+
+  const changeDruidFormMacro =
+    game.macros?.get?.(
+      "BoADruidForm0001",
+    ) ??
+    null;
+  const endEffectsMacro =
+    game.macros?.get?.(
+      "BoAEndEffects001",
+    ) ??
+    null;
+
+  boaCheck(
+    checks,
+    "Player convenience Macros use the Bane of Azeroth Macro folder",
+    Boolean(
+      playerMacroFolder &&
+      changeDruidFormMacro &&
+      endEffectsMacro &&
+      (
+        changeDruidFormMacro?.folder?.id ??
+        changeDruidFormMacro?.folder ??
+        null
+      ) ===
+        playerMacroFolder.id &&
+      (
+        endEffectsMacro?.folder?.id ??
+        endEffectsMacro?.folder ??
+        null
+      ) ===
+        playerMacroFolder.id
+    ),
+    {
+      playerMacroFolder:
+        playerMacroFolder?.id ??
+        null,
+      changeFolder:
+        changeDruidFormMacro?.folder?.id ??
+        changeDruidFormMacro?.folder ??
+        null,
+      endFolder:
+        endEffectsMacro?.folder?.id ??
+        endEffectsMacro?.folder ??
+        null,
+    },
+  );
+
+  boaCheck(
+    checks,
+    "Developer system-test Macros use a separate root folder",
+    Boolean(systemTestFolder),
+    systemTestFolder?.name ??
+      null,
+  );
+}
+
 // BOA 0.11.7 Player convenience Macro RED/GREEN contract.
 for (
   const functionName
