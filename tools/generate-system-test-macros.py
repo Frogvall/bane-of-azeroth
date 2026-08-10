@@ -234,6 +234,16 @@ MACROS = [
         "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
     },
     {
+        "key": "shadowform",
+        "id": "BoaDevShadow0018",
+        "name": "BOA DEV – Verify Shadowform Visuals",
+        "file": "verify-shadowform.js",
+        "order": 26,
+        "suiteOrder": 21,
+        "suiteMember": True,
+        "img": "icons/svg/mystery-man.svg",
+    },
+    {
         "key": "prepare-player-tests",
         "id": "BoaDevPlyPrep001",
         "name": "BOA DEV – Prepare Player Tests",
