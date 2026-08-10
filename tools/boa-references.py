@@ -235,6 +235,301 @@ def validate_reference_sources(
     return resolved
 
 
+
+def load_internal_adventure_reference_targets(
+    adventure_directory: Path,
+) -> dict[str, ReferenceTarget]:
+    """Build symbolic Actor/Item/RollTable targets from managed Adventure content keys."""
+    resolved: dict[str, ReferenceTarget] = {}
+    seen_uuids: dict[str, str] = {}
+
+    for document_type, prefix in (
+        ("Actor", "boa:actor."),
+        ("Item", "boa:item."),
+        ("RollTable", "boa:table."),
+    ):
+        directory = (
+            adventure_directory
+            / document_type
+        )
+
+        if not directory.is_dir():
+            continue
+
+        for path in sorted(
+            directory.rglob(
+                "*.json"
+            )
+        ):
+            if path.name == "_Folder.json":
+                continue
+
+            raw = load_json(
+                path
+            )
+
+            if not isinstance(
+                raw,
+                dict,
+            ):
+                continue
+
+            document_id = raw.get(
+                "_id"
+            )
+            flags = raw.get(
+                "flags"
+            )
+            module_flags = (
+                flags.get(
+                    "bane-of-azeroth"
+                )
+                if isinstance(
+                    flags,
+                    dict,
+                )
+                else None
+            )
+            content_key = (
+                module_flags.get(
+                    "contentKey"
+                )
+                if isinstance(
+                    module_flags,
+                    dict,
+                )
+                else None
+            )
+
+            if (
+                not isinstance(
+                    document_id,
+                    str,
+                )
+                or not isinstance(
+                    content_key,
+                    str,
+                )
+                or not content_key
+            ):
+                continue
+
+            key = (
+                prefix
+                + content_key
+            )
+            uuid = (
+                f"{document_type}."
+                f"{document_id}"
+            )
+
+            if key in resolved:
+                raise ReferenceError(
+                    "Duplicate internal Adventure reference key: "
+                    f"{key}"
+                )
+
+            duplicate_key = (
+                seen_uuids.get(
+                    uuid
+                )
+            )
+
+            if duplicate_key is not None:
+                raise ReferenceError(
+                    "Internal Adventure references "
+                    f"{duplicate_key} and {key} share UUID {uuid}."
+                )
+
+            resolved[
+                key
+            ] = ReferenceTarget(
+                key=key,
+                uuid=uuid,
+                document_type=
+                    document_type,
+            )
+            seen_uuids[
+                uuid
+            ] = key
+
+    return resolved
+
+
+def load_internal_journal_reference_targets(
+    repo_root: Path,
+) -> dict[str, ReferenceTarget]:
+    """Build JournalEntry/Page targets from curated source IDs and keys."""
+    source_root = (
+        repo_root
+        / "foundry"
+        / "content"
+        / "journals"
+    )
+    resolved: dict[str, ReferenceTarget] = {}
+
+    for journal_path in sorted(
+        source_root.glob(
+            "*/journal.json"
+        )
+    ):
+        journal = load_json(
+            journal_path
+        )
+
+        if not isinstance(
+            journal,
+            dict,
+        ):
+            continue
+
+        journal_key = journal.get(
+            "key"
+        )
+        journal_id = journal.get(
+            "id"
+        )
+
+        if (
+            not isinstance(
+                journal_key,
+                str,
+            )
+            or not isinstance(
+                journal_id,
+                str,
+            )
+        ):
+            continue
+
+        journal_reference_key = (
+            f"boa:journal."
+            f"{journal_key}"
+        )
+
+        resolved[
+            journal_reference_key
+        ] = ReferenceTarget(
+            key=
+                journal_reference_key,
+            uuid=(
+                f"JournalEntry."
+                f"{journal_id}"
+            ),
+            document_type=
+                "JournalEntry",
+        )
+
+        for page_path in sorted(
+            candidate
+            for candidate
+            in journal_path.parent.glob(
+                "*.json"
+            )
+            if candidate.name
+            != "journal.json"
+        ):
+            page = load_json(
+                page_path
+            )
+
+            if not isinstance(
+                page,
+                dict,
+            ):
+                continue
+
+            page_key = page.get(
+                "key"
+            )
+            page_id = page.get(
+                "id"
+            )
+
+            if (
+                not isinstance(
+                    page_key,
+                    str,
+                )
+                or not isinstance(
+                    page_id,
+                    str,
+                )
+            ):
+                continue
+
+            reference_key = (
+                "boa:journal-page."
+                f"{journal_key}."
+                f"{page_key}"
+            )
+
+            if reference_key in resolved:
+                raise ReferenceError(
+                    "Duplicate internal Journal reference key: "
+                    f"{reference_key}"
+                )
+
+            resolved[
+                reference_key
+            ] = ReferenceTarget(
+                key=reference_key,
+                uuid=(
+                    f"JournalEntry."
+                    f"{journal_id}."
+                    "JournalEntryPage."
+                    f"{page_id}"
+                ),
+                document_type=
+                    "JournalEntryPage",
+            )
+
+    return resolved
+
+
+def split_reference_key(
+    key: str,
+) -> tuple[str, str | None]:
+    base_key, separator, anchor = (
+        key.partition(
+            "#"
+        )
+    )
+
+    if not separator:
+        return key, None
+
+    if not base_key or not anchor:
+        raise ReferenceError(
+            f"Invalid anchored symbolic reference key: {key}"
+        )
+
+    return (
+        base_key,
+        anchor,
+    )
+
+
+def resolved_reference_uuid(
+    target: ReferenceTarget,
+    anchor: str | None,
+) -> str:
+    if anchor is None:
+        return target.uuid
+
+    if "#" in target.uuid:
+        raise ReferenceError(
+            "Cannot append an anchor to an already anchored "
+            f"reference target: {target.key}"
+        )
+
+    return (
+        target.uuid
+        + "#"
+        + anchor
+    )
+
+
 def combined_reference_targets(
     internal_references: Mapping[str, ReferenceTarget],
     external_references: Mapping[str, ReferenceTarget],
@@ -263,40 +558,95 @@ def resolve_symbolic_references(
         external_references,
     )
 
-    def resolve_uuid(match: re.Match[str]) -> str:
-        key = match.group("key")
-        label = match.group("label")
-        target = targets.get(key)
+    def resolve_uuid(
+        match: re.Match[str],
+    ) -> str:
+        key = match.group(
+            "key"
+        )
+        label = match.group(
+            "label"
+        )
+        base_key, anchor = (
+            split_reference_key(
+                key
+            )
+        )
+        target = targets.get(
+            base_key
+        )
+
         if target is None:
             raise ReferenceError(
                 f"Unknown symbolic reference key: {key}"
             )
-        return f"@UUID[{target.uuid}]{{{label}}}"
 
-    def resolve_table(match: re.Match[str]) -> str:
-        key = match.group("key")
-        label = match.group("label")
-        target = targets.get(key)
+        uuid = resolved_reference_uuid(
+            target,
+            anchor,
+        )
+
+        return (
+            f"@UUID[{uuid}]"
+            f"{{{label}}}"
+        )
+
+    def resolve_table(
+        match: re.Match[str],
+    ) -> str:
+        key = match.group(
+            "key"
+        )
+        label = match.group(
+            "label"
+        )
+        base_key, anchor = (
+            split_reference_key(
+                key
+            )
+        )
+
+        if anchor is not None:
+            raise ReferenceError(
+                "@DisplayRef does not support anchors: "
+                f"{key}"
+            )
+
+        target = targets.get(
+            base_key
+        )
+
         if target is None:
             raise ReferenceError(
-                f"Unknown symbolic display-table reference key: {key}"
+                "Unknown symbolic display-table reference key: "
+                f"{key}"
             )
-        if target.document_type != "RollTable":
+
+        if (
+            target.document_type
+            != "RollTable"
+        ):
             raise ReferenceError(
                 f"Display reference {key} targets "
                 f"{target.document_type}, not RollTable."
             )
-        return f"@DisplayTable[{target.uuid}]{{{label}}}"
 
-    resolved = DISPLAY_REFERENCE_PATTERN.sub(
-        resolve_table,
-        text,
+        return (
+            f"@DisplayTable[{target.uuid}]"
+            f"{{{label}}}"
+        )
+
+    resolved = (
+        DISPLAY_REFERENCE_PATTERN.sub(
+            resolve_table,
+            text,
+        )
     )
+
     return REFERENCE_PATTERN.sub(
         resolve_uuid,
         resolved,
     )
-
 
 
 def resolve_external_symbolic_references(

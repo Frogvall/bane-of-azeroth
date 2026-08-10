@@ -7,6 +7,16 @@ The project is currently in early alpha. Rules, document structures, compendium 
 ## [Unreleased]
 
 ### Changed
+- The hardcoded-reference baseline is now empty and the policy is absolute: any raw Foundry UUID in authoritative content or runtime source fails the reference inventory/build gate, regardless of the presentation directive in which it appears.
+- Internal Actor, Item, JournalEntryPage, and RollTable references now use symbolic keys. Journal-specific Dragonbane presentation directives use typed symbolic forms that materialize only in generated Adventure content.
+- Symbolic references now support anchors such as `#human` without hardcoding the owning JournalEntry/Page UUID.
+
+### Changed
+- Hardcoded Foundry reference usage is now guarded by a committed baseline over authoritative `foundry/content` and `foundry/scripts` source. Any new raw Foundry UUID link or literal fails the reference inventory/build gate.
+- Reference inventory UUID detection now recognizes actual Foundry document UUID types instead of treating arbitrary dotted `BOA.*` localization keys as UUID literals.
+- The remaining baseline is cleanup debt only; 0.12.1 will drive it to zero, after which all authoritative cross-document references must be symbolic or registry-derived.
+
+### Changed
 - External Dragonbane/Core references used by canonical content now resolve through `external-references.json` instead of duplicated UUID literals in Heroic Class Ability, Kin, Journal, and Mage runtime source.
 - Heroic Class Ability and Kin generation now resolve external `@Ref[...]` through the shared reference infrastructure.
 - Mage's Brilliance now gets the Sense Magic UUID from the generated external-reference runtime registry.

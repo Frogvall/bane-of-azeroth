@@ -52,7 +52,7 @@
           "name": "Raise Ghoul",
           "requirement": "Death Knight's Rebirth",
           "wp": "3",
-          "descriptionHtml": "This ability requires a stretch of time to raise a fallen creature into a ravenous @UUID[Actor.GhoulAct6Kp9T2xP]{ghoul}. The ghoul takes the form of an undead humanoid and counts as a monster in combat. It follows your commands (free action) and acts independently with its own initiative. The ghoul cannot heal HP, and it crumbles to dust and dies if it is ever out of your sight for a stretch of time, or if you use this ability again.",
+          "descriptionHtml": "This ability requires a stretch of time to raise a fallen creature into a ravenous @Ref[boa:actor.actors.summoned-monsters.ghoul]{ghoul}. The ghoul takes the form of an undead humanoid and counts as a monster in combat. It follows your commands (free action) and acts independently with its own initiative. The ghoul cannot heal HP, and it crumbles to dust and dies if it is ever out of your sight for a stretch of time, or if you use this ability again.",
           "image": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp"
         }
       ]

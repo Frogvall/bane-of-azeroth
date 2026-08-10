@@ -21,7 +21,7 @@
   },
   "defaults": {
     "image": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
-    "descriptionHtml": "<p>A small elemental totem summoned by @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}.</p>",
+    "descriptionHtml": "<p>A small elemental totem summoned by @Ref[boa:item.spells.elemental-totem]{Elemental Totem}.</p>",
     "movement": 0,
     "hitPoints": 10,
     "willPoints": 0,

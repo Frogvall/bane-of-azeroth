@@ -78,14 +78,328 @@ INLINE_PATTERNS = (
 RUNTIME_PATTERN = re.compile(
     r"\b(?P<function>fromUuidSync|fromUuid)\s*\("
 )
-UUID_LITERAL_PATTERN = re.compile(
-    r"(?<![A-Za-z0-9_${])"
-    r"(?P<target>"
-    r"[A-Z][A-Za-z0-9]*\.[A-Za-z0-9]{16}"
-    r"(?:\.[A-Z][A-Za-z0-9]*\.[A-Za-z0-9]{16})*"
-    r"(?:#[A-Za-z0-9._:-]+)?"
-    r")"
+FOUNDRY_DOCUMENT_TYPES = (
+    "Actor",
+    "Adventure",
+    "Cards",
+    "ChatMessage",
+    "Combat",
+    "Folder",
+    "Item",
+    "JournalEntry",
+    "JournalEntryPage",
+    "Macro",
+    "Playlist",
+    "RollTable",
+    "Scene",
+    "TableResult",
+    "Token",
+    "User",
 )
+FOUNDRY_DOCUMENT_TYPE_PATTERN = (
+    "(?:"
+    + "|".join(
+        re.escape(value)
+        for value in FOUNDRY_DOCUMENT_TYPES
+    )
+    + ")"
+)
+WORLD_UUID_PATTERN = (
+    rf"(?:{FOUNDRY_DOCUMENT_TYPE_PATTERN})\."
+    r"[A-Za-z0-9]{16}"
+    rf"(?:\.(?:{FOUNDRY_DOCUMENT_TYPE_PATTERN})"
+    r"\.[A-Za-z0-9]{16})*"
+    r"(?:#[A-Za-z0-9._:-]+)?"
+)
+COMPENDIUM_UUID_PATTERN = (
+    r"Compendium\."
+    r"[A-Za-z0-9_-]+\."
+    r"[A-Za-z0-9_-]+\."
+    rf"(?:{FOUNDRY_DOCUMENT_TYPE_PATTERN})\."
+    r"[A-Za-z0-9]{16}"
+    rf"(?:\.(?:{FOUNDRY_DOCUMENT_TYPE_PATTERN})"
+    r"\.[A-Za-z0-9]{16})*"
+    r"(?:#[A-Za-z0-9._:-]+)?"
+)
+UUID_LITERAL_PATTERN = re.compile(
+    r"(?P<quote>['\"`])"
+    r"(?P<target>(?:"
+    + WORLD_UUID_PATTERN
+    + "|"
+    + COMPENDIUM_UUID_PATTERN
+    + r"))"
+    r"(?P=quote)"
+)
+
+FULL_UUID_PATTERN = re.compile(
+    r"^(?:"
+    + WORLD_UUID_PATTERN
+    + "|"
+    + COMPENDIUM_UUID_PATTERN
+    + r")$"
+)
+
+HARDCODED_REFERENCE_BASELINE = (
+    Path("foundry")
+    / "config"
+    / "references"
+    / "hardcoded-reference-baseline.json"
+)
+AUTHORITATIVE_REFERENCE_ROOTS = (
+    "foundry/content/",
+    "foundry/scripts/",
+)
+
+
+def is_foundry_uuid(
+    value: object,
+) -> bool:
+    return (
+        isinstance(
+            value,
+            str,
+        )
+        and FULL_UUID_PATTERN.fullmatch(
+            value
+        )
+        is not None
+    )
+
+
+def hardcoded_reference_counts(
+    entries: list[dict[str, object]],
+) -> dict[
+    tuple[str, str, str],
+    int,
+]:
+    counts: dict[
+        tuple[str, str, str],
+        int,
+    ] = {}
+
+    for entry in entries:
+        kind = str(
+            entry.get(
+                "kind",
+                "",
+            )
+        )
+
+
+        path = str(
+            entry.get(
+                "path",
+                "",
+            )
+        )
+
+        if not path.startswith(
+            AUTHORITATIVE_REFERENCE_ROOTS
+        ):
+            continue
+
+        target = entry.get(
+            "target"
+        )
+
+        if not is_foundry_uuid(
+            target
+        ):
+            continue
+
+        identity = (
+            path,
+            kind,
+            str(
+                target
+            ),
+        )
+
+        counts[
+            identity
+        ] = (
+            counts.get(
+                identity,
+                0,
+            )
+            + 1
+        )
+
+    return counts
+
+
+def load_hardcoded_reference_baseline(
+    repo_root: Path,
+) -> dict[
+    tuple[str, str, str],
+    int,
+]:
+    path = (
+        repo_root
+        / HARDCODED_REFERENCE_BASELINE
+    )
+
+    if not path.is_file():
+        raise RuntimeError(
+            "Missing hardcoded-reference baseline: "
+            f"{HARDCODED_REFERENCE_BASELINE}"
+        )
+
+    data = json.loads(
+        path.read_text(
+            encoding="utf-8",
+        )
+    )
+
+    if data.get("schemaVersion") != 1:
+        raise RuntimeError(
+            "hardcoded-reference-baseline.json "
+            "schemaVersion must be 1."
+        )
+
+    if (
+        data.get("policy")
+        != "no-hardcoded-foundry-references"
+    ):
+        raise RuntimeError(
+            "hardcoded-reference-baseline.json "
+            "has an unexpected policy."
+        )
+
+    entries = data.get(
+        "entries"
+    )
+
+    if not isinstance(
+        entries,
+        list,
+    ):
+        raise RuntimeError(
+            "hardcoded-reference-baseline.json "
+            "entries must be an array."
+        )
+
+    result: dict[
+        tuple[str, str, str],
+        int,
+    ] = {}
+
+    for entry in entries:
+        if not isinstance(
+            entry,
+            dict,
+        ):
+            raise RuntimeError(
+                "Hardcoded reference baseline "
+                "entries must be objects."
+            )
+
+        path_value = entry.get(
+            "path"
+        )
+        kind = entry.get(
+            "kind"
+        )
+        target = entry.get(
+            "target"
+        )
+        count = entry.get(
+            "count"
+        )
+
+        if (
+            not isinstance(
+                path_value,
+                str,
+            )
+            or kind
+            not in {
+                "uuid-link",
+                "uuid-literal",
+            }
+            or not is_foundry_uuid(
+                target
+            )
+            or not isinstance(
+                count,
+                int,
+            )
+            or isinstance(
+                count,
+                bool,
+            )
+            or count < 1
+        ):
+            raise RuntimeError(
+                "Invalid hardcoded reference "
+                f"baseline entry: {entry!r}"
+            )
+
+        identity = (
+            path_value,
+            str(
+                kind
+            ),
+            str(
+                target
+            ),
+        )
+
+        if identity in result:
+            raise RuntimeError(
+                "Duplicate hardcoded reference "
+                f"baseline entry: {identity!r}"
+            )
+
+        result[
+            identity
+        ] = count
+
+    return result
+
+
+def assert_no_hardcoded_references(
+    repo_root: Path,
+    entries: list[dict[str, object]],
+) -> None:
+    del repo_root
+
+    actual = hardcoded_reference_counts(
+        entries
+    )
+
+    if not actual:
+        return
+
+    lines = [
+        "Hardcoded Foundry references are forbidden "
+        "in authoritative source.",
+        (
+            "Use @Ref/@DisplayRef or a typed symbolic "
+            "journal reference instead."
+        ),
+    ]
+
+    for (
+        (
+            path_value,
+            kind,
+            target,
+        ),
+        count,
+    ) in sorted(
+        actual.items()
+    ):
+        lines.append(
+            f"  {count}x {path_value}: "
+            f"{kind} {target}"
+        )
+
+    raise RuntimeError(
+        "\n".join(
+            lines
+        )
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -359,6 +673,10 @@ def build_inventory(
     repo_root: Path,
 ) -> dict[str, object]:
     entries = inventory_entries(repo_root)
+    assert_no_hardcoded_references(
+        repo_root,
+        entries,
+    )
     assert_no_registered_external_uuid_leaks(
         repo_root,
         entries,

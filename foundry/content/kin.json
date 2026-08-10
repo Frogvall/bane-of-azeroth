@@ -381,7 +381,7 @@
           "name": "Two Forms",
           "wp": "1",
           "description": [
-            "By activating this ability (a free action in combat) you change between your humanoid and worgen forms. When in humanoid form, your movement and kin abilities other than this one are the same as if your kin was @UUID[JournalEntry.BoAJrnlPlayerOpt.JournalEntryPage.BoAPgPlayerKin01#human]{Human}."
+            "By activating this ability (a free action in combat) you change between your humanoid and worgen forms. When in humanoid form, your movement and kin abilities other than this one are the same as if your kin was @Ref[boa:journal-page.player-options.kin#human]{Human}."
           ]
         }
       ],

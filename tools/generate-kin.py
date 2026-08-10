@@ -242,6 +242,7 @@ def build_kin_document(
     folder_id: str,
     default_image: str,
     sort: int,
+    internal_references: dict[str, Any],
     external_references: dict[str, Any],
     reference_helpers: Any,
 ) -> dict[str, Any]:
@@ -288,9 +289,10 @@ def build_kin_document(
         "_id": document_id,
         "img": image,
         "system": {
-            "itemDescription": reference_helpers.resolve_external_symbolic_references(
+            "itemDescription": reference_helpers.resolve_symbolic_references(
                 paragraphs_to_html(paragraphs),
-                external_references,
+                internal_references=internal_references,
+                external_references=external_references,
             ),
             "gmDescription": "",
             "abilities": ", ".join(ability_names),
@@ -310,6 +312,7 @@ def build_ability_document(
     folder_id: str,
     default_image: str,
     sort: int,
+    internal_references: dict[str, Any],
     external_references: dict[str, Any],
     reference_helpers: Any,
 ) -> dict[str, Any]:
@@ -344,9 +347,10 @@ def build_ability_document(
         "_id": document_id,
         "img": image,
         "system": {
-            "itemDescription": reference_helpers.resolve_external_symbolic_references(
+            "itemDescription": reference_helpers.resolve_symbolic_references(
                 paragraphs_to_html(paragraphs),
-                external_references,
+                internal_references=internal_references,
+                external_references=external_references,
             ),
             "gmDescription": "",
             "abilityType": "",
@@ -609,6 +613,11 @@ def main() -> int:
                 repo_root
             )
         )
+        internal_references = (
+            reference_helpers.load_internal_journal_reference_targets(
+                repo_root
+            )
+        )
 
         adventure_file = find_single_file(args.pack_root, "_Adventure.json")
         adventure_dir = adventure_file.parent
@@ -631,6 +640,7 @@ def main() -> int:
                 kin_folder_id,
                 kin_image,
                 (kin_index + 1) * 100000,
+                internal_references=internal_references,
                 external_references=external_references,
                 reference_helpers=reference_helpers,
             )
@@ -651,6 +661,7 @@ def main() -> int:
                     ability_folder_id,
                     ability_image,
                     (len(ability_paths) + 1) * 100000,
+                    internal_references=internal_references,
                     external_references=external_references,
                     reference_helpers=reference_helpers,
                 )

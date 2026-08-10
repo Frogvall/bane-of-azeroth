@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import importlib.util
 import re
 import sys
 from pathlib import Path
@@ -77,6 +78,44 @@ def load_json(path: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise GenerationError(f"Expected a JSON object in {path}")
     return data
+
+
+def load_reference_helpers(
+    repo_root: Path,
+):
+    path = (
+        repo_root
+        / "tools"
+        / "boa-references.py"
+    )
+    spec = (
+        importlib.util.spec_from_file_location(
+            "boa_references",
+            path,
+        )
+    )
+
+    if (
+        spec is None
+        or spec.loader is None
+    ):
+        raise GenerationError(
+            f"Could not load reference helpers from {path}."
+        )
+
+    module = (
+        importlib.util.module_from_spec(
+            spec
+        )
+    )
+    sys.modules[
+        spec.name
+    ] = module
+    spec.loader.exec_module(
+        module
+    )
+
+    return module
 
 
 def dump_json(data: dict[str, Any]) -> str:
@@ -792,6 +831,26 @@ def main() -> int:
             "_Adventure.json",
         )
         adventure_dir = adventure_file.parent
+        repo_root = Path(__file__).resolve().parents[1]
+        reference_helpers = load_reference_helpers(
+            repo_root
+        )
+        internal_references = (
+            reference_helpers.load_internal_adventure_reference_targets(
+                adventure_dir
+            )
+        )
+        resolved_defaults = dict(defaults)
+        try:
+            resolved_defaults["descriptionHtml"] = (
+                reference_helpers.resolve_symbolic_references(
+                    defaults["descriptionHtml"],
+                    internal_references=internal_references,
+                    external_references={},
+                )
+            )
+        except reference_helpers.ReferenceError as error:
+            raise GenerationError(str(error)) from error
         adventure = load_json(adventure_file)
 
         actor_root = adventure_dir / "Actor"
@@ -835,7 +894,7 @@ def main() -> int:
         for index, totem in enumerate(totems):
             actor = build_actor(
                 totem=totem,
-                defaults=defaults,
+                defaults=resolved_defaults,
                 folder_id=child["id"],
                 sort=(index + 1) * 100000,
             )

@@ -33,6 +33,13 @@ REF_PATTERN = re.compile(
     r"\[(?P<key>[^\]]+)\]"
     r"\{(?P<label>[^}]*)\}"
 )
+TYPED_REF_PATTERN = re.compile(
+    r"@(?P<directive>"
+    r"DisplayNpcCard|DisplayMonster|DisplaySpell|Gear"
+    r")Ref"
+    r"\[(?P<key>[^\]]+)\]"
+    r"(?:\{(?P<label>[^}]*)\})?"
+)
 MARKDOWN_LINK_PATTERN = re.compile(
     r"\[(?P<label>[^\]]+)\]"
     r"\((?P<href>[^)]+)\)"
@@ -483,6 +490,238 @@ def load_internal_item_references(
     return references
 
 
+def load_internal_actor_references(
+    adventure_directory: Path,
+) -> dict[str, dict[str, str]]:
+    actor_root = (
+        adventure_directory
+        / "Actor"
+    )
+
+    if not actor_root.is_dir():
+        raise GenerationError(
+            "Adventure Actor directory is missing."
+        )
+
+    references: dict[
+        str,
+        dict[str, str],
+    ] = {}
+    ids: set[str] = set()
+
+    for path in sorted(
+        actor_root.rglob(
+            "*.json"
+        )
+    ):
+        if path.name == "_Folder.json":
+            continue
+
+        document = read_json(
+            path
+        )
+
+        if not isinstance(
+            document,
+            dict,
+        ):
+            continue
+
+        flags = document.get(
+            "flags"
+        )
+        module_flags = (
+            flags.get(
+                MODULE_ID
+            )
+            if isinstance(
+                flags,
+                dict,
+            )
+            else None
+        )
+        content_key = (
+            module_flags.get(
+                "contentKey"
+            )
+            if isinstance(
+                module_flags,
+                dict,
+            )
+            else None
+        )
+
+        if not isinstance(
+            content_key,
+            str,
+        ):
+            continue
+
+        document_id = document.get(
+            "_id"
+        )
+
+        if (
+            not isinstance(
+                document_id,
+                str,
+            )
+            or not ID_PATTERN.fullmatch(
+                document_id
+            )
+        ):
+            raise GenerationError(
+                "Actor with content key "
+                f"{content_key!r} has an invalid ID in {path}."
+            )
+
+        reference_key = (
+            f"boa:actor.{content_key}"
+        )
+
+        if reference_key in references:
+            raise GenerationError(
+                "Duplicate internal Actor reference: "
+                f"{reference_key}"
+            )
+
+        if document_id in ids:
+            raise GenerationError(
+                "Duplicate internal Actor ID: "
+                f"{document_id}"
+            )
+
+        references[
+            reference_key
+        ] = {
+            "uuid":
+                f"Actor.{document_id}",
+            "documentType":
+                "Actor",
+        }
+        ids.add(
+            document_id
+        )
+
+    return references
+
+
+def load_internal_generated_roll_table_references(
+    adventure_directory: Path,
+) -> dict[str, dict[str, str]]:
+    table_root = (
+        adventure_directory
+        / "RollTable"
+    )
+
+    if not table_root.is_dir():
+        raise GenerationError(
+            "Adventure RollTable directory is missing."
+        )
+
+    references: dict[
+        str,
+        dict[str, str],
+    ] = {}
+    ids: set[str] = set()
+
+    for path in sorted(
+        table_root.rglob(
+            "*.json"
+        )
+    ):
+        if path.name == "_Folder.json":
+            continue
+
+        document = read_json(
+            path
+        )
+
+        if not isinstance(
+            document,
+            dict,
+        ):
+            continue
+
+        flags = document.get(
+            "flags"
+        )
+        module_flags = (
+            flags.get(
+                MODULE_ID
+            )
+            if isinstance(
+                flags,
+                dict,
+            )
+            else None
+        )
+        content_key = (
+            module_flags.get(
+                "contentKey"
+            )
+            if isinstance(
+                module_flags,
+                dict,
+            )
+            else None
+        )
+
+        if not isinstance(
+            content_key,
+            str,
+        ):
+            continue
+
+        document_id = document.get(
+            "_id"
+        )
+
+        if (
+            not isinstance(
+                document_id,
+                str,
+            )
+            or not ID_PATTERN.fullmatch(
+                document_id
+            )
+        ):
+            raise GenerationError(
+                "RollTable with content key "
+                f"{content_key!r} has an invalid ID in {path}."
+            )
+
+        reference_key = (
+            f"boa:table.{content_key}"
+        )
+
+        if reference_key in references:
+            raise GenerationError(
+                "Duplicate generated RollTable reference: "
+                f"{reference_key}"
+            )
+
+        if document_id in ids:
+            raise GenerationError(
+                "Duplicate generated RollTable ID: "
+                f"{document_id}"
+            )
+
+        references[
+            reference_key
+        ] = {
+            "uuid":
+                f"RollTable.{document_id}",
+            "documentType":
+                "RollTable",
+        }
+        ids.add(
+            document_id
+        )
+
+    return references
+
+
 def load_internal_roll_table_references(
     repo_root: Path,
 ) -> dict[str, dict[str, str]]:
@@ -627,21 +866,131 @@ def resolve_references(
     content: str,
     references: dict[str, dict[str, str]],
 ) -> str:
-    def replacement(
-        match: re.Match[str],
-    ) -> str:
-        key = match.group("key")
-        label = match.group("label")
-        reference = references.get(key)
+    def target_for(
+        key: str,
+    ) -> tuple[
+        dict[str, str],
+        str,
+    ]:
+        base_key, separator, anchor = (
+            key.partition(
+                "#"
+            )
+        )
+        reference = references.get(
+            base_key
+        )
+
         if reference is None:
             raise GenerationError(
                 f"Unknown symbolic reference: {key}"
             )
 
-        uuid = reference["uuid"]
-        if match.group("display"):
+        uuid = reference[
+            "uuid"
+        ]
+
+        if separator:
+            if not anchor:
+                raise GenerationError(
+                    f"Invalid symbolic reference anchor: {key}"
+                )
+
+            if "#" in uuid:
+                raise GenerationError(
+                    "Cannot append an anchor to an already "
+                    f"anchored target: {key}"
+                )
+
+            uuid = (
+                uuid
+                + "#"
+                + anchor
+            )
+
+        return (
+            reference,
+            uuid,
+        )
+
+    def typed_replacement(
+        match: re.Match[str],
+    ) -> str:
+        directive = match.group(
+            "directive"
+        )
+        key = match.group(
+            "key"
+        )
+        label = match.group(
+            "label"
+        )
+        reference, uuid = (
+            target_for(
+                key
+            )
+        )
+        expected_type = {
+            "DisplayNpcCard":
+                "Actor",
+            "DisplayMonster":
+                "Actor",
+            "DisplaySpell":
+                "Item",
+            "Gear":
+                "Item",
+        }[
+            directive
+        ]
+
+        if (
+            reference[
+                "documentType"
+            ]
+            != expected_type
+        ):
+            raise GenerationError(
+                f"@{directive}Ref requires {expected_type}, "
+                f"but {key} is "
+                f"{reference['documentType']}."
+            )
+
+        rendered = (
+            f"@{directive}"
+            f"[{uuid}]"
+        )
+
+        if label is not None:
+            rendered += (
+                "{"
+                + label
+                + "}"
+            )
+
+        return rendered
+
+    def replacement(
+        match: re.Match[str],
+    ) -> str:
+        key = match.group(
+            "key"
+        )
+        label = match.group(
+            "label"
+        )
+        reference, uuid = (
+            target_for(
+                key
+            )
+        )
+
+        if match.group(
+            "display"
+        ):
             if (
-                reference["documentType"]
+                reference[
+                    "documentType"
+                ]
                 != "RollTable"
             ):
                 raise GenerationError(
@@ -649,21 +998,46 @@ def resolve_references(
                     f"reference, but {key} is "
                     f"{reference['documentType']}."
                 )
+
             return (
                 f"@DisplayTable[{uuid}]"
                 f"{{{label}}}"
             )
 
-        return f"@UUID[{uuid}]{{{label}}}"
+        return (
+            f"@UUID[{uuid}]"
+            f"{{{label}}}"
+        )
 
+    rendered = (
+        TYPED_REF_PATTERN.sub(
+            typed_replacement,
+            content,
+        )
+    )
     rendered = REF_PATTERN.sub(
         replacement,
-        content,
+        rendered,
     )
-    if "@Ref[" in rendered or "@DisplayRef[" in rendered:
+
+    unresolved = (
+        "@Ref[",
+        "@DisplayRef[",
+        "@DisplayNpcCardRef[",
+        "@DisplayMonsterRef[",
+        "@DisplaySpellRef[",
+        "@GearRef[",
+    )
+
+    if any(
+        marker in rendered
+        for marker
+        in unresolved
+    ):
         raise GenerationError(
             "Unresolved symbolic reference remains."
         )
+
     return rendered
 
 
@@ -1126,6 +1500,16 @@ def expected_outputs(
     )
     references.update(
         load_internal_item_references(
+            adventure_directory
+        )
+    )
+    references.update(
+        load_internal_actor_references(
+            adventure_directory
+        )
+    )
+    references.update(
+        load_internal_generated_roll_table_references(
             adventure_directory
         )
     )

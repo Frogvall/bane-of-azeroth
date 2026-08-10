@@ -466,6 +466,7 @@ def build_ability_document(
         dict[str, str],
     ],
     sort: int,
+    internal_references: dict[str, Any],
     external_references: dict[str, Any],
     reference_helpers: Any,
 ) -> dict[str, Any]:
@@ -521,9 +522,10 @@ def build_ability_document(
     )
     try:
         description_html = (
-            reference_helpers.resolve_external_symbolic_references(
+            reference_helpers.resolve_symbolic_references(
                 description_html,
-                external_references,
+                internal_references=internal_references,
+                external_references=external_references,
             )
         )
     except reference_helpers.ReferenceError as error:
@@ -976,6 +978,11 @@ def main() -> int:
             "_Adventure.json",
         )
         adventure_dir = adventure_file.parent
+        internal_references = (
+            reference_helpers.load_internal_adventure_reference_targets(
+                adventure_dir
+            )
+        )
         adventure = load_json(adventure_file)
 
         heroic_dir, heroic_folder_id = find_item_folder(
@@ -1023,6 +1030,7 @@ def main() -> int:
                     ability_image,
                     spell_references,
                     (ability_index + 1) * 100000,
+                    internal_references=internal_references,
                     external_references=external_references,
                     reference_helpers=reference_helpers,
                 )
