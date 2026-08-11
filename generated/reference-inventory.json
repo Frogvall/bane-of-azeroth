@@ -13,7 +13,7 @@
     "display-table": 2,
     "runtime-uuid-lookup": 7,
     "symbolic-display-reference": 23,
-    "symbolic-reference": 103,
+    "symbolic-reference": 105,
     "uuid-link": 27,
     "uuid-literal": 21
   },
@@ -390,6 +390,26 @@
       "classification": "unclassified",
       "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
       "label": "Monster Attacks – Voidwalker"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/foundry-vtt-guide/player-macros.json",
+      "line": 13,
+      "column": 207,
+      "target": "boa:macro.change-druid-form",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>The following player macros are added when importing the <strong>Bane of Azeroth</strong> Adventure. They can be dragged directly from this Journal to the hotbar for quick access.</p><h4>@Ref[boa:macro.change-druid-form]{Chan",
+      "label": "Change Druid Form"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/foundry-vtt-guide/player-macros.json",
+      "line": 13,
+      "column": 373,
+      "target": "boa:macro.end-effects",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>The following player macros are added when importing the <strong>Bane of Azeroth</strong> Adventure. They can be dragged directly from this Journal to the hotbar for quick access.</p><h4>@Ref[boa:macro.change-druid-form]{Chan",
+      "label": "End Effects"
     },
     {
       "kind": "symbolic-reference",

@@ -151,6 +151,8 @@ describe(
 
         for (const marker of [
           "Automation Settings",
+          "Granted Spells",
+          "Heroic Class Ability grants a spell",
           "Change Form",
           "Druid Forms",
           "End Effects",
@@ -248,6 +250,46 @@ describe(
           "JournalEntry/"
           + "Bane_of_Azeroth_BoAJournals00001/"
           + "Foundry_VTT_Guide_BoAJrnlFoundry01.json",
+        );
+      },
+    );
+
+    test(
+      "resolves player Macro links from symbolic source to draggable Foundry UUID links",
+      () => {
+        const source =
+          readJson(
+            join(
+              SOURCE,
+              "player-macros.json",
+            ),
+          ).source.content;
+
+        expect(source).toContain(
+          "@Ref[boa:macro.change-druid-form]{Change Druid Form}",
+        );
+        expect(source).toContain(
+          "@Ref[boa:macro.end-effects]{End Effects}",
+        );
+        expect(source).not.toContain(
+          "@UUID[Macro.",
+        );
+
+        const generated =
+          readJson(
+            GENERATED,
+          );
+        const page =
+          generated.pages.find(
+            entry =>
+              entry.name === "Player Macros",
+          );
+
+        expect(page?.text?.content).toContain(
+          "@UUID[Macro.BoADruidForm0001]{Change Druid Form}",
+        );
+        expect(page?.text?.content).toContain(
+          "@UUID[Macro.BoAEndEffects001]{End Effects}",
         );
       },
     );

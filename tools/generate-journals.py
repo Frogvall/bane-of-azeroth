@@ -811,6 +811,102 @@ def load_internal_roll_table_references(
     return references
 
 
+def load_internal_macro_references(
+    repo_root: Path,
+) -> dict[str, dict[str, str]]:
+    path = (
+        repo_root
+        / "foundry"
+        / "content"
+        / "macros"
+        / "player-convenience.json"
+    )
+    source = read_json(
+        path
+    )
+    if not isinstance(
+        source,
+        dict,
+    ):
+        raise GenerationError(
+            f"Macro reference source must be an object: {path}"
+        )
+
+    macros = source.get(
+        "macros"
+    )
+    if not isinstance(
+        macros,
+        list,
+    ):
+        raise GenerationError(
+            f"Macro reference source has no macros array: {path}"
+        )
+
+    references: dict[
+        str,
+        dict[str, str],
+    ] = {}
+    ids: set[str] = set()
+
+    for macro in macros:
+        if not isinstance(
+            macro,
+            dict,
+        ):
+            raise GenerationError(
+                f"Macro definition must be an object: {path}"
+            )
+
+        key = macro.get(
+            "key"
+        )
+        macro_id = validate_id(
+            macro.get(
+                "id"
+            ),
+            f"{path}: macro id",
+        )
+        if (
+            not isinstance(
+                key,
+                str,
+            )
+            or not key
+        ):
+            raise GenerationError(
+                f"Macro reference is incomplete: {path}"
+            )
+
+        reference_key = (
+            f"boa:macro.{key}"
+        )
+        if reference_key in references:
+            raise GenerationError(
+                "Duplicate internal Macro reference: "
+                f"{reference_key}"
+            )
+        if macro_id in ids:
+            raise GenerationError(
+                "Duplicate internal Macro ID: "
+                f"{macro_id}"
+            )
+
+        references[
+            reference_key
+        ] = {
+            "uuid":
+                f"Macro.{macro_id}",
+            "documentType":
+                "Macro",
+        }
+        ids.add(
+            macro_id
+        )
+
+    return references
+
+
 def load_external_references(
     repo_root: Path,
 ) -> dict[str, dict[str, str]]:
@@ -1515,6 +1611,11 @@ def expected_outputs(
     )
     references.update(
         load_internal_roll_table_references(
+            repo_root
+        )
+    )
+    references.update(
+        load_internal_macro_references(
             repo_root
         )
     )

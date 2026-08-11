@@ -44,7 +44,7 @@
       "image": {},
       "text": {
         "format": 1,
-        "content": "<p>This guide describes controls and workflows that Bane of Azeroth adds specifically for Foundry VTT. Character options, abilities, spells, and game rules are described in the Bane of Azeroth journals.</p><h4>Automation Settings</h4><p>The GM can enable or disable Bane of Azeroth automation per feature from <strong>Game Settings &rarr; Configure Settings &rarr; Module Settings &rarr; Automation Settings</strong>. If automation for a feature is disabled, use the normal game rules and handle that feature manually.</p>",
+        "content": "<p>This guide describes controls and workflows that Bane of Azeroth adds specifically for Foundry VTT. Character options, abilities, spells, and game rules are described in the Bane of Azeroth journals.</p><h4>Automation Settings</h4><p>The GM can enable or disable Bane of Azeroth automation per feature from <strong>Game Settings &rarr; Configure Settings &rarr; Module Settings &rarr; Automation Settings</strong>. If automation for a feature is disabled, use the normal game rules and handle that feature manually.</p><h4>Granted Spells</h4><p>When a Heroic Class Ability grants a spell, Bane of Azeroth automatically adds that spell to the character sheet. There is no need to create or copy the spell manually.</p>",
         "markdown": ""
       },
       "src": null
@@ -132,7 +132,7 @@
       "image": {},
       "text": {
         "format": 1,
-        "content": "<p>The following player macros are added when importing the <strong>Bane of Azeroth</strong> Adventure. They can be dragged to the hotbar for quick access.</p><h4>Change Druid Form</h4><p>Opens the same form-switching dialog as <strong>Change Form</strong> on the Druid character sheet.</p><h4>End Effects</h4><p>Opens the Bane of Azeroth effect-ending dialog for the character.</p><p>For a player, the macros use an owned selected token when possible, otherwise the assigned character or another owned character. A GM must select exactly one token before using these macros.</p>",
+        "content": "<p>The following player macros are added when importing the <strong>Bane of Azeroth</strong> Adventure. They can be dragged directly from this Journal to the hotbar for quick access.</p><h4>@UUID[Macro.BoADruidForm0001]{Change Druid Form}</h4><p>Opens the same form-switching dialog as <strong>Change Form</strong> on the Druid character sheet.</p><h4>@UUID[Macro.BoAEndEffects001]{End Effects}</h4><p>Opens the Bane of Azeroth effect-ending dialog for the character.</p><p>For a player, the macros use an owned selected token when possible, otherwise the assigned character or another owned character. A GM must select exactly one token before using these macros.</p>",
         "markdown": ""
       },
       "src": null

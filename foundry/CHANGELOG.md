@@ -6,9 +6,10 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 ### Added
-- Added the player- and GM-facing **Foundry VTT Guide** with concise pages for Druid form controls, player Macros, Death Knight rune controls, and summon workflows.
+- Added the player- and GM-facing **Foundry VTT Guide** with concise pages for Druid form controls, draggable player Macro links, automatic spell grants, Death Knight rune controls, and summon workflows.
 - Added curated Foundry screenshots for Druid Forms and Death Knight Runes under `foundry/assets/journals/foundry-guide/`.
 ### Changed
+- Journal generation now resolves symbolic `boa:macro.*` references from the player convenience Macro source so guide links remain draggable without raw UUIDs in authoritative content.
 - Journal asset generation now reserves and preserves the curated `foundry-guide/` screenshot directory instead of treating those manually captured UI images as generated Homebrewery assets.
 ### Testing
 - Added integration coverage for Foundry VTT Guide page order/content, Adventure inclusion, screenshot paths, and curated screenshot ownership in the Journal asset pipeline.
