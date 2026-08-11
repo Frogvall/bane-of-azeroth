@@ -5,6 +5,14 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 The project is currently in early alpha. Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
 
 ## [Unreleased]
+### Added
+- Added the player- and GM-facing **Foundry VTT Guide** with concise pages for Druid form controls, player Macros, Death Knight rune controls, and summon workflows.
+- Added curated Foundry screenshots for Druid Forms and Death Knight Runes under `foundry/assets/journals/foundry-guide/`.
+### Changed
+- Journal asset generation now reserves and preserves the curated `foundry-guide/` screenshot directory instead of treating those manually captured UI images as generated Homebrewery assets.
+### Testing
+- Added integration coverage for Foundry VTT Guide page order/content, Adventure inclusion, screenshot paths, and curated screenshot ownership in the Journal asset pipeline.
+## [0.12.4] - 2026-08-11
 ### Changed
 - Removed routine successful-runtime console output from module initialization and Elemental Totem creation while preserving real warning/error paths.
 ### Testing

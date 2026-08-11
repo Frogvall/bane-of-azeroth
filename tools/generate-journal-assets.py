@@ -45,6 +45,9 @@ MANIFEST_PATH = Path(
 MODULE_PREFIX = (
     "modules/bane-of-azeroth/assets/journals"
 )
+CURATED_ASSET_SUBDIRECTORIES = (
+    Path("foundry-guide"),
+)
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 
@@ -160,6 +163,49 @@ def module_asset_path(
         .as_posix()
     )
     return f"{MODULE_PREFIX}/{relative}"
+
+
+def is_curated_asset(
+    root: Path,
+    path: Path,
+) -> bool:
+    output_root = root / OUTPUT_ROOT
+    return any(
+        path.is_relative_to(
+            output_root / relative
+        )
+        for relative
+        in CURATED_ASSET_SUBDIRECTORIES
+    )
+
+
+def copy_curated_assets(
+    root: Path,
+    destination_root: Path,
+) -> None:
+    source_root = root / OUTPUT_ROOT
+    for relative in CURATED_ASSET_SUBDIRECTORIES:
+        source = source_root / relative
+        if not source.exists():
+            continue
+        if not source.is_dir():
+            raise GenerationError(
+                "Curated Journal asset path must "
+                f"be a directory: {source}"
+            )
+        destination = (
+            destination_root / relative
+        )
+        if destination.exists():
+            raise GenerationError(
+                "Generated Journal assets collide "
+                "with curated assets: "
+                f"{relative}"
+            )
+        shutil.copytree(
+            source,
+            destination,
+        )
 
 
 def parse_png(path: Path) -> dict[str, object]:
@@ -567,7 +613,13 @@ def check_generated(root: Path) -> None:
     actual_asset_files = {
         path.relative_to(root).as_posix()
         for path in output_root.rglob("*")
-        if path.is_file()
+        if (
+            path.is_file()
+            and not is_curated_asset(
+                root,
+                path,
+            )
+        )
     }
     if actual_asset_files != expected_assets:
         extra = sorted(
@@ -1099,6 +1151,10 @@ def convert_with_pillow(root: Path) -> None:
                 )
             )
 
+        copy_curated_assets(
+            root,
+            temporary,
+        )
         manifest = expected_manifest_header()
         manifest["assets"] = entries
         temporary_manifest = (

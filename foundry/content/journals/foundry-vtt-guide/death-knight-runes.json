@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "key": "death-knight-runes",
+  "id": "BoAPgFoundryRune",
+  "name": "Death Knight Runes",
+  "sort": 400000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<img style=\"display:block;margin:0 auto 1em auto;border:0 solid transparent;width:100%;height:auto\" src=\"modules/bane-of-azeroth/assets/journals/foundry-guide/death-knight-runes.webp\" alt=\"Death Knight rune controls in Foundry VTT\"><p>Characters with <strong>Death Knight's Rebirth</strong> get a rune control beside eligible melee weapons on the character sheet. The control is available in the Main weapon list and the Inventory weapon lists.</p><p>Click the <strong>+</strong> beside a weapon, or the current rune icon, to open the rune picker. Choose a rune and select <strong>Apply Rune</strong>. Choose <strong>Clear Rune</strong> to remove the current rune.</p>"
+  }
+}

@@ -58,7 +58,7 @@ const EXPECTED_DOCUMENTS = {
   "foundry-vtt-guide": {
     id: "BoAJrnlFoundry01",
     name: "Foundry VTT Guide",
-    enabled: false,
+    enabled: true,
   },
 };
 
@@ -149,7 +149,7 @@ describe("generated Journal infrastructure", () => {
     const documents =
       generatedJournalDocuments();
 
-    expect(documents).toHaveLength(3);
+    expect(documents).toHaveLength(4);
 
     const credits = documents.find(
       document =>

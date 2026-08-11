@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "key": "player-macros",
+  "id": "BoAPgFoundryMacr",
+  "name": "Player Macros",
+  "sort": 300000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>The following player macros are added when importing the <strong>Bane of Azeroth</strong> Adventure. They can be dragged to the hotbar for quick access.</p><h4>Change Druid Form</h4><p>Opens the same form-switching dialog as <strong>Change Form</strong> on the Druid character sheet.</p><h4>End Effects</h4><p>Opens the Bane of Azeroth effect-ending dialog for the character.</p><p>For a player, the macros use an owned selected token when possible, otherwise the assigned character or another owned character. A GM must select exactly one token before using these macros.</p>"
+  }
+}

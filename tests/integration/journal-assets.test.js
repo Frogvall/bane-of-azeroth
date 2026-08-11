@@ -107,6 +107,12 @@ describe("generated Journal image assets", () => {
           path,
         )
       )
+      .filter(
+        path =>
+          !path.startsWith(
+            "foundry-guide/",
+          ),
+      )
       .sort();
 
     expect(
@@ -178,6 +184,23 @@ describe("generated Journal image assets", () => {
     }
   });
 
+  test("preserves curated Foundry-guide screenshots outside generated Homebrewery ownership", () => {
+    const generator = read(
+      GENERATOR,
+    );
+
+    for (const marker of [
+      "CURATED_ASSET_SUBDIRECTORIES",
+      'Path("foundry-guide")',
+      "def is_curated_asset(",
+      "def copy_curated_assets(",
+      "copy_curated_assets(",
+    ]) {
+      expect(generator).toContain(
+        marker,
+      );
+    }
+  });
   test("supports repeatable focused source generation", () => {
     const generator = read(
       GENERATOR,

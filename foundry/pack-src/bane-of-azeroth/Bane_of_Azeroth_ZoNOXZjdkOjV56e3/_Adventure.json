@@ -138,7 +138,8 @@
   "journal": [
     "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Credits_BoAJrnlCredits01.json",
     "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Character_Options_BoAJrnlPlayerOpt.json",
-    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Appendices_BoAJrnlAppendix1.json"
+    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Appendices_BoAJrnlAppendix1.json",
+    "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Foundry_VTT_Guide_BoAJrnlFoundry01.json"
   ],
   "scenes": [],
   "tables": [

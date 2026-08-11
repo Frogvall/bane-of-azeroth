@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "key": "summons",
+  "id": "BoAPgFoundrySumm",
+  "name": "Summons",
+  "sort": 500000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<h4>Elemental Totems</h4><p>After casting Elemental Totem, Foundry asks which totems and upgrades to use. With automation enabled, place each totem on the canvas when prompted. Left-click to place it; right-click or press Escape to cancel placement.</p><h4>Warlock Demons</h4><p>After using Demonologist, choose the demon to summon and then choose an empty position on the canvas within the allowed range. With automation enabled, Bane of Azeroth creates the new token and manages replacement and duration.</p><h4>Manual Placement</h4><p>If the corresponding summon automation is disabled, Bane of Azeroth posts manual placement instructions to chat instead of creating and managing the tokens.</p><h4>Summoned Monster Attacks</h4><p>Bane of Azeroth-controlled summoned monsters use their specific available attacks instead of Dragonbane's random monster-attack selection. When an attack or command can spend WP automatically, Foundry prompts to use WP from the player's assigned character.</p>"
+  }
+}

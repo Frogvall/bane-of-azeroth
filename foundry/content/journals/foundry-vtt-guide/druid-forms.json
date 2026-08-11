@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "key": "druid-forms",
+  "id": "BoAPgFoundryDrud",
+  "name": "Druid Forms",
+  "sort": 200000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<img style=\"display:block;margin:0 auto 1em auto;border:0 solid transparent;width:100%;height:auto\" src=\"modules/bane-of-azeroth/assets/journals/foundry-guide/druid-forms.webp\" alt=\"Druid form controls in Foundry VTT\"><h4>Changing Form</h4><p>A successful Incarnation switches to its initial form automatically. Feral Incarnation asks whether to begin in Bear Form or Cat Form.</p><p>While one or more Incarnations are active, use <strong>Change Form</strong> on the character sheet to switch between the available forms or return to <strong>Humanoid Form</strong>. The dialog lets you change form as an <strong>Action (0 WP)</strong> or a <strong>Free Action (1 WP)</strong>.</p><h4>Form Artwork</h4><p>Use <strong>Druid Forms</strong> on the character sheet to choose the portrait and token artwork used for each form. Changes are saved per character and can be reset to the default artwork.</p><h4>Ending Effects</h4><p>Use <strong>End Effect</strong> on the character sheet or the <strong>End Effects</strong> player macro to end Bane of Azeroth-managed effects before their normal duration expires.</p>"
+  }
+}

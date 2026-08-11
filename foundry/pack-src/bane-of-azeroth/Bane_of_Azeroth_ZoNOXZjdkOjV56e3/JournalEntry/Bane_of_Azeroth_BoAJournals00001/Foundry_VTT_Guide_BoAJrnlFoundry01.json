@@ -1,0 +1,250 @@
+{
+  "_key": "!journal!BoAJrnlFoundry01",
+  "_id": "BoAJrnlFoundry01",
+  "folder": "BoAJournals00001",
+  "name": "Foundry VTT Guide",
+  "sort": 400000,
+  "pages": [
+    {
+      "_key": "!journal.pages!BoAJrnlFoundry01.BoAPgFoundryIntr",
+      "sort": 100000,
+      "name": "Using Bane of Azeroth",
+      "_id": "BoAPgFoundryIntr",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.foundry-vtt-guide.using-bane-of-azeroth"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "type": "text",
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>This guide describes controls and workflows that Bane of Azeroth adds specifically for Foundry VTT. Character options, abilities, spells, and game rules are described in the Bane of Azeroth journals.</p><h4>Automation Settings</h4><p>The GM can enable or disable Bane of Azeroth automation per feature from <strong>Game Settings &rarr; Configure Settings &rarr; Module Settings &rarr; Automation Settings</strong>. If automation for a feature is disabled, use the normal game rules and handle that feature manually.</p>",
+        "markdown": ""
+      },
+      "src": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlFoundry01.BoAPgFoundryDrud",
+      "sort": 200000,
+      "name": "Druid Forms",
+      "_id": "BoAPgFoundryDrud",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.foundry-vtt-guide.druid-forms"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "type": "text",
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<img style=\"display:block;margin:0 auto 1em auto;border:0 solid transparent;width:100%;height:auto\" src=\"modules/bane-of-azeroth/assets/journals/foundry-guide/druid-forms.webp\" alt=\"Druid form controls in Foundry VTT\"><h4>Changing Form</h4><p>A successful Incarnation switches to its initial form automatically. Feral Incarnation asks whether to begin in Bear Form or Cat Form.</p><p>While one or more Incarnations are active, use <strong>Change Form</strong> on the character sheet to switch between the available forms or return to <strong>Humanoid Form</strong>. The dialog lets you change form as an <strong>Action (0 WP)</strong> or a <strong>Free Action (1 WP)</strong>.</p><h4>Form Artwork</h4><p>Use <strong>Druid Forms</strong> on the character sheet to choose the portrait and token artwork used for each form. Changes are saved per character and can be reset to the default artwork.</p><h4>Ending Effects</h4><p>Use <strong>End Effect</strong> on the character sheet or the <strong>End Effects</strong> player macro to end Bane of Azeroth-managed effects before their normal duration expires.</p>",
+        "markdown": ""
+      },
+      "src": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlFoundry01.BoAPgFoundryMacr",
+      "sort": 300000,
+      "name": "Player Macros",
+      "_id": "BoAPgFoundryMacr",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.foundry-vtt-guide.player-macros"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "type": "text",
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>The following player macros are added when importing the <strong>Bane of Azeroth</strong> Adventure. They can be dragged to the hotbar for quick access.</p><h4>Change Druid Form</h4><p>Opens the same form-switching dialog as <strong>Change Form</strong> on the Druid character sheet.</p><h4>End Effects</h4><p>Opens the Bane of Azeroth effect-ending dialog for the character.</p><p>For a player, the macros use an owned selected token when possible, otherwise the assigned character or another owned character. A GM must select exactly one token before using these macros.</p>",
+        "markdown": ""
+      },
+      "src": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlFoundry01.BoAPgFoundryRune",
+      "sort": 400000,
+      "name": "Death Knight Runes",
+      "_id": "BoAPgFoundryRune",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.foundry-vtt-guide.death-knight-runes"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "type": "text",
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<img style=\"display:block;margin:0 auto 1em auto;border:0 solid transparent;width:100%;height:auto\" src=\"modules/bane-of-azeroth/assets/journals/foundry-guide/death-knight-runes.webp\" alt=\"Death Knight rune controls in Foundry VTT\"><p>Characters with <strong>Death Knight's Rebirth</strong> get a rune control beside eligible melee weapons on the character sheet. The control is available in the Main weapon list and the Inventory weapon lists.</p><p>Click the <strong>+</strong> beside a weapon, or the current rune icon, to open the rune picker. Choose a rune and select <strong>Apply Rune</strong>. Choose <strong>Clear Rune</strong> to remove the current rune.</p>",
+        "markdown": ""
+      },
+      "src": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlFoundry01.BoAPgFoundrySumm",
+      "sort": 500000,
+      "name": "Summons",
+      "_id": "BoAPgFoundrySumm",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.foundry-vtt-guide.summons"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "type": "text",
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<h4>Elemental Totems</h4><p>After casting Elemental Totem, Foundry asks which totems and upgrades to use. With automation enabled, place each totem on the canvas when prompted. Left-click to place it; right-click or press Escape to cancel placement.</p><h4>Warlock Demons</h4><p>After using Demonologist, choose the demon to summon and then choose an empty position on the canvas within the allowed range. With automation enabled, Bane of Azeroth creates the new token and manages replacement and duration.</p><h4>Manual Placement</h4><p>If the corresponding summon automation is disabled, Bane of Azeroth posts manual placement instructions to chat instead of creating and managing the tokens.</p><h4>Summoned Monster Attacks</h4><p>Bane of Azeroth-controlled summoned monsters use their specific available attacks instead of Dragonbane's random monster-attack selection. When an attack or command can spend WP automatically, Foundry prompts to use WP from the player's assigned character.</p>",
+        "markdown": ""
+      },
+      "src": null
+    }
+  ],
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-journals.py",
+      "contentKey": "journal.foundry-vtt-guide"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "JournalEntry.BoAJrnlFoundry01",
+    "exportSource": null
+  },
+  "categories": []
+}
