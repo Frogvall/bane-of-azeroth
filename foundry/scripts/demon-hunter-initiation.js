@@ -901,6 +901,38 @@ export function registerDemonHunterInitiationSocket() {
     true;
 }
 
+export function mayCurrentUserRequestDemonHunterInitiationReconcile(
+  actor,
+  {
+    user =
+      globalThis.game?.user,
+    ownerLevel =
+      globalThis.CONST
+        ?.DOCUMENT_OWNERSHIP_LEVELS
+        ?.OWNER ??
+      3,
+  } = {},
+) {
+  if (!actor) {
+    return false;
+  }
+
+  if (!user) {
+    return true;
+  }
+
+  if (user.isGM === true) {
+    return true;
+  }
+
+  return (
+    actor.testUserPermission?.(
+      user,
+      ownerLevel,
+    ) === true
+  );
+}
+
 export function requestDemonHunterInitiationReconcile(
   actor,
 ) {
@@ -1016,6 +1048,14 @@ async function reconcileDemonHunterInitiationWithAuthority(
   actor,
   context,
 ) {
+  if (
+    !mayCurrentUserRequestDemonHunterInitiationReconcile(
+      actor,
+    )
+  ) {
+    return false;
+  }
+
   try {
     return await requestDemonHunterInitiationReconcile(
       actor,

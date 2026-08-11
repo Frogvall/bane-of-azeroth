@@ -5,12 +5,22 @@ import {
 } from "../core/users.js";
 import {
   executeWarlockDemonCreation,
+  WarlockDemonPlacementRejection,
 } from "./creation.js";
 
 const SOCKET_NAME = `module.${MODULE_ID}`;
 const TIMEOUT_MS = 30000;
 const pendingRequests = new Map();
 let registered = false;
+
+export function shouldLogWarlockDemonCreationRequestError(
+  error,
+) {
+  return !(
+    error instanceof
+      WarlockDemonPlacementRejection
+  );
+}
 
 function handleResult(payload) {
   if (
@@ -61,11 +71,17 @@ async function handleRequest(payload) {
       result,
     });
   } catch (error) {
-    console.error(
-      `${MODULE_ID} | Warlock demon creation `
-      + "request failed.",
-      error,
-    );
+    if (
+      shouldLogWarlockDemonCreationRequestError(
+        error,
+      )
+    ) {
+      console.error(
+        `${MODULE_ID} | Warlock demon creation `
+        + "request failed.",
+        error,
+      );
+    }
 
     game.socket.emit(SOCKET_NAME, {
       type: "warlockDemonResult",

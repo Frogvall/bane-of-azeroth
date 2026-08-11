@@ -25,6 +25,18 @@ import {
   validateWarlockDemonPlanShape,
 } from "./planning.js";
 
+export class WarlockDemonPlacementRejection extends Error {
+  constructor(
+    message,
+  ) {
+    super(
+      message,
+    );
+    this.name =
+      "WarlockDemonPlacementRejection";
+  }
+}
+
 export function getWarlockDemonOwnerUserIds(
   casterActor,
 ) {
@@ -225,7 +237,7 @@ export async function validateWarlockDemonCreationRequest(
     previewToken,
   );
   if (distance > plan.placementRange) {
-    throw new Error(
+    throw new WarlockDemonPlacementRejection(
       `The Warlock demon position is `
       + `outside range (${distance} m).`,
     );
@@ -243,7 +255,7 @@ export async function validateWarlockDemonCreationRequest(
       },
     )
   ) {
-    throw new Error(
+    throw new WarlockDemonPlacementRejection(
       "The Warlock demon position is occupied.",
     );
   }
