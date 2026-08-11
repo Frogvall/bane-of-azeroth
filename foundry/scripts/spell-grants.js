@@ -1,5 +1,8 @@
 import { MODULE_ID } from "./core/constants.js";
 import {
+  externalReferenceUuid,
+} from "../generated/external-references.js";
+import {
   getContentKey,
   getModuleFlag,
 } from "./core/documents.js";
@@ -61,6 +64,16 @@ export async function loadSpellGrantDefinitions() {
         spellGrantDefinitions.set(
           abilityContentKey,
           `spells.${ability.grantsSpell}`
+        );
+      }
+
+      if (
+        typeof ability.grantsExternalSpell === "string" &&
+        ability.grantsExternalSpell
+      ) {
+        spellGrantUuidDefinitions.set(
+          abilityContentKey,
+          externalReferenceUuid(ability.grantsExternalSpell)
         );
       }
 

@@ -14,6 +14,7 @@ import {
   reconcileSpellGrantsForActor,
   removeSpellForAbility,
   resolveGrantedSpellContentKey,
+  resolveGrantedSpellUuid,
 } from "../../foundry/scripts/spell-grants.js";
 
 import {
@@ -154,6 +155,46 @@ describe("spell grant definitions", () => {
       "spells.shadowform"
     );
   });
+
+  test(
+    "loads a symbolic external spell grant fallback from structured content",
+    async () => {
+      fetch.mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          classes: [
+            {
+              key: "mage",
+              abilities: [
+                {
+                  key: "mages-brilliance",
+                  grantsExternalSpell:
+                    "dragonbane-core:spell.sense-magic",
+                },
+              ],
+            },
+          ],
+        }),
+      });
+
+      await loadSpellGrantDefinitions();
+      const ability = makeFlagDocument({
+        id: "mages-brilliance-symbolic-fallback",
+        name: "Mage's Brilliance",
+        type: "ability",
+        flags: {
+          "bane-of-azeroth": {
+            contentKey:
+              MAGES_BRILLIANCE_CONTENT_KEY,
+          },
+        },
+      });
+
+      expect(resolveGrantedSpellUuid(ability)).toBe(
+        SENSE_MAGIC_UUID,
+      );
+    },
+  );
 
   test("rejects a failed definition request", async () => {
     fetch.mockResolvedValue({
