@@ -310,10 +310,47 @@ if (
         }
       );
 
+    const cleanupFlagsSettled =
+      await boaWaitFor(
+        () => {
+          const localUnarmed =
+            actor.items.get(
+              unarmed.id
+            );
+          const localIronFist =
+            actor.items.get(
+              ironFist.id
+            );
+
+          return (
+            boaGetFlag(
+              localUnarmed,
+              "serenityManagedUnarmed"
+            ) !== true &&
+            boaGetFlag(
+              localUnarmed,
+              "serenityOriginalUnarmedDamage"
+            ) === undefined &&
+            boaGetFlag(
+              localIronFist,
+              "serenityManagedIronFist"
+            ) !== true &&
+            boaGetFlag(
+              localIronFist,
+              "serenityOriginalIronFistDescription"
+            ) === undefined
+          );
+        },
+        {
+          description:
+            "Serenity managed-flag cleanup"
+        }
+      );
+
     boaCheck(
       checks,
       "Removing Serenity restores local Unarmed and Iron Fist",
-      cleanupWorked,
+      cleanupWorked && cleanupFlagsSettled,
       {
         unarmed:
           actor.items.get(
