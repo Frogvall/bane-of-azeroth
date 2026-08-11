@@ -646,6 +646,64 @@ if (
           )
       })
     );
+
+    await waitCheck(
+      "Removing Initiation clears managed vision bookkeeping",
+      () => {
+        const currentToken =
+          scene.tokens.get(
+            token.id
+          );
+
+        return (
+          actor.getFlag(
+            BOA_TEST_MODULE_ID,
+            "demonHunterInitiationManagedPrototypeVision"
+          ) === undefined &&
+          actor.getFlag(
+            BOA_TEST_MODULE_ID,
+            "demonHunterInitiationOriginalPrototypeVision"
+          ) === undefined &&
+          currentToken?.getFlag(
+            BOA_TEST_MODULE_ID,
+            "demonHunterInitiationManagedTokenVision"
+          ) === undefined &&
+          currentToken?.getFlag(
+            BOA_TEST_MODULE_ID,
+            "demonHunterInitiationOriginalTokenVision"
+          ) === undefined
+        );
+      },
+      () => {
+        const currentToken =
+          scene.tokens.get(
+            token.id
+          );
+
+        return {
+          prototypeManaged:
+            actor.getFlag(
+              BOA_TEST_MODULE_ID,
+              "demonHunterInitiationManagedPrototypeVision"
+            ),
+          prototypeOriginal:
+            actor.getFlag(
+              BOA_TEST_MODULE_ID,
+              "demonHunterInitiationOriginalPrototypeVision"
+            ),
+          tokenManaged:
+            currentToken?.getFlag(
+              BOA_TEST_MODULE_ID,
+              "demonHunterInitiationManagedTokenVision"
+            ),
+          tokenOriginal:
+            currentToken?.getFlag(
+              BOA_TEST_MODULE_ID,
+              "demonHunterInitiationOriginalTokenVision"
+            )
+        };
+      }
+    );
   } catch (error) {
     boaCheck(
       checks,
