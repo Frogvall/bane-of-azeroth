@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Active development / prerelease testing
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 0.12.5
+> **Current Foundry module version:** 0.12.6
 ## Project goals
 
 Bane of Azeroth is intended to provide a coherent Dragonbane ruleset for adventures inspired by Azeroth, rather than attempting to reproduce every mechanic from the source material directly.
@@ -101,7 +101,7 @@ The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.
 
 > **Package identities:** Production/release packages use `bane-of-azeroth` (**Bane of Azeroth**). Development prerelease packages use the separate Foundry package id `bane-of-azeroth-dev` (**Bane of Azeroth - Development**). They can therefore be installed side-by-side. Foundry is told that the two packages are a known conflict and only one should normally be enabled in a given world. As a safety guard, if both are enabled the Development runtime wins and the production runtime remains inert; development worlds should still use the development package and its Adventure content consistently.
 
-There is currently no stable public release. Development builds are distributed as rolling branch prereleases and may change without notice.
+There is currently no stable public release. Development builds are distributed as rolling branch prereleases and may change without notice. Stable production releases are published from version tags `vMAJOR.MINOR.PATCH` once the module reaches 1.0.0; the release workflow requires the tag, module version, README, and dated Changelog section to agree before publishing.
 
 For a manual development installation, place the packaged module contents in:
 

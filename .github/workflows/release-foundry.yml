@@ -1,0 +1,259 @@
+name: Publish Foundry stable release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+concurrency:
+  group: release-foundry-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install test dependencies
+        run: npm ci
+
+      - name: Run automated tests
+        run: npm run test:coverage
+
+  build-release:
+    name: Build stable package
+    needs:
+      - unit-tests
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+      packages: read
+
+    outputs:
+      version: ${{ steps.release.outputs.version }}
+      manifest_url: ${{ steps.release.outputs.manifest_url }}
+      download_url: ${{ steps.release.outputs.download_url }}
+      artifact_name: ${{ steps.release.outputs.artifact_name }}
+
+    container:
+      image: ghcr.io/frogvall/bane-of-azeroth-fvtt-cli:3.0.4
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Verify stable release contract
+        id: release
+        run: |
+          set -euo pipefail
+
+          python3 tools/foundry-stable-release.py             check             --tag "$GITHUB_REF_NAME"
+
+          version="$(jq -er '.version' foundry/module.json)"
+          repository_url="https://github.com/${GITHUB_REPOSITORY}"
+          manifest_url="${repository_url}/releases/download/${GITHUB_REF_NAME}/module.json"
+          download_url="${repository_url}/releases/download/${GITHUB_REF_NAME}/bane-of-azeroth.zip"
+          artifact_name="bane-of-azeroth-${version}-stable"
+
+          {
+            echo "BOA_BUILD_VERSION=${version}"
+            echo "BOA_MANIFEST_URL=${manifest_url}"
+            echo "BOA_DOWNLOAD_URL=${download_url}"
+            echo "BOA_ZIP_NAME=bane-of-azeroth.zip"
+            echo "BOA_INCLUDE_DEV_TESTS=false"
+          } >> "$GITHUB_ENV"
+
+          {
+            echo "version=${version}"
+            echo "manifest_url=${manifest_url}"
+            echo "download_url=${download_url}"
+            echo "artifact_name=${artifact_name}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Verify generated Foundry content
+        run: python3 tools/check-foundry-generators.py
+
+      - name: Build production package
+        run: bash tools/package-foundry.sh
+
+      - name: Export and validate stable artifacts
+        run: |
+          set -euo pipefail
+
+          zip_file="dist/bane-of-azeroth.zip"
+          manifest_file="dist/module.json"
+
+          test -f "$zip_file"
+          unzip -p "$zip_file" module.json > "$manifest_file"
+
+          jq -e             --arg version "$BOA_BUILD_VERSION"             --arg manifest "$BOA_MANIFEST_URL"             --arg download "$BOA_DOWNLOAD_URL"             '
+              .id == "bane-of-azeroth"
+              and .title == "Bane of Azeroth"
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+              and (
+                (.scripts // [])
+                | index("scripts/boa-dev-system-tests.js")
+                | not
+              )
+              and (
+                (.packs // [])
+                | map(.name)
+                | index("bane-of-azeroth-dev-tests")
+                | not
+              )
+            '             "$manifest_file" >/dev/null
+
+          zip_contents="$(unzip -Z1 "$zip_file")"
+          if grep -Eq             '(^|/)bane-of-azeroth-dev-tests/|boa-dev-system-tests\.js$'             <<< "$zip_contents"; then
+            echo "Stable package contains development-only test content." >&2
+            exit 1
+          fi
+
+          unzip -t "$zip_file"
+
+          (
+            cd dist
+            sha256sum bane-of-azeroth.zip               > bane-of-azeroth.zip.sha256
+          )
+
+          python3 tools/foundry-stable-release.py             notes             --version "$BOA_BUILD_VERSION"             --output dist/RELEASE_NOTES.md
+
+      - name: Upload stable release artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.release.outputs.artifact_name }}
+          path: |
+            dist/bane-of-azeroth.zip
+            dist/module.json
+            dist/bane-of-azeroth.zip.sha256
+            dist/RELEASE_NOTES.md
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+  publish-release:
+    name: Publish stable release
+    needs:
+      - build-release
+    runs-on: ubuntu-24.04
+
+    permissions:
+      actions: read
+      contents: write
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      VERSION: ${{ needs.build-release.outputs.version }}
+      MANIFEST_URL: ${{ needs.build-release.outputs.manifest_url }}
+      DOWNLOAD_URL: ${{ needs.build-release.outputs.download_url }}
+      ARTIFACT_NAME: ${{ needs.build-release.outputs.artifact_name }}
+
+    steps:
+      - name: Download stable release artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: release
+
+      - name: Validate downloaded stable package
+        run: |
+          set -euo pipefail
+
+          test -f release/bane-of-azeroth.zip
+          test -f release/module.json
+          test -f release/bane-of-azeroth.zip.sha256
+          test -f release/RELEASE_NOTES.md
+
+          jq -e             --arg version "$VERSION"             --arg manifest "$MANIFEST_URL"             --arg download "$DOWNLOAD_URL"             '
+              .id == "bane-of-azeroth"
+              and .title == "Bane of Azeroth"
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            '             release/module.json >/dev/null
+
+          (
+            cd release
+            sha256sum -c bane-of-azeroth.zip.sha256
+          )
+
+          unzip -t release/bane-of-azeroth.zip
+
+      - name: Publish versioned stable release
+        run: |
+          set -euo pipefail
+
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "Stable release already exists: ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+
+          gh release create             "$GITHUB_REF_NAME"             release/module.json             release/bane-of-azeroth.zip             release/bane-of-azeroth.zip.sha256             --verify-tag             --title "Bane of Azeroth ${VERSION}"             --notes-file release/RELEASE_NOTES.md             --latest
+
+      - name: Verify published stable release
+        run: |
+          set -euo pipefail
+
+          verify_dir="$(mktemp -d)"
+          trap 'rm -rf "$verify_dir"' EXIT
+
+          release_json="$(
+            gh release view               "$GITHUB_REF_NAME"               --json url,isDraft,isPrerelease,assets
+          )"
+
+          echo "$release_json" |
+            jq -e '
+              .isDraft == false
+              and .isPrerelease == false
+              and ([.assets[].name] | index("module.json")) != null
+              and ([.assets[].name] | index("bane-of-azeroth.zip")) != null
+              and ([.assets[].name] | index("bane-of-azeroth.zip.sha256")) != null
+            ' >/dev/null
+
+          gh release download             "$GITHUB_REF_NAME"             --pattern "module.json"             --dir "$verify_dir"
+
+          gh release download             "$GITHUB_REF_NAME"             --pattern "bane-of-azeroth.zip"             --dir "$verify_dir"
+
+          jq -e             --arg version "$VERSION"             --arg manifest "$MANIFEST_URL"             --arg download "$DOWNLOAD_URL"             '
+              .id == "bane-of-azeroth"
+              and .title == "Bane of Azeroth"
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            '             "$verify_dir/module.json" >/dev/null
+
+          expected_checksum="$(
+            awk '{print $1}' release/bane-of-azeroth.zip.sha256
+          )"
+          actual_checksum="$(
+            sha256sum "$verify_dir/bane-of-azeroth.zip" |
+            awk '{print $1}'
+          )"
+
+          if [[ "$actual_checksum" != "$expected_checksum" ]]; then
+            echo "Published stable package checksum does not match." >&2
+            echo "Expected: $expected_checksum" >&2
+            echo "Actual: $actual_checksum" >&2
+            exit 1
+          fi

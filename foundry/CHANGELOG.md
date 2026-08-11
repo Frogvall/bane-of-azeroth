@@ -6,6 +6,15 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 ### Added
+- Added a dedicated tag-driven **stable Foundry release** workflow for production packages, separate from rolling branch prereleases.
+- Added `tools/foundry-stable-release.py` to validate tag/version/README/Changelog alignment and extract release notes from the dated Changelog section.
+### Changed
+- Stable release publication is explicitly gated to version `1.0.0` or later and excludes all development-only System Test content.
+- Normal branch CI now also watches the stable release workflow and its release-contract helper.
+### Testing
+- Added integration coverage for stable tag triggers, production package identity, development-content exclusion, release verification, and pre-1.0 safeguards.
+## [0.12.5] - 2026-08-11
+### Added
 - Added the player- and GM-facing **Foundry VTT Guide** with concise pages for Druid form controls, draggable player Macro links, automatic spell grants, Death Knight rune controls, and summon workflows.
 - Added curated Foundry screenshots for Druid Forms and Death Knight Runes under `foundry/assets/journals/foundry-guide/`.
 ### Changed

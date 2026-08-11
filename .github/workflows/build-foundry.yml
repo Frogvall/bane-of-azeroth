@@ -13,7 +13,9 @@ on:
       - "vitest.config.js"
       - "tools/package-foundry.sh"
       - "tools/generate-*.py"
+      - "tools/foundry-stable-release.py"
       - ".github/workflows/build-foundry.yml"
+      - ".github/workflows/release-foundry.yml"
 
   workflow_dispatch:
 
