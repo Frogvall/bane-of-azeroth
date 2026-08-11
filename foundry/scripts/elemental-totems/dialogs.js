@@ -339,18 +339,7 @@ async function runElementalTotemDialogFlow(message) {
   if (!confirmed) return;
 
 
-  const outcome = await executeElementalTotemPlan(plan, definitions);
-
-  if (outcome?.status === "created") {
-    console.info(
-      `${MODULE_ID} | Elemental Totems created.`,
-      {
-        plan,
-        positions: outcome.positions,
-        result: outcome.result,
-      },
-    );
-  }
+  await executeElementalTotemPlan(plan, definitions);
 }
 
 function queueElementalTotemDialog(message) {

@@ -551,9 +551,6 @@ Hooks.on(
     useAuthority: true,
   });
 
-  console.log(
-    `${MODULE_ID} | Registered custom weapon features, Armor Piercing, and Scattershot.`
-  );
 });
 
 Hooks.once("ready", async () => {

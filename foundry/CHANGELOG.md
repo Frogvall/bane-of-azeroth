@@ -5,13 +5,20 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 The project is currently in early alpha. Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
 
 ## [Unreleased]
+### Changed
+- Removed routine successful-runtime console output from module initialization and Elemental Totem creation while preserving real warning/error paths.
+### Testing
+- Added a focused runtime console-policy regression contract so routine success logs stay quiet without weakening failure diagnostics.
+## [0.12.3] - 2026-08-11
 ### Added
 - Added dedicated 290×70 package-owned banners for the Bane of Azeroth Adventure Compendium and the development-only System Tests Compendium so Foundry no longer falls back to generic Compendium artwork.
 - Added canonical project and issue-tracker URLs to the module manifest.
 ### Changed
 - Refreshed the module description to describe the current rules, content, and automation scope rather than the older Player Options-only scope.
 - Development packaging now rewrites package-qualified Compendium banner paths to the active package id, keeping production and Development presentation isolated.
-
+### Fixed
+- Fixed stale generated compatibility metadata after YZE Combat became optional, and added coverage keeping generated verified-environment data synchronized with its authoritative compatibility source.
+- Fixed Mage's Brilliance automatic Sense Magic grants after symbolic external references replaced raw Foundry UUIDs.
 ## [0.12.2] - 2026-08-11
 ### Changed
 - Audited and locked the supported Foundry/Dragonbane dependency baseline: Foundry V14 with Dragonbane 4.0.1 remains the hard runtime contract, while the verified whole-module environment remains Foundry 14.365 / Dragonbane 4.0.1 / Dragonbane Core Set 2.2 / YZE Combat 1.7.0.

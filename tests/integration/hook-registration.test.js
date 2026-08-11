@@ -286,7 +286,7 @@ expect(
   });
 
   test("exposes the Common Animal attack-result adapter through the module API", async () => {
-    // BOA expected module-init log capture
+    // BOA 0.12.4 normal module init should remain console-quiet.
     const consoleLog = vi
       .spyOn(console, "log")
       .mockImplementation(() => {});
@@ -316,9 +316,7 @@ expect(
         });
       
 
-      expect(consoleLog).toHaveBeenCalledWith(
-        "bane-of-azeroth | Registered custom weapon features, Armor Piercing, and Scattershot.",
-      );
+      expect(consoleLog).not.toHaveBeenCalled();
     } finally {
       consoleLog.mockRestore();
     }
