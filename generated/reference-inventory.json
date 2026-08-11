@@ -1472,7 +1472,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "foundry/scripts/warlock-demons/creation.js",
-      "line": 122,
+      "line": 134,
       "column": 11,
       "function": "fromUuid",
       "classification": "runtime",
