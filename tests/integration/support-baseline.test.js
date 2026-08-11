@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
+  BOA_VERIFIED_ENVIRONMENT,
+} from "../../foundry/generated/external-references.js";
+import {
   describe,
   expect,
   test,
@@ -117,6 +120,23 @@ describe(
       },
     );
 
+    test(
+      "keeps generated verified environment synchronized with compatibility source",
+      () => {
+        const compatibility =
+          readJson(
+            "foundry",
+            "config",
+            "compatibility.json",
+          );
+
+        expect(
+          BOA_VERIFIED_ENVIRONMENT,
+        ).toEqual(
+          compatibility.verifiedEnvironment,
+        );
+      },
+    );
     test(
       "keeps Dragonbane Core Set as the registered external content source",
       () => {

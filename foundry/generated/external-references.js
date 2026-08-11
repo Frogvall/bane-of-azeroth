@@ -9,7 +9,7 @@ export const BOA_VERIFIED_ENVIRONMENT =
       "version": "2.2"
     },
     "yze-combat": {
-      "required": true,
+      "required": false,
       "version": "1.7.0"
     }
   },
