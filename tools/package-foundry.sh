@@ -8,6 +8,8 @@ ROOT_DIR="$(
 
 MODULE_DIR="${ROOT_DIR}/foundry"
 PACK_NAME="bane-of-azeroth"
+PACK_BANNER_RELATIVE="assets/pack-banners/adventure.webp"
+DEV_TEST_PACK_BANNER_RELATIVE="assets/pack-banners/system-tests.webp"
 DEV_TEST_PACK_NAME="bane-of-azeroth-dev-tests"
 INCLUDE_DEV_TESTS="${BOA_INCLUDE_DEV_TESTS:-false}"
 PRODUCTION_MODULE_ID="bane-of-azeroth"
@@ -117,6 +119,8 @@ echo "Generating delivery manifest..."
 jq \
   --arg moduleId "$MODULE_ID" \
   --arg moduleTitle "$MODULE_TITLE" \
+  --arg packName "$PACK_NAME" \
+  --arg packBannerRelative "$PACK_BANNER_RELATIVE" \
   --arg productionModuleId "$PRODUCTION_MODULE_ID" \
   --arg developmentModuleId "$DEVELOPMENT_MODULE_ID" \
   --arg version "$BUILD_VERSION" \
@@ -126,6 +130,20 @@ jq \
     .id = $moduleId
     | .title = $moduleTitle
     | .version = $version
+    | .packs = (
+        (.packs // [])
+        | map(
+            if .name == $packName
+            then .banner = (
+              "modules/"
+              + $moduleId
+              + "/"
+              + $packBannerRelative
+            )
+            else .
+            end
+          )
+      )
     | .relationships.conflicts = (
         ((.relationships.conflicts // [])
           | map(select(.id != $productionModuleId and .id != $developmentModuleId)))
@@ -156,6 +174,17 @@ jq \
 mv \
   "${STAGE_DIR}/module.json.tmp" \
   "${STAGE_DIR}/module.json"
+
+EXPECTED_PACK_BANNER="modules/${MODULE_ID}/${PACK_BANNER_RELATIVE}"
+EXPECTED_DEV_TEST_PACK_BANNER="modules/${MODULE_ID}/${DEV_TEST_PACK_BANNER_RELATIVE}"
+if ! jq -e \
+  --arg packName "$PACK_NAME" \
+  --arg banner "$EXPECTED_PACK_BANNER" \
+  'any(.packs[]?; .name == $packName and .banner == $banner)' \
+  "${STAGE_DIR}/module.json" >/dev/null; then
+  echo "The delivery manifest Adventure banner path is incorrect." >&2
+  exit 1
+fi
 
 PACK_BUILD_SOURCE="$PACK_SOURCE"
 if [[ "$MODULE_ID" != "$SOURCE_MODULE_ID" ]]; then
@@ -296,6 +325,7 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
 
   jq \
     --arg packName "$DEV_TEST_PACK_NAME" \
+    --arg banner "$EXPECTED_DEV_TEST_PACK_BANNER" \
     --arg activeModuleId "$MODULE_ID" \
     '
       .flags[$activeModuleId].developmentBuild = true
@@ -316,6 +346,7 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
             "path": ("packs/" + $packName),
             "type": "Macro",
             "system": "dragonbane",
+            "banner": $banner,
             "ownership": {
               "PLAYER": "NONE",
               "ASSISTANT": "OWNER"
@@ -404,6 +435,14 @@ if grep -Eq \
   echo "The zip contains source or LevelDB runtime files." >&2
   exit 1
 fi
+if ! grep -Fxq "$PACK_BANNER_RELATIVE" <<< "$ZIP_CONTENTS"; then
+  echo "The module zip is missing the Adventure Compendium banner." >&2
+  exit 1
+fi
+if [[ "$INCLUDE_DEV_TESTS" == "true" ]] && ! grep -Fxq "$DEV_TEST_PACK_BANNER_RELATIVE" <<< "$ZIP_CONTENTS"; then
+  echo "The module zip is missing the developer-test Compendium banner." >&2
+  exit 1
+fi
 
 if ! unzip -p "$ZIP_FILE" module.json |
   jq -e \
@@ -413,6 +452,24 @@ if ! unzip -p "$ZIP_FILE" module.json |
     '.id == $moduleId and .title == $moduleTitle and .version == $version' >/dev/null; then
   echo "The packaged module identity or version is incorrect." >&2
   exit 1
+fi
+if ! unzip -p "$ZIP_FILE" module.json |
+  jq -e \
+    --arg packName "$PACK_NAME" \
+    --arg banner "$EXPECTED_PACK_BANNER" \
+    'any(.packs[]?; .name == $packName and .banner == $banner)' >/dev/null; then
+  echo "The packaged Adventure Compendium banner path is incorrect." >&2
+  exit 1
+fi
+if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
+  if ! unzip -p "$ZIP_FILE" module.json |
+    jq -e \
+      --arg packName "$DEV_TEST_PACK_NAME" \
+      --arg banner "$EXPECTED_DEV_TEST_PACK_BANNER" \
+      'any(.packs[]?; .name == $packName and .banner == $banner)' >/dev/null; then
+    echo "The packaged developer-test Compendium banner path is incorrect." >&2
+    exit 1
+  fi
 fi
 
 if [[ -n "$MANIFEST_URL" ]]; then

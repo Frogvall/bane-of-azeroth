@@ -1,8 +1,10 @@
 {
   "id": "bane-of-azeroth",
   "title": "Bane of Azeroth",
-  "description": "Player options for Dragonbane set in the world of Azeroth.",
-  "version": "0.12.2",
+  "description": "Unofficial Warcraft-inspired rules, content, and automation for Dragonbane.",
+  "url": "https://github.com/Frogvall/bane-of-azeroth",
+  "bugs": "https://github.com/Frogvall/bane-of-azeroth/issues",
+  "version": "0.12.3",
   "compatibility": {
     "minimum": "14",
     "verified": "14",
@@ -56,6 +58,7 @@
       "path": "packs/bane-of-azeroth",
       "type": "Adventure",
       "system": "dragonbane",
+      "banner": "modules/bane-of-azeroth/assets/pack-banners/adventure.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
