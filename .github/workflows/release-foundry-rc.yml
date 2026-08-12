@@ -159,12 +159,26 @@ jobs:
             "$manifest_file" \
             >/dev/null
 
+          if jq -e '
+            (
+              ((.scripts // [])
+                | index("scripts/boa-dev-system-test-actors.js")) != null
+              or
+              ((.packs // [])
+                | map(.name)
+                | index("bane-of-azeroth-dev-test-actors")) != null
+            )
+          ' "$manifest_file" >/dev/null; then
+            echo               "Production package unexpectedly contains system-test Actor fixtures."               >&2
+            exit 1
+          fi
+
           zip_contents="$(
             unzip -Z1 "$zip_file"
           )"
 
           if grep -Eq \
-            '(^|/)bane-of-azeroth-dev-tests/|boa-dev-system-tests\.js$' \
+            '(^|/)bane-of-azeroth-dev-tests/|(^|/)bane-of-azeroth-dev-test-actors/|boa-dev-system-tests\.js$|boa-dev-system-test-actors\.js$' \
             <<< "$zip_contents"; then
             echo \
               "Release candidate contains development-only test content." \

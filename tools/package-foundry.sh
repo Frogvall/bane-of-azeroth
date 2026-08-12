@@ -11,6 +11,7 @@ PACK_NAME="bane-of-azeroth"
 PACK_BANNER_RELATIVE="assets/pack-banners/adventure.webp"
 DEV_TEST_PACK_BANNER_RELATIVE="assets/pack-banners/system-tests.webp"
 DEV_TEST_PACK_NAME="bane-of-azeroth-dev-tests"
+DEV_TEST_ACTOR_PACK_NAME="bane-of-azeroth-dev-test-actors"
 INCLUDE_DEV_TESTS="${BOA_INCLUDE_DEV_TESTS:-false}"
 PRODUCTION_MODULE_ID="bane-of-azeroth"
 DEVELOPMENT_MODULE_ID="bane-of-azeroth-dev"
@@ -225,21 +226,27 @@ find "$PACK_DIR" \
   -delete
 
 if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
-  echo "Building prerelease developer-test Macro pack..."
+  echo "Building prerelease developer-test packs..."
 
   DEV_TEST_SOURCE_ROOT="${DIST_DIR}/dev-test-pack-src"
   DEV_TEST_SOURCE="${DEV_TEST_SOURCE_ROOT}/${DEV_TEST_PACK_NAME}"
+  DEV_TEST_ACTOR_SOURCE="${DEV_TEST_SOURCE_ROOT}/${DEV_TEST_ACTOR_PACK_NAME}"
 
   rm -rf "$DEV_TEST_SOURCE_ROOT"
-
   python3 \
     "${ROOT_DIR}/tools/generate-system-test-macros.py" \
     --output-directory "$DEV_TEST_SOURCE"
+  python3 \
+    "${ROOT_DIR}/tools/generate-system-test-actors.py" \
+    --output-directory "$DEV_TEST_ACTOR_SOURCE"
 
   if [[ "$MODULE_ID" != "$SOURCE_MODULE_ID" ]]; then
-    echo "Rebranding developer-test Macro source for ${MODULE_ID}..."
+    echo "Rebranding developer-test pack sources for ${MODULE_ID}..."
     python3 "$REBRAND_TOOL" \
       --root "$DEV_TEST_SOURCE" \
+      --target-id "$MODULE_ID"
+    python3 "$REBRAND_TOOL" \
+      --root "$DEV_TEST_ACTOR_SOURCE" \
       --target-id "$MODULE_ID"
   fi
 
@@ -252,9 +259,21 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
     wc -l |
     tr -d '[:space:]'
   )"
-
+  DEV_TEST_ACTOR_SOURCE_COUNT="$(
+    find "$DEV_TEST_ACTOR_SOURCE" \
+      -maxdepth 1 \
+      -type f \
+      -name '*.json' \
+      -print |
+    wc -l |
+    tr -d '[:space:]'
+  )"
   if [[ "$DEV_TEST_SOURCE_COUNT" == "0" ]]; then
     echo "No developer-test Macro documents were generated." >&2
+    exit 1
+  fi
+  if [[ "$DEV_TEST_ACTOR_SOURCE_COUNT" == "0" ]]; then
+    echo "No developer-test Actor documents were generated." >&2
     exit 1
   fi
 
@@ -262,18 +281,35 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
     --inputDirectory "$DEV_TEST_SOURCE" \
     --outputDirectory "${STAGE_DIR}/packs" \
     --recursive
+  fvtt package pack "$DEV_TEST_ACTOR_PACK_NAME" \
+    --inputDirectory "$DEV_TEST_ACTOR_SOURCE" \
+    --outputDirectory "${STAGE_DIR}/packs" \
+    --recursive
 
-  DEV_TEST_VERIFY="${DEV_TEST_SOURCE_ROOT}/verify"
+  DEV_TEST_VERIFY="${DEV_TEST_SOURCE_ROOT}/verify-macros"
+  DEV_TEST_ACTOR_VERIFY="${DEV_TEST_SOURCE_ROOT}/verify-actors"
 
-  rm -rf "$DEV_TEST_VERIFY"
+  rm -rf "$DEV_TEST_VERIFY" "$DEV_TEST_ACTOR_VERIFY"
 
   fvtt package unpack "$DEV_TEST_PACK_NAME" \
     --inputDirectory "${STAGE_DIR}/packs" \
     --outputDirectory "$DEV_TEST_VERIFY" \
     --clean
+  fvtt package unpack "$DEV_TEST_ACTOR_PACK_NAME" \
+    --inputDirectory "${STAGE_DIR}/packs" \
+    --outputDirectory "$DEV_TEST_ACTOR_VERIFY" \
+    --clean
 
   DEV_TEST_PACKED_COUNT="$(
     find "$DEV_TEST_VERIFY" \
+      -type f \
+      -name '*.json' \
+      -print |
+    wc -l |
+    tr -d '[:space:]'
+  )"
+  DEV_TEST_ACTOR_PACKED_COUNT="$(
+    find "$DEV_TEST_ACTOR_VERIFY" \
       -type f \
       -name '*.json' \
       -print |
@@ -288,43 +324,66 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
       "packed ${DEV_TEST_PACKED_COUNT}." >&2
     exit 1
   fi
+  if [[ "$DEV_TEST_ACTOR_PACKED_COUNT" != "$DEV_TEST_ACTOR_SOURCE_COUNT" ]]; then
+    echo \
+      "Developer-test Actor pack verification failed: " \
+      "generated ${DEV_TEST_ACTOR_SOURCE_COUNT}, " \
+      "packed ${DEV_TEST_ACTOR_PACKED_COUNT}." >&2
+    exit 1
+  fi
 
   echo \
     "Verified ${DEV_TEST_PACKED_COUNT} developer-test " \
     "Macros in the compiled pack."
+  echo \
+    "Verified ${DEV_TEST_ACTOR_PACKED_COUNT} developer-test " \
+    "Actors in the compiled pack."
 
   DEV_PACK_DIR="${STAGE_DIR}/packs/${DEV_TEST_PACK_NAME}"
+  DEV_ACTOR_PACK_DIR="${STAGE_DIR}/packs/${DEV_TEST_ACTOR_PACK_NAME}"
 
-  if [[ ! -f "${DEV_PACK_DIR}/CURRENT" ]]; then
-    echo "Built developer-test pack is missing CURRENT." >&2
-    exit 1
-  fi
+  for dev_pack_dir in "$DEV_PACK_DIR" "$DEV_ACTOR_PACK_DIR"; do
+    if [[ ! -f "${dev_pack_dir}/CURRENT" ]]; then
+      echo "Built developer-test pack is missing CURRENT: ${dev_pack_dir}" >&2
+      exit 1
+    fi
 
-  rm -f \
-    "${DEV_PACK_DIR}/LOCK" \
-    "${DEV_PACK_DIR}/LOG" \
-    "${DEV_PACK_DIR}/LOG.old"
+    rm -f \
+      "${dev_pack_dir}/LOCK" \
+      "${dev_pack_dir}/LOG" \
+      "${dev_pack_dir}/LOG.old"
 
-  find "$DEV_PACK_DIR" \
-    -maxdepth 1 \
-    -type f \
-    -name '*.dbtmp' \
-    -delete
+    find "$dev_pack_dir" \
+      -maxdepth 1 \
+      -type f \
+      -name '*.dbtmp' \
+      -delete
+  done
 
   install \
     -D \
     -m 0644 \
     "${ROOT_DIR}/tests/system/runtime/import-system-test-macros.js" \
     "${STAGE_DIR}/scripts/boa-dev-system-tests.js"
+  install \
+    -D \
+    -m 0644 \
+    "${ROOT_DIR}/tests/system/runtime/import-system-test-actors.js" \
+    "${STAGE_DIR}/scripts/boa-dev-system-test-actors.js"
+
   if [[ "$MODULE_ID" != "$SOURCE_MODULE_ID" ]]; then
-    echo "Rebranding developer-test runtime for ${MODULE_ID}..."
+    echo "Rebranding developer-test runtimes for ${MODULE_ID}..."
     python3 "$REBRAND_TOOL" \
       --root "${STAGE_DIR}/scripts/boa-dev-system-tests.js" \
+      --target-id "$MODULE_ID"
+    python3 "$REBRAND_TOOL" \
+      --root "${STAGE_DIR}/scripts/boa-dev-system-test-actors.js" \
       --target-id "$MODULE_ID"
   fi
 
   jq \
     --arg packName "$DEV_TEST_PACK_NAME" \
+    --arg actorPackName "$DEV_TEST_ACTOR_PACK_NAME" \
     --arg banner "$EXPECTED_DEV_TEST_PACK_BANNER" \
     --arg activeModuleId "$MODULE_ID" \
     '
@@ -332,13 +391,22 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
       |
       .scripts = (
         (((.scripts // []) |
-          map(select(. != "scripts/boa-dev-system-tests.js")))
-        + ["scripts/boa-dev-system-tests.js"])
+          map(select(
+            . != "scripts/boa-dev-system-tests.js"
+            and . != "scripts/boa-dev-system-test-actors.js"
+          )))
+        + [
+          "scripts/boa-dev-system-tests.js",
+          "scripts/boa-dev-system-test-actors.js"
+        ])
       )
       |
       .packs = (
         ((.packs // []) |
-          map(select(.name != $packName)))
+          map(select(
+            .name != $packName
+            and .name != $actorPackName
+          )))
         + [
           {
             "name": $packName,
@@ -356,33 +424,59 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
                 "developmentOnly": true
               }
             }
+          },
+          {
+            "name": $actorPackName,
+            "label": "Bane of Azeroth – System Test Actors",
+            "path": ("packs/" + $actorPackName),
+            "type": "Actor",
+            "system": "dragonbane",
+            "banner": $banner,
+            "ownership": {
+              "PLAYER": "NONE",
+              "ASSISTANT": "OWNER"
+            },
+            "flags": {
+              ($activeModuleId): {
+                "developmentOnly": true
+              }
+            }
           }
         ]
       )
     ' \
     "${STAGE_DIR}/module.json" \
     > "${STAGE_DIR}/module.json.tmp"
-
   mv \
     "${STAGE_DIR}/module.json.tmp" \
     "${STAGE_DIR}/module.json"
 else
-  rm -rf "${STAGE_DIR}/packs/${DEV_TEST_PACK_NAME}"
-  rm -f "${STAGE_DIR}/scripts/boa-dev-system-tests.js"
-
+  rm -rf \
+    "${STAGE_DIR}/packs/${DEV_TEST_PACK_NAME}" \
+    "${STAGE_DIR}/packs/${DEV_TEST_ACTOR_PACK_NAME}"
+  rm -f \
+    "${STAGE_DIR}/scripts/boa-dev-system-tests.js" \
+    "${STAGE_DIR}/scripts/boa-dev-system-test-actors.js"
   jq \
     --arg packName "$DEV_TEST_PACK_NAME" \
+    --arg actorPackName "$DEV_TEST_ACTOR_PACK_NAME" \
     '
       del(.flags["bane-of-azeroth"].developmentBuild)
       |
       .scripts = (
         (.scripts // []) |
-        map(select(. != "scripts/boa-dev-system-tests.js"))
+        map(select(
+          . != "scripts/boa-dev-system-tests.js"
+          and . != "scripts/boa-dev-system-test-actors.js"
+        ))
       )
       |
       .packs = (
         (.packs // []) |
-        map(select(.name != $packName))
+        map(select(
+          .name != $packName
+          and .name != $actorPackName
+        ))
       )
     ' \
     "${STAGE_DIR}/module.json" \
@@ -392,7 +486,6 @@ else
     "${STAGE_DIR}/module.json.tmp" \
     "${STAGE_DIR}/module.json"
 fi
-
 echo "Creating module zip..."
 
 rm -f "$ZIP_FILE"
@@ -465,13 +558,17 @@ if [[ "$INCLUDE_DEV_TESTS" == "true" ]]; then
   if ! unzip -p "$ZIP_FILE" module.json |
     jq -e \
       --arg packName "$DEV_TEST_PACK_NAME" \
+      --arg actorPackName "$DEV_TEST_ACTOR_PACK_NAME" \
       --arg banner "$EXPECTED_DEV_TEST_PACK_BANNER" \
-      'any(.packs[]?; .name == $packName and .banner == $banner)' >/dev/null; then
-    echo "The packaged developer-test Compendium banner path is incorrect." >&2
+      '
+        any(.packs[]?; .name == $packName and .banner == $banner)
+        and
+        any(.packs[]?; .name == $actorPackName and .banner == $banner)
+      ' >/dev/null; then
+    echo "The packaged developer-test Compendium banner paths are incorrect." >&2
     exit 1
   fi
 fi
-
 if [[ -n "$MANIFEST_URL" ]]; then
   if ! unzip -p "$ZIP_FILE" module.json |
     jq -e \

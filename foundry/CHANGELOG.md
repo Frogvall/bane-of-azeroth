@@ -5,6 +5,13 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 The project is currently in early alpha. Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
 
 ## [Unreleased]
+### Added
+- Added a development-only **Bane of Azeroth – System Test Actors** Compendium with reusable prepared Actors for manual Foundry verification.
+### Changed
+- Development prerelease builds auto-import and reconcile managed System Test Actors from the current imported world Items while preserving manually added embedded Items.
+### Testing
+- Added packaging and release-channel contracts that keep System Test Actors and their import runtime out of production RC and stable packages.
+## [0.12.8] - 2026-08-12
 ### Security
 - Updated transitive npm development dependencies to patched versions for `GHSA-2v37-7h3g-55p8` (Nanoid) and `GHSA-fxqj-rqcc-2cmp` (PostCSS).
 - Confirmed the affected packages remain development/test-only dependencies and are not runtime dependencies of the delivered Foundry module.

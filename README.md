@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Active development / prerelease testing
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 0.12.8
+> **Current Foundry module version:** 0.12.9
 ## Project goals
 
 Bane of Azeroth is intended to provide a coherent Dragonbane ruleset for adventures inspired by Azeroth, rather than attempting to reproduce every mechanic from the source material directly.
@@ -163,17 +163,18 @@ npm run check:generated
 
 The npm command runs `python3 tools/check-foundry-generators.py`, which discovers every `tools/generate-*.py` script and invokes its `--check` mode. The same central check runs in GitHub Actions and at the start of `tools/package-foundry.sh`, so new generators are automatically included in build and packaging verification.
 ### Foundry system tests
-
-Developer Test macros are included in development prerelease packages only. Production release candidates use the production package identity and do not include Developer Tests.
+Developer Test macros and reusable System Test Actors are included in development prerelease packages only. Production release candidates use the production package identity and do not include either development-only Compendium.
 
 In a Foundry test world:
 
 1. Import or reimport the Bane of Azeroth Adventure.
-2. Open the **Bane of Azeroth – Developer Tests** compendium.
-3. Run **BOA DEV – Run All System Tests** as a game master.
-4. Review the generated Journal report.
-5. Complete and record the remaining manual checks in that report.
+2. Confirm that the **Bane of Azeroth - System Tests** Actor folder is auto-populated with the managed manual-test roster (Death Knight, Demon Hunter, Druid, Shaman, Warlock, Mage, Monk, Evoker, Shadow Priest, Tauren, Hunter, and Target).
+3. Open the **Bane of Azeroth – Developer Tests** compendium.
+4. Run **BOA DEV – Run All System Tests** as a game master.
+5. Review the generated Journal report and use the prepared Actors for the remaining manual checks.
+6. Complete and record the remaining manual checks in that report.
 
+The Actor fixtures are reconciled from the current imported world Items. Bane of Azeroth only replaces embedded Items that it marked as managed fixture data; Items added manually to a fixture Actor are left untouched. Reimport the Adventure if a fixture reports that a required source Item is missing.
 ### Release verification
 
 Use the development package for **BOA DEV – Run All System Tests** and the generated manual Player/GM report. When those checks are green, trigger **Publish Foundry release candidate**.
