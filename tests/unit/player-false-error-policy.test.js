@@ -7,6 +7,7 @@ import {
 
 import {
   mayCurrentUserRequestDemonHunterInitiationReconcile,
+  needsAutomaticDemonHunterInitiationReconcile,
   requestDemonHunterInitiationReconcile,
 } from "../../foundry/scripts/demon-hunter-initiation.js";
 import {
@@ -124,6 +125,68 @@ describe(
             {
               user: gm,
               ownerLevel: 3,
+            },
+          ),
+        ).toBe(true);
+      },
+    );
+
+    test(
+      "automatic Demon Hunter hooks ignore an unrelated Player-owned Actor",
+      () => {
+        const player = {
+          id: "player",
+          isGM: false,
+        };
+        const unrelatedActor = {
+          id: "stoneskin-totem",
+          items: [],
+          testUserPermission:
+            () => true,
+          getFlag:
+            () => undefined,
+        };
+
+        expect(
+          mayCurrentUserRequestDemonHunterInitiationReconcile(
+            unrelatedActor,
+            {
+              user: player,
+              ownerLevel: 3,
+            },
+          ),
+        ).toBe(true);
+
+        expect(
+          needsAutomaticDemonHunterInitiationReconcile(
+            unrelatedActor,
+            {
+              scenes: [],
+            },
+          ),
+        ).toBe(false);
+      },
+    );
+
+    test(
+      "automatic Demon Hunter hooks retain managed cleanup Actors",
+      () => {
+        const managedActor = {
+          id: "managed-demon-hunter",
+          items: [],
+          getFlag:
+            (_moduleId, key) =>
+              key ===
+                "demonHunterInitiationManagedPrototypeVision"
+                ? true
+                : undefined,
+        };
+
+        expect(
+          needsAutomaticDemonHunterInitiationReconcile(
+            managedActor,
+            {
+              scenes: [],
             },
           ),
         ).toBe(true);

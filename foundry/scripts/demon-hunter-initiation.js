@@ -329,6 +329,41 @@ function hasInitiation(
   );
 }
 
+export function needsAutomaticDemonHunterInitiationReconcile(
+  actor,
+  {
+    scenes =
+      globalThis.game?.scenes,
+  } = {},
+) {
+  if (!actor) {
+    return false;
+  }
+
+  if (
+    hasInitiation(
+      actor,
+    ) ||
+    flag(
+      actor,
+      PROTOTYPE_MANAGED_FLAG,
+    ) === true
+  ) {
+    return true;
+  }
+
+  return actorSceneTokens(
+    actor,
+    scenes,
+  ).some(
+    token =>
+      flag(
+        token,
+        TOKEN_MANAGED_FLAG,
+      ) === true,
+  );
+}
+
 export function actorSceneTokens(
   actor,
   scenes =
@@ -1114,24 +1149,33 @@ export async function onCreateDemonHunterInitiationToken(
   token,
 ) {
   if (
-    token?.actor
+    !needsAutomaticDemonHunterInitiationReconcile(
+      token?.actor,
+    )
   ) {
-    await reconcileDemonHunterInitiationWithAuthority(
-      token.actor,
-      "after Token creation",
-    );
+    return false;
   }
+
+  return reconcileDemonHunterInitiationWithAuthority(
+    token.actor,
+    "after Token creation",
+  );
 }
 
 export function onRenderDemonHunterInitiationActorSheet(
   app,
 ) {
   if (
-    app?.actor
+    !needsAutomaticDemonHunterInitiationReconcile(
+      app?.actor,
+    )
   ) {
-    void reconcileDemonHunterInitiationWithAuthority(
-      app.actor,
-      "while rendering the Actor sheet",
-    );
+    return false;
   }
+
+  void reconcileDemonHunterInitiationWithAuthority(
+    app.actor,
+    "while rendering the Actor sheet",
+  );
+  return true;
 }
