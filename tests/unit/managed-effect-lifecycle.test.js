@@ -117,6 +117,28 @@ describe(
           ["owned"],
         );
       },
+    );    test(
+      "treats an already-ended selected effect as an idempotent success",
+      async () => {
+        const actor = makeActor();
+
+        await expect(
+          lifecycle.endManagedEffectNow(
+            actor,
+            "summon:scene-1:already-gone",
+            {
+              scenes: [],
+            },
+          ),
+        ).resolves.toEqual({
+          ok: true,
+          action: "end",
+          effectId:
+            "summon:scene-1:already-gone",
+          alreadyEnded: true,
+        });
+      },
     );
+
   },
 );

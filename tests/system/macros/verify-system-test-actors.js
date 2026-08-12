@@ -143,6 +143,115 @@ for (const fixture of castReadyFixtures) {
   );
 }
 
+const deathKnight =
+  worldActorsNamed(
+    "BOA TEST – Death Knight",
+  )[0] ?? null;
+const hunter =
+  worldActorsNamed(
+    "BOA TEST – Hunter",
+  )[0] ?? null;
+const mage =
+  worldActorsNamed(
+    "BOA TEST – Mage",
+  )[0] ?? null;
+
+for (const weaponName of [
+  "Warglaive",
+  "Fist Weapon",
+  "Unarmed",
+  "Small Shield",
+]) {
+  const weapon = actorItem(
+    deathKnight,
+    weaponName,
+    "weapon",
+  );
+  boaCheckEqual(
+    checks,
+    `Death Knight has equipped ${weaponName}`,
+    {
+      exists: Boolean(weapon),
+      worn:
+        weapon?.system?.worn ??
+        false,
+    },
+    {
+      exists: true,
+      worn: true,
+    },
+  );
+}
+
+const hunterFirearms = actorItem(
+  hunter,
+  "Firearms",
+  "skill",
+);
+boaCheckEqual(
+  checks,
+  "Hunter has Firearms 15",
+  Number(
+    hunterFirearms?.system?.value ??
+    NaN,
+  ),
+  15,
+);
+
+for (const weaponName of [
+  "Pistol",
+  "Blunderbuss",
+  "Rifle",
+]) {
+  const weapon = actorItem(
+    hunter,
+    weaponName,
+    "weapon",
+  );
+  boaCheckEqual(
+    checks,
+    `Hunter has equipped ${weaponName}`,
+    {
+      exists: Boolean(weapon),
+      worn:
+        weapon?.system?.worn ??
+        false,
+    },
+    {
+      exists: true,
+      worn: true,
+    },
+  );
+}
+
+boaCheck(
+  checks,
+  "Hunter has an Ammo Pouch",
+  Boolean(
+    actorItem(
+      hunter,
+      "Ammo Pouch",
+      "item",
+    ),
+  ),
+);
+
+const mageLanguages = actorItem(
+  mage,
+  "Languages",
+  "skill",
+);
+boaCheck(
+  checks,
+  "Mage has Languages 10 or higher",
+  Number(
+    mageLanguages?.system?.value ??
+    NaN,
+  ) >= 10,
+  mageLanguages?.system?.value ??
+  null,
+);
+
 if (shaman) {
   try {
     const {

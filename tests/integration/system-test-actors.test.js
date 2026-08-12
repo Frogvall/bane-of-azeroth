@@ -199,6 +199,42 @@ describe(
     );
 
     test(
+      "prepares combat-ready Death Knight, Hunter, and Mage fixtures",
+      () => {
+        const generator = text(GENERATOR);
+        const runtime = text(RUNTIME);
+
+        for (const marker of [
+          '"Warglaive"',
+          '"Fist Weapon"',
+          '"Unarmed"',
+          '"Small Shield"',
+          '"Firearms"',
+          '"Pistol"',
+          '"Blunderbuss"',
+          '"Rifle"',
+          '"Ammo Pouch"',
+          '"Languages"',
+          "system_value=15",
+          "system_value=10",
+          "system_worn=True",
+          'data["systemWorn"] = system_worn',
+        ]) {
+          expect(generator).toContain(marker);
+        }
+
+        for (const marker of [
+          "descriptor?.systemWorn",
+          "data.system.worn = fixtureSystemWorn",
+          "fixtureOverrideChanged",
+          "Boolean(existing.system?.worn)",
+        ]) {
+          expect(runtime).toContain(marker);
+        }
+      },
+    );
+
+    test(
       "packages the Actor pack only in development builds",
       () => {
         const source = text(PACKAGE_SCRIPT);

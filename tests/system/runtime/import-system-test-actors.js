@@ -247,6 +247,20 @@
       data.system.value = numericValue;
     }
 
+    const fixtureSystemWorn =
+      descriptor?.systemWorn;
+    if (fixtureSystemWorn !== undefined) {
+      if (typeof fixtureSystemWorn !== "boolean") {
+        throw new Error(
+          "Invalid system-test Actor fixture systemWorn " +
+          `for ${descriptorLabel(descriptor)}.`,
+        );
+      }
+
+      data.system ??= {};
+      data.system.worn = fixtureSystemWorn;
+    }
+
     data.flags = foundry.utils.deepClone(
       data.flags ?? {},
     );
@@ -370,11 +384,23 @@
         continue;
       }
 
+      const fixtureOverrideChanged =
+        (
+          descriptor?.systemValue !== undefined &&
+          Number(existing.system?.value) !==
+            Number(descriptor.systemValue)
+        ) ||
+        (
+          descriptor?.systemWorn !== undefined &&
+          Boolean(existing.system?.worn) !==
+            descriptor.systemWorn
+        );
       const sourceChanged =
         getFlag(existing, SOURCE_ITEM_UUID_FLAG) !==
           sourceItem.uuid ||
         getFlag(existing, SOURCE_ITEM_VERSION_FLAG) !==
-          moduleVersion;
+          moduleVersion ||
+        fixtureOverrideChanged;
 
       if (!sourceChanged) continue;
 

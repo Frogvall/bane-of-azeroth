@@ -136,7 +136,12 @@ export async function endManagedEffectNow(
     .find(candidate => candidate.id === effectId);
 
   if (!effect) {
-    throw new Error("The selected Bane of Azeroth effect is no longer active.");
+    return {
+      ok: true,
+      action: "end",
+      effectId,
+      alreadyEnded: true,
+    };
   }
 
   if (effect.type === "druid") {

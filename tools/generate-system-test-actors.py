@@ -24,6 +24,7 @@ def fixture_item(
     content_key: str | None = None,
     *,
     system_value: int | None = None,
+    system_worn: bool | None = None,
 ) -> dict[str, object]:
     data: dict[str, object] = {
         "key": key,
@@ -34,6 +35,8 @@ def fixture_item(
         data["contentKey"] = content_key
     if system_value is not None:
         data["systemValue"] = system_value
+    if system_worn is not None:
+        data["systemWorn"] = system_worn
     return data
 
 
@@ -68,6 +71,25 @@ ACTORS = [
                 "warglaive",
                 "Warglaive",
                 "weapon",
+                system_worn=True,
+            ),
+            fixture_item(
+                "fist-weapon",
+                "Fist Weapon",
+                "weapon",
+                system_worn=True,
+            ),
+            fixture_item(
+                "unarmed",
+                "Unarmed",
+                "weapon",
+                system_worn=True,
+            ),
+            fixture_item(
+                "small-shield",
+                "Small Shield",
+                "weapon",
+                system_worn=True,
             ),
         ],
     },
@@ -196,6 +218,12 @@ ACTORS = [
         "wp": 30,
         "items": [
             fixture_item(
+                "languages",
+                "Languages",
+                "skill",
+                system_value=10,
+            ),
+            fixture_item(
                 "mages-brilliance",
                 "Mage's Brilliance",
                 "ability",
@@ -302,6 +330,35 @@ ACTORS = [
         "hp": 30,
         "wp": 30,
         "items": [
+            fixture_item(
+                "firearms",
+                "Firearms",
+                "skill",
+                system_value=15,
+            ),
+            fixture_item(
+                "pistol",
+                "Pistol",
+                "weapon",
+                system_worn=True,
+            ),
+            fixture_item(
+                "blunderbuss",
+                "Blunderbuss",
+                "weapon",
+                system_worn=True,
+            ),
+            fixture_item(
+                "rifle",
+                "Rifle",
+                "weapon",
+                system_worn=True,
+            ),
+            fixture_item(
+                "ammo-pouch",
+                "Ammo Pouch",
+                "item",
+            ),
             fixture_item(
                 "hunters-instincts",
                 "Hunter's Instincts",
@@ -417,6 +474,19 @@ def validate_definitions() -> None:
                         f"from 1 through 18: {key}/{item_key}"
                     )
 
+
+            system_worn = item.get("systemWorn")
+            if system_worn is not None:
+                if item.get("type") != "weapon":
+                    raise SystemExit(
+                        "Fixture systemWorn is only supported for weapons: "
+                        f"{key}/{item_key}"
+                    )
+                if not isinstance(system_worn, bool):
+                    raise SystemExit(
+                        "Fixture weapon systemWorn must be boolean: "
+                        f"{key}/{item_key}"
+                    )
 
 def actor_document(definition: dict[str, object]) -> dict[str, object]:
     document_id = str(definition["id"])
