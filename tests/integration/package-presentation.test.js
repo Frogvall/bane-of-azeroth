@@ -228,7 +228,7 @@ describe("0.12.3 package presentation", () => {
       '--arg packName "$DEV_TEST_PACK_NAME"',
     );
     expect(source).toContain(
-      'The packaged developer-test Compendium banner path is incorrect.',
+      'The packaged developer-test Compendium banner paths are incorrect.',
     );
   });
 });
