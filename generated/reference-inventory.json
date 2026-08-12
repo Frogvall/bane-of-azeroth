@@ -1,0 +1,1831 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "tools/generate-reference-inventory.py",
+  "scanRoots": [
+    "homebrewery",
+    "foundry/config",
+    "foundry/content",
+    "foundry/scripts",
+    "tests/system/macros",
+    "tools"
+  ],
+  "counts": {
+    "display-table": 2,
+    "runtime-uuid-lookup": 7,
+    "symbolic-display-reference": 23,
+    "symbolic-reference": 105,
+    "uuid-link": 27,
+    "uuid-literal": 21
+  },
+  "entries": [
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 6,
+      "column": 15,
+      "target": "Item.JrQqkQrSOFJzR7H9",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Item.JrQqkQrSOFJzR7H9\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 11,
+      "column": 15,
+      "target": "Item.O7p7ZWnZNgxP8PFw",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Item.O7p7ZWnZNgxP8PFw\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 16,
+      "column": 15,
+      "target": "Item.J6l8QwCJhBirvg03",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Item.J6l8QwCJhBirvg03\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 21,
+      "column": 15,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#poison\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 26,
+      "column": 15,
+      "target": "JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 31,
+      "column": 15,
+      "target": "Item.SY62xmX9uBVml786",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Item.SY62xmX9uBVml786\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 36,
+      "column": 15,
+      "target": "Item.GiE0TwixaYnxFT6i",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Item.GiE0TwixaYnxFT6i\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 41,
+      "column": 15,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#movement",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#movement\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 46,
+      "column": 15,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.CJjqkHzpow39ViUi#death",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.CJjqkHzpow39ViUi#death\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 51,
+      "column": 15,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 56,
+      "column": 15,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KAxnhLbO8N7kcvMl#special-attacks",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KAxnhLbO8N7kcvMl#special-attacks\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 61,
+      "column": 15,
+      "target": "JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.cvFSLoFtdJOQcxtU#magic-tricks",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.cvFSLoFtdJOQcxtU#magic-tricks\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 66,
+      "column": 15,
+      "target": "JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.C0stUmhj95JFgL4f#power-level",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.BHzSGEPaCGVadFsb.JournalEntryPage.C0stUmhj95JFgL4f#power-level\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 71,
+      "column": 15,
+      "target": "JournalEntry.V4R4dCuKSK2mi8RF.JournalEntryPage.eIQgHhYPUczg7kbZ#pushing-your-roll",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.V4R4dCuKSK2mi8RF.JournalEntryPage.eIQgHhYPUczg7kbZ#pushing-your-roll\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 76,
+      "column": 15,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#cold",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#cold\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 81,
+      "column": 15,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#sneak-attack",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.KrSXg7HKmfo7xRcI#sneak-attack\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 86,
+      "column": 15,
+      "target": "Item.RPnxXYVb8z7EG5Wl",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Item.RPnxXYVb8z7EG5Wl\","
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/elemental-totems.json",
+      "line": 24,
+      "column": 64,
+      "target": "boa:item.spells.elemental-totem",
+      "classification": "unclassified",
+      "snippet": "\"descriptionHtml\": \"<p>A small elemental totem summoned by @Ref[boa:item.spells.elemental-totem]{Elemental Totem}.</p>\",",
+      "label": "Elemental Totem"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 45,
+      "column": 285,
+      "target": "dragonbane-core:rule.resist-cold",
+      "classification": "unclassified",
+      "snippet": "\"By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you has its movement rate halved, and if it ends its turn within the ",
+      "label": "resist cold"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 55,
+      "column": 114,
+      "target": "boa:actor.actors.summoned-monsters.ghoul",
+      "classification": "unclassified",
+      "snippet": "\"descriptionHtml\": \"This ability requires a stretch of time to raise a fallen creature into a ravenous @Ref[boa:actor.actors.summoned-monsters.ghoul]{ghoul}. The ghoul takes the form of an undead humanoid and counts as a monster in combat. ",
+      "label": "ghoul"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 125,
+      "column": 41,
+      "target": "boa:item.spells.savage-incarnation",
+      "classification": "unclassified",
+      "snippet": "\"You know the general spell @Ref[boa:item.spells.savage-incarnation]{Savage Incarnation}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.\",",
+      "label": "Savage Incarnation"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 138,
+      "column": 41,
+      "target": "boa:item.spells.incarnation-of-the-stars",
+      "classification": "unclassified",
+      "snippet": "\"You know the general spell @Ref[boa:item.spells.incarnation-of-the-stars]{Incarnation of the Stars}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.\"",
+      "label": "Incarnation of the Stars"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 150,
+      "column": 41,
+      "target": "boa:item.spells.feral-incarnation",
+      "classification": "unclassified",
+      "snippet": "\"You know the general spell @Ref[boa:item.spells.feral-incarnation]{Feral Incarnation}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.\"",
+      "label": "Feral Incarnation"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 162,
+      "column": 41,
+      "target": "boa:item.spells.incarnation-of-harmony",
+      "classification": "unclassified",
+      "snippet": "\"You know the general spell @Ref[boa:item.spells.incarnation-of-harmony]{Incarnation of Harmony}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.\"",
+      "label": "Incarnation of Harmony"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 215,
+      "column": 69,
+      "target": "dragonbane-core:rule.dash",
+      "classification": "unclassified",
+      "snippet": "\"You can activate this ability on your turn to make the @Ref[dragonbane-core:rule.dash]{dash} action a free action during that turn.\"",
+      "label": "dash"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 245,
+      "column": 236,
+      "target": "dragonbane-core:heroic-ability.twin-shot",
+      "classification": "unclassified",
+      "snippet": "\"A strike with a two-handed ranged weapon inflicts D8 additional points of damage, but you cannot move in the same round. You can activate this ability after the roll to hit, but not if you moved. This can be combined with @Ref[dragonbane-c",
+      "label": "Twin Shot"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 287,
+      "column": 27,
+      "target": "dragonbane-core:spell.sense-magic",
+      "classification": "unclassified",
+      "snippet": "\"You know the @Ref[dragonbane-core:spell.sense-magic]{Sense Magic} magic trick and can cast it without spending WP. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.\"",
+      "label": "Sense Magic"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 340,
+      "column": 78,
+      "target": "dragonbane-core:heroic-ability.iron-fist",
+      "classification": "unclassified",
+      "snippet": "\"The damage of your unarmed attacks increases to D10. If you use @Ref[dragonbane-core:heroic-ability.iron-fist]{Iron Fist}, the damage increases to 2D10 for that unarmed attack. You can also parry both melee and ranged attacks unarmed. When",
+      "label": "Iron Fist"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 455,
+      "column": 41,
+      "target": "boa:item.spells.shadowform",
+      "classification": "unclassified",
+      "snippet": "\"You know the general spell @Ref[boa:item.spells.shadowform]{Shadowform}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.\"",
+      "label": "Shadowform"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 497,
+      "column": 32,
+      "target": "dragonbane-core:rule.sneak-attack",
+      "classification": "unclassified",
+      "snippet": "\"Whenever you deal @Ref[dragonbane-core:rule.sneak-attack]{sneak attack} damage to a target, the dice increase for damage is increased by two dice instead of one (for example, 3D8 instead of 2D8 for a weapon that deals D8 damage).\"",
+      "label": "sneak attack"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 519,
+      "column": 119,
+      "target": "dragonbane-core:journal-page.combat-damage.poison",
+      "classification": "unclassified",
+      "snippet": "\"When you hit with a piercing or slashing weapon, you can activate this ability to also apply one dose of @Ref[dragonbane-core:journal-page.combat-damage.poison]{poison} that you are carrying, as if it was ingested by the target. You can ac",
+      "label": "poison"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 549,
+      "column": 41,
+      "target": "boa:item.spells.elemental-totem",
+      "classification": "unclassified",
+      "snippet": "\"You know the general spell @Ref[boa:item.spells.elemental-totem]{Elemental Totem}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.\",",
+      "label": "Elemental Totem"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 603,
+      "column": 27,
+      "target": "dragonbane-core:rule.power-from-the-body",
+      "classification": "unclassified",
+      "snippet": "\"When you use @Ref[dragonbane-core:rule.power-from-the-body]{Power from the Body}, you get to keep any excess WP you do not use when casting the spell, up to your maximum WP.\"",
+      "label": "Power from the Body"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/heroic-class-abilities.json",
+      "line": 655,
+      "column": 93,
+      "target": "dragonbane-core:heroic-ability.dual-wield",
+      "classification": "unclassified",
+      "snippet": "\"You can wield a two-handed melee weapon in one hand. This can be combined with @Ref[dragonbane-core:heroic-ability.dual-wield]{Dual Wield}.\"",
+      "label": "Dual Wield"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/appendices/companions.json",
+      "line": 13,
+      "column": 157,
+      "target": "dragonbane-core:journal-page.common-animals",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @Ref[dragonbane-core:journal-page.common-animals]{list of such animals} can be found in ",
+      "label": "list of such animals"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 357,
+      "target": "boa:table.tables.monster-attacks.felhunter",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
+      "label": "Monster Attacks – Felhunter"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 518,
+      "target": "boa:table.tables.monster-attacks.imp",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
+      "label": "Monster Attacks – Imp"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 673,
+      "target": "boa:table.tables.monster-attacks.sayaad",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
+      "label": "Monster Attacks – Sayaad"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/appendices/demons.json",
+      "line": 13,
+      "column": 842,
+      "target": "boa:table.tables.monster-attacks.voidwalker",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock i",
+      "label": "Monster Attacks – Voidwalker"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/foundry-vtt-guide/player-macros.json",
+      "line": 13,
+      "column": 207,
+      "target": "boa:macro.change-druid-form",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>The following player macros are added when importing the <strong>Bane of Azeroth</strong> Adventure. They can be dragged directly from this Journal to the hotbar for quick access.</p><h4>@Ref[boa:macro.change-druid-form]{Chan",
+      "label": "Change Druid Form"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/foundry-vtt-guide/player-macros.json",
+      "line": 13,
+      "column": 373,
+      "target": "boa:macro.end-effects",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>The following player macros are added when importing the <strong>Bane of Azeroth</strong> Adventure. They can be dragged directly from this Journal to the hotbar for quick access.</p><h4>@Ref[boa:macro.change-druid-form]{Chan",
+      "label": "End Effects"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/gear.json",
+      "line": 13,
+      "column": 2335,
+      "target": "dragonbane-core:rule.find-weak-spot",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Azeroth's adventurers use most of the same equipment described in the core rules, swords, bows, armor, and adventuring gear that would be recognizable in any fantasy setting. But the world of <em>Warcraft</em> has its own dis",
+      "label": "Find Weak Spot"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 2054,
+      "target": "boa:item.heroic-class-ability.death-knight.death-knights-rebirth",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Death Knight's Rebirth"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 2932,
+      "target": "boa:item.heroic-class-ability.death-knight.death-grip",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Death Grip"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 3512,
+      "target": "boa:item.heroic-class-ability.death-knight.frostreaper",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Frostreaper"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 3966,
+      "target": "dragonbane-core:rule.resist-cold",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "resist cold"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 4066,
+      "target": "boa:item.heroic-class-ability.death-knight.summon-ghoul",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Raise Ghoul"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 4333,
+      "target": "boa:actor.actors.summoned-monsters.ghoul",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "ghoul"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 5532,
+      "target": "boa:item.heroic-class-ability.demon-hunter.demon-hunter-initiation",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Demon Hunter Initiation"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 6158,
+      "target": "boa:item.heroic-class-ability.demon-hunter.eye-beam",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Eye Beam"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 6581,
+      "target": "boa:item.heroic-class-ability.demon-hunter.live-by-the-glaive",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Live by the Glaive"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 6933,
+      "target": "boa:item.heroic-class-ability.demon-hunter.soul-cleave",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Soul Cleave"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 8035,
+      "target": "boa:item.heroic-class-ability.druid.druidic-awakening",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Druidic Awakening"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 8247,
+      "target": "boa:item.spells.savage-incarnation",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Savage Incarnation"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 8631,
+      "target": "boa:item.heroic-class-ability.druid.chosen-of-elune",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Chosen of Elune"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 8837,
+      "target": "boa:item.spells.incarnation-of-the-stars",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Incarnation of the Stars"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 9073,
+      "target": "boa:item.heroic-class-ability.druid.king-of-the-jungle",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "King of the Jungle"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 9285,
+      "target": "boa:item.spells.feral-incarnation",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Feral Incarnation"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 9507,
+      "target": "boa:item.heroic-class-ability.druid.tree-of-life",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Tree of Life"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 9707,
+      "target": "boa:item.spells.incarnation-of-harmony",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Incarnation of Harmony"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 10578,
+      "target": "boa:item.heroic-class-ability.evoker.evokers-legacy",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Evoker's Legacy"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 11017,
+      "target": "boa:item.heroic-class-ability.evoker.ebon-might",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Ebon Might"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 11391,
+      "target": "boa:item.heroic-class-ability.evoker.rewind",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Rewind"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 11721,
+      "target": "boa:item.heroic-class-ability.evoker.tailwind",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Tailwind"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 11940,
+      "target": "dragonbane-core:rule.dash",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "dash"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 12750,
+      "target": "boa:item.heroic-class-ability.hunter.hunters-instincts",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Hunter's Instincts"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 13376,
+      "target": "boa:item.heroic-class-ability.hunter.aimed-shot",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Aimed Shot"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 13769,
+      "target": "dragonbane-core:heroic-ability.twin-shot",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Twin Shot"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 13875,
+      "target": "boa:item.heroic-class-ability.hunter.beast-master",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Beast Master"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 14570,
+      "target": "boa:item.heroic-class-ability.hunter.superior-trapper",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Superior Trapper"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 15912,
+      "target": "boa:item.heroic-class-ability.mage.mages-brilliance",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Mage's Brilliance"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 16108,
+      "target": "dragonbane-core:spell.sense-magic",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Sense Magic"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 16339,
+      "target": "boa:item.heroic-class-ability.mage.ice-block",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Ice Block"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 16921,
+      "target": "boa:item.heroic-class-ability.mage.living-bomb",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Living Bomb"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 17475,
+      "target": "boa:item.heroic-class-ability.mage.time-warp",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Time Warp"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 18760,
+      "target": "boa:item.heroic-class-ability.monk.monks-serenity",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Monk's Serenity"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 18995,
+      "target": "dragonbane-core:heroic-ability.iron-fist",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Iron Fist"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 19276,
+      "target": "boa:item.heroic-class-ability.monk.combo-strikes",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Combo Strikes"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 19834,
+      "target": "boa:item.heroic-class-ability.monk.soothing-mist",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Soothing Mist"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 20197,
+      "target": "boa:item.heroic-class-ability.monk.stagger",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Stagger"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 21397,
+      "target": "boa:item.heroic-class-ability.paladin.paladins-righteousness",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Paladin's Righteousness"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 21810,
+      "target": "boa:item.heroic-class-ability.paladin.avengers-shield",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Avenger's Shield"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 22697,
+      "target": "boa:item.heroic-class-ability.paladin.beacon-of-light",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Beacon of Light"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 23253,
+      "target": "boa:item.heroic-class-ability.paladin.blade-of-justice",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Blade of Justice"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 24470,
+      "target": "boa:item.heroic-class-ability.priest.priests-zeal",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Priest's Zeal"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 24894,
+      "target": "boa:item.heroic-class-ability.priest.darkness",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Darkness"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 25083,
+      "target": "boa:item.spells.shadowform",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Shadowform"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 25291,
+      "target": "boa:item.heroic-class-ability.priest.power-word-shield",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Power Word: Shield"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 25821,
+      "target": "boa:item.heroic-class-ability.priest.sanctify",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Sanctify"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 26921,
+      "target": "boa:item.heroic-class-ability.rogue.roguish-cunning",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Roguish Cunning"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 27110,
+      "target": "dragonbane-core:rule.sneak-attack",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "sneak attack"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 27369,
+      "target": "boa:item.heroic-class-ability.rogue.dirty-fighting",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Dirty Fighting"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 28106,
+      "target": "boa:item.heroic-class-ability.rogue.envenom-weapons",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Envenom Weapons"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 28388,
+      "target": "dragonbane-core:journal-page.combat-damage.poison",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "poison"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 28612,
+      "target": "boa:item.heroic-class-ability.rogue.shadowstrike",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Shadowstrike"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 29852,
+      "target": "boa:item.heroic-class-ability.shaman.shamanic-calling",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Shamanic Calling"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 30063,
+      "target": "boa:item.spells.elemental-totem",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Elemental Totem"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 30402,
+      "target": "boa:item.heroic-class-ability.shaman.bloodlust",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Bloodlust"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 31025,
+      "target": "boa:item.heroic-class-ability.shaman.chain-heal",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Chain Heal"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 31578,
+      "target": "boa:item.heroic-class-ability.shaman.stormstrike",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Stormstrike"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 32638,
+      "target": "boa:item.heroic-class-ability.warlock.warlocks-ambition",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Warlock's Ambition"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 32839,
+      "target": "dragonbane-core:rule.power-from-the-body",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Power from the Body"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 33047,
+      "target": "boa:item.heroic-class-ability.warlock.demonologist",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Demonologist"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 33893,
+      "target": "boa:item.heroic-class-ability.warlock.life-drain",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Life Drain"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 34248,
+      "target": "boa:item.heroic-class-ability.warlock.souls-collector",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Souls Collector"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 35547,
+      "target": "boa:item.heroic-class-ability.warrior.warriors-rage",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Warrior's Rage"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 35814,
+      "target": "dragonbane-core:heroic-ability.dual-wield",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Dual Wield"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 35922,
+      "target": "boa:item.heroic-class-ability.warrior.hamstring",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Hamstring"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 36438,
+      "target": "boa:item.heroic-class-ability.warrior.retaliation",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Retaliation"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/heroic-class-abilities.json",
+      "line": 13,
+      "column": 36901,
+      "target": "boa:item.heroic-class-ability.warrior.sunder-armor",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Traditionally, games set in Azeroth use classes. Classes are not a concept in Dragonbane. To represent the traditional classes of Azeroth, this supplement provides a set of heroic abilities. In addition to choosing a professi",
+      "label": "Sunder Armor"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 240,
+      "target": "boa:table.kin.any-faction",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Any Faction"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 298,
+      "target": "boa:table.kin.alliance",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Alliance"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 350,
+      "target": "boa:table.kin.horde",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Horde"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 1852,
+      "target": "dragonbane-core:rule.falling",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "falling"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 2248,
+      "target": "boa:table.kin.name.dracthyr",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Dracthyr"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 3434,
+      "target": "boa:table.kin.name.draenei",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Draenei"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 4908,
+      "target": "boa:table.kin.name.bronzebeard",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Bronzebeard"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 5797,
+      "target": "boa:table.kin.name.dark-iron",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Dark Iron"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 7174,
+      "target": "dragonbane-core:rule.magic-tricks",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Magic Tricks"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 7366,
+      "target": "boa:table.kin.name.blood-elf",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Blood Elf"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 8272,
+      "target": "boa:table.kin.name.night-elf",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Night Elf"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 9273,
+      "target": "dragonbane-core:kin-ability.hard-to-catch",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Hard to Catch"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 9401,
+      "target": "boa:table.kin.name.gnome",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Gnome"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 10432,
+      "target": "boa:table.kin.name.goblin",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Goblin"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 11507,
+      "target": "boa:table.kin.name.human",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Human"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 12448,
+      "target": "dragonbane-core:rule.death",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "rally"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 12584,
+      "target": "boa:table.kin.name.orc",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Orc"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 13540,
+      "target": "boa:table.kin.name.pandaren",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Pandaren"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 14704,
+      "target": "boa:table.kin.name.tauren",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Tauren"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 15720,
+      "target": "dragonbane-core:kin-ability.fast-healer",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Fast Healer"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 15817,
+      "target": "boa:table.kin.name.troll",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Troll"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 16538,
+      "target": "dragonbane-core:rule.death",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Death Roll"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 16837,
+      "target": "boa:table.kin.name.undead",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Undead"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 17833,
+      "target": "dragonbane-core:rule.pushing-your-roll",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Pushing your Roll"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 17961,
+      "target": "boa:table.kin.name.vulpera",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Vulpera"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 19241,
+      "target": "boa:journal-page.player-options.kin#human",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Human"
+    },
+    {
+      "kind": "symbolic-display-reference",
+      "path": "foundry/content/journals/player-options/kin.json",
+      "line": 13,
+      "column": 19316,
+      "target": "boa:table.kin.name.worgen",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
+      "label": "Name - Worgen"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/kin.json",
+      "line": 36,
+      "column": 19,
+      "target": "dragonbane-core:rule.falling",
+      "classification": "unclassified",
+      "snippet": "\"When @Ref[dragonbane-core:rule.falling]{falling}, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height.\"",
+      "label": "falling"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/kin.json",
+      "line": 132,
+      "column": 34,
+      "target": "dragonbane-core:rule.magic-tricks",
+      "classification": "unclassified",
+      "snippet": "\"You cast one of the @Ref[dragonbane-core:rule.magic-tricks]{Magic Tricks} listed under General Magic. To determine success, roll against any school of magic, or INT, whichever is higher.\"",
+      "label": "Magic Tricks"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/kin.json",
+      "line": 176,
+      "column": 86,
+      "target": "dragonbane-core:kin-ability.hard-to-catch",
+      "classification": "unclassified",
+      "snippet": "\"If the optional rules for grappling are not used, the gnome can use the @Ref[dragonbane-core:kin-ability.hard-to-catch]{Hard to Catch} kin ability from the core rules instead.\"",
+      "label": "Hard to Catch"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/kin.json",
+      "line": 240,
+      "column": 82,
+      "target": "dragonbane-core:rule.death",
+      "classification": "unclassified",
+      "snippet": "\"If you have zero HP, you can activate this ability to automatically @Ref[dragonbane-core:rule.death]{rally} (no action), without rolling against WIL or being PERSUADED by someone else.\"",
+      "label": "rally"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/kin.json",
+      "line": 303,
+      "column": 122,
+      "target": "dragonbane-core:kin-ability.fast-healer",
+      "classification": "unclassified",
+      "snippet": "\"By activating this ability (a free action in combat) you recover [[/roll D6]] HP. This can be combined with @Ref[dragonbane-core:kin-ability.fast-healer]{Fast Healer} for [[/roll 2D6]] HP recovered.\"",
+      "label": "Fast Healer"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/kin.json",
+      "line": 324,
+      "column": 34,
+      "target": "dragonbane-core:rule.death",
+      "classification": "unclassified",
+      "snippet": "\"Instead of making a @Ref[dragonbane-core:rule.death]{Death Roll} you can activate this ability to automatically succeed as if you had rolled a dragon.\"",
+      "label": "Death Roll"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/kin.json",
+      "line": 354,
+      "column": 193,
+      "target": "dragonbane-core:rule.pushing-your-roll",
+      "classification": "unclassified",
+      "snippet": "\"You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with @Ref[dragonbane-core:rule.pushing-your-roll]{Pushing your Ro",
+      "label": "Pushing your Roll"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/kin.json",
+      "line": 384,
+      "column": 225,
+      "target": "boa:journal-page.player-options.kin#human",
+      "classification": "unclassified",
+      "snippet": "\"By activating this ability (a free action in combat) you change between your humanoid and worgen forms. When in humanoid form, your movement and kin abilities other than this one are the same as if your kin was @Ref[boa:journal-page.player",
+      "label": "Human"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/scripts/common-animal-attack-effects.js",
+      "line": 65,
+      "column": 8,
+      "target": "${ruleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${ruleUuid}]{lethal poison} ` +",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "foundry/scripts/common-animal-attack-effects.js",
+      "line": 419,
+      "column": 8,
+      "target": "${ruleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${ruleUuid}]{lethal poison} ` +",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "foundry/scripts/common-animal-status-effects.js",
+      "line": 82,
+      "column": 26,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "const document = await fromUuid(uuid);"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "foundry/scripts/elemental-totems/creation.js",
+      "line": 70,
+      "column": 31,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "const actorDocument = await fromUuid(plan.actorUuid);"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "foundry/scripts/warlock-demons/creation.js",
+      "line": 134,
+      "column": 11,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "await fromUuid(plan.actorUuid);"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/cleanup-player-tests.js",
+      "line": 560,
+      "column": 11,
+      "target": "${report.uuid}",
+      "classification": "unclassified",
+      "snippet": "?? `@UUID[${report.uuid}]{Open the complete player-test report}`",
+      "label": "Open the complete player-test report"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/run-all.js",
+      "line": 296,
+      "column": 8,
+      "target": "${report.uuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${report.uuid}]{Open the complete test report}`",
+      "label": "Open the complete test report"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/run-player-tests.js",
+      "line": 871,
+      "column": 10,
+      "target": "${summonAbility.uuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${summonAbility.uuid}]`"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 787,
+      "column": 10,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KAxnhLbO8N7kcvMl\"\n        + \"#special-attacks",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.SbbSMsuvWeo3HaID.\"",
+      "label": "Find Weak Spot"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1233,
+      "column": 10,
+      "target": "JournalEntry.RSi75ZLYMyFhBqPi.\"\n        + \"JournalEntryPage.9gOpHO89C6YKsgH1",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.RSi75ZLYMyFhBqPi.\""
+    },
+    {
+      "kind": "display-table",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1335,
+      "column": 10,
+      "target": "RollTable.\"\n      ),\n      demonDefinitions.length\n    );\n    boaCheck(\n      checks,\n      \"Demons page uses full-width blocks\",\n      occurrences(\n        demonsHtml,\n        '<div class=\"flexrow\">'\n      ) === 0\n      && occurrences(\n        demonsHtml,\n        '<div style=\"width:50%\">'\n      ) === 0\n    );\n    boaCheck(\n      checks,\n      \"Demons page includes the book illustration\",\n      occurrences(\n        demonsHtml,\n        \"modules/bane-of-azeroth/\"\n        + \"assets/journals/demons/demons.webp\"\n      ) === 1\n    );\n\n    for (const spec of [\n      [\n        \"felhunter\",\n        \"syJzyyJogXrRtT8q\",\n        \"Felhunter\",\n        \"Y6MEcCH35zRiBNUw\",\n        \"Monster Attacks – Felhunter\",\n      ",
+      "classification": "unclassified",
+      "snippet": "\"@DisplayTable[RollTable.\""
+    },
+    {
+      "kind": "display-table",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1402,
+      "column": 10,
+      "target": "RollTable.${tableId}",
+      "classification": "unclassified",
+      "snippet": "`@DisplayTable[RollTable.${tableId}]`"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1535,
+      "column": 10,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#falling",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.SbbSMsuvWeo3HaID.\"",
+      "label": "falling"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1543,
+      "column": 10,
+      "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.cvFSLoFtdJOQcxtU\"\n        + \"#magic-tricks",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.BHzSGEPaCGVadFsb.\"",
+      "label": "Magic Tricks"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1551,
+      "column": 10,
+      "target": "Item.GiE0TwixaYnxFT6i",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[Item.GiE0TwixaYnxFT6i]\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1558,
+      "column": 10,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.SbbSMsuvWeo3HaID.\"",
+      "label": "rally"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1566,
+      "column": 10,
+      "target": "Item.SY62xmX9uBVml786",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[Item.SY62xmX9uBVml786]\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1574,
+      "column": 10,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.SbbSMsuvWeo3HaID.\"",
+      "label": "Death Roll"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1582,
+      "column": 10,
+      "target": "JournalEntry.V4R4dCuKSK2mi8RF.\"\n        + \"JournalEntryPage.eIQgHhYPUczg7kbZ\"\n        + \"#pushing-your-roll",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.V4R4dCuKSK2mi8RF.\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1591,
+      "column": 10,
+      "target": "JournalEntry.BoAJrnlPlayerOpt.\"\n        + \"JournalEntryPage.BoAPgPlayerKin01\"\n        + \"#human",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.BoAJrnlPlayerOpt.\"",
+      "label": "Human"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1601,
+      "column": 10,
+      "target": "Actor.GhoulAct6Kp9T2xP",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[Actor.GhoulAct6Kp9T2xP]\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1609,
+      "column": 10,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#movement",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.SbbSMsuvWeo3HaID.\"",
+      "label": "dash"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1619,
+      "column": 10,
+      "target": "Item.J6l8QwCJhBirvg03",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[Item.J6l8QwCJhBirvg03]\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1628,
+      "column": 10,
+      "target": "Item.RPnxXYVb8z7EG5Wl",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[Item.RPnxXYVb8z7EG5Wl]\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1637,
+      "column": 10,
+      "target": "Item.O7p7ZWnZNgxP8PFw",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[Item.O7p7ZWnZNgxP8PFw]\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1646,
+      "column": 10,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#sneak-attack",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.SbbSMsuvWeo3HaID.\"",
+      "label": "sneak attack"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1656,
+      "column": 10,
+      "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#poison",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.SbbSMsuvWeo3HaID.\"",
+      "label": "poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1666,
+      "column": 10,
+      "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.C0stUmhj95JFgL4f\"\n        + \"#power-level",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[JournalEntry.BHzSGEPaCGVadFsb.\""
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1677,
+      "column": 10,
+      "target": "Item.JrQqkQrSOFJzR7H9",
+      "classification": "unclassified",
+      "snippet": "\"@UUID[Item.JrQqkQrSOFJzR7H9]\""
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-assets-and-journals.js",
+      "line": 1861,
+      "column": 30,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "const document = await fromUuid("
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-common-animal-attack-messages.js",
+      "line": 76,
+      "column": 7,
+      "target": "JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "unclassified",
+      "snippet": "\"JournalEntryPage.6WPxPxUjh4W80RNy#poison\""
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-common-animal-attack-messages.js",
+      "line": 81,
+      "column": 7,
+      "target": "JournalEntryPage.6WPxPxUjh4W80RNy#poison",
+      "classification": "unclassified",
+      "snippet": "\"JournalEntryPage.6WPxPxUjh4W80RNy#poison\" +"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-common-animals.js",
+      "line": 254,
+      "column": 8,
+      "target": "${poisonRuleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-common-animals.js",
+      "line": 320,
+      "column": 8,
+      "target": "${poisonRuleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-link",
+      "path": "tests/system/macros/verify-common-animals.js",
+      "line": 533,
+      "column": 8,
+      "target": "${poisonRuleUuid}",
+      "classification": "unclassified",
+      "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
+      "label": "lethal poison"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-external-uuids.js",
+      "line": 158,
+      "column": 22,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "document = await fromUuid("
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-ghoul.js",
+      "line": 99,
+      "column": 3,
+      "target": "RollTable.GhoulAtk4mN7Qx2P",
+      "classification": "unclassified",
+      "snippet": "\"RollTable.GhoulAtk4mN7Qx2P\","
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-ghoul.js",
+      "line": 104,
+      "column": 23,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "attackTable = await fromUuid(attackTableUuid);"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-mages-brilliance.js",
+      "line": 12,
+      "column": 24,
+      "target": "Item.RPnxXYVb8z7EG5Wl",
+      "classification": "unclassified",
+      "snippet": "const senseMagicUuid = \"Item.RPnxXYVb8z7EG5Wl\";"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-mages-brilliance.js",
+      "line": 94,
+      "column": 28,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "sourceSenseMagic = await fromUuid("
+    }
+  ]
+}

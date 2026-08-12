@@ -1,0 +1,40 @@
+{
+  "folder": "oTSQflRYChUu3iG2",
+  "name": "Tree of Life",
+  "type": "ability",
+  "_id": "1zM1M11RvPrqc6F7",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
+  "system": {
+    "itemDescription": "<p>You know the general spell @UUID[Item.Harmony4UvWxY5zQ]{Incarnation of Harmony}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Druidic Awakening",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.druid.tree-of-life",
+      "grantsSpell": "spells.incarnation-of-harmony"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

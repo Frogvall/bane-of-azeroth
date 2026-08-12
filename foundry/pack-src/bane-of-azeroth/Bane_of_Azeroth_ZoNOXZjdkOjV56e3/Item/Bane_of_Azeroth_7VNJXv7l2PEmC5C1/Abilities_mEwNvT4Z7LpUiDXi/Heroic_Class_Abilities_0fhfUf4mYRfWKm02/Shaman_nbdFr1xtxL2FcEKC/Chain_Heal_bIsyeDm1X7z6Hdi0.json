@@ -1,0 +1,39 @@
+{
+  "folder": "nbdFr1xtxL2FcEKC",
+  "name": "Chain Heal",
+  "type": "ability",
+  "_id": "bIsyeDm1X7z6Hdi0",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp",
+  "system": {
+    "itemDescription": "<p>When you heal with a spell or this ability, you can choose an additional creature within 10 meters of the target that was not healed by that spell or this ability. That creature receives the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each use.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Shamanic Calling",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.shaman.chain-heal"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

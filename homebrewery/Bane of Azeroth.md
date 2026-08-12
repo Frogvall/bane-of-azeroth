@@ -27,11 +27,11 @@ Auvreannia
 
 ### VERSION:
 
-v0.9
+v1.0
 
 ### CREDITS:
 
-This is a Dragonbane conversion of the amazing [Champions of Azeroth](https://drive.google.com/drive/folders/1BSit21xGH7yRdWRO95lvrsbxvYi5IwlY) by [Silverblade](https://www.reddit.com/user/Silverblade1234). A lot of the body text in this book is written by Silverblade and republished with permission.
+This is a Dragonbane supplement heavily inspired by the amazing [Champions of Azeroth](https://drive.google.com/drive/folders/1BSit21xGH7yRdWRO95lvrsbxvYi5IwlY) by [Silverblade](https://www.reddit.com/user/Silverblade1234). A lot of the body text in this book is written by Silverblade and republished with permission.
 
 This game supplement was created using the [DragonBrew](https://homebrewery.naturalcrit.com/share/IOEuWz2v8FFi) template by Sibling Dex.
 
@@ -42,11 +42,36 @@ This game supplement was created under Fria Ligan AB's [Dragonbane Third Party S
 
 This game supplement is neither affiliated with, sponsored, or endorsed by Fria Ligan AB or Blizzard Entertainment, Inc.
 
-### Art
+### ARTWORK:
 
-\*List of original artists.\*
+Except for separately credited background textures and other design assets, the illustrations in this book were created using generative AI. Across the book, these illustrations draw visual inspiration from<br/>original works by the artists and studios listed below.
 
-Generative AI has been used to align look and feel for the art.
+These artists and studios are credited as visual influences only. They did not contribute to, authorize, sponsor, or endorse this project.<br/>No affiliation with them is claimed or implied.
+
+[Alex Horley](https://www.alexhorleyart.com/),
+[Andrew Clark](https://www.artstation.com/atcillustration),
+[BOSi Art Studios](https://www.artstation.com/bosi-art-studios),
+[Chris Rahn](https://www.rahnart.com),
+[Christopher Hayes](https://www.artstation.com/craze),
+[Daren Bader](https://www.artstation.com/darenbader),
+[Dave Rapoza](https://www.deviantart.com/daverapoza),
+[Dmitry Prozorov](https://www.artstation.com/tamplierpainter),
+[Efrem Palacios](https://www.artstation.com/epalacios),
+[Eva Widermann](https://www.artstation.com/evawidermann),
+[Glenn Rane](https://www.artstation.com/glennrane),
+[Grace Liu](https://www.artstation.com/graceliu),
+[Jaemin Kim](https://www.artstation.com/jaem),
+[James Ryman](https://www.deviantart.com/jamesryman),
+[Laurel D Austin](https://www.artstation.com/tully),
+[Plainandplain](https://www.deviantart.com/plainandplain),
+[Samwise Didier](https://www.artstation.com/thepandaking),
+[Sandara](https://www.deviantart.com/sandara),
+[Slawomir Maniak](https://www.artstation.com/maniaks),
+[Steve Prescott](https://www.steveprescott.com),
+[Tim Shevtsov](https://www.artstation.com/timur_shevtsov),
+[Vitto Hood](https://www.artstation.com/vitto_hood),
+[Wei Wang](https://www.artstation.com/weiwangart),
+[Zoltan Boros](https://boros-szikszai.com/landing_2/boros)
 
 :
 
@@ -147,7 +172,7 @@ The Homebrewery
 
 Warcraft is one of the most beloved and enduring fantasy franchises in the world. From the real-time strategy campaigns of the original Warcraft games to the sprawling world of World of Warcraft and beyond, Azeroth has been home to decades of epic stories, unforgettable characters, and some of the richest lore in all of fantasy gaming. It is a world of continent-spanning wars, ancient gods sleeping beneath the earth, dragon aspects watching over mortal affairs, and heroes rising from every corner of a deeply detailed civilization.
 
-Dragonbane is a fresh take to the classic Swedish tabletop roleplaying game Drakar och Demoner. It’s a game about telling collaborative stories, making interesting choices, and bringing characters to life in ways no video game ever could.
+Dragonbane is a fresh take to the classic Swedish tabletop roleplaying game Drakar och Demoner. It's a game about telling collaborative stories, making interesting choices, and bringing characters to life in ways no video game ever could.
 
 Bane of Azeroth is a collection of homebrew content that brings the Warcraft setting to Dragonbane, allowing you and your friends to become true heroes of Azeroth, not guided through a predetermined questline, but free to forge your own legend in a world you already know and love.
 
@@ -155,7 +180,7 @@ Bane of Azeroth is a collection of homebrew content that brings the Warcraft set
 
 Azeroth is a remarkable setting for a tabletop campaign. It has everything a great Dragonbane world needs: a rich history stretching back tens of thousands of years, a geography packed with distinct and memorable regions, factions in constant tension with each other, and an enormous cast of cultures, kin, and characters whose stories are still unfolding. Whether your party wants to investigate a conspiracy in Stormwind, explore the ancient ruins of a fallen troll empire, broker a fragile peace between the Horde and the Alliance, or delve into the depths of a titan facility that no one has entered in millennia, Azeroth can support it.
 
-And unlike in World of Warcraft itself, you aren’t on rails. You don’t have to follow the questline. When your party walks into Blackrock Mountain, you don’t have to fight your way through a dungeon in a fixed order. You can talk to the Dark Iron dwarves, learn about their history, figure out what Ragnaros actually wants, and decide for yourselves how to handle it. The story of your campaign is yours to write. Dragonbane gives you the tools to do that, and Azeroth gives you an incredibly rich world to do it in.
+And unlike in World of Warcraft itself, you aren't on rails. You don't have to follow the questline. When your party walks into Blackrock Mountain, you don't have to fight your way through a dungeon in a fixed order. You can talk to the Dark Iron dwarves, learn about their history, figure out what Ragnaros actually wants, and decide for yourselves how to handle it. The story of your campaign is yours to write. Dragonbane gives you the tools to do that, and Azeroth gives you an incredibly rich world to do it in.
 
 ### What is this book?
 
@@ -199,7 +224,7 @@ With that in mind, the design principles for Bane of Azeroth are:
 
 Playing Bane of Azeroth rewards a certain amount of creative buy-in from both players and DMs. The rules give you a framework, but
 the full experience comes from leaning into the fiction. Spell casting in Dragonbane is primarily part of one professions that in Bane of Azeroth is the prerequisite for several heroic class abilities. A player opting for the shadow priest fantasy might learn different spells than a player going for the holy priest fantasy. If you have access to the Book of Magic supplement, the increased variety in that book is great for helping spell caster classes getting more distinguished than using just the core rules, but this supplement works either way.
-On the Dungeon Master’s side, a little flexibility goes a long way: if a player has a clear and reasonable vision for their character, accommodating small requests that help bring that vision to life is usually worth it. If a paladin player wants to pick up a school of magic for increasing their healing capacity (by picking the MAGIC TALENT heroic ability), maybe the skill is granted by the Light and does not require the character to seek out training. The goal is a game that feels like Warcraft in the ways that matter most to your table.
+On the Dungeon Master's side, a little flexibility goes a long way: if a player has a clear and reasonable vision for their character, accommodating small requests that help bring that vision to life is usually worth it. If a paladin player wants to pick up a school of magic for increasing their healing capacity (by picking the MAGIC TALENT heroic ability), maybe the skill is granted by the Light and does not require the character to seek out training. The goal is a game that feels like Warcraft in the ways that matter most to your table.
 
 ### Contact and More
 I welcome any and all feedback, comments, questions, etc. on any of my work! You can reach me on Discord, primarily via either the [Champions of Azeroth](https://discord.com/invite/Z77sexzQ8Y) server or the [Dragonbane Community](https://discord.gg/dragonbane-community-1173874944430579733) server. In both places I go by Auvreannia. There is currently no dedicated Discord server for Bane of Azeroth, but there might be one in the future if this becomes popular enough.
@@ -302,9 +327,9 @@ The dracthyr are an ancient race of humanoid dragonkin created by the black Drag
 
 - **Willpower Points:** Varies
 
-By spending 3 willpower, you can move freely through the air during your turn.
+By spending 3 WP, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you.
 
-When falling, you can spend 1 willpower to slow your fall and land as light as a feather, no matter the height.
+When falling, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height.
 }}
 
 {{dragonbox
@@ -334,14 +359,14 @@ Driven from their home world of Argus, the honorable draenei fled the wrath of t
 | 6  | Tysha       |
 }}
 
-![draenei](https://i.imgur.com/KDyoPLW.jpeg) {height:450px,mix-blend-mode:multiply,margin-left:0cm,margin-top:0cm}
+![draenei](https://i.imgur.com/KDyoPLW.jpeg) {height:450px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-0.5cm}
 
 {{dragonbox
 ### Ability: Heroic Presence
 
 - **Willpower Points:** 3
 
-Activating this ability (an action in combat) gives all allies within 10 meters a boon to all rolls and heal the Scared condition. The boon lasts until your turn in the next round.
+Activating this ability (an action in combat) gives all allies within 10 meters a boon to all rolls and heals the Scared condition. The boon lasts until your turn in the next round.
 }}
 
 \page
@@ -378,7 +403,7 @@ The Bronzebeard clan is preeminent among the various Ironforge dwarf clans of Kh
 
 - **Willpower Points:** 3
 
-Your skin turns hard and gray, and any non-magical damage is halved (rounded up). The effect lasts until your turn in the next round. You can activate this ability as a reaction when your are hit by an attack.
+Your skin turns hard and gray, and any non-magical damage is halved (rounded up). The effect lasts until your turn in the next round. You can activate this ability as a reaction when you are hit by an attack.
 }}
 
 #### Dark Iron
@@ -668,7 +693,7 @@ With a proud nomadic tradition, the mighty tauren have roamed across Azeroth. Fr
 
 - **Willpower Points:** 3
 
-You can, as an action in combat, slam your hooves into the ground. Make an attack (roll just once to hit, with a bane) against all creatures within 2 meters. Any creature hit takes D6 damage and falls to the ground. Damage is rolled separately.
+You can, as an action in combat, slam your hooves into the ground. Make a BRAWLING attack with a bane against all creatures within 2 meters, rolling only once to hit. Each creature hit takes D6 damage and falls to the ground. Roll damage separately for each creature.
 }}
 
 ### Troll
@@ -771,7 +796,7 @@ Native to the desolate sands of Vol'dun, vulpera are known for their resourceful
 
 - **Willpower Points:** 3
 
-You re-roll one D20 roll and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice.
+You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with PUSHING YOUR ROLL, potentially re-rolling the same roll twice.
 }}
 
 ### Worgen
@@ -838,7 +863,7 @@ By activating this ability (a free action in combat) you change between your hum
 # Heroic Class Abilities
 {title="Chapter 2"}
 
-Traditionally, games being set on Azeroth is used to having classes. Classes isn't a concept in Dragonbane. In order to represent the traditional classes of Azeroth, this module comes with a set of heroic abilities. In addition to choosing a profession when creating your player character, also pick one heroic class ability from this chapter that you start out the game with. You must fulfill the prerequisites for the heroic power you choose. You are now part of the class you choose a heroic power from. When you gain heroic abilities during your game sessions, you can also pick heroic abilities from your class. You can only ever be part of one class, unless your GM says otherwise. In world of warcraft there are limits to what kin gets to pick what classes. In Bane of Azeroth there are no such limitations per default, but your GM might impose such if they so desire. For example, they might want to limit the Demon Hunter class to those of the Elf kin.
+Traditionally, games being set on Azeroth is used to having classes. Classes isn't a concept in Dragonbane. In order to represent the traditional classes of Azeroth, this module comes with a set of heroic abilities. In addition to choosing a profession when creating your player character, also pick one heroic class ability from this chapter that you start out the game with. You must fulfill the prerequisites for the heroic ability you choose. You are now part of the class you choose a heroic ability from. When you gain heroic abilities during your game sessions, you can also pick heroic abilities from your class. You can only ever be part of one class, unless your GM says otherwise. In world of warcraft there are limits to what kin gets to pick what classes. In Bane of Azeroth there are no such limitations per default, but your GM might impose such if they so desire. For example, they might want to limit the Demon Hunter class to those of the Elf kin.
 
 Note that the heroic ability gained through this chapter does make your character somewhat more powerful than a character created with the core rules of Dragonbane, but it's equal to handing out an extra heroic ability at the start of the game. If you combine characters created with Bane of Azeroth with those created without it in the same campaign, simply let the non-azeroth character start with one extra heroic ability to balance it out.
 
@@ -857,7 +882,7 @@ Death knights are among the most feared warriors in Azeroth's history. Created b
 - **Requirement:** Axes, Hammers, or Swords 12
 - **Willpower Points:** --
 
-You don’t need to eat, drink or breathe. You know how to engrave necromantic runes into a melee weapon. Engraving a rune takes a stretch and replaces any runes you have already engraved, in the same weapon or a different one. You gain the benefits of your choosen rune listed below.
+You don't need to eat, drink or breathe. You know how to engrave necromantic runes into a melee weapon. Engraving a rune takes a stretch and replaces any runes you have already engraved, in the same weapon or a different one. You gain the benefits of your choosen rune listed below.
 
 - **Fallen Crusader:** Whenever you deal damage to a living creature with the weapon, you heal 1 HP.
 - **Razorice:** The weapon is cold to the touch and attacks with it counts as magical.
@@ -875,7 +900,7 @@ You harness the energy that surrounds and binds all matter. If an enemy and anot
 
 By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you have their movement rate halved, and if they end their turn within the aura, they must roll BUSHCRAFT to resist cold.
 
-### Summon Ghoul
+### Raise Ghoul
 - **Requirement:** Death Knight's Rebirth
 - **Willpower Points:** 3
 
@@ -1022,10 +1047,10 @@ You can activate this ability on your turn to make the dash action a free action
 Hunters are Azeroth's masters of the wild. They are trackers and survivalists, archers and beast tamers, operating at the boundary between civilization and the untamed places of the world. What sets a hunter apart is the bond they form with their animal companions, a relationship built on trust, training, and something deeper that defies easy explanation. Whether they prefer to fight alongside their beasts, pick off enemies from a distance, or lay traps and engage in close-quarters combat, hunters are among the most self-sufficient fighters in all of Azeroth.
 
 ### Hunter's Instincts
-- **Requirement:** Companion Heroic Power
+- **Requirement:** Companion Heroic Ability
 - **Willpower Points:** --
 
-Your companion will follow you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically and as an action you can spend 1 WP to see through the companion's eyes and hear what it hears for one minute, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2.
+Your companion will follow you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically and as an action you can spend 1 WP to see through the companion's eyes and hear what it hears for one stretch of time, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2.
 
 ### Aimed Shot
 - **Requirement:** Hunter's Instincts
@@ -1047,7 +1072,7 @@ Alternatively, you can use an action to activate this ability to revive a fallen
 - **Requirement:** Hunter's Instincts
 - **Willpower Points:** 3
 
-You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes 2d8 fire damage or loses its actions and movement for the rest of the round as it is frozen in place (your choice).
+You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes 2D8 damage as it burns or loses its actions and movement for the rest of the round as it is frozen in place (your choice).
 
 {{wide
 ![dwarven hunter](https://i.imgur.com/72pGVRr.jpeg) {height:500px,mix-blend-mode:multiply,margin-left:-2cm,margin-top:-1.5cm}
@@ -1064,7 +1089,7 @@ The mages of Azeroth are among the most powerful and most dangerous individuals 
 - **Requirement:** One School of Magic
 - **Willpower Points:** --
 
-You know the SENSE MAGIC magic trick and can cast it without spending Willpower Points. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.
+You know the SENSE MAGIC magic trick and can cast it without spending WP. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling.
 
 ### Ice Block
 - **Requirement:** Mage's Brilliance
@@ -1076,7 +1101,7 @@ You can activate this ability when you are about to take damage (no action). You
 - **Requirement:** Mage's Brilliance
 - **Willpower Points:** 3
 
-When you deal damage with a spell or this ability, you can choose an additional creature, that did not take damage from that spell or this ability, within 10 meters of the target that takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the Willpower Points for each.
+When you deal damage with a spell or this ability, you can choose an additional creature, that did not take damage from that spell or this ability, within 10 meters of the target that takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each.
 
 ### Time Warp
 - **Requirement:** Mage's Brilliance
@@ -1133,32 +1158,32 @@ When you take damage in combat you can activate this ability (no action). The da
 
 The paladins of Azeroth are the champions of the Holy Light, warriors who have dedicated themselves to the service of faith and justice, and who wield divine power alongside their martial skill. The Light responds to belief rather than to any specific deity, making Azeroth's paladin tradition broader and more varied than it might appear. A dwarf Vindicator of the Alliance, a Sunwalker tauren who worships An'she the sun spirit, and a blood elf Blood Knight who once stole their power from a captive Naaru are all paladins, despite their very different relationships to faith. What they share is conviction, and the power that conviction generates.
 
-### Paladin’s Righteousness
+### Paladin's Righteousness
 - **Requirement:** Hammers, Spears, or Swords 12
 - **Willpower Points:** --
 
 Whenever you spend WP, you heal yourself or an ally within 2 meters by the same amount. You also always know if a creature you are looking upon is undead or not.
 
 ### Avenger's Shield
-- **Requirement:** Paladin’s Righteousness
+- **Requirement:** Paladin's Righteousness
 - **Willpower Points:** 3
 
 You can activate this ability as an action if you're wielding a shield. You hurl your shield at a creature within 10 meters, and it then bounces to a creature of your choice withing 10 meters of the first target, and again to third creature within 10 meters of the second target. It then returns to your hand. Make separate attacks with your shield to all three targets with a bane. Finish the first attack, including damage, before rolling the second one, and finish the second one, including damage, before rolling the third one. Creatures that are hit have a bane when attacking any other creature but you, until your turn in the next round.
 
 ### Beacon of Light
-- **Requirement:** Paladin’s Righteousness
+- **Requirement:** Paladin's Righteousness
 - **Willpower Points:** 3
 
 You can activate this ability as an action, making an ally creature within 10 meters a beacon of light. For a stretch of time, whenever you heal yourself or an ally, the beacon of light heals the same amount of HP. This ability also benefits from the HP restored by Paladin's Righteousness when activating this ability.
 
 ### Blade of Justice
-- **Requirement:** Paladin’s Righteousness
+- **Requirement:** Paladin's Righteousness
 - **Willpower Points:** 3
 
-You can activate this ability when you hit an enemy with a melee weapon (but before rolling for damage). The attack deals an extra D8 , or 2d8 damage to an undead target, and is considered magical.
+You can activate this ability when you hit an enemy with a melee weapon (but before rolling for damage). The attack deals an extra D8 , or 2D8 damage to an undead target, and is considered magical.
 
 {{wide
-![draenei paladin](https://i.imgur.com/ZbajQTc.png) {height:500px,mix-blend-mode:multiply,margin-left:-1.5cm,margin-top:-1.2cm}
+![draenei paladin](https://i.imgur.com/nLVqjM2.png) {height:500px,mix-blend-mode:multiply,margin-left:3cm,margin-top:-1.2cm}
 }}
 
 \page
@@ -1168,14 +1193,14 @@ You can activate this ability when you hit an enemy with a melee weapon (but bef
 
 The priests of Azeroth are channelers of divine power in all its forms, from the brilliant radiance of the Holy Light to the consuming shadows of the Void. Holy priests are beacons of hope on the battlefield, mending wounds and bolstering spirits with restorative magic. Discipline priests weave protective wards and sacred power words into their spellcasting, shielding allies as they fight. Shadow priests abandon the light entirely, plumbing the depths of the Void for destructive psychic power that corrodes the minds and bodies of their enemies. All three traditions require profound faith, though the nature of what they have faith in differs considerably.
 
-### Priest’s Zeal
+### Priest's Zeal
 - **Requirement:** One School of Magic
 - **Willpower Points:** --
 
 Your mind fills you with inner fire. Whenever you cast a spell, your armor rating increases by one step for each WP you spend on casting the spell. The effect lasts until your turn in the next round.
 
 ### Darkness
-- **Requirement:** Priest’s Zeal
+- **Requirement:** Priest's Zeal
 - **Willpower Points:** --
 
 \column
@@ -1183,13 +1208,13 @@ Your mind fills you with inner fire. Whenever you cast a spell, your armor ratin
 You know the general spell SHADOWFORM. This spell is always prepared, and doesn't count towards the number of spells you can hold prepared in your memory.
 
 ### Power Word: Shield
-- **Requirement:** Priest’s Zeal
+- **Requirement:** Priest's Zeal
 - **Willpower Points:** 2
 
 If you or a creature within 10 meters of you gets hit by an attack a ,spell or a monster attack, you can activate this ability to shield the target. The damage the target takes from the attack or spell is reduced by 2D6. Using this ability can be done out of turn and it does not count as an action.
 
 ### Sanctify
-- **Requirement:** Priest’s Zeal
+- **Requirement:** Priest's Zeal
 - **Willpower Points:**  3
 
 You can activate this ability when casting a spell that heals a creature. You and all other creatures of your choice within 10 meters of you heals the same amount of HP.
@@ -1216,7 +1241,7 @@ Whenever you deal sneak attack damage to a target, the dice increase for damage 
 - **Requirement:** Roguish Cunning
 - **Willpower Points:** 3
 
-This heroic ability can only be used if you wield a one-handed weapon in one hand a a one-handed ranged weapon in your other hand. The STR requirement of the weapon in your off hand (you decide if it is right or left) increases by 3. You activate the ability on your turn in combat and can then perform an extra attack with your second weapon. The second attack is done with a bane. You decide in which order to use your two weapons. Finish the first attack, including damage, before rolling the second one.
+This heroic ability can only be used if you wield a one-handed weapon in one hand and a one-handed ranged weapon in your other hand. The STR requirement of the weapon in your off hand (you decide if it is right or left) increases by 3. You activate the ability on your turn in combat and can then perform an extra attack with your second weapon. The second attack is done with a bane. You decide in which order to use your two weapons. Finish the first attack, including damage, before rolling the second one.
 
 ### Envenom Weapons
 - **Requirement:** Roguish Cunning
@@ -1258,7 +1283,7 @@ Your howl makes your friends' blood boil. Activating this ability (an action in 
 - **Requirement:** Shamanic Calling
 - **Willpower Points:** 2
 
-When you heal with a spell or this ability, you can choose an additional creature, that did not get healed from that spell or this ability, within 10 meters of the target that gets the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the Willpower Points for each.
+When you heal with a spell or this ability, you can choose an additional creature, that did not get healed from that spell or this ability, within 10 meters of the target that gets the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each.
 
 ### Stormstrike
 - **Requirement:** Shamanic Calling
@@ -1361,13 +1386,13 @@ All standard Dragonbane equipment remains available in Azeroth. A longsword is a
 
 ### Firearms
 
-Firearms are commonly available weapons, attributed to be originally crafted by the dwarves of Ironforge. In *Bane of Azeroth* it is represented by the secondary skill FIREARMS (AGL), which is available to anyone from start with a base chance like any other skill. Firing a firearm produces a loud boom, audible out to .
+Firearms are commonly available weapons, attributed to be originally crafted by the dwarves of Ironforge. In *Bane of Azeroth* it is represented by the secondary skill FIREARMS (AGL), which is available to anyone from start with a base chance like any other skill. Firing a firearm produces a loud boom, audible out to 500 meters.
 
 ### Glaives
 
 Warglaives and throwing glaives are typical elven weapons, used primarly by the illidari, wardens or troll shadow hunters. Attacks with glaives uses the KNIVES skill.
 
-{{tablebox,wide
+{{tablebox,wide,margin-bottom:20px
 ### Melee Weapons
 
 
@@ -1380,18 +1405,18 @@ Warglaives and throwing glaives are typical elven weapons, used primarly by the 
 
 {{wide
 **Freehanded**: This weapon is strapped to your wrist and leaves a hand available to hold items, such as a torch or a focus. Attacks with this weapon uses the BRAWLING skill.<br/>
-**Returning**: This weapon returns to the wielder’s hand immediately after it is used to make a ranged attack.
+**Returning**: This weapon returns to the wielder's hand immediately after it is used to make a ranged attack.
 }}
 
-{{tablebox,wide
+{{tablebox,wide,margin-bottom:20px
 ### Ranged Weapons
 
 
-| Weapon      | Grip | STR | R  | Damage | Dur. | Cost     | Supply   | Features                                              |
-|:----------- |:----:|:---:|:--:|:------:|:----:|:--------:|:-------- |:----------------------------------------------------- |
-| Blunderbuss | 2h   | 10  | 20 | 2D8    | 6    | 150 gold | Uncommon | Ammunition, No damage bonus, Piercing, Scattershot    |
-| Pistol      | 1h   | 7   | 30 | 2D6    | 3    | 75 gold  | Uncommon | Ammunition, Armor piercing, No damage bonus, Piercing |
-| Rifle       | 2h   | 13  | 60 | 2D10   | 6    | 300 gold | Rare     | Ammunition, No damage bonus, Piercing                 |
+| Weapon      | Grip | STR | R  | Damage | Dur. | <div style="width:50px">Cost</div> | Supply   | Features                                              |
+|:----------- |:----:|:---:|:--:|:------:|:----:|:----------------------------------:|:-------- |:----------------------------------------------------- |
+| Blunderbuss | 2h   | 10  | 20 | 2D8    | 6    | 150 gold                           | Uncommon | Ammunition, No damage bonus, Piercing, Scattershot    |
+| Pistol      | 1h   | 7   | 30 | 2D6    | 3    | 75 gold                            | Uncommon | Ammunition, Armor piercing, No damage bonus, Piercing |
+| Rifle       | 2h   | 13  | 60 | 2D10   | 6    | 300 gold                           | Rare     | Ammunition, No damage bonus, Piercing                 |
 }}
 
 {{wide
@@ -1399,13 +1424,14 @@ Warglaives and throwing glaives are typical elven weapons, used primarly by the 
 **Scattershot**: Attacks with this weapon do not get a bane for shooting at a target within 2 meters. For attacks beyond its listed range, damage is halved (round up).
 }}
 
-{{tablebox,wide
+{{tablebox,wide,margin-bottom:20px
 ### Trade Goods
 
 
-| Item       | Cost   | Supply   | Weight | Effect                     |
-|:---------- |:------:|:-------- |:------:|:-------------------------- |
-| Ammo Pouch | 5 gold | Uncommon | 1      | Required to fire firearms. |
+| Item         | Cost     | Supply   | Weight | Effect                                                         |
+|:------------ |:--------:|:-------- |:------:|:-------------------------------------------------------------- |
+| Ammo Pouch   | 5 gold   | Uncommon | 1      | Required to fire firearms.                                     |
+| Sniper Scope | 100 gold | Rare     | 1      | Attach to ranged weapon to give it the Armor Piercing feature. |
 }}
 
 \page
@@ -1424,16 +1450,16 @@ Spell casters in Bane of Azeroth uses the same spell casting rules and spells as
 - **Range:** 6 meters
 - **Duration:** Stretch
 
-You instantly summon a small totem of your choice (see below) within range. The totem is a small object with 10 HP and armor rating 2. You and any of your allies within 10 meters of the totem gain the a benefit listed below, once per turn.
+You instantly summon a small totem of your choice (see below) within range. The totem is a small object with 10 HP and armor rating 2. You and any of your allies within 10 meters of the totem gain the a benefit listed below, once per round.
 
 | Totem       | Benefit                                                                   |
 |:------------|:--------------------------------------------------------------------------|
 | Cleansing   | The target can heal a condition of their choice at the end of their turn. |
-| Flametongue | The target deals D4 extra damage with an attack or a spell               |
-| Stoneskin   | The target takes D4 less damage from an attack or a spell                |
-| Windfury    | The target has a boon on an attack roll                                   |
+| Flametongue | The target deals D4 extra damage with an attack or a spell.               |
+| Stoneskin   | The target takes D4 less damage from an attack or a spell.                |
+| Windfury    | The target has a boon on an attack roll.                                   |
 
-Each additional power level lets you choose between summoning an additional totem, double the reach of your totem(s), or doubling your totem(s) HP and armor rating. If you cast this spell while you already have active totems, any of your previous totems disappears immediately.
+Each additional power level lets you choose between summoning an additional totem, doubling the reach of your totem(s), or doubling your totem(s) HP and armor rating. If you cast this spell while you already have active totems, any of your previous totems disappears immediately.
 
 ### Savage Incarnation
 - **Rank:** 1
@@ -1443,9 +1469,10 @@ Each additional power level lets you choose between summoning an additional tote
 - **Range:** Personal
 - **Duration:** Shift
 
-You instantly turn into your travel form. For the duration you can change between your travel form, your humanoid for and any other forms you have activated as an action. The exact looks or species of your form is up to you. While in your travel form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything your are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your travel form.
+You instantly turn into your travel form. For the duration you can change between your travel form, your humanoid form, and any other forms you have activated as an action, or as a free action if you spend 1 WP. The exact look or species of your form is up to you. While in your travel form you cannot cast any spells that have any requirements besides WORD or attack with anything other than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your travel form.
 
-At power level 1, your movement rate is doubled. At power level 2, you also can breathe under water, your movement rate in water equals your normal movement rate and you don't have to roll for SWIMMING. At power level 3, you can also move freely through the air.
+<br/>You gain the following benefits while in travel form:<br/>
+At power level 1, your movement rate is doubled. At power level 2, you can also breathe underwater, your movement rate in water equals your normal movement rate, and you don't have to roll for SWIMMING. At power level 3, you can also move freely through the air.
 
 ### Shadowform
 - **Rank:** 1
@@ -1455,14 +1482,14 @@ At power level 1, your movement rate is doubled. At power level 2, you also can 
 - **Range:** Personal
 - **Duration:** Stretch
 
-![shadowform](https://i.imgur.com/TM82ZwN.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-1.1cm,margin-bottom:-1cm}
+![shadowform](https://i.imgur.com/TM82ZwN.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-2.4cm,margin-bottom:-1cm}
 
 \page
 {{pageNumber,auto Spells}}
 
 You turn into a dark and shadowy image of yourself, gaining the following benefits:
-- **Ephemereal:** All non-magical damage is halved (rounded up).
-- **Shadow Weaving:** The damage of your spells increase by D6 per power level.
+- **Ethereal:** All non-magical damage is halved (rounded up).
+- **Shadow Weaving:** The damage of your spells increases by D6 per power level.
 
 ### Feral Incarnation
 - **Rank:** 2
@@ -1472,15 +1499,15 @@ You turn into a dark and shadowy image of yourself, gaining the following benefi
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your bear or cat form. For the duration you can change between your bear form, cat form or your humanoid for and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your bear or cat form you cannot cast any spells that have any requirements beside WORD or attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything your are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your bear or cat form.
+You instantly turn into your bear or cat form. For the duration you can change between your bear form, cat form, humanoid form, and any other forms you have activated as an action, or as a free action if you spend 1 WP. The exact look or species of your form is up to you. While in your bear or cat form you cannot cast any spells that have any requirements beside WORD or attack with anything other than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your bear or cat form.
 
 <br/>You gain the following benefits while in bear form:
-- **Feral Instincts:** You may roll for your SCHOOL OF MAGIC instead of rolling for BRAWLING.
+- **Feral Instincts:** You may roll for any SCHOOL OF MAGIC instead of BRAWLING when making unarmed attacks.
 - **Ironfur**: Your armor rating equals 3 per power level.
 - **Maul:** A creature hit by your unarmed attacks has a bane when attacking any other creature but you, until your turn in the next round.
 
 <br/>You gain the following benefits while in cat form:
-- **Feral Instincts:** You may roll for your SCHOOL OF MAGIC instead of rolling for BRAWLING.
+- **Feral Instincts:** You may roll for any SCHOOL OF MAGIC instead of BRAWLING when making unarmed attacks.
 - **Prowl:** You have a boon on SNEAKING rolls.
 - **Shred** The damage of your unarmed attacks increases by D6 per power level.
 
@@ -1499,11 +1526,11 @@ You instantly turn into your bear or cat form. For the duration you can change b
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your tree form. For the duration you can change between your tree form or your humanoid for and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your tree form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything your are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your tree form.
+You instantly turn into your tree form. For the duration you can change between your tree form, humanoid form, and any other forms you have activated as an action, or as a free action if you spend 1 WP. The exact look or species of your form is up to you. While in your tree form you cannot attack with anything other than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your tree form.
 
 <br/>You gain the following benefits while in tree form:
 - **Barkskin:** Your armor rating equals 2 per power level.
-- **Rejuvenation:** Whenever you heal a creature with a spell, that creature recieves the same healing again on its next power level number of turns.
+- **Rejuvenation:** Whenever you heal a creature with a spell, that creature receives the same healing again on its next power level number of turns.
 
 ### Incarnation of the Stars
 - **Rank:** 2
@@ -1513,10 +1540,10 @@ You instantly turn into your tree form. For the duration you can change between 
 - **Range:** Personal
 - **Duration:** Stretch
 
-You instantly turn into your moonkin form. For the duration you can change between your moonkin form or your humanoid for and any other forms you have activated as an action, or as a free action if you spend one WP. The exact looks or species of your form is up to you. While in your moonkin form you cannot attack with anything else but unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything your are wearing is turned with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.
+You instantly turn into your moonkin form. For the duration you can change between your moonkin form or your humanoid form and any other forms you have activated as an action, or as a free action if you spend 1 WP. The exact look or species of your form is up to you. While in your moonkin form you cannot attack with anything other than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.
 
 <br/>You gain the following benefits while in moonkin form:
-- **Moonfire:** The cost for casting spells is reduced by 1 WP per power level. This can not decrease the cost of casting a spell below 1 WP. Magic tricks are cast for free.
+- **Moonfire:** The cost for casting spells is reduced by 1 WP per power level. This cannot decrease the cost of casting a spell below 1 WP. Magic tricks are cast for free.
 - **Sunfire:** Casting spells is done with a boon.
 
 \column
@@ -1534,29 +1561,29 @@ You instantly turn into your moonkin form. For the duration you can change betwe
 Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A list of such animals can be found in the core rules, and an additional list of animals is presented below. If an animal has more than one attack listed, the player choose which one to use when commanding their companion. What animals that are around in an area is up to the GM.
 
 {{wide
-| <div style="width:74px">Animal</div>       | Movement      | <div style="width:44px">HP</div> | <div style="width:300px">Attack</div>  | <div style="width:125px">Skills</div>     |
+| <div style="width:74px">Animal</div>       | Movement      | <div style="width:44px">HP</div> | <div style="width:277px">Attack</div>  | <div style="width:150px">Skills</div>     |
 |:-------------|:-------------:|:--------------:|:--------|:-----------|
 | Crocolisk    | 6<br/>Swim 12 | 15<br/>Armor 1 | Bite (skill level 12, damage 2D8) | Awareness 10, Evade 6 |
 | Dragonhawk   | 2<br/>Fly 14  | 8              | Beak (skill level 10, D10)<br/>Talons (skill level 12, damage 2D4) | Awareness 14, Evade 12 |
 | Giant Bat    | 2<br/>Fly 8   | 10             | Bite (skill level 10, damage D10)<br/>Sonic Wave (skill level 10, damage D6, range 10m) | Awareness 16, Evade 12 |
 | Giant Owl    | 2<br/>Fly 14  | 8              | Beak (skill level 10, D10)<br/>Talons (skill level 12, damage 2D4) | Awareness 16, Evade 10 |
-| Large Serpent | 10            | 8              | Bite (skill level 12, damage D6, lethal poison 15)<br/>Constriction (skill level 10, damage D6, constrain 12) | Awareness 12, Evade 16 |
-| Giant Spider | 8             | 10             | Bite (skill level 10, damage D4, leathal poison 12)<br/>Web (skill level 10, no damage, range 6m, constrain 10) | Awareness 12, Evade 12, Stealth 12 |
-| Gorilla      | 8             | 16             | Bite (skill level 12, damage 2D6)<br/>Fist (skill level 14, damage 2D4)    | Acrobatics 15, Awareness 10, Evade 14           |
+| Giant Spider | 8             | 10             | Bite (skill level 10, damage D4, lethal poison 12)<br/>Web Spray (skill level 12, no damage, restrain 10) | Acrobatics 16, Awareness 12, Evade 12, Stealth 12 |
+| Gorilla      | 8             | 16             | Bite (skill level 12, damage 2D6)<br/>Fist (skill level 14, damage 2D4)    | Acrobatics 14, Awareness 10, Evade 14           |
 | Large Cat    | 16            | 12             | Bite (skill level 12, damage 2D6)<br/>Claws (skill level 14, damage 2D4) | Awareness 12, Evade 12, Stealth 14 |
+| Large Serpent | 10            | 8              | Bite (skill level 12, damage D6, lethal poison 15)<br/>Constriction (skill level 10, damage D6, restrain 12) | Awareness 12, Evade 16 |
 | Raptor       | 16            | 10            | Bite (skill level 12, damage 2D6)<br/>Claws (skill level 12, damage 2D4) | Awareness 14, Evade 14 |
 | Ravager      | 10            | 14<br/>Armor 2 | Bite (skill level 10, damage 2D4) | Awareness 10, Evade 14 |
-| Scorpid      | 8             | 12<br/>Armor 2 | Claws (skill level 12, damage D10)<br/>Tail (skill level 12, damage D6, leathal poison 12) | Awareness 8, Evade 8 |
+| Scorpid      | 8             | 12<br/>Armor 2 | Claws (skill level 12, damage D10)<br/>Tail (skill level 12, damage D6, lethal poison 12) | Awareness 8, Evade 8 |
 | Tallstrider  | 20            | 10             | Beak (skill level 10, damage D10) | Awareness 14, Evade 14 |
-| Turtle       | 6<br/>Swim 10 | 20<br/>Armor 4 | Beak (skill level 10, damage 2d6) | Awareness 8, Evade 6 |
+| Turtle       | 6<br/>Swim 10 | 20<br/>Armor 4 | Beak (skill level 10, damage 2D6) | Awareness 8, Evade 6 |
 | Wind Serpent | 2<br/>Fly 14  | 6              | Lightning Breath (skill level 12, damage D10, range 10m) | Awareness 12, Evade 14 |
 }}
 
 {{wide
-**Constrain**: Getting hit by an attack with the constrain keyword makes you unable to move or take actions other than to try to escape (an open STR opposed roll against the number following the contrain keyword). The target can still parry while constrained, but not evade.<br/>
 **Fly**: The animal moves freely through the air. The number that follows is the movement rate while flying.<br/>
-**Leathal Poison**: Getting hit by an attack with this keyword applies lethal poison to the target. The number that follows is the potency. Follow the poison rules as if the poison had been ingested.<br/>
-**Swim**: The animal moves without penalties when swimming. The number that follows is the movement rate while swimming.
+**Lethal Poison**: A creature getting hit by an attack with this keyword is exposed to lethal poison as if the poison had been ingested. The number that follows is the potency.<br/>
+**Restrain**: A creature getting hit by an attack with the restrain keyword makes it unable to move or take actions other than to try to escape (an open STR opposed roll against the number following the restrain keyword). The creature can still parry while restrained, but not evade.<br/>
+**Swim**: The animal moves without penalties when swimming and automatically succeed on SWIMMING rolls. The number that follows is the movement rate while swimming.
 }}
 
 \page
@@ -1579,7 +1606,7 @@ Hunters on Azeroth tend to find companions in a multitude of places. The Compani
 Mana Bite. Automatically hits in melee combat (but can be dodged or parried) and inflicts D10 slashing damage. The next damage dealing spell cast at the target gets a boon. The effect lasts until the warlock's turn in the next round.
 
 #### Magic Resistance:
-Fulhunters are resistant to magic and is considered to constantly be under the effect of the MAGIC SHIELD spell, power level 1, without spending a reaction.
+The felhunter is resistant to magic and is considered to constantly be under the effect of the MAGIC SHIELD spell, power level 1, without spending a reaction.
 }}
 
 {{paperbox
@@ -1630,7 +1657,7 @@ If the warlock takes damage within 10 meters from the voidwalker, the damage is 
 }}
 
 {{wide
-![warlock demons](https://i.imgur.com/tXrjqfR.png) {height:400px,mix-blend-mode:multiply,margin-left:1cm,margin-top:-1.5cm}
+![warlock demons](https://i.imgur.com/kvmPi0I.png) {height:350px,mix-blend-mode:multiply,margin-left:1.4cm,margin-top:-1.0cm}
 }}
 
 \page
@@ -1663,7 +1690,7 @@ If the warlock takes damage within 10 meters from the voidwalker, the damage is 
 
 <br/>
 
-**Explore the exciting world of Warcraft with Bane of Azeroth, a homebrew compendium that lets you bring Azeroth to Dragonbane. From kin, to heroic abilities, to spells, and more, Bane of Azeroth contains all new Warcraft-inspired character options for Dragonbane. And since Bane of Azeroth is fully compatible with the core rules of Dragonbane, it’s easier than ever to use.**
+**Explore the exciting world of Warcraft with Bane of Azeroth, a homebrew compendium that lets you bring Azeroth to Dragonbane. From kin, to heroic abilities, to spells, and more, Bane of Azeroth contains all new Warcraft-inspired character options for Dragonbane. And since Bane of Azeroth is fully compatible with the core rules of Dragonbane, it's easier than ever to use.**
 
 <br/>
 

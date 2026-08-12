@@ -1,0 +1,39 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "Inner Peace",
+  "type": "ability",
+  "_id": "kixSvd82FuAvv6Wg",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>You can meditate deeply during a stretch rest. You heal an additional D6 HP and a D6 extra WP, and can recover from an additional condition. You are completely unresponsive during your meditation and cannot be awakened.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Pandaren",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 1300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "ability.inner-peace"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

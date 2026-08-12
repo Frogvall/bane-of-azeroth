@@ -4,10 +4,9 @@
 
 The project aims to combine the fast, dangerous, and skill-based rules of Dragonbane with heroic fantasy adventures set in Azeroth.
 
-> **Current status:** Early development / playtesting
-> **Current Homebrewery document version:** 0.9
-> **Current Foundry module version:** 0.1.2
-
+> **Current status:** Foundry VTT 1.0 release line
+> **Current Homebrewery document version:** 1.0
+> **Current Foundry module version:** 1.0.0
 ## Project goals
 
 Bane of Azeroth is intended to provide a coherent Dragonbane ruleset for adventures inspired by Azeroth, rather than attempting to reproduce every mechanic from the source material directly.
@@ -35,11 +34,13 @@ bane-of-azeroth/
 │   └── images/
 ├── foundry/
 │   ├── module.json
+│   ├── content/
 │   ├── scripts/
+│   ├── pack-src/
 │   ├── lang/
-│   ├── packs/
-│   ├── TESTING.md
 │   └── CHANGELOG.md
+├── tests/
+├── tools/
 └── README.md
 ```
 
@@ -49,13 +50,164 @@ The `homebrewery` directory contains the Homebrewery source for the Bane of Azer
 
 ### Foundry
 
-The `foundry` directory contains the Foundry VTT module, including scripts, localization, compendium data, testing documentation, and module metadata.
+The `foundry` directory contains the Foundry VTT module, including structured content, runtime scripts, localization, unpacked Adventure source, and module metadata.
+
+The generated `foundry/packs/` directory is build output and is not maintained as source.
 
 ## Foundry VTT module
 
-The Foundry module is currently under active development.
+The Foundry module distributes the current book content through a single Adventure compendium, with production releases promoted from verified release candidates.
 
-It adds support for Bane of Azeroth content and mechanics that cannot be represented through standard Dragonbane documents alone.
+Implemented content and automation include:
+
+- Playable kin and kin abilities
+- Heroic Class Abilities and linked spell grants
+- Bane of Azeroth spells and equipment
+- Generated **Character Options** Journal covering Introduction, Kin, Derived Ratings, Heroic Class Abilities, Gear, and Spells
+- Generated **Appendices** Journal with full-width Companion and Warlock Demon stat blocks, linked attack tables, and book artwork
+- Stable cross-document references and deterministic Journal ordering
+- Custom weapon features such as Ammunition, Armor Piercing, Freehanded, Returning, and Scattershot
+- Elemental Totem actors, placement, replacement, ownership, movement protection, and aura rendering
+- Fourteen Common Animal actors with dedicated portraits, token artwork, attacks, skills, armor, and alternate movement rates
+- Common Animal attack effects for lethal poison, Constriction, and Web Spray
+- Automatic application of Dragonbane's **Restrained** condition when a successful Restrain effect has a target
+- Death Knight Ghoul summoning with validated ownership, command control, and Infectious Bite Willpower handling
+- Warlock Demonologist support for Imp, Sayaad, Felhunter, and Voidwalker summons
+- Validated Player-to-GM demon placement, ownership propagation, replacement, and Shift-rest cleanup
+- Optional per-world automation settings for Elemental Totems and Warlock demons
+- Imp Phase Shift and Sayaad Seductive defense banes
+- Voidwalker Suffering with rounded-up damage sharing, native Dragonbane damage cards, and corrected chat presentation
+- Heroic/class automation for Mage's Brilliance, Evoker's Legacy, War Stomp, Eye Beam, Monk's Serenity, Demon Hunter Initiation, Frostreaper, and Death Knight Runes
+- Druid incarnation/form automation with persistent configurable artwork, movement, natural attacks, armor, spell restrictions/costs, roll boons, Maul Marked, and managed Stretch/Shift lifecycle
+- Player convenience Macros for changing active Druid form and opening the shared End Effects dialog
+- Best-effort English Core Set compatibility that extends Great Helm's ranged-attack Banes to the Bane of Azeroth Firearms skill
+- Static Shadowform visual state for active Scene tokens and character-sheet portraits, integrated with End Effects and Stretch/Shift lifecycle cleanup
+Generated content uses stable Foundry document identifiers and is checked against its structured source during development and packaging.
+
+## Compatibility
+
+The current version has been developed and verified with:
+
+| Component | Version |
+|---|---:|
+| Foundry Virtual Tabletop | 14.365 |
+| Dragonbane system | 4.0.1 |
+| Dragonbane Core Set | 2.2 |
+| YZE Combat | 1.7.0 |
+
+The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.0.1. **Dragonbane system 4.0.1 is the only hard Foundry runtime dependency declared by Bane of Azeroth.** Dragonbane Core Set 2.2 is the required external content source for the registered Dragonbane Core references used by generated Bane of Azeroth content; those links are verified against Core Set content imported into the test world. **YZE Combat 1.7.0 is optional** and is included in the verified environment because it is the combat module recommended for Dragonbane; Bane of Azeroth does not require YZE Combat to be installed or enabled. Compatibility with other versions has not yet been verified.
+
+## Installation
+
+> **Package identities:** Production/release packages use `bane-of-azeroth` (**Bane of Azeroth**). Development prerelease packages use the separate Foundry package id `bane-of-azeroth-dev` (**Bane of Azeroth - Development**). They can therefore be installed side-by-side. Foundry is told that the two packages are a known conflict and only one should normally be enabled in a given world. As a safety guard, if both are enabled the Development runtime wins and the production runtime remains inert; development worlds should still use the development package and its Adventure content consistently.
+
+Stable production releases are published from version tags `vMAJOR.MINOR.PATCH`. The release workflow requires the tag, module version, README, and dated Changelog section to agree before publishing.
+The source version is finalized before release-candidate testing. A release-ready pull request is merged into `main`; every push to `main` automatically runs **Publish Foundry release candidate** and allocates the next candidate number for the source version from immutable `vMAJOR.MINOR.PATCH-rc.N` tags.
+Each successfully published candidate receives an immutable tag such as `v1.0.0-rc.1`, while Foundry testers stay on the rolling manifest channel `https://github.com/Frogvall/bane-of-azeroth/releases/download/release-candidate/module.json`. Rerunning the workflow for the same commit reuses its existing candidate number. The rolling candidate remains a GitHub prerelease and does not replace the stable `releases/latest` channel.
+Stable installations use the permanent manifest channel `https://github.com/Frogvall/bane-of-azeroth/releases/latest/download/module.json`. Each stable manifest points back to that same URL, while its `download` field points to the zip for that specific version.
+When a release candidate is approved, create the stable `vMAJOR.MINOR.PATCH` tag on that exact `main` commit. The stable workflow verifies that the rolling `release-candidate` tag and an immutable candidate tag for the same source version both point to the stable commit before publishing.
+A tester who intentionally moves between the RC and stable channels may be asked by Foundry to confirm the manifest-URL change; normal stable users remain on the stable URL.
+
+For a manual development installation, place the packaged module contents in:
+
+```text
+Data/modules/bane-of-azeroth/
+```
+
+The installed module directory must contain `module.json` at its root:
+
+```text
+bane-of-azeroth/
+├── module.json
+├── scripts/
+├── lang/
+└── packs/
+```
+
+Restart Foundry VTT after installing or updating the module.
+
+## Development and testing
+
+The Foundry module uses four complementary verification layers:
+
+- Unit tests for isolated runtime and generator behavior
+- Integration tests for generated content, hook registration, Adventure contracts, and packaging
+- Foundry system tests executed through prerelease-only Developer Test macros
+- Manual verification recorded in generated Foundry Journal reports
+
+The tests and reports are the authoritative record of verified behavior. This README documents only how to run them.
+
+### Automated tests
+
+Run the complete automated test suite from the repository root:
+
+```bash
+docker run --rm \
+  --user "$(id -u):$(id -g)" \
+  -e HOME=/tmp/home \
+  -v "$PWD:/workspace" \
+  -v boa-node-modules:/workspace/node_modules \
+  -w /workspace \
+  node:22-bookworm-slim \
+  sh -lc 'npm ci && npm run test:coverage'
+```
+
+### Generated content
+
+Every generator that supports `--check` must succeed before release. The complete generator set is also exercised by the automated and packaging workflows.
+
+Run the complete generator verification from the repository root:
+
+```bash
+npm run check:generated
+```
+
+The npm command runs `python3 tools/check-foundry-generators.py`, which discovers every `tools/generate-*.py` script and invokes its `--check` mode. The same central check runs in GitHub Actions and at the start of `tools/package-foundry.sh`, so new generators are automatically included in build and packaging verification.
+### Foundry system tests
+Developer Test macros and reusable System Test Actors are included in development prerelease packages only. Production release candidates use the production package identity and do not include either development-only Compendium.
+
+In a Foundry test world:
+
+1. Import or reimport the Bane of Azeroth Adventure.
+2. Confirm that the **Bane of Azeroth - System Tests** Actor folder is auto-populated with the managed manual-test roster (Death Knight, Demon Hunter, Druid, Shaman, Warlock, Mage, Monk, Evoker, Shadow Priest, Tauren, Hunter, and Target).
+3. Open the **Bane of Azeroth – Developer Tests** compendium.
+4. Run **BOA DEV – Run All System Tests** as a game master.
+5. Review the generated Journal report and use the prepared Actors for the remaining manual checks.
+6. Complete and record the remaining manual checks in that report.
+
+The Actor fixtures are reconciled from the current imported world Items. Bane of Azeroth only replaces embedded Items that it marked as managed fixture data; Items added manually to a fixture Actor are left untouched. Reimport the Adventure if a fixture reports that a required source Item is missing.
+### Release verification
+
+Use the development package for **BOA DEV – Run All System Tests** and the generated manual Player/GM report. When those checks are green, open a release-ready pull request to `main`.
+Merging that pull request automatically runs **Publish Foundry release candidate**. The workflow runs the automated test suite and generator checks, builds the production `bane-of-azeroth` package without Developer Tests, assigns the next immutable `vMAJOR.MINOR.PATCH-rc.N` tag, publishes the rolling `release-candidate` GitHub prerelease, and verifies the public manifest/download endpoints. Install the candidate through its manifest URL in a clean Foundry test environment; do not install its zip manually for the release-path verification.
+
+A release candidate is ready only when:
+- the automated test suite passes;
+- generated content is synchronized;
+- all Foundry system tests pass in the matching development build;
+- the manual verification report has no unresolved BoA failures;
+- the production RC installs and updates through the RC manifest URL;
+- Adventure import and reimport have been verified in a clean test world using the RC;
+- package presentation is correct; and
+- GM and Player consoles show no unexpected Bane of Azeroth warnings or errors.
+Foundry Core or PIXI warnings that do not indicate broken Bane of Azeroth behavior are not release blockers.
+
+Bane of Azeroth is on its Foundry VTT 1.0 release line. Stable packages are promoted only from the exact commit of a verified release candidate.
+
+## Contributing
+
+Bug reports, rules feedback, and compatibility reports are welcome.
+
+When reporting a Foundry issue, include:
+
+- Foundry VTT version
+- Dragonbane system version
+- Bane of Azeroth module version
+- Other relevant active modules
+- Steps required to reproduce the issue
+- Any errors shown in the browser console
+
+The project is currently maintained by **Auvreannia**.
 
 ## Legal notice
 

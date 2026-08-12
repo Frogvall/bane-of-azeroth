@@ -1,0 +1,35 @@
+{
+  "folder": "lLCu8mQtWlPPEMiv",
+  "name": "Draenei",
+  "type": "kin",
+  "_id": "Bm0RcdSR4HnqJG22",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/draenei.webp",
+  "system": {
+    "itemDescription": "<p>Driven from their home world of Argus, the honorable draenei fled the wrath of the Burning Legion for eons before eventually finding a new home on Azeroth. Draenei are tall, bipedal ungulates with blue skin, hooves, tails, and horns and tendrils adorning their faces. Their glowing eyes reveal their deep connection to the Light, which enables them to wield powerful magic for healing and protection. Despite enduring persecution and hardship across multiple worlds, they remain resilient and noble, embodying traits of kindness, compassion, and justice. Their alien perspective, shaped by their nomadic, nigh-immortal existence, grants them unique insights and makes them valuable allies in the ongoing struggle against evil.</p>",
+    "gmDescription": "",
+    "abilities": "Heroic Presence",
+    "movement": 10
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "kin.draenei"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "key": "companions",
+  "id": "BoAPgAppendComp1",
+  "name": "Companions",
+  "sort": 100000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @Ref[dragonbane-core:journal-page.common-animals]{list of such animals} can be found in the core rules, and an additional list of animals is presented below. If an animal has more than one attack listed, the player choose which one to use when commanding their companion. What animals that are around in an area is up to the GM.</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.crocolisk]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.dragonhawk]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.giant-bat]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.giant-owl]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.giant-spider]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.gorilla]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.large-cat]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.large-serpent]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.raptor]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.ravager]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.scorpid]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.tallstrider]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.turtle]</p><p>@DisplayNpcCardRef[boa:actor.actors.common-animals.wind-serpent]</p>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Appendix A: Companions",
+    "sync": "curated",
+    "presentation": "dragonbane-core-common-animals",
+    "links": "generated-common-animal-actors"
+  }
+}

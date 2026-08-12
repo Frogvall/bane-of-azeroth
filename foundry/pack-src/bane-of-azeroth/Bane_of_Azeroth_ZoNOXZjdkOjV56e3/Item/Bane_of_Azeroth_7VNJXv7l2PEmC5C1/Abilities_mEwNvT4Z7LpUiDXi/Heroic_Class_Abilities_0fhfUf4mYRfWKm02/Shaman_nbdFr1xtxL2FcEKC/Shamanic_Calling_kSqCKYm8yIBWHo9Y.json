@@ -1,0 +1,40 @@
+{
+  "folder": "nbdFr1xtxL2FcEKC",
+  "name": "Shamanic Calling",
+  "type": "ability",
+  "_id": "kSqCKYm8yIBWHo9Y",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp",
+  "system": {
+    "itemDescription": "<p>You know the general spell @UUID[Item.ElTotem1a2b3c4d5]{Elemental Totem}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p><p>You do not have to roll for LANGUAGES when communicating with or trying to understand elementals or their writing.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "One School of Magic",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.shaman.shamanic-calling",
+      "grantsSpell": "spells.elemental-totem"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

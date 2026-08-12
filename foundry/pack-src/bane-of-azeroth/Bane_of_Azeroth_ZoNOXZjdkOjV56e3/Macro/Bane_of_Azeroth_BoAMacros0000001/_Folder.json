@@ -1,0 +1,27 @@
+{
+  "type": "Macro",
+  "folder": null,
+  "name": "Bane of Azeroth",
+  "color": "#0000ff",
+  "sorting": "m",
+  "_id": "BoAMacros0000001",
+  "description": "",
+  "sort": 0,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-player-macros.py",
+      "contentKey": "macros.folder.bane-of-azeroth"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Folder.BoAMacros0000001",
+    "exportSource": null
+  }
+}

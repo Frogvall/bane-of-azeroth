@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "expectedCount": 4,
+  "folders": {
+    "root": {
+      "key": "bane-of-azeroth",
+      "id": "BoAActors7pQ2mX9",
+      "name": "Bane of Azeroth",
+      "color": "#0000ff",
+      "sort": 0,
+      "sorting": "a"
+    },
+    "elementalTotems": {
+      "key": "elemental-totems",
+      "id": "ElemTotems8vN3Qx",
+      "name": "Elemental Totems",
+      "color": null,
+      "sort": 100000,
+      "sorting": "a"
+    }
+  },
+  "defaults": {
+    "image": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+    "descriptionHtml": "<p>A small elemental totem summoned by @Ref[boa:item.spells.elemental-totem]{Elemental Totem}.</p>",
+    "movement": 0,
+    "hitPoints": 10,
+    "willPoints": 0,
+    "armorRating": 2,
+    "tokenWidth": 0.5,
+    "tokenHeight": 0.5,
+    "tokenDisposition": 1,
+    "auraRange": 10,
+    "auraAlpha": 0.2
+  },
+  "totems": [
+    {
+      "key": "cleansing",
+      "id": "CleanTotem4kP7xQ",
+      "armorId": "CleanArmor8mR2zV",
+      "name": "Cleansing Totem",
+      "element": "water",
+      "auraColor": "#38bdf8",
+      "effectHtml": "<p><strong>Cleansing:</strong> Once per round, each ally within range can heal one condition of their choice at the end of their turn.</p>",
+      "image": "modules/bane-of-azeroth/assets/actors/elemental-totems/cleansing-totem.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/cleansing-totem-token.webp",
+      "auraAlpha": 0.24
+    },
+    {
+      "key": "flametongue",
+      "id": "FlameTotem6mR2zV",
+      "armorId": "FlameArmor3pL8sX",
+      "name": "Flametongue Totem",
+      "element": "fire",
+      "auraColor": "#f97316",
+      "effectHtml": "<p><strong>Flametongue:</strong> Once per round, each ally within range deals D4 extra damage with one attack or spell.</p>",
+      "image": "modules/bane-of-azeroth/assets/actors/elemental-totems/flametongue-totem.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/flametongue-totem-token.webp",
+      "auraAlpha": 0.22
+    },
+    {
+      "key": "stoneskin",
+      "id": "StoneTotem8nT3wY",
+      "armorId": "StoneArmor5qK9xM",
+      "name": "Stoneskin Totem",
+      "element": "earth",
+      "auraColor": "#d9f04a",
+      "effectHtml": "<p><strong>Stoneskin:</strong> Once per round, each ally within range takes D4 less damage from one attack or spell.</p>",
+      "image": "modules/bane-of-azeroth/assets/actors/elemental-totems/stoneskin-totem.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/stoneskin-totem-token.webp",
+      "auraAlpha": 0.28
+    },
+    {
+      "key": "windfury",
+      "id": "WindTotem5pL9sX7",
+      "armorId": "WindArmor7rN4yB2",
+      "name": "Windfury Totem",
+      "element": "air",
+      "auraColor": "#d8b4fe",
+      "effectHtml": "<p><strong>Windfury:</strong> Once per round, each ally within range gains a boon on one attack roll.</p>",
+      "image": "modules/bane-of-azeroth/assets/actors/elemental-totems/windfury-totem.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/elemental-totems/windfury-totem-token.webp",
+      "auraAlpha": 0.26
+    }
+  ]
+}

@@ -1,0 +1,529 @@
+{
+  "name": "Kin – Any Faction",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "3c9aa4ac9cd8bfba",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.3c9aa4ac9cd8bfba"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/dracthyr.webp",
+      "name": "Dracthyr",
+      "documentUuid": "Item.ztgKI970tp6QMho4",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_id": "23b687088fdf5f7c",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.23b687088fdf5f7c"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/draenei.webp",
+      "name": "Draenei",
+      "documentUuid": "Item.Bm0RcdSR4HnqJG22",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "_id": "bf4989f54dbcb355",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.bf4989f54dbcb355"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/bronzebeard-dwarf.webp",
+      "name": "Bronzebeard Dwarf",
+      "documentUuid": "Item.Y10YI5iLeCe2sPSy",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "_id": "a008d18eaf2672f9",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.a008d18eaf2672f9"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/dark-iron-dwarf.webp",
+      "name": "Dark Iron Dwarf",
+      "documentUuid": "Item.rxUdqVGNVlZowCYg",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "_id": "4b85109548b8bc77",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.4b85109548b8bc77"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/blood-elf.webp",
+      "name": "Blood Elf",
+      "documentUuid": "Item.hFopLTbxckPl8yWG",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "_id": "522afbc6b11e65b2",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.522afbc6b11e65b2"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/night-elf.webp",
+      "name": "Night Elf",
+      "documentUuid": "Item.pBZ71DEkG1Svv9qr",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "_id": "7bec86637398acf7",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.7bec86637398acf7"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/gnome.webp",
+      "name": "Gnome",
+      "documentUuid": "Item.NOOtyvgvgBlWKdeC",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "_id": "db20674868a3b01e",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.db20674868a3b01e"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/goblin.webp",
+      "name": "Goblin",
+      "documentUuid": "Item.A0qYIBYNyCb9QZ05",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 3,
+      "range": [
+        9,
+        11
+      ],
+      "drawn": false,
+      "_id": "32f03291070ea70e",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.32f03291070ea70e"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/human.webp",
+      "name": "Human",
+      "documentUuid": "Item.4RlOlXyZbbuTEk0w",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 3,
+      "range": [
+        12,
+        14
+      ],
+      "drawn": false,
+      "_id": "f9cc18a2e217dac5",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.f9cc18a2e217dac5"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/orc.webp",
+      "name": "Orc",
+      "documentUuid": "Item.lShZWLHxGRFzTTP4",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false,
+      "_id": "62033862b453a5ae",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.62033862b453a5ae"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/pandaren.webp",
+      "name": "Pandaren",
+      "documentUuid": "Item.YB3QGvS8GlZ8AXX2",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "drawn": false,
+      "_id": "f1c4616bd9aea1ce",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.f1c4616bd9aea1ce"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/tauren.webp",
+      "name": "Tauren",
+      "documentUuid": "Item.o8fnlZLmShMkBpcu",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "drawn": false,
+      "_id": "24670de826d63468",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.24670de826d63468"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/troll.webp",
+      "name": "Troll",
+      "documentUuid": "Item.C7aZ9suxTaepzNzM",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "drawn": false,
+      "_id": "ea8fdb41f4f406b4",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.ea8fdb41f4f406b4"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/undead.webp",
+      "name": "Undead",
+      "documentUuid": "Item.ly16IBRwWxSbSDwR",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "drawn": false,
+      "_id": "54166dbfd4ea3cb5",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.54166dbfd4ea3cb5"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/vulpera.webp",
+      "name": "Vulpera",
+      "documentUuid": "Item.jjyOrp1GFOYiRqJn",
+      "description": ""
+    },
+    {
+      "type": "document",
+      "weight": 1,
+      "range": [
+        20,
+        20
+      ],
+      "drawn": false,
+      "_id": "2e3773cee7fabe09",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.any-faction.result.2e3773cee7fabe09"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "modules/bane-of-azeroth/assets/icons/kin/worgen.webp",
+      "name": "Worgen",
+      "documentUuid": "Item.FAwIDwvx2p8t8MrK",
+      "description": ""
+    }
+  ],
+  "formula": "1d20",
+  "replacement": true,
+  "displayRoll": true,
+  "folder": "BoATblPlayerOpt1",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin-roll-tables.py",
+      "contentKey": "tables.kin.any-faction"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.BoATblKinAnyFac1",
+    "exportSource": null
+  },
+  "_id": "BoATblKinAnyFac1"
+}

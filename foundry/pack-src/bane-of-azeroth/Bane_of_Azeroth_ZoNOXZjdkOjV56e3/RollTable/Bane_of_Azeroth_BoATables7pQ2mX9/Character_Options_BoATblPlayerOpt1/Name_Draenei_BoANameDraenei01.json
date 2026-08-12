@@ -1,0 +1,213 @@
+{
+  "name": "Name - Draenei",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "7725a3130e6293b0",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.draenei.result.7725a3130e6293b0"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Aarko",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_id": "33529735e5a89de0",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.draenei.result.33529735e5a89de0"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Denath",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "_id": "91f98846454812e2",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.draenei.result.91f98846454812e2"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Ha'lei",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "_id": "3de15da18bc9164a",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.draenei.result.3de15da18bc9164a"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Mendorn",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "_id": "547d52bd823ba374",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.draenei.result.547d52bd823ba374"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Nuraa",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "_id": "f719f1087655d8ea",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.draenei.result.f719f1087655d8ea"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Tysha",
+      "name": ""
+    }
+  ],
+  "formula": "1d6",
+  "replacement": true,
+  "displayRoll": true,
+  "folder": "BoATblPlayerOpt1",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin-roll-tables.py",
+      "contentKey": "tables.kin.name.draenei"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.BoANameDraenei01",
+    "exportSource": null
+  },
+  "_id": "BoANameDraenei01"
+}

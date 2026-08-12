@@ -1,0 +1,39 @@
+{
+  "folder": "K8dibxM78wasJsVD",
+  "name": "Demonologist",
+  "type": "ability",
+  "_id": "MASYIf5D89N2pbIt",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp",
+  "system": {
+    "itemDescription": "<p>You can use your action to activate this ability to instantly summon a demon into an empty space within 10 meters of you. Any demon you have already summoned using this heroic ability instantly disappears. The demon follows you for a shift at no additional WP cost. You can use its action in combat by paying the WP listed in its stat block (a free action for you). The demon can communicate with you in its demonic language, and you can both understand and speak it. The summoned demon is not necessarily the same individual you summoned previously. It is up to the GM whether the demon remembers encountering you before.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Warlock's Ambition",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.warlock.demonologist"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

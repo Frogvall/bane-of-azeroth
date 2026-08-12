@@ -1,0 +1,40 @@
+{
+  "folder": "JJ4olk9ob9USSEHU",
+  "name": "Darkness",
+  "type": "ability",
+  "_id": "B9kWg7ydZRZHLOOi",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/priest.webp",
+  "system": {
+    "itemDescription": "<p>You know the general spell @UUID[Item.Shadowform0JkLmN]{Shadowform}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Priest's Zeal",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.priest.darkness",
+      "grantsSpell": "spells.shadowform"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,14 @@
+<div>
+  <fieldset>
+    <legend>{{localize "BOA.settings.developer.groupDiagnostics"}}</legend>
+
+    {{formGroup
+      schema.fields.druidLifecycleTrace
+      value=source.druidLifecycleTrace
+      name="druidLifecycleTrace"
+      localize=true
+    }}
+  </fieldset>
+
+  <p class="hint">{{localize "BOA.settings.developer.traceExportHint"}}</p>
+</div>

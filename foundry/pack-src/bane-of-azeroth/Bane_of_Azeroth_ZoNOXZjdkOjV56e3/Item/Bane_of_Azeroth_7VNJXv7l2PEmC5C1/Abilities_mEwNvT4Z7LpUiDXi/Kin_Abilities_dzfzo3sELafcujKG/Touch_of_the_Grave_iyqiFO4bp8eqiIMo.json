@@ -1,0 +1,39 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "Touch of the Grave",
+  "type": "ability",
+  "_id": "iyqiFO4bp8eqiIMo",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>Instead of making a @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.CJjqkHzpow39ViUi#death]{Death Roll} you can activate this ability to automatically succeed as if you had rolled a dragon.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Undead",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 1600000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "ability.touch-of-the-grave"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

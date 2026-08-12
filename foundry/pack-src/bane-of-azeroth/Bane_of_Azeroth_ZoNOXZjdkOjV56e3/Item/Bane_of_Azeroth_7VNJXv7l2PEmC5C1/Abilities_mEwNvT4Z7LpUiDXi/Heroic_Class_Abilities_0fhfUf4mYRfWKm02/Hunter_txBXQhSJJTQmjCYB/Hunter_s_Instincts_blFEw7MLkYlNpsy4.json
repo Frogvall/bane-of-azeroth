@@ -1,0 +1,39 @@
+{
+  "folder": "txBXQhSJJTQmjCYB",
+  "name": "Hunter's Instincts",
+  "type": "ability",
+  "_id": "blFEw7MLkYlNpsy4",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp",
+  "system": {
+    "itemDescription": "<p>Your companion follows you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically. As an action, you can spend 1 WP to see through the companion's eyes and hear what it hears for one stretch of time, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Companion Heroic Ability",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.hunter.hunters-instincts"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

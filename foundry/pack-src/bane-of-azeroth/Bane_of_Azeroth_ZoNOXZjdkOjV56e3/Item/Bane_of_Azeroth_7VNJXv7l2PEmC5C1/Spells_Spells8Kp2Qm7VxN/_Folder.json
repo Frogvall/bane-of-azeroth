@@ -1,0 +1,27 @@
+{
+  "type": "Item",
+  "folder": "7VNJXv7l2PEmC5C1",
+  "name": "Spells",
+  "color": null,
+  "sorting": "a",
+  "_id": "Spells8Kp2Qm7VxN",
+  "description": "",
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.folder.spells"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Folder.Spells8Kp2Qm7VxN",
+    "exportSource": null
+  }
+}

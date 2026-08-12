@@ -1,0 +1,61 @@
+{
+  "folder": "yZFUQWO9cGOCVO8U",
+  "name": "Rifle",
+  "type": "weapon",
+  "_id": "RifleC6n3T9vK2xP",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/bow.webp",
+  "system": {
+    "weight": 1,
+    "quantity": 1,
+    "cost": "300 gold",
+    "supply": "rare",
+    "worn": false,
+    "memento": false,
+    "boons": "",
+    "banes": "",
+    "gmDescription": "",
+    "itemDescription": "",
+    "storage": false,
+    "grip": {
+      "value": "grip2h"
+    },
+    "str": 13,
+    "range": "60",
+    "damage": "2D10",
+    "durability": 6,
+    "skill": {
+      "name": "Firearms",
+      "value": 0
+    },
+    "features": [
+      "ammunition",
+      "noDamageBonus",
+      "piercing"
+    ],
+    "broken": false,
+    "mainHand": false,
+    "offHand": false
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-gear.py",
+      "contentKey": "gear.rifle"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

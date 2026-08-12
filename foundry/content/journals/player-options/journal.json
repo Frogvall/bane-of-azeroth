@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "key": "player-options",
+  "id": "BoAJrnlPlayerOpt",
+  "name": "Character Options",
+  "enabled": true,
+  "sort": 200000
+}

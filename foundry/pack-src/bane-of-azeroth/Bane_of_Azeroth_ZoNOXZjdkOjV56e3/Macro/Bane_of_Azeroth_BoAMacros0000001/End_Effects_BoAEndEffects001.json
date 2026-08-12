@@ -1,0 +1,31 @@
+{
+  "name": "End Effects",
+  "type": "script",
+  "scope": "global",
+  "command": "const boa = game.modules.get(\"bane-of-azeroth\")?.api;\nif (typeof boa?.runEndEffectsMacro !== \"function\") {\n  ui.notifications?.error?.(\n    \"Bane of Azeroth macro support is unavailable.\",\n  );\n  return;\n}\nawait boa.runEndEffectsMacro();\n",
+  "img": "icons/svg/cancel.svg",
+  "author": null,
+  "folder": "BoAMacros0000001",
+  "sort": 200000,
+  "ownership": {
+    "default": 2
+  },
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-player-macros.py",
+      "contentKey": "macros.end-effects"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "BoAEndEffects001"
+}

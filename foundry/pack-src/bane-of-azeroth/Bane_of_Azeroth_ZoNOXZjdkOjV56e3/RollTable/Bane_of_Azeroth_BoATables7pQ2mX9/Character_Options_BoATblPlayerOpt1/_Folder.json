@@ -1,0 +1,27 @@
+{
+  "type": "RollTable",
+  "folder": "BoATables7pQ2mX9",
+  "name": "Character Options",
+  "color": null,
+  "sorting": "a",
+  "_id": "BoATblPlayerOpt1",
+  "description": "",
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin-roll-tables.py",
+      "contentKey": "tables.folder.player-options"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Folder.BoATblPlayerOpt1",
+    "exportSource": null
+  }
+}

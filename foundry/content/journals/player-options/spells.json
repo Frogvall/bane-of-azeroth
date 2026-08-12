@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "key": "spells",
+  "id": "BoAPgPlayerSpell",
+  "name": "Spells",
+  "sort": 700000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the DMs discretion). Spells presented in this chapters are in addition to those rules, and are explicitly gained by selecting the corresponding heroic ability in the Heroic Class Abilities chapter.</p><p>@DisplaySpellRef[boa:item.spells.elemental-totem]{Elemental Totem}</p><p>@DisplaySpellRef[boa:item.spells.savage-incarnation]{Savage Incarnation}</p><p>@DisplaySpellRef[boa:item.spells.shadowform]{Shadowform}</p><p>@DisplaySpellRef[boa:item.spells.feral-incarnation]{Feral Incarnation}</p><p>@DisplaySpellRef[boa:item.spells.incarnation-of-harmony]{Incarnation of Harmony}</p><p>@DisplaySpellRef[boa:item.spells.incarnation-of-the-stars]{Incarnation of the Stars}</p>"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Spells",
+    "sync": "curated",
+    "presentation": "dragonbane-core-compatible",
+    "links": "generated-spell-items"
+  }
+}

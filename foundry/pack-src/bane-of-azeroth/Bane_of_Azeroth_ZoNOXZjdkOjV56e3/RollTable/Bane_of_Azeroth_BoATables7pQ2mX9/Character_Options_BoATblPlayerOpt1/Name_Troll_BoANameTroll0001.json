@@ -1,0 +1,213 @@
+{
+  "name": "Name - Troll",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "e68f1a62a3942b7f",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.troll.result.e68f1a62a3942b7f"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Bwu'ja",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_id": "bc3b94967249d0fd",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.troll.result.bc3b94967249d0fd"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Gri'lek",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "_id": "ea39cf0be050bdfd",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.troll.result.ea39cf0be050bdfd"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Hae'wilani",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "_id": "304eeb9db4549cad",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.troll.result.304eeb9db4549cad"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Jin'diza",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "_id": "c4eaf126cb213474",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.troll.result.c4eaf126cb213474"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Ske'rit",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "_id": "e77652fbbb24b37a",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.troll.result.e77652fbbb24b37a"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "You'jin",
+      "name": ""
+    }
+  ],
+  "formula": "1d6",
+  "replacement": true,
+  "displayRoll": true,
+  "folder": "BoATblPlayerOpt1",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin-roll-tables.py",
+      "contentKey": "tables.kin.name.troll"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.BoANameTroll0001",
+    "exportSource": null
+  },
+  "_id": "BoANameTroll0001"
+}

@@ -1,0 +1,27 @@
+{
+  "type": "Actor",
+  "folder": "BoAActors7pQ2mX9",
+  "name": "Undead",
+  "color": null,
+  "sorting": "a",
+  "_id": "UndeadBoA9x4K2mN",
+  "description": "",
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-summoned-monsters.py",
+      "contentKey": "actors.folder.undead"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Folder.UndeadBoA9x4K2mN",
+    "exportSource": null
+  }
+}

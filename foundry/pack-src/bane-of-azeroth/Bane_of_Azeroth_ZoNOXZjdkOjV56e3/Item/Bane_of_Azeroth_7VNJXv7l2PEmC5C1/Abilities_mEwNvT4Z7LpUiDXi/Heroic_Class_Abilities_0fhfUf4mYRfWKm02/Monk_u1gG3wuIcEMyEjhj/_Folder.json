@@ -1,0 +1,27 @@
+{
+  "type": "Item",
+  "folder": "0fhfUf4mYRfWKm02",
+  "name": "Monk",
+  "color": null,
+  "sorting": "m",
+  "_id": "u1gG3wuIcEMyEjhj",
+  "description": "",
+  "sort": 700000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "class-folder.monk"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

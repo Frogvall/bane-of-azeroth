@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "verifiedEnvironment": {
+    "foundry": "14.365",
+    "system": {
+      "id": "dragonbane",
+      "version": "4.0.1"
+    },
+    "modules": {
+      "dragonbane-coreset": {
+        "version": "2.2",
+        "required": true
+      },
+      "yze-combat": {
+        "version": "1.7.0",
+        "required": false
+      }
+    }
+  }
+}

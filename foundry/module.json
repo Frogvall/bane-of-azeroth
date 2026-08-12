@@ -1,0 +1,70 @@
+{
+  "id": "bane-of-azeroth",
+  "title": "Bane of Azeroth",
+  "description": "Unofficial Warcraft-inspired rules, content, and automation for Dragonbane.",
+  "url": "https://github.com/Frogvall/bane-of-azeroth",
+  "bugs": "https://github.com/Frogvall/bane-of-azeroth/issues",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
+  },
+  "authors": [
+    {
+      "name": "Auvreannia",
+      "discord": "auvreannia",
+      "flags": {}
+    }
+  ],
+  "esmodules": [
+    "scripts/bane-of-azeroth.js"
+  ],
+  "styles": [
+    "styles/bane-of-azeroth.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dragonbane",
+        "type": "system",
+        "compatibility": {
+          "minimum": "4.0.1",
+          "verified": "4.0.1"
+        }
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "bane-of-azeroth-dev",
+        "type": "module"
+      }
+    ]
+  },
+  "flags": {
+    "canUpload": true
+  },
+  "packs": [
+    {
+      "name": "bane-of-azeroth",
+      "label": "Bane of Azeroth",
+      "path": "packs/bane-of-azeroth",
+      "type": "Adventure",
+      "system": "dragonbane",
+      "banner": "modules/bane-of-azeroth/assets/pack-banners/adventure.webp",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    }
+  ],
+  "socket": true
+}

@@ -1,0 +1,104 @@
+{
+  "name": "Monster Attacks – Ghoul",
+  "img": "systems/dragonbane/art/icons/monster-attack.webp",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "GhoulClaw8vN3Qx2",
+      "img": "systems/dragonbane/art/icons/monster-attack.webp",
+      "flags": {
+        "bane-of-azeroth": {
+          "monsterAttack": {
+            "schemaVersion": 1,
+            "key": "claws"
+          }
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "description": "<b>Claws.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] slashing damage.",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_id": "GhoulBite7pQ2mX9",
+      "img": "systems/dragonbane/art/icons/monster-attack.webp",
+      "flags": {
+        "bane-of-azeroth": {
+          "monsterAttack": {
+            "schemaVersion": 1,
+            "key": "infectious-bite",
+            "resourceCost": {
+              "resource": "willPoints",
+              "amount": 2,
+              "payer": "assigned-character",
+              "prompt": true,
+              "allowUnpaid": true
+            }
+          }
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "description": "<b>Infectious Bite.</b> Hits automatically in melee combat (can be dodged, but not parried) and inflicts [[/damage 2D6]] piercing damage. The target has a bane on its next attack or spell roll. Costs 2 WP, paid by the Death Knight.",
+      "name": ""
+    }
+  ],
+  "formula": "1d2",
+  "replacement": true,
+  "displayRoll": false,
+  "folder": "MonstAtk8vN3Qx2P",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-summoned-monsters.py",
+      "contentKey": "tables.monster-attacks.ghoul"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "GhoulAtk4mN7Qx2P"
+}

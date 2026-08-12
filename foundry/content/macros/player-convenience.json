@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "macros": [
+    {
+      "key": "change-druid-form",
+      "id": "BoADruidForm0001",
+      "name": "Change Druid Form",
+      "img": "icons/svg/pawprint.svg",
+      "apiMethod": "runChangeDruidFormMacro",
+      "sort": 100000,
+      "ownershipDefault": 2
+    },
+    {
+      "key": "end-effects",
+      "id": "BoAEndEffects001",
+      "name": "End Effects",
+      "img": "icons/svg/cancel.svg",
+      "apiMethod": "runEndEffectsMacro",
+      "sort": 200000,
+      "ownershipDefault": 2
+    }
+  ]
+}

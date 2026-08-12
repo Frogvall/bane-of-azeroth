@@ -1,0 +1,40 @@
+{
+  "folder": "oTSQflRYChUu3iG2",
+  "name": "Druidic Awakening",
+  "type": "ability",
+  "_id": "7XGIwTKnDqE3ZvhD",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
+  "system": {
+    "itemDescription": "<p>You know the general spell @UUID[Item.SavIncarn6e7f8g9]{Savage Incarnation}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p><p>When you sleep, you enter a dream state that allows you to stay alert to your surroundings during a shift rest, and you can awaken instantly and at will.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "One School of Magic",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.druid.druidic-awakening",
+      "grantsSpell": "spells.savage-incarnation"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "Darkflight",
+  "type": "ability",
+  "_id": "zEKGd2JmBfUstd5v",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability (no action) when making an attack roll and get a boon to the roll. You also become Angry, if you're not already. You can take the dash action as part of the attack action, moving before or after the attack.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Worgen",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 1900000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "ability.darkflight"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

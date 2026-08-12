@@ -1,0 +1,39 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "Shadowmeld",
+  "type": "ability",
+  "_id": "dCTG99e6GF95sYeE",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>Instead of making a SNEAKING roll you can activate this ability to automatically succeed as if you had rolled a dragon.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Night Elf",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 800000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "ability.shadowmeld"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "_key": "!journal!BoAJrnlAppendix1",
+  "_id": "BoAJrnlAppendix1",
+  "folder": "BoAJournals00001",
+  "name": "Appendices",
+  "sort": 300000,
+  "pages": [
+    {
+      "_key": "!journal.pages!BoAJrnlAppendix1.BoAPgAppendComp1",
+      "sort": 100000,
+      "name": "Companions",
+      "_id": "BoAPgAppendComp1",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.appendices.companions"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "type": "text",
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>Hunters on Azeroth tend to find companions in a multitude of places. The Companion heroic ability let's turn animals into a companion. A @UUID[JournalEntry.RSi75ZLYMyFhBqPi.JournalEntryPage.9gOpHO89C6YKsgH1]{list of such animals} can be found in the core rules, and an additional list of animals is presented below. If an animal has more than one attack listed, the player choose which one to use when commanding their companion. What animals that are around in an area is up to the GM.</p><p>@DisplayNpcCard[Actor.NH7xTDsdAaPgm0Xv]</p><p>@DisplayNpcCard[Actor.W7alXfXLGiNx7s7E]</p><p>@DisplayNpcCard[Actor.9da7224216cd2593]</p><p>@DisplayNpcCard[Actor.7d6c7e2e4416f9a4]</p><p>@DisplayNpcCard[Actor.8db68cb83b2f1331]</p><p>@DisplayNpcCard[Actor.OelrGFsAvekzqSQi]</p><p>@DisplayNpcCard[Actor.d1067fe3dc538d79]</p><p>@DisplayNpcCard[Actor.um17JUy9CcBXlloq]</p><p>@DisplayNpcCard[Actor.49c462b6c495e4a9]</p><p>@DisplayNpcCard[Actor.9a7429aca7ad9296]</p><p>@DisplayNpcCard[Actor.0755558cf1561101]</p><p>@DisplayNpcCard[Actor.adfc46dd0aa95902]</p><p>@DisplayNpcCard[Actor.9ff4f73ac72b45c4]</p><p>@DisplayNpcCard[Actor.be5c82639dabe7c1]</p>",
+        "markdown": ""
+      },
+      "src": null
+    },
+    {
+      "_key": "!journal.pages!BoAJrnlAppendix1.BoAPgAppendDmn01",
+      "sort": 200000,
+      "name": "Demons",
+      "_id": "BoAPgAppendDmn01",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-journals.py",
+          "contentKey": "journal-page.appendices.demons"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "type": "text",
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock in its demonic language.</p><p>@DisplayMonster[Actor.syJzyyJogXrRtT8q]{Felhunter}</p><p>@DisplayTable[RollTable.Y6MEcCH35zRiBNUw]{Monster Attacks – Felhunter}</p><p>@DisplayMonster[Actor.Qi1FF2P06TdSMzMK]{Imp}</p><p>@DisplayTable[RollTable.jCvoh99OvzeHfaFv]{Monster Attacks – Imp}</p><p>@DisplayMonster[Actor.864KRsH0wP5fqVFi]{Sayaad}</p><p>@DisplayTable[RollTable.3ZfDwi2LubfhYg8O]{Monster Attacks – Sayaad}</p><p>@DisplayMonster[Actor.sarzEcMOkSvjbci2]{Voidwalker}</p><p>@DisplayTable[RollTable.xzXFOx5qZnY3FTT4]{Monster Attacks – Voidwalker}</p><img src=\"modules/bane-of-azeroth/assets/journals/demons/demons.webp\" style=\"width:100%;height:auto\" alt=\"Warlock demons\">",
+        "markdown": ""
+      },
+      "src": null
+    }
+  ],
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-journals.py",
+      "contentKey": "journal.appendices"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "JournalEntry.BoAJrnlAppendix1",
+    "exportSource": null
+  },
+  "categories": []
+}

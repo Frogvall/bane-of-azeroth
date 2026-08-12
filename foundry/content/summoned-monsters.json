@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 1,
+  "expectedCount": 5,
+  "actorRoot": {
+    "key": "bane-of-azeroth",
+    "id": "BoAActors7pQ2mX9",
+    "name": "Bane of Azeroth",
+    "color": "#0000ff",
+    "sorting": "a",
+    "sort": 0
+  },
+  "actorFolders": {
+    "undead": {
+      "key": "undead",
+      "id": "UndeadBoA9x4K2mN",
+      "name": "Undead",
+      "color": null,
+      "sorting": "a",
+      "sort": 300000
+    },
+    "demons": {
+      "key": "demons",
+      "id": "ZIY5EouNXixTTKSe",
+      "name": "Demons",
+      "color": null,
+      "sorting": "a",
+      "sort": 400000
+    }
+  },
+  "tableFolders": {
+    "root": {
+      "key": "bane-of-azeroth",
+      "id": "BoATables7pQ2mX9",
+      "name": "Bane of Azeroth",
+      "color": "#0000ff",
+      "sorting": "a",
+      "sort": 0
+    },
+    "monsterAttacks": {
+      "key": "monster-attacks",
+      "id": "MonstAtk8vN3Qx2P",
+      "name": "Monster Attacks",
+      "color": null,
+      "sorting": "a",
+      "sort": 100000
+    }
+  },
+  "monsters": [
+    {
+      "key": "ghoul",
+      "id": "GhoulAct6Kp9T2xP",
+      "name": "Ghoul",
+      "category": "undead",
+      "summonType": "ghoul",
+      "image": "modules/bane-of-azeroth/assets/actors/undead/ghoul.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/undead/ghoul-token.webp",
+      "descriptionHtml": "",
+      "movement": 8,
+      "hitPoints": 10,
+      "armor": 0,
+      "ferocity": 1,
+      "size": "normal",
+      "tokenWidth": 1,
+      "tokenHeight": 1,
+      "tokenDisposition": 1,
+      "traitsHtml": "<p><strong>Cannot Heal</strong>: The ghoul cannot heal HP.</p><p><strong>Resistance</strong>: All piercing damage is halved (rounded up).</p><p><strong>Immunity</strong>: Ghouls are immune to fear and PERSUASION.</p><p><strong>Vulnerable Neck</strong>: Rolling a dragon when attacking a ghoul immediately severs its head and drops it dead to the ground.</p>",
+      "attackTable": {
+        "id": "GhoulAtk4mN7Qx2P",
+        "name": "Monster Attacks – Ghoul",
+        "formula": "1d2",
+        "results": [
+          {
+            "id": "GhoulClaw8vN3Qx2",
+            "range": [
+              1,
+              1
+            ],
+            "weight": 1,
+            "description": "<b>Claws.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] slashing damage.",
+            "name": "Claws",
+            "monsterAttack": {
+              "schemaVersion": 1,
+              "key": "claws"
+            }
+          },
+          {
+            "id": "GhoulBite7pQ2mX9",
+            "range": [
+              2,
+              2
+            ],
+            "weight": 1,
+            "description": "<b>Infectious Bite.</b> Hits automatically in melee combat (can be dodged, but not parried) and inflicts [[/damage 2D6]] piercing damage. The target has a bane on its next attack or spell roll. Costs 2 WP, paid by the Death Knight.",
+            "name": "Infectious Bite",
+            "monsterAttack": {
+              "schemaVersion": 1,
+              "key": "infectious-bite",
+              "resourceCost": {
+                "resource": "willPoints",
+                "amount": 2,
+                "payer": "assigned-character",
+                "prompt": true,
+                "allowUnpaid": true
+              }
+            }
+          }
+        ]
+      },
+      "monsterControl": {
+        "schemaVersion": 1,
+        "key": "ghoul",
+        "attackSelection": {
+          "mode": "manual",
+          "fallbackAttackKey": "claws"
+        }
+      }
+    },
+    {
+      "key": "felhunter",
+      "id": "syJzyyJogXrRtT8q",
+      "name": "Felhunter",
+      "category": "demons",
+      "summonType": "warlock-demon",
+      "image": "modules/bane-of-azeroth/assets/actors/demons/felhunter.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/demons/felhunter-token.webp",
+      "descriptionHtml": "",
+      "movement": 14,
+      "hitPoints": 10,
+      "armor": 2,
+      "ferocity": 1,
+      "size": "normal",
+      "tokenWidth": 1,
+      "tokenHeight": 1,
+      "tokenDisposition": 1,
+      "traitsHtml": "<p><strong>Magic Resistance</strong>: The felhunter is resistant to magic and is considered to constantly be under the effect of the MAGIC SHIELD spell, power level 1, without spending a reaction.</p>",
+      "attackTable": {
+        "id": "Y6MEcCH35zRiBNUw",
+        "name": "Monster Attacks – Felhunter",
+        "formula": "1",
+        "results": [
+          {
+            "id": "Lkge9vdJHEB5CDFM",
+            "range": [
+              1,
+              1
+            ],
+            "weight": 1,
+            "description": "<b>Mana Bite.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D10]] slashing damage. The next damage-dealing spell cast at the target gets a boon. The effect lasts until the warlock's turn in the next round.",
+            "name": "Mana Bite",
+            "monsterAttack": {
+              "schemaVersion": 1,
+              "key": "mana-bite"
+            }
+          }
+        ]
+      },
+      "monsterControl": {
+        "schemaVersion": 1,
+        "key": "felhunter",
+        "attackSelection": {
+          "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
+        }
+      }
+    },
+    {
+      "key": "imp",
+      "id": "Qi1FF2P06TdSMzMK",
+      "name": "Imp",
+      "category": "demons",
+      "summonType": "warlock-demon",
+      "image": "modules/bane-of-azeroth/assets/actors/demons/imp.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/demons/imp-token.webp",
+      "descriptionHtml": "",
+      "movement": 10,
+      "hitPoints": 6,
+      "armor": 0,
+      "ferocity": 1,
+      "size": "normal",
+      "tokenWidth": 1,
+      "tokenHeight": 1,
+      "tokenDisposition": 1,
+      "traitsHtml": "<p><strong>Phase Shift</strong>: Non-magical attacks against the imp are made with a bane.</p>",
+      "attackTable": {
+        "id": "jCvoh99OvzeHfaFv",
+        "name": "Monster Attacks – Imp",
+        "formula": "1",
+        "results": [
+          {
+            "id": "5GHAMcxjMhLKmyRU",
+            "range": [
+              1,
+              1
+            ],
+            "weight": 1,
+            "description": "<b>Firebolt.</b> Automatically hits a target within 20 meters (but can be dodged or parried with a shield) and inflicts [[/damage 2D4]] damage.",
+            "name": "Firebolt",
+            "monsterAttack": {
+              "schemaVersion": 1,
+              "key": "firebolt"
+            }
+          }
+        ]
+      },
+      "monsterControl": {
+        "schemaVersion": 1,
+        "key": "imp",
+        "attackSelection": {
+          "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
+        }
+      }
+    },
+    {
+      "key": "sayaad",
+      "id": "864KRsH0wP5fqVFi",
+      "name": "Sayaad",
+      "category": "demons",
+      "summonType": "warlock-demon",
+      "image": "modules/bane-of-azeroth/assets/actors/demons/sayaad.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/demons/sayaad-token.webp",
+      "descriptionHtml": "",
+      "movement": 10,
+      "hitPoints": 10,
+      "armor": 1,
+      "ferocity": 1,
+      "size": "normal",
+      "tokenWidth": 1,
+      "tokenHeight": 1,
+      "tokenDisposition": 1,
+      "traitsHtml": "<p><strong>Seductive</strong>: Non-magical melee attacks against the sayaad are made with a bane.</p>",
+      "attackTable": {
+        "id": "3ZfDwi2LubfhYg8O",
+        "name": "Monster Attacks – Sayaad",
+        "formula": "1",
+        "results": [
+          {
+            "id": "ArDoe04Mlfua8R2J",
+            "range": [
+              1,
+              1
+            ],
+            "weight": 1,
+            "description": "<b>Soothing Kiss.</b> Automatically hits a non-monster creature within 6 meters (but can be dodged), and the target loses its next action.",
+            "name": "Soothing Kiss",
+            "monsterAttack": {
+              "schemaVersion": 1,
+              "key": "soothing-kiss"
+            }
+          }
+        ]
+      },
+      "monsterControl": {
+        "schemaVersion": 1,
+        "key": "sayaad",
+        "attackSelection": {
+          "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
+        }
+      }
+    },
+    {
+      "key": "voidwalker",
+      "id": "sarzEcMOkSvjbci2",
+      "name": "Voidwalker",
+      "category": "demons",
+      "summonType": "warlock-demon",
+      "image": "modules/bane-of-azeroth/assets/actors/demons/voidwalker.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/demons/voidwalker-token.webp",
+      "descriptionHtml": "",
+      "movement": 8,
+      "hitPoints": 16,
+      "armor": 6,
+      "ferocity": 1,
+      "size": "normal",
+      "tokenWidth": 1,
+      "tokenHeight": 1,
+      "tokenDisposition": 1,
+      "traitsHtml": "<p><strong>Suffering</strong>: If the warlock takes damage within 10 meters of the voidwalker, the damage is halved (rounded up), and the voidwalker takes the same amount of damage as the warlock.</p>",
+      "attackTable": {
+        "id": "xzXFOx5qZnY3FTT4",
+        "name": "Monster Attacks – Voidwalker",
+        "formula": "1",
+        "results": [
+          {
+            "id": "z0JpxD6atiregcIV",
+            "range": [
+              1,
+              1
+            ],
+            "weight": 1,
+            "description": "<b>Torment.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] damage. The target has a bane when attacking any other creature but the voidwalker, until the warlock's turn in the next round.",
+            "name": "Torment",
+            "monsterAttack": {
+              "schemaVersion": 1,
+              "key": "torment"
+            }
+          }
+        ]
+      },
+      "monsterControl": {
+        "schemaVersion": 1,
+        "key": "voidwalker",
+        "attackSelection": {
+          "mode": "system-default"
+        },
+        "command": {
+          "resource": "willPoints",
+          "amount": 2,
+          "payer": "assigned-character",
+          "freeActionWhenPaid": true
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "folder": "txBXQhSJJTQmjCYB",
+  "name": "Beast Master",
+  "type": "ability",
+  "_id": "ANfryDC2vUzxKJz5",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability when you or your companion is hit to transfer half the damage received (rounded down) to the other party, sharing the pain. You can do so after the roll for damage.</p><p>Alternatively, you can use an action to activate this ability to revive a fallen companion, as long as it happens within a shift of its death. If its body is within sight, it appears at the body; otherwise, it appears within 2 meters of you. It recovers1 [[/roll D6]] HP.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Hunter's Instincts",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.hunter.beast-master"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "Item",
+  "folder": "7VNJXv7l2PEmC5C1",
+  "name": "Abilities",
+  "color": null,
+  "sorting": "a",
+  "_id": "mEwNvT4Z7LpUiDXi",
+  "description": "",
+  "sort": 200000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

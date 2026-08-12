@@ -1,0 +1,39 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "Draconic Wings (falling)",
+  "type": "ability",
+  "_id": "5ktc1XvM1fvMP08e",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>When @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#falling]{falling}, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Dracthyr",
+    "wp": "1",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "ability.draconic-wings-falling"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

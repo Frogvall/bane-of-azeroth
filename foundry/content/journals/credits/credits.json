@@ -1,0 +1,20 @@
+{
+  "key": "credits",
+  "id": "BoAPgCredits0001",
+  "name": "Credits",
+  "sort": 100000,
+  "title": {
+    "show": false,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<img style=\"display:block;margin:auto;border:0 solid transparent;width:100%;max-width:420px;height:auto\" src=\"modules/bane-of-azeroth/assets/adventure/logo.webp\" alt=\"Bane of Azeroth\"><h4>Author</h4><p>Auvreannia</p><h4>Version</h4><p>v1.0</p><h4>Credits</h4><p>This is a Dragonbane supplement heavily inspired by the amazing <a href=\"https://drive.google.com/drive/folders/1BSit21xGH7yRdWRO95lvrsbxvYi5IwlY\">Champions of Azeroth</a> by <a href=\"https://www.reddit.com/user/Silverblade1234\">Silverblade</a>. A lot of the body text in this book is written by Silverblade and republished with permission.</p><p>This game supplement was created using the <a href=\"https://homebrewery.naturalcrit.com/share/IOEuWz2v8FFi\">DragonBrew</a> template by Sibling Dex.</p><p><a href=\"https://www.publicdomainpictures.net/en/view-image.php?image=488602&amp;picture=parchment-paper-background-texture\">&quot;Parchment Paper Background&quot;</a> by Andrea Stöckel (Public Domain) <a href=\"https://www.deviantart.com/esther-sanz/art/Old-Scroll-Texture-II-114214631\">&quot;Old Scroll Texture&quot;</a> by Esther Sanz(<a href=\"http://creativecommons.org/licenses/by/3.0/\">CC BY 3.0</a>)</p><p>This game supplement was created under Fria Ligan AB&#x27;s <a href=\"https://freeleaguepublishing.com/wp-content/uploads/2023/11/Dragonbane-License-Agreement.pdf\">Dragonbane Third Party Supplement License</a> to be used with the core rules of Dragonbane.</p><p>This game supplement is neither affiliated with, sponsored, or endorsed by Fria Ligan AB or Blizzard Entertainment, Inc.</p><h4>Artwork</h4><p>Except for separately credited background textures and other design assets, the illustrations in this book were created using generative AI. Across the book, these illustrations draw visual inspiration from original works by the artists and studios listed below.</p><p>These artists and studios are credited as visual influences only. They did not contribute to, authorize, sponsor, or endorse this project. No affiliation with them is claimed or implied.</p><p><a href=\"https://www.alexhorleyart.com/\">Alex Horley</a>, <a href=\"https://www.artstation.com/atcillustration\">Andrew Clark</a>, <a href=\"https://www.artstation.com/bosi-art-studios\">BOSi Art Studios</a>, <a href=\"https://www.rahnart.com\">Chris Rahn</a>, <a href=\"https://www.artstation.com/craze\">Christopher Hayes</a>, <a href=\"https://www.artstation.com/darenbader\">Daren Bader</a>, <a href=\"https://www.deviantart.com/daverapoza\">Dave Rapoza</a>, <a href=\"https://www.artstation.com/tamplierpainter\">Dmitry Prozorov</a>, <a href=\"https://www.artstation.com/epalacios\">Efrem Palacios</a>, <a href=\"https://www.artstation.com/evawidermann\">Eva Widermann</a>, <a href=\"https://www.artstation.com/glennrane\">Glenn Rane</a>, <a href=\"https://www.artstation.com/graceliu\">Grace Liu</a>, <a href=\"https://www.artstation.com/jaem\">Jaemin Kim</a>, <a href=\"https://www.deviantart.com/jamesryman\">James Ryman</a>, <a href=\"https://www.artstation.com/tully\">Laurel D Austin</a>, <a href=\"https://www.deviantart.com/plainandplain\">Plainandplain</a>, <a href=\"https://www.artstation.com/thepandaking\">Samwise Didier</a>, <a href=\"https://www.deviantart.com/sandara\">Sandara</a>, <a href=\"https://www.artstation.com/maniaks\">Slawomir Maniak</a>, <a href=\"https://www.steveprescott.com\">Steve Prescott</a>, <a href=\"https://www.artstation.com/timur_shevtsov\">Tim Shevtsov</a>, <a href=\"https://www.artstation.com/vitto_hood\">Vitto Hood</a>, <a href=\"https://www.artstation.com/weiwangart\">Wei Wang</a>, <a href=\"https://boros-szikszai.com/landing_2/boros\">Zoltan Boros</a></p><h4>Made With</h4><p>The Homebrewery <a href=\"https://homebrewery.naturalcrit.com\">homebrewery.naturalcrit.com</a></p>"
+  },
+  "schemaVersion": 1,
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Credits",
+    "sync": "curated"
+  }
+}

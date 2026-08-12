@@ -1,0 +1,490 @@
+name: Publish Foundry release candidate
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: release-foundry-candidate
+  cancel-in-progress: false
+
+jobs:
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install test dependencies
+        run: npm ci
+
+      - name: Run automated tests
+        run: npm run test:coverage
+
+  build-candidate:
+    name: Build production release candidate
+    needs:
+      - unit-tests
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+      packages: read
+
+    outputs:
+      artifact_name: ${{ steps.candidate.outputs.artifact_name }}
+      build_version: ${{ steps.candidate.outputs.build_version }}
+      release_tag: ${{ steps.candidate.outputs.release_tag }}
+      immutable_tag: ${{ steps.candidate.outputs.immutable_tag }}
+      manifest_url: ${{ steps.candidate.outputs.manifest_url }}
+      download_url: ${{ steps.candidate.outputs.download_url }}
+
+    container:
+      image: ghcr.io/frogvall/bane-of-azeroth-fvtt-cli:3.0.4
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Configure release-candidate channel
+        id: candidate
+        run: |
+          set -euo pipefail
+
+          module_json="foundry/module.json"
+          if jq -e '
+            has("manifest") or has("download")
+          ' "$module_json" >/dev/null; then
+            echo \
+              "foundry/module.json must remain channel-neutral." \
+              >&2
+            exit 1
+          fi
+
+          source_version="$(jq -er '.version' "$module_json")"
+          if [[ ! "$source_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo \
+              "Expected MAJOR.MINOR.PATCH source version, got: ${source_version}" \
+              >&2
+            exit 1
+          fi
+
+          stable_tag="v${source_version}"
+          if git ls-remote \
+            --exit-code \
+            --tags \
+            --refs \
+            origin \
+            "refs/tags/${stable_tag}" \
+            >/dev/null 2>&1; then
+            echo \
+              "Source version ${source_version} already has stable tag ${stable_tag}; bump the source version before merging another RC to main." \
+              >&2
+            exit 1
+          fi
+
+          prefix="v${source_version}-rc."
+          latest=0
+          same_sha_number=""
+          while read -r sha ref; do
+            tag="${ref#refs/tags/}"
+            number="${tag#${prefix}}"
+            if [[ ! "$number" =~ ^[1-9][0-9]*$ ]]; then
+              continue
+            fi
+            if (( number > latest )); then
+              latest="$number"
+            fi
+            if [[ "$sha" == "$GITHUB_SHA" ]]; then
+              if [[ -z "$same_sha_number" ]] || (( number > same_sha_number )); then
+                same_sha_number="$number"
+              fi
+            fi
+          done < <(
+            git ls-remote \
+              --tags \
+              --refs \
+              origin \
+              "refs/tags/${prefix}*"
+          )
+
+          if [[ -n "$same_sha_number" ]]; then
+            rc_number="$same_sha_number"
+          else
+            rc_number="$((latest + 1))"
+          fi
+
+          build_version="${source_version}-rc.${rc_number}"
+          immutable_tag="v${build_version}"
+          release_tag="release-candidate"
+          repository_url="https://github.com/${GITHUB_REPOSITORY}"
+          manifest_url="${repository_url}/releases/download/${release_tag}/module.json"
+          download_url="${repository_url}/releases/download/${release_tag}/bane-of-azeroth.zip"
+          artifact_name="bane-of-azeroth-release-candidate"
+
+          {
+            echo "BOA_BUILD_VERSION=${build_version}"
+            echo "BOA_IMMUTABLE_TAG=${immutable_tag}"
+            echo "BOA_MANIFEST_URL=${manifest_url}"
+            echo "BOA_DOWNLOAD_URL=${download_url}"
+            echo "BOA_ZIP_NAME=bane-of-azeroth.zip"
+            echo "BOA_INCLUDE_DEV_TESTS=false"
+          } >> "$GITHUB_ENV"
+
+          {
+            echo "artifact_name=${artifact_name}"
+            echo "build_version=${build_version}"
+            echo "release_tag=${release_tag}"
+            echo "immutable_tag=${immutable_tag}"
+            echo "manifest_url=${manifest_url}"
+            echo "download_url=${download_url}"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Foundry release candidate"
+            echo
+            echo "- Source version: \`${source_version}\`"
+            echo "- Candidate version: \`${build_version}\`"
+            echo "- Immutable candidate tag: \`${immutable_tag}\`"
+            echo "- Rolling release tag: \`${release_tag}\`"
+            echo "- Install manifest: \`${manifest_url}\`"
+            echo "- Package: \`${download_url}\`"
+            echo
+            echo "This is a production-shaped prerelease channel."
+            echo "It is not the stable \`releases/latest\` channel."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify generated Foundry content
+        run: python3 tools/check-foundry-generators.py
+
+      - name: Build production release candidate
+        run: bash tools/package-foundry.sh
+
+      - name: Export and validate candidate artifacts
+        run: |
+          set -euo pipefail
+
+          zip_file="dist/bane-of-azeroth.zip"
+          manifest_file="dist/module.json"
+
+          test -f "$zip_file"
+          unzip -p "$zip_file" module.json > "$manifest_file"
+
+          jq -e \
+            --arg version "$BOA_BUILD_VERSION" \
+            --arg manifest "$BOA_MANIFEST_URL" \
+            --arg download "$BOA_DOWNLOAD_URL" \
+            '
+              .id == "bane-of-azeroth"
+              and .title == "Bane of Azeroth"
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+              and (
+                (.scripts // [])
+                | index("scripts/boa-dev-system-tests.js")
+                | not
+              )
+              and (
+                (.packs // [])
+                | map(.name)
+                | index("bane-of-azeroth-dev-tests")
+                | not
+              )
+            ' \
+            "$manifest_file" \
+            >/dev/null
+
+          if jq -e '
+            (
+              ((.scripts // [])
+                | index("scripts/boa-dev-system-test-actors.js")) != null
+              or
+              ((.packs // [])
+                | map(.name)
+                | index("bane-of-azeroth-dev-test-actors")) != null
+            )
+          ' "$manifest_file" >/dev/null; then
+            echo               "Production package unexpectedly contains system-test Actor fixtures."               >&2
+            exit 1
+          fi
+
+          zip_contents="$(
+            unzip -Z1 "$zip_file"
+          )"
+
+          if grep -Eq \
+            '(^|/)bane-of-azeroth-dev-tests/|(^|/)bane-of-azeroth-dev-test-actors/|boa-dev-system-tests\.js$|boa-dev-system-test-actors\.js$' \
+            <<< "$zip_contents"; then
+            echo \
+              "Release candidate contains development-only test content." \
+              >&2
+            exit 1
+          fi
+
+          unzip -t "$zip_file"
+
+          (
+            cd dist
+            sha256sum \
+              bane-of-azeroth.zip \
+              > bane-of-azeroth.zip.sha256
+          )
+
+          cat > dist/RELEASE_NOTES.md <<EOF
+          Rolling Bane of Azeroth release candidate.
+
+          - Candidate version: \`${BOA_BUILD_VERSION}\`
+          - Immutable candidate tag: \`${BOA_IMMUTABLE_TAG}\`
+          - Commit: \`${GITHUB_SHA}\`
+          - Workflow run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          - Foundry manifest: \`${BOA_MANIFEST_URL}\`
+
+          Install this candidate in Foundry through the manifest URL above.
+          This GitHub prerelease is isolated from the stable releases/latest channel.
+          EOF
+
+      - name: Upload release-candidate artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.candidate.outputs.artifact_name }}
+          path: |
+            dist/bane-of-azeroth.zip
+            dist/module.json
+            dist/bane-of-azeroth.zip.sha256
+            dist/RELEASE_NOTES.md
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+  publish-candidate:
+    name: Publish rolling release candidate
+    needs:
+      - build-candidate
+    runs-on: ubuntu-24.04
+
+    permissions:
+      actions: read
+      contents: write
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      ARTIFACT_NAME: ${{ needs.build-candidate.outputs.artifact_name }}
+      BUILD_VERSION: ${{ needs.build-candidate.outputs.build_version }}
+      RELEASE_TAG: ${{ needs.build-candidate.outputs.release_tag }}
+      IMMUTABLE_TAG: ${{ needs.build-candidate.outputs.immutable_tag }}
+      MANIFEST_URL: ${{ needs.build-candidate.outputs.manifest_url }}
+      DOWNLOAD_URL: ${{ needs.build-candidate.outputs.download_url }}
+
+    steps:
+      - name: Download built candidate
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: release
+
+      - name: Validate downloaded candidate
+        run: |
+          set -euo pipefail
+
+          test -f release/bane-of-azeroth.zip
+          test -f release/module.json
+          test -f release/bane-of-azeroth.zip.sha256
+          test -f release/RELEASE_NOTES.md
+
+          jq -e \
+            --arg version "$BUILD_VERSION" \
+            --arg manifest "$MANIFEST_URL" \
+            --arg download "$DOWNLOAD_URL" \
+            '
+              .id == "bane-of-azeroth"
+              and .title == "Bane of Azeroth"
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            ' \
+            release/module.json \
+            >/dev/null
+
+          (
+            cd release
+            sha256sum -c bane-of-azeroth.zip.sha256
+          )
+
+          unzip -t release/bane-of-azeroth.zip
+
+      - name: Create immutable release-candidate tag
+        run: |
+          set -euo pipefail
+
+          existing_sha="$(
+            gh api \
+              "repos/${GITHUB_REPOSITORY}/git/ref/tags/${IMMUTABLE_TAG}" \
+              --jq '.object.sha' \
+              2>/dev/null ||
+            true
+          )"
+
+          if [[ -n "$existing_sha" ]]; then
+            if [[ "$existing_sha" != "$GITHUB_SHA" ]]; then
+              echo \
+                "Immutable RC tag ${IMMUTABLE_TAG} already points to ${existing_sha}, not ${GITHUB_SHA}." \
+                >&2
+              exit 1
+            fi
+            echo "Reusing immutable RC tag ${IMMUTABLE_TAG} for ${GITHUB_SHA}."
+          else
+            gh api \
+              --method POST \
+              "repos/${GITHUB_REPOSITORY}/git/refs" \
+              -f ref="refs/tags/${IMMUTABLE_TAG}" \
+              -f sha="$GITHUB_SHA" \
+              >/dev/null
+            echo "Created immutable RC tag ${IMMUTABLE_TAG} for ${GITHUB_SHA}."
+          fi
+
+      - name: Replace rolling release candidate
+        run: |
+          set -euo pipefail
+
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release delete \
+              "$RELEASE_TAG" \
+              --cleanup-tag \
+              --yes
+          fi
+
+          if gh api \
+            "repos/${GITHUB_REPOSITORY}/git/ref/tags/${RELEASE_TAG}" \
+            >/dev/null 2>&1; then
+            gh api \
+              --method DELETE \
+              "repos/${GITHUB_REPOSITORY}/git/refs/tags/${RELEASE_TAG}"
+          fi
+
+          gh release create \
+            "$RELEASE_TAG" \
+            release/module.json \
+            release/bane-of-azeroth.zip \
+            release/bane-of-azeroth.zip.sha256 \
+            --target "$GITHUB_SHA" \
+            --title "Bane of Azeroth ${BUILD_VERSION} Release Candidate" \
+            --notes-file release/RELEASE_NOTES.md \
+            --prerelease \
+            --latest=false
+
+      - name: Verify manifest installation channel
+        run: |
+          set -euo pipefail
+
+          release_json="$(
+            gh release view \
+              "$RELEASE_TAG" \
+              --json url,isDraft,isPrerelease,assets
+          )"
+
+          echo "$release_json" |
+            jq -e '
+              .isDraft == false
+              and .isPrerelease == true
+              and ([.assets[].name] | index("module.json")) != null
+              and ([.assets[].name] | index("bane-of-azeroth.zip")) != null
+              and ([.assets[].name] | index("bane-of-azeroth.zip.sha256")) != null
+            ' \
+            >/dev/null
+
+          verify_dir="$(
+            mktemp -d
+          )"
+          trap 'rm -rf "$verify_dir"' EXIT
+
+          curl \
+            --fail \
+            --location \
+            --silent \
+            --show-error \
+            --retry 5 \
+            --retry-all-errors \
+            --retry-delay 2 \
+            "$MANIFEST_URL" \
+            --output "$verify_dir/module.json"
+
+          curl \
+            --fail \
+            --location \
+            --silent \
+            --show-error \
+            --retry 5 \
+            --retry-all-errors \
+            --retry-delay 2 \
+            "$DOWNLOAD_URL" \
+            --output "$verify_dir/bane-of-azeroth.zip"
+
+          jq -e \
+            --arg version "$BUILD_VERSION" \
+            --arg manifest "$MANIFEST_URL" \
+            --arg download "$DOWNLOAD_URL" \
+            '
+              .id == "bane-of-azeroth"
+              and .title == "Bane of Azeroth"
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            ' \
+            "$verify_dir/module.json" \
+            >/dev/null
+
+          expected_checksum="$(
+            awk \
+              '{print $1}' \
+              release/bane-of-azeroth.zip.sha256
+          )"
+
+          actual_checksum="$(
+            sha256sum \
+              "$verify_dir/bane-of-azeroth.zip" |
+            awk \
+              '{print $1}'
+          )"
+
+          if [[ "$actual_checksum" != "$expected_checksum" ]]; then
+            echo \
+              "Published release-candidate checksum does not match." \
+              >&2
+            echo \
+              "Expected: $expected_checksum" \
+              >&2
+            echo \
+              "Actual: $actual_checksum" \
+              >&2
+            exit 1
+          fi
+
+          {
+            echo
+            echo "### Published release candidate"
+            echo
+            echo "- Release: $(echo "$release_json" | jq -r '.url')"
+            echo "- **Install in Foundry:** \`${MANIFEST_URL}\`"
+            echo "- Download endpoint: \`${DOWNLOAD_URL}\`"
+            echo
+            echo "Stable users remain on:"
+            echo "\`https://github.com/${GITHUB_REPOSITORY}/releases/latest/download/module.json\`"
+          } >> "$GITHUB_STEP_SUMMARY"

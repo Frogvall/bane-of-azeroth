@@ -1,0 +1,695 @@
+{
+  "schemaVersion": 1,
+  "defaults": {
+    "abilityImage": "modules/dragonbane-coreset/assets/icons/ability/ability.webp"
+  },
+  "expectedCounts": {
+    "classes": 13,
+    "abilities": 52,
+    "sourceStubs": 0
+  },
+  "classes": [
+    {
+      "key": "death-knight",
+      "id": "DLGAcFTcjn5r7WGs",
+      "name": "Death Knight",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "death-knights-rebirth",
+          "id": "p2qUveF2aGom0pOU",
+          "name": "Death Knight's Rebirth",
+          "requirement": "Axes, Hammers, or Swords 12",
+          "wp": "",
+          "descriptionHtml": "<p>You don't need to eat, drink, or breathe. You know how to engrave necromantic runes into a melee weapon. Engraving a rune takes a stretch and replaces any runes you have already engraved, in the same weapon or a different one. You gain the benefits of your chosen rune listed below.</p><ul><li><strong>Fallen Crusader:</strong> Whenever you deal damage to a living creature with the weapon, you heal 1 HP.</li><li><strong>Razorice:</strong> The weapon is cold to the touch, and attacks with it count as magical.</li><li><strong>Unending Thirst:</strong> While wielding the weapon, your movement rate increases by 2.</li></ul>",
+          "image": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp"
+        },
+        {
+          "key": "death-grip",
+          "id": "ttKCQkUBUcINj3Od",
+          "name": "Death Grip",
+          "requirement": "Death Knight's Rebirth",
+          "wp": "2",
+          "description": [
+            "You harness the energy that surrounds and binds all matter. If an enemy and another player character are both within 10 meters of you and the enemy tries to attack the other character, you can activate this ability to pull the enemy toward you and make it attack you instead. Using this ability can be done out of turn and does not count as an action."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp"
+        },
+        {
+          "key": "frostreaper",
+          "id": "B9grTl5KOi08GNba",
+          "name": "Frostreaper",
+          "requirement": "Death Knight's Rebirth",
+          "wp": "2",
+          "description": [
+            "By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you has its movement rate halved, and if it ends its turn within the aura, it must roll BUSHCRAFT to @Ref[dragonbane-core:rule.resist-cold]{resist cold}."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp"
+        },
+        {
+          "key": "summon-ghoul",
+          "id": "Dn7a4K6UfKAfgek8",
+          "name": "Raise Ghoul",
+          "requirement": "Death Knight's Rebirth",
+          "wp": "3",
+          "descriptionHtml": "This ability requires a stretch of time to raise a fallen creature into a ravenous @Ref[boa:actor.actors.summoned-monsters.ghoul]{ghoul}. The ghoul takes the form of an undead humanoid and counts as a monster in combat. It follows your commands (free action) and acts independently with its own initiative. The ghoul cannot heal HP, and it crumbles to dust and dies if it is ever out of your sight for a stretch of time, or if you use this ability again.",
+          "image": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp"
+        }
+      ]
+    },
+    {
+      "key": "demon-hunter",
+      "id": "JoJ6HHq9Mi8dAspN",
+      "name": "Demon Hunter",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "demon-hunter-initiation",
+          "id": "eG3wRvDISSUGLfnc",
+          "name": "Demon Hunter Initiation",
+          "requirement": "Axes, Brawling, Knives, or Swords 12",
+          "wp": "",
+          "description": [
+            "Your infernal metamorphosis gives you advantages in your hunt for demons. Your demonic wings make you glide horizontally instead of falling. Subtract your movement rate from the falling distance before determining falling damage. Your glowing eyes let you ignore the effects of darkness, and you always know whether a creature you are looking at is a demon."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp"
+        },
+        {
+          "key": "eye-beam",
+          "id": "2aVCfwfEPjZojAgI",
+          "name": "Eye Beam",
+          "requirement": "Demon Hunter Initiation",
+          "wp": "3",
+          "description": [
+            "You can activate this ability to make your eyes shoot laser beams at a creature within 20 meters. The attack automatically hits and cannot be parried. It deals 2D8 damage and is considered magical."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp"
+        },
+        {
+          "key": "live-by-the-glaive",
+          "id": "LbTGlaive7wQ3xN2",
+          "name": "Live by the Glaive",
+          "requirement": "Demon Hunter Initiation",
+          "wp": "3",
+          "description": [
+            "You can activate this ability (no action) when you make a successful parry to turn the roll into a dragon."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp"
+        },
+        {
+          "key": "soul-cleave",
+          "id": "SoulCleave4mR8kZ",
+          "name": "Soul Cleave",
+          "requirement": "Demon Hunter Initiation",
+          "wp": "2",
+          "description": [
+            "If you deal damage with an attack to a living creature, you can activate this ability (no action) to heal yourself for the same amount of HP as the target takes in damage."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp"
+        }
+      ]
+    },
+    {
+      "key": "druid",
+      "id": "oTSQflRYChUu3iG2",
+      "name": "Druid",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "druidic-awakening",
+          "id": "7XGIwTKnDqE3ZvhD",
+          "name": "Druidic Awakening",
+          "requirement": "One School of Magic",
+          "wp": "",
+          "description": [
+            "You know the general spell @Ref[boa:item.spells.savage-incarnation]{Savage Incarnation}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.",
+            "When you sleep, you enter a dream state that allows you to stay alert to your surroundings during a shift rest, and you can awaken instantly and at will."
+          ],
+          "grantsSpell": "savage-incarnation",
+          "image": "modules/bane-of-azeroth/assets/icons/classes/druid.webp"
+        },
+        {
+          "key": "chosen-of-elune",
+          "id": "jSyoPlsXX9CcOBQi",
+          "name": "Chosen of Elune",
+          "requirement": "Druidic Awakening",
+          "wp": "",
+          "description": [
+            "You know the general spell @Ref[boa:item.spells.incarnation-of-the-stars]{Incarnation of the Stars}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
+          ],
+          "grantsSpell": "incarnation-of-the-stars",
+          "image": "modules/bane-of-azeroth/assets/icons/classes/druid.webp"
+        },
+        {
+          "key": "king-of-the-jungle",
+          "id": "cy4TSMJQKlR1RG5w",
+          "name": "King of the Jungle",
+          "requirement": "Druidic Awakening",
+          "wp": "",
+          "description": [
+            "You know the general spell @Ref[boa:item.spells.feral-incarnation]{Feral Incarnation}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
+          ],
+          "grantsSpell": "feral-incarnation",
+          "image": "modules/bane-of-azeroth/assets/icons/classes/druid.webp"
+        },
+        {
+          "key": "tree-of-life",
+          "id": "1zM1M11RvPrqc6F7",
+          "name": "Tree of Life",
+          "requirement": "Druidic Awakening",
+          "wp": "",
+          "description": [
+            "You know the general spell @Ref[boa:item.spells.incarnation-of-harmony]{Incarnation of Harmony}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
+          ],
+          "grantsSpell": "incarnation-of-harmony",
+          "image": "modules/bane-of-azeroth/assets/icons/classes/druid.webp"
+        }
+      ]
+    },
+    {
+      "key": "evoker",
+      "id": "Dp2X9o1Z8k034oW0",
+      "name": "Evoker",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "evokers-legacy",
+          "id": "bdF6vg1SjBITnwG5",
+          "name": "Evoker's Legacy",
+          "requirement": "One School of Magic",
+          "wp": "",
+          "description": [
+            "Whenever you cast a spell at a power level higher than 1, the cost per power level is reduced to one for every level above the first (2 WP for power level 1, 3 WP for power level 2, and 4 WP for power level 3)."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp"
+        },
+        {
+          "key": "ebon-might",
+          "id": "Sl2btNo06MMQTCQj",
+          "name": "Ebon Might",
+          "requirement": "Evoker's Legacy",
+          "wp": "2",
+          "description": [
+            "You can activate this ability when you cast a spell to give all allies within 10 meters a boon to all rolls. The boon lasts until your turn in the next round."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp"
+        },
+        {
+          "key": "rewind",
+          "id": "ao1H1pN9eKBVLBON",
+          "name": "Rewind",
+          "requirement": "Evoker's Legacy",
+          "wp": "3",
+          "description": [
+            "You can use your action to restore your own health or an ally's health to the value it had at the start of the last round."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp"
+        },
+        {
+          "key": "tailwind",
+          "id": "KbZ487TZTcV7Em9H",
+          "name": "Tailwind",
+          "requirement": "Evoker's Legacy",
+          "wp": "1",
+          "description": [
+            "You can activate this ability on your turn to make the @Ref[dragonbane-core:rule.dash]{dash} action a free action during that turn."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp"
+        }
+      ]
+    },
+    {
+      "key": "hunter",
+      "id": "txBXQhSJJTQmjCYB",
+      "name": "Hunter",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "hunters-instincts",
+          "id": "blFEw7MLkYlNpsy4",
+          "name": "Hunter's Instincts",
+          "requirement": "Companion Heroic Ability",
+          "wp": "",
+          "description": [
+            "Your companion follows you even if you leave its natural environment. While it is within 50 meters of you, you can communicate with it telepathically. As an action, you can spend 1 WP to see through the companion's eyes and hear what it hears for one stretch of time, gaining the benefits of any special senses it has. The WP cost for commanding the companion to attack is reduced to 2."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp"
+        },
+        {
+          "key": "aimed-shot",
+          "id": "wZM2eY9eN6xdqL5d",
+          "name": "Aimed Shot",
+          "requirement": "Hunter's Instincts",
+          "wp": "3",
+          "description": [
+            "A strike with a two-handed ranged weapon inflicts D8 additional points of damage, but you cannot move in the same round. You can activate this ability after the roll to hit, but not if you moved. This can be combined with @Ref[dragonbane-core:heroic-ability.twin-shot]{Twin Shot}."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp"
+        },
+        {
+          "key": "beast-master",
+          "id": "ANfryDC2vUzxKJz5",
+          "name": "Beast Master",
+          "requirement": "Hunter's Instincts",
+          "wp": "2",
+          "description": [
+            "You can activate this ability when you or your companion is hit to transfer half the damage received (rounded down) to the other party, sharing the pain. You can do so after the roll for damage.",
+            "Alternatively, you can use an action to activate this ability to revive a fallen companion, as long as it happens within a shift of its death. If its body is within sight, it appears at the body; otherwise, it appears within 2 meters of you. It recovers1 [[/roll D6]] HP."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp"
+        },
+        {
+          "key": "superior-trapper",
+          "id": "MbV2u8CdnDwZkyS6",
+          "name": "Superior Trapper",
+          "requirement": "Hunter's Instincts",
+          "wp": "3",
+          "description": [
+            "You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes [[/roll 2d8]] damage as it burns or loses its actions and movement for the rest of the round as it is frozen in place (your choice)."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp"
+        }
+      ]
+    },
+    {
+      "key": "mage",
+      "id": "6xRnOt07Oed3jOyJ",
+      "name": "Mage",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "mages-brilliance",
+          "id": "f9Mta7M9w8ruZSL0",
+          "name": "Mage's Brilliance",
+          "requirement": "One School of Magic",
+          "wp": "",
+          "description": [
+            "You know the @Ref[dragonbane-core:spell.sense-magic]{Sense Magic} magic trick and can cast it without spending WP. Whenever you roll for LANGUAGES, you can choose the result 10 instead of rolling."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
+          "grantsExternalSpell": "dragonbane-core:spell.sense-magic"
+        },
+        {
+          "key": "ice-block",
+          "id": "2JTCWcZSE25ZK2wg",
+          "name": "Ice Block",
+          "requirement": "Mage's Brilliance",
+          "wp": "2",
+          "description": [
+            "You can activate this ability when you are about to take damage (no action). You become immune to damage this round and the next, including the damage that triggered this ability. For this duration, you are frozen in place and cannot move or take any actions. You can activate this ability after it has been determined that you are hit, but before the roll for damage."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp"
+        },
+        {
+          "key": "living-bomb",
+          "id": "chlnu7rRBXdsaqRP",
+          "name": "Living Bomb",
+          "requirement": "Mage's Brilliance",
+          "wp": "3",
+          "description": [
+            "When you deal damage with a spell or this ability, you can choose an additional creature within 10 meters of the target that did not take damage from that spell or this ability. That creature takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each use."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp"
+        },
+        {
+          "key": "time-warp",
+          "id": "MaZ4ltolYbPEVuJd",
+          "name": "Time Warp",
+          "requirement": "Mage's Brilliance",
+          "wp": "2",
+          "description": [
+            "You can activate this ability at the start of another player character's or NPC's turn. You swap initiative cards with that player character or NPC (or group of NPCs acting on the same turn), and it cannot refuse. A monster with multiple turns swaps only the card of the current turn with yours. You act immediately."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/mage.webp"
+        }
+      ]
+    },
+    {
+      "key": "monk",
+      "id": "u1gG3wuIcEMyEjhj",
+      "name": "Monk",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "monks-serenity",
+          "id": "5lf9dHIKVBA2AoGM",
+          "name": "Monk's Serenity",
+          "requirement": "Brawling 12",
+          "wp": "",
+          "description": [
+            "The damage of your unarmed attacks increases to D10. If you use @Ref[dragonbane-core:heroic-ability.iron-fist]{Iron Fist}, the damage increases to 2D10 for that unarmed attack. You can also parry both melee and ranged attacks unarmed. When parrying, you roll against your skill level for BRAWLING."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/monk.webp"
+        },
+        {
+          "key": "combo-strikes",
+          "id": "Rt1ZUmUjltFEktWm",
+          "name": "Combo Strikes",
+          "requirement": "Monk's Serenity",
+          "wp": "3",
+          "description": [
+            "You activate this ability on your turn in combat when performing an unarmed attack, and you can then perform two extra unarmed attacks. The second and third attacks are made with a bane. Finish the first attack, including damage, before rolling the second one, and finish the second attack, including damage, before rolling the third one."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/monk.webp"
+        },
+        {
+          "key": "soothing-mist",
+          "id": "gzlUuHeXUc6Hd7zV",
+          "name": "Soothing Mist",
+          "requirement": "Monk's Serenity",
+          "wp": "2",
+          "description": [
+            "When you deal damage with an unarmed attack, you can activate this ability to heal another creature within 10 meters of you by the same amount."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/monk.webp"
+        },
+        {
+          "key": "stagger",
+          "id": "9P7deH0tDnisRMem",
+          "name": "Stagger",
+          "requirement": "Monk's Serenity",
+          "wp": "1",
+          "description": [
+            "When you take damage in combat, you can activate this ability (no action). The damage is halved (rounded up). The next time you take damage in this round, you also take the damage that was reduced by this ability."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/monk.webp"
+        }
+      ]
+    },
+    {
+      "key": "paladin",
+      "id": "mZauAPUv1ZZeadXI",
+      "name": "Paladin",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "paladins-righteousness",
+          "id": "uWDdnL6xNT6peQdh",
+          "name": "Paladin's Righteousness",
+          "requirement": "Hammers, Spears, or Swords 12",
+          "wp": "",
+          "description": [
+            "Whenever you spend WP, you heal yourself or an ally within 2 meters by the same amount. You also always know whether a creature you are looking at is undead."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp"
+        },
+        {
+          "key": "avengers-shield",
+          "id": "SwcTAB0V7Kui8IDr",
+          "name": "Avenger's Shield",
+          "requirement": "Paladin's Righteousness",
+          "wp": "3",
+          "description": [
+            "You can activate this ability as an action if you are wielding a shield. You hurl your shield at a creature within 10 meters, and it then bounces to a creature of your choice within 10 meters of the first target, and again to a third creature within 10 meters of the second target. It then returns to your hand. Make separate attacks with your shield against all three targets with a bane. Finish the first attack, including damage, before rolling the second one, and finish the second one, including damage, before rolling the third one. Creatures that are hit have a bane when attacking any creature other than you until your turn in the next round."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp"
+        },
+        {
+          "key": "beacon-of-light",
+          "id": "AndvvqU6bjH1YwZk",
+          "name": "Beacon of Light",
+          "requirement": "Paladin's Righteousness",
+          "wp": "3",
+          "description": [
+            "You can activate this ability as an action, making an allied creature within 10 meters a beacon of light. For a stretch of time, whenever you heal yourself or an ally, the beacon of light heals the same amount of HP. This ability also benefits from the HP restored by Paladin's Righteousness when activating this ability."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp"
+        },
+        {
+          "key": "blade-of-justice",
+          "id": "2MvSQhUyotNYLFwy",
+          "name": "Blade of Justice",
+          "requirement": "Paladin's Righteousness",
+          "wp": "3",
+          "description": [
+            "You can activate this ability when you hit an enemy with a melee weapon, but before rolling for damage. The attack deals an extra D8 damage, or 2D8 damage to an undead target, and is considered magical."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp"
+        }
+      ]
+    },
+    {
+      "key": "priest",
+      "id": "JJ4olk9ob9USSEHU",
+      "name": "Priest",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "priests-zeal",
+          "id": "Ae6NFaTEysKIvBOO",
+          "name": "Priest's Zeal",
+          "requirement": "One School of Magic",
+          "wp": "",
+          "description": [
+            "Your mind fills you with inner fire. Whenever you cast a spell, your armor rating increases by one step for each WP you spend on casting the spell. The effect lasts until your turn in the next round."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/priest.webp"
+        },
+        {
+          "key": "darkness",
+          "id": "B9kWg7ydZRZHLOOi",
+          "name": "Darkness",
+          "requirement": "Priest's Zeal",
+          "wp": "",
+          "description": [
+            "You know the general spell @Ref[boa:item.spells.shadowform]{Shadowform}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory."
+          ],
+          "grantsSpell": "shadowform",
+          "image": "modules/bane-of-azeroth/assets/icons/classes/priest.webp"
+        },
+        {
+          "key": "power-word-shield",
+          "id": "5neIjh4Z05m4hPQx",
+          "name": "Power Word: Shield",
+          "requirement": "Priest's Zeal",
+          "wp": "2",
+          "description": [
+            "If you or a creature within 10 meters of you is hit by an attack, spell, or monster attack, you can activate this ability to shield the target. The damage the target takes from the attack or spell is reduced by [[/roll 2D6]]. Using this ability can be done out of turn and does not count as an action."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/priest.webp"
+        },
+        {
+          "key": "sanctify",
+          "id": "XiExl4bRbWhp28v6",
+          "name": "Sanctify",
+          "requirement": "Priest's Zeal",
+          "wp": "3",
+          "description": [
+            "You can activate this ability when casting a spell that heals a creature. You and all other creatures of your choice within 10 meters heal the same amount of HP."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/priest.webp"
+        }
+      ]
+    },
+    {
+      "key": "rogue",
+      "id": "BPtjH4oGnDZweHBJ",
+      "name": "Rogue",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "roguish-cunning",
+          "id": "YGbcsXdT61RYTpjT",
+          "name": "Roguish Cunning",
+          "requirement": "Knives 12",
+          "wp": "",
+          "description": [
+            "Whenever you deal @Ref[dragonbane-core:rule.sneak-attack]{sneak attack} damage to a target, the dice increase for damage is increased by two dice instead of one (for example, 3D8 instead of 2D8 for a weapon that deals D8 damage)."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp"
+        },
+        {
+          "key": "dirty-fighting",
+          "id": "Gey023AgZFHY2eWb",
+          "name": "Dirty Fighting",
+          "requirement": "Roguish Cunning",
+          "wp": "3",
+          "description": [
+            "This heroic ability can only be used if you wield a one-handed weapon in one hand and a one-handed ranged weapon in your other hand. The STR requirement of the weapon in your off hand (you decide whether it is right or left) increases by 3. You activate the ability on your turn in combat and can then perform an extra attack with your second weapon. The second attack is made with a bane. You decide in which order to use your two weapons. Finish the first attack, including damage, before rolling the second one."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp"
+        },
+        {
+          "key": "envenom-weapons",
+          "id": "lVzjJ1DfzMFTmOEs",
+          "name": "Envenom Weapons",
+          "requirement": "Roguish Cunning",
+          "wp": "2",
+          "description": [
+            "When you hit with a piercing or slashing weapon, you can activate this ability to also apply one dose of @Ref[dragonbane-core:journal-page.combat-damage.poison]{poison} that you are carrying, as if it was ingested by the target. You can activate this ability after the roll to hit."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp"
+        },
+        {
+          "key": "shadowstrike",
+          "id": "4ZvH6CerrczSUTeb",
+          "name": "Shadowstrike",
+          "requirement": "Roguish Cunning",
+          "wp": "2",
+          "description": [
+            "You teleport up to 20 meters to a spot that you can see and may immediately take an action. If the destination is covered in shade or darkness, the action is taken with a boon. You may then teleport back to your original spot."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/rogue.webp"
+        }
+      ]
+    },
+    {
+      "key": "shaman",
+      "id": "nbdFr1xtxL2FcEKC",
+      "name": "Shaman",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "shamanic-calling",
+          "id": "kSqCKYm8yIBWHo9Y",
+          "name": "Shamanic Calling",
+          "requirement": "One School of Magic",
+          "wp": "",
+          "description": [
+            "You know the general spell @Ref[boa:item.spells.elemental-totem]{Elemental Totem}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.",
+            "You do not have to roll for LANGUAGES when communicating with or trying to understand elementals or their writing."
+          ],
+          "grantsSpell": "elemental-totem",
+          "image": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp"
+        },
+        {
+          "key": "bloodlust",
+          "id": "UfCB2AZHszINpPvJ",
+          "name": "Bloodlust",
+          "requirement": "Shamanic Calling",
+          "wp": "3",
+          "description": [
+            "Your howl makes your friends' blood boil. Activating this ability (an action in combat) gives all allies within 10 meters an extra action during their turn. The affected allies also become Angry, if they are not already. If an ally uses a reaction, or has already used one this round, they take their turn with no extra action, or may use another reaction. The effect lasts until your turn in the next round."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp"
+        },
+        {
+          "key": "chain-heal",
+          "id": "bIsyeDm1X7z6Hdi0",
+          "name": "Chain Heal",
+          "requirement": "Shamanic Calling",
+          "wp": "2",
+          "description": [
+            "When you heal with a spell or this ability, you can choose an additional creature within 10 meters of the target that was not healed by that spell or this ability. That creature receives the same amount of healing (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each use."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp"
+        },
+        {
+          "key": "stormstrike",
+          "id": "MSPREyfVTRi4uUh3",
+          "name": "Stormstrike",
+          "requirement": "Shamanic Calling",
+          "wp": "3",
+          "description": [
+            "You can activate this ability when you hit an enemy with a melee weapon, but before rolling for damage. The attack deals an extra D10 damage and is considered magical."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/shaman.webp"
+        }
+      ]
+    },
+    {
+      "key": "warlock",
+      "id": "K8dibxM78wasJsVD",
+      "name": "Warlock",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "warlocks-ambition",
+          "id": "nLxCVDvXyvlLaXl1",
+          "name": "Warlock's Ambition",
+          "requirement": "One School of Magic",
+          "wp": "",
+          "description": [
+            "When you use @Ref[dragonbane-core:rule.power-from-the-body]{Power from the Body}, you get to keep any excess WP you do not use when casting the spell, up to your maximum WP."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp"
+        },
+        {
+          "key": "demonologist",
+          "id": "MASYIf5D89N2pbIt",
+          "name": "Demonologist",
+          "requirement": "Warlock's Ambition",
+          "wp": "3",
+          "description": [
+            "You can use your action to activate this ability to instantly summon a demon into an empty space within 10 meters of you. Any demon you have already summoned using this heroic ability instantly disappears. The demon follows you for a shift at no additional WP cost. You can use its action in combat by paying the WP listed in its stat block (a free action for you). The demon can communicate with you in its demonic language, and you can both understand and speak it. The summoned demon is not necessarily the same individual you summoned previously. It is up to the GM whether the demon remembers encountering you before."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp"
+        },
+        {
+          "key": "life-drain",
+          "id": "7jAxtKXRL0m8wBHo",
+          "name": "Life Drain",
+          "requirement": "Warlock's Ambition",
+          "wp": "3",
+          "description": [
+            "You can activate this ability when you deal damage with a spell to one creature. You regain the same amount of HP as the creature lost."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp"
+        },
+        {
+          "key": "souls-collector",
+          "id": "hozY0JyCJR0crKbK",
+          "name": "Souls Collector",
+          "requirement": "Warlock's Ambition",
+          "wp": "1",
+          "description": [
+            "When you or an ally deals damage that brings another non-monster creature to 0 HP, you can activate this ability (no action) to store the enemy's soul in a soul shard. You can consume a shard as an action to recover [[/roll D3]] WP. Any remaining soul shards are lost when you finish a shift rest."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/warlock.webp"
+        }
+      ]
+    },
+    {
+      "key": "warrior",
+      "id": "owVx5oKQQmthyHOZ",
+      "name": "Warrior",
+      "status": "complete",
+      "abilities": [
+        {
+          "key": "warriors-rage",
+          "id": "Zm1EbxNW5SL20lma",
+          "name": "Warrior's Rage",
+          "requirement": "Axes, Hammers, or Swords 12",
+          "wp": "",
+          "description": [
+            "You can wield a two-handed melee weapon in one hand. This can be combined with @Ref[dragonbane-core:heroic-ability.dual-wield]{Dual Wield}."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp"
+        },
+        {
+          "key": "hamstring",
+          "id": "JZPERHnYwztGbh5S",
+          "name": "Hamstring",
+          "requirement": "Warrior's Rage",
+          "wp": "2",
+          "description": [
+            "If an enemy tries to move away from you, you can activate this ability to make the enemy automatically fail its EVADE roll. If your free attack then hits, the enemy's movement is reduced to 0 until your turn in the next round. Using this ability can be done out of turn and does not count as an action."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp"
+        },
+        {
+          "key": "retaliation",
+          "id": "69NxpqbxiReLf6zm",
+          "name": "Retaliation",
+          "requirement": "Warrior's Rage",
+          "wp": "3",
+          "description": [
+            "You can activate this ability (no action) when an enemy within 2 meters of you deals damage to you with a melee attack. You immediately perform a counterattack on your opponent: an automatic hit with your weapon that cannot be dodged or parried."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp"
+        },
+        {
+          "key": "sunder-armor",
+          "id": "LMt2nYu0xILSRUJy",
+          "name": "Sunder Armor",
+          "requirement": "Warrior's Rage",
+          "wp": "3",
+          "description": [
+            "You can activate this ability when you hit a creature with an attack to sunder its armor. For this attack and until your turn in the next round, the creature does not benefit from its armor rating."
+          ],
+          "image": "modules/bane-of-azeroth/assets/icons/classes/warrior.webp"
+        }
+      ]
+    }
+  ]
+}

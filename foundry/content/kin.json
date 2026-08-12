@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 1,
+  "defaults": {
+    "kinImage": "icons/svg/item-bag.svg",
+    "abilityImage": "modules/dragonbane-coreset/assets/icons/ability/ability.webp"
+  },
+  "expectedCounts": {
+    "kin": 16,
+    "abilities": 20
+  },
+  "kin": [
+    {
+      "key": "dracthyr",
+      "id": "ztgKI970tp6QMho4",
+      "name": "Dracthyr",
+      "movement": 10,
+      "description": [
+        "The dracthyr are an ancient race of humanoid dragonkin created by the black Dragon Aspect Neltharion, who combined the essence of dragons with the adaptability of mortal races to forge ideal soldiers. Long ago, the dracthyr were put into a long slumber, only to awaken millennia later as new threats emerged. Organized into tightly bonded weyrns, the dracthyr now seek to reclaim what they have lost and forge their own path in a changing Azeroth. Each dracthyr has a visage, a unique humanoid appearance they can turn into."
+      ],
+      "abilities": [
+        {
+          "key": "draconic-wings-flying",
+          "id": "FJf6gBkGcW0bNm9Z",
+          "name": "Draconic Wings (flying)",
+          "wp": "3",
+          "description": [
+            "By spending 3 WP, you can move freely through the air during your turn. If you end your turn mid air, you safely land in the closest free space below you."
+          ]
+        },
+        {
+          "key": "draconic-wings-falling",
+          "id": "5ktc1XvM1fvMP08e",
+          "name": "Draconic Wings (falling)",
+          "wp": "1",
+          "description": [
+            "When @Ref[dragonbane-core:rule.falling]{falling}, you can spend 1 WP to slow your fall and land as light as a feather, no matter the height."
+          ]
+        },
+        {
+          "key": "visage",
+          "id": "goFewdHrbrK7r5qi",
+          "name": "Visage",
+          "wp": "",
+          "description": [
+            "By activating this ability (a free action in combat) you change between your dracthyr form and visage. It has no effect on your game statistics."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/dracthyr.webp"
+    },
+    {
+      "key": "draenei",
+      "id": "Bm0RcdSR4HnqJG22",
+      "name": "Draenei",
+      "movement": 10,
+      "description": [
+        "Driven from their home world of Argus, the honorable draenei fled the wrath of the Burning Legion for eons before eventually finding a new home on Azeroth. Draenei are tall, bipedal ungulates with blue skin, hooves, tails, and horns and tendrils adorning their faces. Their glowing eyes reveal their deep connection to the Light, which enables them to wield powerful magic for healing and protection. Despite enduring persecution and hardship across multiple worlds, they remain resilient and noble, embodying traits of kindness, compassion, and justice. Their alien perspective, shaped by their nomadic, nigh-immortal existence, grants them unique insights and makes them valuable allies in the ongoing struggle against evil."
+      ],
+      "abilities": [
+        {
+          "key": "heroic-presence",
+          "id": "lP4ldJQM203eVSyo",
+          "name": "Heroic Presence",
+          "wp": "3",
+          "description": [
+            "Activating this ability (an action in combat) gives all allies within 10 meters a boon to all rolls and heals the Scared condition. The boon lasts until your turn in the next round."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/draenei.webp"
+    },
+    {
+      "key": "bronzebeard-dwarf",
+      "id": "Y10YI5iLeCe2sPSy",
+      "name": "Bronzebeard Dwarf",
+      "movement": 8,
+      "description": [
+        "Bold and adventurous, dwarves are a hardy people who relish battle, craftsmanship, and exploration. Dwarves are stocky and powerfully built despite their short stature, and often sport intricate, well-groomed beards. They have a rich cultural heritage steeped in tradition and craftsmanship, with a particular fondness for mining, smithing, and engineering. Dwarves value loyalty, courage, and honor above all else, and they are fiercely protective of their clans and homelands. Despite their gruff exterior, dwarves possess a deep sense of camaraderie and kinship, making them stalwart allies and formidable adversaries alike.",
+        "The Bronzebeard clan is preeminent among the various Ironforge dwarf clans of Khaz Modan. During the War of the Three Hammers, they led the dwarves of Ironforge against Thaurissan and the Dark Iron clan. Bronzebeard dwarves are accustomed to the icy climes of Khaz Modan, and are especially attuned to their Titan-forged history."
+      ],
+      "abilities": [
+        {
+          "key": "stoneform",
+          "id": "K3pfgWTtCbDu8ihb",
+          "name": "Stoneform",
+          "wp": "3",
+          "description": [
+            "Your skin turns hard and gray, and any non-magical damage is halved (rounded up). The effect lasts until your turn in the next round. You can activate this ability as a reaction when you are hit by an attack."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/bronzebeard-dwarf.webp"
+    },
+    {
+      "key": "dark-iron-dwarf",
+      "id": "rxUdqVGNVlZowCYg",
+      "name": "Dark Iron Dwarf",
+      "movement": 8,
+      "description": [
+        "Bold and adventurous, dwarves are a hardy people who relish battle, craftsmanship, and exploration. Dwarves are stocky and powerfully built despite their short stature, and often sport intricate, well-groomed beards. They have a rich cultural heritage steeped in tradition and craftsmanship, with a particular fondness for mining, smithing, and engineering. Dwarves value loyalty, courage, and honor above all else, and they are fiercely protective of their clans and homelands. Despite their gruff exterior, dwarves possess a deep sense of camaraderie and kinship, making them stalwart allies and formidable adversaries alike.",
+        "Known for their fiery tempers and fierce determination, Dark Iron dwarves have a turbulent history with the other clans. They have gray or black skin, and their hair can glow red. A failed coup in Ironforge ignited the War of the Three Hammers, and many of the Dark Iron once fought in the service of Ragnaros the Firelord. Now the Dark Iron clan is united behind Queen-Regent Moira Thaurissan, and have pledged their martial and magical might to the Alliance."
+      ],
+      "abilities": [
+        {
+          "key": "fireblood",
+          "id": "ob19VSi9XqG0Zddc",
+          "name": "Fireblood",
+          "wp": "3",
+          "description": [
+            "You can activate this ability (no action) when making an attack roll and get a boon to the roll. You also heal a condition of your choice."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/dark-iron-dwarf.webp"
+    },
+    {
+      "key": "blood-elf",
+      "id": "hFopLTbxckPl8yWG",
+      "name": "Blood Elf",
+      "movement": 10,
+      "description": [
+        "The elves of Azeroth trace their origins to the mystical Well of Eternity, a source of unimaginable arcane power that shaped their society and granted them unparalleled mastery of magic. Over time, their civilization flourished, becoming the dominant force on Azeroth. However, their society shattered during the Sundering, eventually leading to numerous diverse factions and heritages. Elves are typically tall and slender with long pointed ears, and are known for their incredible longevity, keen senses, and exceptional mastery of both war and magic. Elves now find themselves torn between their glorious past and an uncertain future.",
+        "For millennia, high elves thrived in the magical kingdom of Quel'thalas until the arrival of the Scourge decimated their civilization. The destruction of the Sunwell, their source of power, led to their near-extinction. Renamed blood elves or sin'dorei, they seek to reclaim their lost powers and heritage. Blood elves typically possess fair skin and brilliant gold or crimson hair, distinguishing them from their elven kin."
+      ],
+      "abilities": [
+        {
+          "key": "arcane-affinity",
+          "id": "7KB3kDLwEzO3rSLF",
+          "name": "Arcane Affinity",
+          "wp": "2",
+          "description": [
+            "You cast one of the @Ref[dragonbane-core:rule.magic-tricks]{Magic Tricks} listed under General Magic. To determine success, roll against any school of magic, or INT, whichever is higher."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/blood-elf.webp"
+    },
+    {
+      "key": "night-elf",
+      "id": "pBZ71DEkG1Svv9qr",
+      "name": "Night Elf",
+      "movement": 10,
+      "description": [
+        "The elves of Azeroth trace their origins to the mystical Well of Eternity, a source of unimaginable arcane power that shaped their society and granted them unparalleled mastery of magic. Over time, their civilization flourished, becoming the dominant force on Azeroth. However, their society shattered during the Sundering, eventually leading to numerous diverse factions and heritages. Elves are typically tall and slender with long pointed ears, and are known for their incredible longevity, keen senses, and exceptional mastery of both war and magic. Elves now find themselves torn between their glorious past and an uncertain future.",
+        "Ten thousand years ago, the kaldorei, or night elves, founded a vast empire, but their reckless use of primal magic brought them to ruin. They retreated to the forests, isolated until the return of the Burning Legion forced them into action. Night elves are easily recognized by their purple or blue skin, and hair that can range from natural greens to twilight purples. With bow, blade, or claw, night elves are fierce defenders of the natural world, and unforgiving enemies of those that would abuse it."
+      ],
+      "abilities": [
+        {
+          "key": "shadowmeld",
+          "id": "dCTG99e6GF95sYeE",
+          "name": "Shadowmeld",
+          "wp": "3",
+          "description": [
+            "Instead of making a SNEAKING roll you can activate this ability to automatically succeed as if you had rolled a dragon."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/night-elf.webp"
+    },
+    {
+      "key": "gnome",
+      "id": "NOOtyvgvgBlWKdeC",
+      "name": "Gnome",
+      "movement": 8,
+      "description": [
+        "Gnomes are a small, highly intelligent species renowned for their technological expertise. Originating from Gnomeregan, they have a rich history of innovation and engineering, contributing significantly to the Alliance's technological advancements. Physically, gnomes are diminutive with large heads, short limbs, and often wild and colorful hair. Despite their small stature, gnomes are formidable inventors and loyal allies, and have distinguished themselves time and time again with their ingenuity, bravery, and loyalty."
+      ],
+      "abilities": [
+        {
+          "key": "escape-artist",
+          "id": "1NllB1cAUOMm1OA0",
+          "name": "Escape Artist",
+          "wp": "2",
+          "description": [
+            "You get a boon on opposing a grapple attempt. Or you get a boon on breaking free from a grapple, which can be attempted as a free action.",
+            "If the optional rules for grappling are not used, the gnome can use the @Ref[dragonbane-core:kin-ability.hard-to-catch]{Hard to Catch} kin ability from the core rules instead."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/gnome.webp"
+    },
+    {
+      "key": "goblin",
+      "id": "A0qYIBYNyCb9QZ05",
+      "name": "Goblin",
+      "movement": 8,
+      "description": [
+        "Goblins are a cunning and entrepreneurial species, originating from the Isle of Kezan where they overthrew their troll overlords using their guile and genius. Physically, they are small, green-skinned creatures with sharp teeth and a hunched posture. Known for their resourcefulness and greed, goblins excel in trade, technology, and explosive inventions. Despite their mercenary nature, they have become valuable, if expensive allies to both the Horde and the Alliance during Azeroth's many conflicts."
+      ],
+      "abilities": [
+        {
+          "key": "rocket-jump",
+          "id": "KGYrdHqPHXFpXBAq",
+          "name": "Rocket Jump",
+          "wp": "3",
+          "description": [
+            "You can leap five times as far as your normal leaping distance, horizontally or vertically. This might render an ACROBATICS roll for climbing unnecessary if the obstacle is lower than the distance you leap.",
+            "Alternatively, you can dash as a free action."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/goblin.webp"
+    },
+    {
+      "key": "human",
+      "id": "4RlOlXyZbbuTEk0w",
+      "name": "Human",
+      "movement": 10,
+      "description": [
+        "The young humans have a rich history marked by resilience and adaptability. Emerging from scattered tribes, they founded mighty kingdoms like Stormwind and Kul Tiras. Their appearance varies widely, with diverse skin tones, hair colors, and heights. Humans are driven by community, ambition, and values of courage and honor. Despite internal conflicts, they often unite against common threats, displaying acts of bravery and heroism in the face of adversity. Their ability to adapt and thrive in changing circumstances has made them a vital force in shaping the destiny of Azeroth."
+      ],
+      "abilities": [
+        {
+          "key": "resourceful",
+          "id": "si5UsdGWFhcc99Ae",
+          "name": "Resourceful",
+          "wp": "3",
+          "description": [
+            "When rolling for a skill, you can choose to make the roll using another skill of your choice. You must be able to justify how you use the selected skill instead of the normal one. The GM has the final word, but should be lenient."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/human.webp"
+    },
+    {
+      "key": "orc",
+      "id": "lShZWLHxGRFzTTP4",
+      "name": "Orc",
+      "movement": 10,
+      "description": [
+        "While the proud, fearsome orcs have spread across Azeroth, they originated on the planet Draenor. A peaceful people with shamanic beliefs, they were enslaved by the Burning Legion and forced into war with the humans of Azeroth. Although it took many years, the orcs finally escaped the demons' corruption and won their freedom. To this day they fight for honor in a world that hates and reviles them, having forged a new home and family in the mighty Horde. With their muscular builds, prominent tusks, and varied skin tones ranging from green to brown, orcs remain fierce and eager for battle, valuing strength and honor above all."
+      ],
+      "abilities": [
+        {
+          "key": "relentless",
+          "id": "ycJicrhscZAw7bOZ",
+          "name": "Relentless",
+          "wp": "3",
+          "description": [
+            "If you have zero HP, you can activate this ability to automatically @Ref[dragonbane-core:rule.death]{rally} (no action), without rolling against WIL or being PERSUADED by someone else."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/orc.webp"
+    },
+    {
+      "key": "pandaren",
+      "id": "YB3QGvS8GlZ8AXX2",
+      "name": "Pandaren",
+      "movement": 10,
+      "description": [
+        "Veiled in myth and legend, the enigmatic pandaren remain a mystery to most of Azeroth. Their noble history spans thousands of years, predating human empires and even the Sundering. Native to Pandaria, their homeland vanished behind a shrouding mist during that cataclysm. A second pandaren civilization thrives aboard the giant turtle Shen-zin Su, known as the “Wandering Isle.” Unlike their secluded kin, these pandaren roam Azeroth's seas in search of adventure."
+      ],
+      "abilities": [
+        {
+          "key": "inner-peace",
+          "id": "kixSvd82FuAvv6Wg",
+          "name": "Inner Peace",
+          "wp": "",
+          "description": [
+            "You can meditate deeply during a stretch rest. You heal an additional D6 HP and a D6 extra WP, and can recover from an additional condition. You are completely unresponsive during your meditation and cannot be awakened."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/pandaren.webp"
+    },
+    {
+      "key": "tauren",
+      "id": "o8fnlZLmShMkBpcu",
+      "name": "Tauren",
+      "movement": 10,
+      "description": [
+        "With a proud nomadic tradition, the mighty tauren have roamed across Azeroth. From the vast plains of Mulgore to the rugged peaks of Highmountain and beyond, they embody a reverence for nature and ancestral wisdom. Towering in stature with bovine features and tribal adornments, they evoke a primal aura. Tauren prioritize harmony and balance, serving as fierce defenders of nature and their kin. Despite their imposing presence, they possess a gentle spirit and deep connection to the Earth Mother. Their culture emphasizes wisdom, spirituality, and community, shaping them into compassionate allies and formidable foes alike."
+      ],
+      "abilities": [
+        {
+          "key": "war-stomp",
+          "id": "zjAvTOiEEW7SOcTH",
+          "name": "War Stomp",
+          "wp": "3",
+          "description": [
+            "You can, as an action in combat, slam your hooves into the ground. Make a BRAWLING attack with a bane against all creatures within 2 meters, rolling only once to hit. Each creature hit takes [[/roll D6]] damage and falls to the ground. Roll damage separately for each creature."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/tauren.webp"
+    },
+    {
+      "key": "troll",
+      "id": "C7aZ9suxTaepzNzM",
+      "name": "Troll",
+      "movement": 12,
+      "description": [
+        "Shrouded in ancient lore and mystique, trolls have a history as diverse as their many tribes scattered across Azeroth. With lithe frames, vividly colored skin, and elongated tusks, they exude a wild and primal aura. Trolls revere ancient gods and ancestral spirits, their culture steeped in tradition and spirituality. Fierce warriors and cunning hunters, they thrive in both shadow and sunlight, adapting to various environments with ease. Despite their tribal conflicts, trolls value unity and kinship within their clans. With a resilience honed through generations of survival, they remain formidable adversaries and steadfast allies in the ever-changing world of Azeroth."
+      ],
+      "abilities": [
+        {
+          "key": "regeneration",
+          "id": "YBL20kf5fnSbj9x8",
+          "name": "Regeneration",
+          "wp": "3",
+          "description": [
+            "By activating this ability (a free action in combat) you recover [[/roll D6]] HP. This can be combined with @Ref[dragonbane-core:kin-ability.fast-healer]{Fast Healer} for [[/roll 2D6]] HP recovered."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/troll.webp"
+    },
+    {
+      "key": "undead",
+      "id": "ly16IBRwWxSbSDwR",
+      "name": "Undead",
+      "movement": 10,
+      "description": [
+        "When the Scourge marched across Azeroth, it added to its ranks by raising many of its victims to undeath. Many are mindless husks of their former selves, some possess intelligence but are bound to the Scourge, while others have managed to free themselves from the Lich King's will. The Undead kin can be used for any intelligent creature that has been raised to undeath, whether they were animated by the Scourge or by other necromantic means."
+      ],
+      "abilities": [
+        {
+          "key": "touch-of-the-grave",
+          "id": "iyqiFO4bp8eqiIMo",
+          "name": "Touch of the Grave",
+          "wp": "3",
+          "description": [
+            "Instead of making a @Ref[dragonbane-core:rule.death]{Death Roll} you can activate this ability to automatically succeed as if you had rolled a dragon."
+          ]
+        },
+        {
+          "key": "undead-nature",
+          "id": "FDUbcdNegbaen8UB",
+          "name": "Undead Nature",
+          "wp": "",
+          "description": [
+            "You don't need to eat, drink or breathe."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/undead.webp"
+    },
+    {
+      "key": "vulpera",
+      "id": "jjyOrp1GFOYiRqJn",
+      "name": "Vulpera",
+      "movement": 10,
+      "description": [
+        "Native to the desolate sands of Vol'dun, vulpera are known for their resourcefulness, creativity, and cunning. With fox-like features and small but agile builds, they navigate the harsh desert terrain with ease. Skilled traders and negotiators, vulpera excel in finding solutions to problems and exploiting opportunities for profit. Their history is marked by a legacy of survival and adaptation, as they thrive amidst danger and uncertainty. Despite their diminutive size, vulpera possess a fierce determination to overcome challenges and safeguard their way of life."
+      ],
+      "abilities": [
+        {
+          "key": "luck",
+          "id": "9lZJWda5B6Z5Jb82",
+          "name": "Luck",
+          "wp": "3",
+          "description": [
+            "You re-roll one D20 roll, that did not result in a demon, and must use the new result. If you have boons or banes, you must re-roll all dice. This can be used in combination with @Ref[dragonbane-core:rule.pushing-your-roll]{Pushing your Roll}, potentially re-rolling the same roll twice."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/vulpera.webp"
+    },
+    {
+      "key": "worgen",
+      "id": "FAwIDwvx2p8t8MrK",
+      "name": "Worgen",
+      "movement": 12,
+      "description": [
+        "Worgen are large, lupine humanoids that walk upright, hunt and howl like wolves, and can run on all fours. Their origins lie in an ancient curse born from a night elf druidic ritual seeking to harness the fury of the wolf. Thought lost, the curse resurfaced in Gilneas, transforming those bitten or who drink worgen blood. Without control, the afflicted may succumb to mindless ferocity, but with discipline, medication, and magic, some retain a semblance of their former selves."
+      ],
+      "abilities": [
+        {
+          "key": "darkflight",
+          "id": "zEKGd2JmBfUstd5v",
+          "name": "Darkflight",
+          "wp": "3",
+          "description": [
+            "You can activate this ability (no action) when making an attack roll and get a boon to the roll. You also become Angry, if you're not already. You can take the dash action as part of the attack action, moving before or after the attack."
+          ]
+        },
+        {
+          "key": "two-forms",
+          "id": "qJagCdgeTgGIRVyi",
+          "name": "Two Forms",
+          "wp": "1",
+          "description": [
+            "By activating this ability (a free action in combat) you change between your humanoid and worgen forms. When in humanoid form, your movement and kin abilities other than this one are the same as if your kin was @Ref[boa:journal-page.player-options.kin#human]{Human}."
+          ]
+        }
+      ],
+      "image": "modules/bane-of-azeroth/assets/icons/kin/worgen.webp"
+    }
+  ]
+}

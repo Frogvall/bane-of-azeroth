@@ -1,0 +1,340 @@
+{
+  "folder": "2dkrC4gndsTQ383p",
+  "name": "Wind Serpent",
+  "type": "npc",
+  "_id": "be5c82639dabe7c1",
+  "img": "modules/bane-of-azeroth/assets/actors/common-animals/wind-serpent.webp",
+  "system": {
+    "description": "",
+    "movement": {
+      "base": 2,
+      "value": 2
+    },
+    "hitPoints": {
+      "value": 6,
+      "max": 6,
+      "base": 6
+    },
+    "willPoints": {
+      "value": 0,
+      "max": 0,
+      "base": 0
+    },
+    "damageBonus": {
+      "agl": {
+        "base": "none",
+        "value": "none"
+      },
+      "str": {
+        "base": "none",
+        "value": "none"
+      }
+    },
+    "traits": "<p><strong>Fly:</strong> The wind serpent moves freely through the air. While flying, it has a movement rate of 14. Its movement rate on the ground is 2.</p>",
+    "currency": {
+      "gc": null,
+      "sc": null,
+      "cc": null
+    },
+    "encumbrance": {
+      "value": 0
+    },
+    "kin": "",
+    "age": "",
+    "profession": "",
+    "motivation": ""
+  },
+  "prototypeToken": {
+    "name": "Wind Serpent",
+    "displayName": 0,
+    "actorLink": false,
+    "texture": {
+      "src": "modules/bane-of-azeroth/assets/tokens/common-animals/wind-serpent-token.webp",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "alphaThreshold": 0.75
+    },
+    "width": 1,
+    "height": 1,
+    "lockRotation": true,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": 0,
+    "displayBars": 20,
+    "bar1": {
+      "attribute": "hitPoints"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "negative": false,
+      "priority": 0
+    },
+    "sight": {
+      "enabled": false,
+      "range": 0,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": {},
+    "flags": {},
+    "randomImg": false,
+    "appendNumber": false,
+    "prependAdjective": false,
+    "depth": 1,
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null
+  },
+  "items": [
+    {
+      "folder": null,
+      "name": "Lightning Breath",
+      "type": "skill",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "skillType": "weapon",
+        "attribute": "str",
+        "value": 12,
+        "advance": 0,
+        "hideTrained": true,
+        "gmDescription": "",
+        "itemDescription": "",
+        "taught": false
+      },
+      "effects": [],
+      "sort": 100000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.common-animals.wind-serpent.attack.lightning-breath.skill"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "db6d28b930b23fff",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "type": "weapon",
+      "name": "Lightning Breath",
+      "system": {
+        "weight": null,
+        "quantity": 1,
+        "cost": "–",
+        "supply": "common",
+        "worn": true,
+        "memento": false,
+        "boons": "",
+        "banes": "",
+        "grip": {
+          "value": "none"
+        },
+        "str": null,
+        "range": "10",
+        "damage": "D10",
+        "durability": null,
+        "skill": {
+          "name": "Lightning Breath",
+          "value": 0
+        },
+        "features": [],
+        "broken": false,
+        "mainHand": false,
+        "offHand": false,
+        "gmDescription": "",
+        "itemDescription": "",
+        "storage": false
+      },
+      "img": "icons/svg/item-bag.svg",
+      "effects": [],
+      "folder": null,
+      "sort": 200000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.common-animals.wind-serpent.attack.lightning-breath.weapon"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "af6a5baec9746a02",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "folder": null,
+      "name": "Awareness",
+      "type": "skill",
+      "img": "modules/dragonbane-coreset/assets/icons/gear/book.webp",
+      "system": {
+        "skillType": "core",
+        "attribute": "int",
+        "value": 12,
+        "advance": 0,
+        "hideTrained": false,
+        "gmDescription": "",
+        "itemDescription": "",
+        "taught": false
+      },
+      "effects": [],
+      "sort": 300000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.common-animals.wind-serpent.skill.awareness"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "a83c8a63f99ba675",
+      "ownership": {
+        "default": 0
+      }
+    },
+    {
+      "folder": null,
+      "name": "Evade",
+      "type": "skill",
+      "img": "modules/dragonbane-coreset/assets/icons/gear/book.webp",
+      "system": {
+        "skillType": "core",
+        "attribute": "agl",
+        "value": 14,
+        "advance": 0,
+        "hideTrained": false,
+        "gmDescription": "",
+        "itemDescription": "",
+        "taught": false
+      },
+      "effects": [],
+      "sort": 400000,
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-hunter-companions.py",
+          "contentKey": "actors.common-animals.wind-serpent.skill.evade"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "cd3f7d2300076c70",
+      "ownership": {
+        "default": 0
+      }
+    }
+  ],
+  "effects": [],
+  "sort": 1400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-hunter-companions.py",
+      "contentKey": "actors.common-animals.wind-serpent",
+      "movementRates": {
+        "fly": 14
+      }
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

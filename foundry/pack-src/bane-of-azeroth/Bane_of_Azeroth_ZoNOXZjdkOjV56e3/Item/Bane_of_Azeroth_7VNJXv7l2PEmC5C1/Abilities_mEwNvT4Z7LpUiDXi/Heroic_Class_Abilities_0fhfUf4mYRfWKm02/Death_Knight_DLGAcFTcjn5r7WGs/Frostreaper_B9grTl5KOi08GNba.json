@@ -1,0 +1,39 @@
+{
+  "folder": "DLGAcFTcjn5r7WGs",
+  "name": "Frostreaper",
+  "type": "ability",
+  "_id": "B9grTl5KOi08GNba",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/death-knight.webp",
+  "system": {
+    "itemDescription": "<p>By activating this ability, you emanate a frosty aura, chilling the air around you. Until your turn in the next round, any living creature that moves within 10 meters of you has its movement rate halved, and if it ends its turn within the aura, it must roll BUSHCRAFT to @UUID[JournalEntry.SbbSMsuvWeo3HaID.JournalEntryPage.6WPxPxUjh4W80RNy#cold]{resist cold}.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Death Knight's Rebirth",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.death-knight.frostreaper"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

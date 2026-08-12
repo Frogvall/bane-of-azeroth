@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "sources": {
+    "dragonbane-core": {
+      "packageType": "module",
+      "packageId": "dragonbane-coreset",
+      "required": true
+    }
+  }
+}

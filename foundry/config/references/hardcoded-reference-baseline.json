@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "policy": "no-hardcoded-foundry-references",
+  "authoritativeRoots": [
+    "foundry/content",
+    "foundry/scripts"
+  ],
+  "entries": []
+}

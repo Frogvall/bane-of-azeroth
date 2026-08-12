@@ -1,0 +1,35 @@
+{
+  "folder": "lLCu8mQtWlPPEMiv",
+  "name": "Gnome",
+  "type": "kin",
+  "_id": "NOOtyvgvgBlWKdeC",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/gnome.webp",
+  "system": {
+    "itemDescription": "<p>Gnomes are a small, highly intelligent species renowned for their technological expertise. Originating from Gnomeregan, they have a rich history of innovation and engineering, contributing significantly to the Alliance's technological advancements. Physically, gnomes are diminutive with large heads, short limbs, and often wild and colorful hair. Despite their small stature, gnomes are formidable inventors and loyal allies, and have distinguished themselves time and time again with their ingenuity, bravery, and loyalty.</p>",
+    "gmDescription": "",
+    "abilities": "Escape Artist",
+    "movement": 8
+  },
+  "effects": [],
+  "sort": 700000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "kin.gnome"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

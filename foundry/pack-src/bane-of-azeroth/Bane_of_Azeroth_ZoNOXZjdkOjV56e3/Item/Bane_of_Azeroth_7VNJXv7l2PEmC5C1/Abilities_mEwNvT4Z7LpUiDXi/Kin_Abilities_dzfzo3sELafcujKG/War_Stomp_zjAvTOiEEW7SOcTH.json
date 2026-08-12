@@ -1,0 +1,39 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "War Stomp",
+  "type": "ability",
+  "_id": "zjAvTOiEEW7SOcTH",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>You can, as an action in combat, slam your hooves into the ground. Make a BRAWLING attack with a bane against all creatures within 2 meters, rolling only once to hit. Each creature hit takes [[/roll D6]] damage and falls to the ground. Roll damage separately for each creature.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Tauren",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 1400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "ability.war-stomp"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

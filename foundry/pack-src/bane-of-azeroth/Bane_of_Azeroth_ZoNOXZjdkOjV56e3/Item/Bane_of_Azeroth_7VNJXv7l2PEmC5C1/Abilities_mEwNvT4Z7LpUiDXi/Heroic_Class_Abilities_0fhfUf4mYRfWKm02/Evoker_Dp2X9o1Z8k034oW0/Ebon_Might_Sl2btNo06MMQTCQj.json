@@ -1,0 +1,39 @@
+{
+  "folder": "Dp2X9o1Z8k034oW0",
+  "name": "Ebon Might",
+  "type": "ability",
+  "_id": "Sl2btNo06MMQTCQj",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/evoker.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability when you cast a spell to give all allies within 10 meters a boon to all rolls. The boon lasts until your turn in the next round.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Evoker's Legacy",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.evoker.ebon-might"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

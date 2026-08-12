@@ -1,0 +1,39 @@
+{
+  "folder": "6xRnOt07Oed3jOyJ",
+  "name": "Living Bomb",
+  "type": "ability",
+  "_id": "chlnu7rRBXdsaqRP",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
+  "system": {
+    "itemDescription": "<p>When you deal damage with a spell or this ability, you can choose an additional creature within 10 meters of the target that did not take damage from that spell or this ability. That creature takes the same damage (roll separately). You can use this multiple times for the same spell casting, as long as you can pay the WP for each use.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Mage's Brilliance",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.mage.living-bomb"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

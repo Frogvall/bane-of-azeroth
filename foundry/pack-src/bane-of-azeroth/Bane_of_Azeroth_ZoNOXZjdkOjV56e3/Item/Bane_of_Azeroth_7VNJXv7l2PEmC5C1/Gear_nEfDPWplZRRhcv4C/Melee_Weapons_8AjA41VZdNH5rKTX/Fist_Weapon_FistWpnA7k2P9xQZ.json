@@ -1,0 +1,60 @@
+{
+  "folder": "8AjA41VZdNH5rKTX",
+  "name": "Fist Weapon",
+  "type": "weapon",
+  "_id": "FistWpnA7k2P9xQZ",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/sword.webp",
+  "system": {
+    "weight": 1,
+    "quantity": 1,
+    "cost": "8 gold",
+    "supply": "uncommon",
+    "worn": false,
+    "memento": false,
+    "boons": "",
+    "banes": "",
+    "gmDescription": "",
+    "itemDescription": "",
+    "storage": false,
+    "grip": {
+      "value": "grip1h"
+    },
+    "str": 0,
+    "range": "2",
+    "damage": "D10",
+    "durability": 9,
+    "skill": {
+      "name": "Brawling",
+      "value": 0
+    },
+    "features": [
+      "freehanded",
+      "piercing"
+    ],
+    "broken": false,
+    "mainHand": false,
+    "offHand": false
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-gear.py",
+      "contentKey": "gear.fist-weapon"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

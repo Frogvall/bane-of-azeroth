@@ -1,0 +1,39 @@
+{
+  "folder": "6xRnOt07Oed3jOyJ",
+  "name": "Time Warp",
+  "type": "ability",
+  "_id": "MaZ4ltolYbPEVuJd",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/mage.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability at the start of another player character's or NPC's turn. You swap initiative cards with that player character or NPC (or group of NPCs acting on the same turn), and it cannot refuse. A monster with multiple turns swaps only the card of the current turn with yours. You act immediately.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Mage's Brilliance",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.mage.time-warp"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "folder": "JoJ6HHq9Mi8dAspN",
+  "name": "Eye Beam",
+  "type": "ability",
+  "_id": "2aVCfwfEPjZojAgI",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/demon-hunter.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability to make your eyes shoot laser beams at a creature within 20 meters. The attack automatically hits and cannot be parried. It deals 2D8 damage and is considered magical.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Demon Hunter Initiation",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.demon-hunter.eye-beam"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

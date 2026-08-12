@@ -1,0 +1,39 @@
+{
+  "folder": "mZauAPUv1ZZeadXI",
+  "name": "Avenger's Shield",
+  "type": "ability",
+  "_id": "SwcTAB0V7Kui8IDr",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/paladin.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability as an action if you are wielding a shield. You hurl your shield at a creature within 10 meters, and it then bounces to a creature of your choice within 10 meters of the first target, and again to a third creature within 10 meters of the second target. It then returns to your hand. Make separate attacks with your shield against all three targets with a bane. Finish the first attack, including damage, before rolling the second one, and finish the second one, including damage, before rolling the third one. Creatures that are hit have a bane when attacking any creature other than you until your turn in the next round.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Paladin's Righteousness",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.paladin.avengers-shield"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

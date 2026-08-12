@@ -1,0 +1,43 @@
+{
+  "folder": "Qzw4Jrv7yAOJw0bJ",
+  "name": "Sniper Scope",
+  "type": "item",
+  "_id": "SniperScp7kQ2mPx",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/bag-gold.webp",
+  "system": {
+    "weight": 1,
+    "quantity": 1,
+    "cost": "100 gold",
+    "supply": "rare",
+    "worn": false,
+    "memento": false,
+    "boons": "",
+    "banes": "",
+    "gmDescription": "",
+    "itemDescription": "<p>Attach to a ranged weapon to give it the Armor Piercing feature.</p>",
+    "storage": false,
+    "type": "item"
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-gear.py",
+      "contentKey": "gear.sniper-scope"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

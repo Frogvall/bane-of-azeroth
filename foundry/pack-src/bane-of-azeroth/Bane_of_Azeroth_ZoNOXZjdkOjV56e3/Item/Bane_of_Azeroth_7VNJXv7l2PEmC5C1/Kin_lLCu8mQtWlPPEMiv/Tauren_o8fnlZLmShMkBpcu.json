@@ -1,0 +1,35 @@
+{
+  "folder": "lLCu8mQtWlPPEMiv",
+  "name": "Tauren",
+  "type": "kin",
+  "_id": "o8fnlZLmShMkBpcu",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/tauren.webp",
+  "system": {
+    "itemDescription": "<p>With a proud nomadic tradition, the mighty tauren have roamed across Azeroth. From the vast plains of Mulgore to the rugged peaks of Highmountain and beyond, they embody a reverence for nature and ancestral wisdom. Towering in stature with bovine features and tribal adornments, they evoke a primal aura. Tauren prioritize harmony and balance, serving as fierce defenders of nature and their kin. Despite their imposing presence, they possess a gentle spirit and deep connection to the Earth Mother. Their culture emphasizes wisdom, spirituality, and community, shaping them into compassionate allies and formidable foes alike.</p>",
+    "gmDescription": "",
+    "abilities": "War Stomp",
+    "movement": 10
+  },
+  "effects": [],
+  "sort": 1200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "kin.tauren"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

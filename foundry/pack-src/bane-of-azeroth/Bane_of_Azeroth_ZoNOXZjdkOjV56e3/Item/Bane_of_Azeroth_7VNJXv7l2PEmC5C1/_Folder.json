@@ -1,0 +1,22 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Bane of Azeroth",
+  "color": "#0000ff",
+  "sorting": "a",
+  "_id": "7VNJXv7l2PEmC5C1",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Folder.7VNJXv7l2PEmC5C1",
+    "exportSource": null
+  }
+}

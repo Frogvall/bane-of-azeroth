@@ -1,0 +1,19 @@
+{
+  "name": "bane-of-azeroth-tests",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "check:generated": "python3 tools/check-foundry-generators.py"
+  },
+  "devDependencies": {
+    "vitest": "4.1.10",
+    "@vitest/coverage-v8": "4.1.10"
+  }
+}

@@ -1,0 +1,626 @@
+{
+  "schemaVersion": 1,
+  "plannedCount": 14,
+  "expectedCount": 14,
+  "remainingKeys": [],
+  "folders": {
+    "root": {
+      "key": "bane-of-azeroth",
+      "id": "BoAActors7pQ2mX9",
+      "name": "Bane of Azeroth",
+      "color": "#0000ff",
+      "sort": 0,
+      "sorting": "a"
+    },
+    "commonAnimals": {
+      "key": "common-animals",
+      "id": "2dkrC4gndsTQ383p",
+      "name": "Common Animals",
+      "color": null,
+      "sort": 200000,
+      "sorting": "a"
+    }
+  },
+  "defaults": {
+    "image": "modules/dragonbane-coreset/assets/tokens/mystery-token.webp",
+    "descriptionHtml": "",
+    "tokenWidth": 1,
+    "tokenHeight": 1,
+    "tokenDisposition": 0
+  },
+  "companions": [
+    {
+      "key": "crocolisk",
+      "id": "NH7xTDsdAaPgm0Xv",
+      "armorId": "tSSfleAd9ytQIKQt",
+      "name": "Crocolisk",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/crocolisk.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/crocolisk-token.webp",
+      "movement": {
+        "base": 6,
+        "swim": 12
+      },
+      "hitPoints": 15,
+      "armorRating": 1,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "0wpr2vStAhV8a5Es",
+          "weaponId": "jWskIChpUZbzhtc6",
+          "skillLevel": 12,
+          "damage": "2D8",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "bdLNy3SsumAfGzOO",
+          "name": "Awareness",
+          "value": 10
+        },
+        {
+          "id": "oda0MGJP83ai8xRX",
+          "name": "Evade",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "key": "dragonhawk",
+      "id": "W7alXfXLGiNx7s7E",
+      "armorId": null,
+      "name": "Dragonhawk",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/dragonhawk.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/dragonhawk-token.webp",
+      "movement": {
+        "base": 2,
+        "fly": 14
+      },
+      "hitPoints": 8,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Beak",
+          "skillId": "EdwzusB8CvCN4Jt1",
+          "weaponId": "ImqvdDlORUaMh9Oa",
+          "skillLevel": 10,
+          "damage": "D10",
+          "range": 2
+        },
+        {
+          "name": "Talons",
+          "skillId": "FodLOqspDSKlucht",
+          "weaponId": "VmQNPkNsFZ2ZhSCl",
+          "skillLevel": 12,
+          "damage": "2D4",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "laVH2eyyA0ATB8U6",
+          "name": "Awareness",
+          "value": 14
+        },
+        {
+          "id": "viJdDBN8n9HJTeIS",
+          "name": "Evade",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "key": "giant-bat",
+      "id": "9da7224216cd2593",
+      "armorId": null,
+      "name": "Giant Bat",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/giant-bat.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/giant-bat-token.webp",
+      "movement": {
+        "base": 2,
+        "fly": 8
+      },
+      "hitPoints": 10,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "4e4d953459a75ae6",
+          "weaponId": "9bd4e198a705b730",
+          "skillLevel": 10,
+          "damage": "D10",
+          "range": 2
+        },
+        {
+          "name": "Sonic Wave",
+          "skillId": "a81ad3269c42194a",
+          "weaponId": "83770327d082efda",
+          "skillLevel": 10,
+          "damage": "D6",
+          "range": 10
+        }
+      ],
+      "skills": [
+        {
+          "id": "a5c11a787c73459b",
+          "name": "Awareness",
+          "value": 16
+        },
+        {
+          "id": "01eac8b5b9666d53",
+          "name": "Evade",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "key": "giant-owl",
+      "id": "7d6c7e2e4416f9a4",
+      "armorId": null,
+      "name": "Giant Owl",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/giant-owl.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/giant-owl-token.webp",
+      "movement": {
+        "base": 2,
+        "fly": 14
+      },
+      "hitPoints": 8,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Beak",
+          "skillId": "a6350cc1dd55d5ee",
+          "weaponId": "f1d33d948b759a4d",
+          "skillLevel": 10,
+          "damage": "D10",
+          "range": 2
+        },
+        {
+          "name": "Talons",
+          "skillId": "b7e428290517d7a8",
+          "weaponId": "5f1319a4a0c29b1e",
+          "skillLevel": 12,
+          "damage": "2D4",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "3ddf43a54db1088b",
+          "name": "Awareness",
+          "value": 16
+        },
+        {
+          "id": "254a2b775e60ad44",
+          "name": "Evade",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "key": "large-serpent",
+      "id": "um17JUy9CcBXlloq",
+      "armorId": null,
+      "name": "Large Serpent",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/large-serpent.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/large-serpent-token.webp",
+      "movement": {
+        "base": 10
+      },
+      "hitPoints": 8,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "PCcAfLOA62Glsgzo",
+          "weaponId": "BXVm6tQuny3rD39C",
+          "skillLevel": 12,
+          "damage": "D6",
+          "range": 2,
+          "lethalPoison": 15
+        },
+        {
+          "name": "Constriction",
+          "skillId": "jz4xk7Xftewict8u",
+          "weaponId": "K9VpeZGmCu9Z1oqR",
+          "skillLevel": 10,
+          "damage": "D6",
+          "range": 2,
+          "restrain": 12
+        }
+      ],
+      "skills": [
+        {
+          "id": "LbtNPCXuYQ0Nc3ZN",
+          "name": "Awareness",
+          "value": 12
+        },
+        {
+          "id": "AuM4EESlBWwCMsIE",
+          "name": "Evade",
+          "value": 16
+        }
+      ]
+    },
+    {
+      "key": "giant-spider",
+      "id": "8db68cb83b2f1331",
+      "armorId": null,
+      "name": "Giant Spider",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/giant-spider.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/giant-spider-token.webp",
+      "movement": {
+        "base": 8
+      },
+      "hitPoints": 10,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "52c2e7a00f0a4cae",
+          "weaponId": "1bc083dc1fd132c9",
+          "skillLevel": 10,
+          "damage": "D4",
+          "range": 2,
+          "lethalPoison": 12
+        },
+        {
+          "name": "Web Spray",
+          "skillId": "3b0217ac13b7e5fd",
+          "weaponId": "7f3911408969d5d6",
+          "skillLevel": 12,
+          "damage": null,
+          "range": 2,
+          "restrain": 10
+        }
+      ],
+      "skills": [
+        {
+          "id": "3bb092620d369980",
+          "name": "Acrobatics",
+          "value": 16
+        },
+        {
+          "id": "37e39a66aa5213ec",
+          "name": "Awareness",
+          "value": 12
+        },
+        {
+          "id": "68c16fa63f21b890",
+          "name": "Evade",
+          "value": 12
+        },
+        {
+          "id": "5b4ac1d75995a044",
+          "name": "Stealth",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "key": "gorilla",
+      "id": "OelrGFsAvekzqSQi",
+      "armorId": null,
+      "name": "Gorilla",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/gorilla.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/gorilla-token.webp",
+      "movement": {
+        "base": 8
+      },
+      "hitPoints": 16,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "NZfCU9F8ZeqtNAO9",
+          "weaponId": "EhvhZFJGsSzvoxtS",
+          "skillLevel": 12,
+          "damage": "2D6",
+          "range": 2
+        },
+        {
+          "name": "Fist",
+          "skillId": "iSli5PHYHe7MUiEO",
+          "weaponId": "yzU7vJBUO1upLeMM",
+          "skillLevel": 14,
+          "damage": "2D4",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "Al8cPe3MQlc03KcD",
+          "name": "Acrobatics",
+          "value": 14
+        },
+        {
+          "id": "0VPuFSVF2CE8j892",
+          "name": "Awareness",
+          "value": 10
+        },
+        {
+          "id": "CvJKmnQtw5ZXz30z",
+          "name": "Evade",
+          "value": 14
+        }
+      ]
+    },
+    {
+      "key": "large-cat",
+      "id": "d1067fe3dc538d79",
+      "armorId": null,
+      "name": "Large Cat",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/large-cat.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/large-cat-token.webp",
+      "movement": {
+        "base": 16
+      },
+      "hitPoints": 12,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "abd531f7300919e7",
+          "weaponId": "a042a657ff9be460",
+          "skillLevel": 12,
+          "damage": "2D6",
+          "range": 2
+        },
+        {
+          "name": "Claws",
+          "skillId": "7078a41100f0fe73",
+          "weaponId": "6554e19abe066f6a",
+          "skillLevel": 14,
+          "damage": "2D4",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "1d36eba2fc049796",
+          "name": "Awareness",
+          "value": 12
+        },
+        {
+          "id": "620115f03be50766",
+          "name": "Evade",
+          "value": 12
+        },
+        {
+          "id": "053265b76deef6b1",
+          "name": "Stealth",
+          "value": 14
+        }
+      ]
+    },
+    {
+      "key": "raptor",
+      "id": "49c462b6c495e4a9",
+      "armorId": null,
+      "name": "Raptor",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/raptor.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/raptor-token.webp",
+      "movement": {
+        "base": 16
+      },
+      "hitPoints": 10,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "f7d803357f4631ca",
+          "weaponId": "81010eda999e80ba",
+          "skillLevel": 12,
+          "damage": "2D6",
+          "range": 2
+        },
+        {
+          "name": "Claws",
+          "skillId": "26e701dcfcf73b34",
+          "weaponId": "d5111c8125ab95e8",
+          "skillLevel": 12,
+          "damage": "2D4",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "4266bc4a632725f6",
+          "name": "Awareness",
+          "value": 14
+        },
+        {
+          "id": "f92cf4f540c21622",
+          "name": "Evade",
+          "value": 14
+        }
+      ]
+    },
+    {
+      "key": "ravager",
+      "id": "9a7429aca7ad9296",
+      "armorId": "3831df427bef3d12",
+      "name": "Ravager",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/ravager.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/ravager-token.webp",
+      "movement": {
+        "base": 10
+      },
+      "hitPoints": 14,
+      "armorRating": 2,
+      "attacks": [
+        {
+          "name": "Bite",
+          "skillId": "2dd19e566d298699",
+          "weaponId": "e77d97cac853861a",
+          "skillLevel": 10,
+          "damage": "2D4",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "e81b50212cf66d9c",
+          "name": "Awareness",
+          "value": 10
+        },
+        {
+          "id": "3ba681b8102c45f8",
+          "name": "Evade",
+          "value": 14
+        }
+      ]
+    },
+    {
+      "key": "scorpid",
+      "id": "0755558cf1561101",
+      "armorId": "8d79af113b1b3813",
+      "name": "Scorpid",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/scorpid.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/scorpid-token.webp",
+      "movement": {
+        "base": 8
+      },
+      "hitPoints": 12,
+      "armorRating": 2,
+      "attacks": [
+        {
+          "name": "Claws",
+          "skillId": "6ce350c3d0eafd41",
+          "weaponId": "48d0e368db2ed50d",
+          "skillLevel": 12,
+          "damage": "D10",
+          "range": 2
+        },
+        {
+          "name": "Tail",
+          "skillId": "d598b6b118d1effa",
+          "weaponId": "85c26f7a00870cd4",
+          "skillLevel": 12,
+          "damage": "D6",
+          "range": 2,
+          "lethalPoison": 12
+        }
+      ],
+      "skills": [
+        {
+          "id": "e8cab1a8aeacd43f",
+          "name": "Awareness",
+          "value": 8
+        },
+        {
+          "id": "3eb4ee6ce56f88d7",
+          "name": "Evade",
+          "value": 8
+        }
+      ]
+    },
+    {
+      "key": "tallstrider",
+      "id": "adfc46dd0aa95902",
+      "armorId": null,
+      "name": "Tallstrider",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/tallstrider.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/tallstrider-token.webp",
+      "movement": {
+        "base": 20
+      },
+      "hitPoints": 10,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Beak",
+          "skillId": "2abea33ee2c23521",
+          "weaponId": "2c4b43daf70fdc1f",
+          "skillLevel": 10,
+          "damage": "D10",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "88b5c105a65b2d23",
+          "name": "Awareness",
+          "value": 14
+        },
+        {
+          "id": "83139b1615dcfa58",
+          "name": "Evade",
+          "value": 14
+        }
+      ]
+    },
+    {
+      "key": "turtle",
+      "id": "9ff4f73ac72b45c4",
+      "armorId": "4896ac87aa3cc94e",
+      "name": "Turtle",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/turtle.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/turtle-token.webp",
+      "movement": {
+        "base": 6,
+        "swim": 10
+      },
+      "hitPoints": 20,
+      "armorRating": 4,
+      "attacks": [
+        {
+          "name": "Beak",
+          "skillId": "7922768f7f7db83c",
+          "weaponId": "f4054baaa18e4c01",
+          "skillLevel": 10,
+          "damage": "2D6",
+          "range": 2
+        }
+      ],
+      "skills": [
+        {
+          "id": "fc482727b6a37ec3",
+          "name": "Awareness",
+          "value": 8
+        },
+        {
+          "id": "0efc2b9ae0e96b00",
+          "name": "Evade",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "key": "wind-serpent",
+      "id": "be5c82639dabe7c1",
+      "armorId": null,
+      "name": "Wind Serpent",
+      "image": "modules/bane-of-azeroth/assets/actors/common-animals/wind-serpent.webp",
+      "tokenImage": "modules/bane-of-azeroth/assets/tokens/common-animals/wind-serpent-token.webp",
+      "movement": {
+        "base": 2,
+        "fly": 14
+      },
+      "hitPoints": 6,
+      "armorRating": 0,
+      "attacks": [
+        {
+          "name": "Lightning Breath",
+          "skillId": "db6d28b930b23fff",
+          "weaponId": "af6a5baec9746a02",
+          "skillLevel": 12,
+          "damage": "D10",
+          "range": 10
+        }
+      ],
+      "skills": [
+        {
+          "id": "a83c8a63f99ba675",
+          "name": "Awareness",
+          "value": 12
+        },
+        {
+          "id": "cd3f7d2300076c70",
+          "name": "Evade",
+          "value": 14
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "name": "Name - Gnome",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "dad066de58c98a93",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.gnome.result.dad066de58c98a93"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Bink",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_id": "0bbb208e2a2093de",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.gnome.result.0bbb208e2a2093de"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Cog",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "_id": "a2e3f1f9ed4699ab",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.gnome.result.a2e3f1f9ed4699ab"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Gleep",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "_id": "2b28867c4875fd8b",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.gnome.result.2b28867c4875fd8b"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Kiki",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "_id": "fc3c65e1d6e166ce",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.gnome.result.fc3c65e1d6e166ce"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Lazlo",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "_id": "33e7c8d117525e77",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.gnome.result.33e7c8d117525e77"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Vallo",
+      "name": ""
+    }
+  ],
+  "formula": "1d6",
+  "replacement": true,
+  "displayRoll": true,
+  "folder": "BoATblPlayerOpt1",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin-roll-tables.py",
+      "contentKey": "tables.kin.name.gnome"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.BoANameGnome0001",
+    "exportSource": null
+  },
+  "_id": "BoANameGnome0001"
+}

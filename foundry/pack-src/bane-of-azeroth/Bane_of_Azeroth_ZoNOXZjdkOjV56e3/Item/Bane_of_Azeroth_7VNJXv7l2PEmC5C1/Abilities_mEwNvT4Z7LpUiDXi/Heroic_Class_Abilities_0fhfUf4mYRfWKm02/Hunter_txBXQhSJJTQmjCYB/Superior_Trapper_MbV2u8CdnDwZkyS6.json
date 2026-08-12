@@ -1,0 +1,39 @@
+{
+  "folder": "txBXQhSJJTQmjCYB",
+  "name": "Superior Trapper",
+  "type": "ability",
+  "_id": "MbV2u8CdnDwZkyS6",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/hunter.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability (no action) when a non-monster creature voluntarily moves to within 2 meters of you. The creature has to make an EVADE roll, and if it fails it either takes [[/roll 2d8]] damage as it burns or loses its actions and movement for the rest of the round as it is frozen in place (your choice).</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Hunter's Instincts",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.hunter.superior-trapper"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

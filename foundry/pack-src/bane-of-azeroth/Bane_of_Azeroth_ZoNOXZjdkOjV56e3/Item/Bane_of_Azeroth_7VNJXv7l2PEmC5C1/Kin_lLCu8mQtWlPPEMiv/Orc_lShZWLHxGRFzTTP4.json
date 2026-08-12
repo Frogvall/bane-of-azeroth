@@ -1,0 +1,35 @@
+{
+  "folder": "lLCu8mQtWlPPEMiv",
+  "name": "Orc",
+  "type": "kin",
+  "_id": "lShZWLHxGRFzTTP4",
+  "img": "modules/bane-of-azeroth/assets/icons/kin/orc.webp",
+  "system": {
+    "itemDescription": "<p>While the proud, fearsome orcs have spread across Azeroth, they originated on the planet Draenor. A peaceful people with shamanic beliefs, they were enslaved by the Burning Legion and forced into war with the humans of Azeroth. Although it took many years, the orcs finally escaped the demons' corruption and won their freedom. To this day they fight for honor in a world that hates and reviles them, having forged a new home and family in the mighty Horde. With their muscular builds, prominent tusks, and varied skin tones ranging from green to brown, orcs remain fierce and eager for battle, valuing strength and honor above all.</p>",
+    "gmDescription": "",
+    "abilities": "Relentless",
+    "movement": 10
+  },
+  "effects": [],
+  "sort": 1000000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "kin.orc"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "name": "Name - Bronzebeard",
+  "img": "icons/svg/d20-grey.svg",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "21ca558170967edb",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.bronzebeard.result.21ca558170967edb"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Berta",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_id": "4e1a8c22033d36df",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.bronzebeard.result.4e1a8c22033d36df"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Golad",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "_id": "71f81e68095e3431",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.bronzebeard.result.71f81e68095e3431"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Harkon",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "_id": "1f9099c1b59a93c2",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.bronzebeard.result.1f9099c1b59a93c2"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Klemmy",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "_id": "088009f8a8f54f41",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.bronzebeard.result.088009f8a8f54f41"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Rugan",
+      "name": ""
+    },
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "_id": "7a60492db81b85b3",
+      "flags": {
+        "bane-of-azeroth": {
+          "generatedBy": "tools/generate-kin-roll-tables.py",
+          "contentKey": "tables.kin.name.bronzebeard.result.7a60492db81b85b3"
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/d20-black.svg",
+      "description": "Taga",
+      "name": ""
+    }
+  ],
+  "formula": "1d6",
+  "replacement": true,
+  "displayRoll": true,
+  "folder": "BoATblPlayerOpt1",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin-roll-tables.py",
+      "contentKey": "tables.kin.name.bronzebeard"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "RollTable.BoANameBronzebrd",
+    "exportSource": null
+  },
+  "_id": "BoANameBronzebrd"
+}

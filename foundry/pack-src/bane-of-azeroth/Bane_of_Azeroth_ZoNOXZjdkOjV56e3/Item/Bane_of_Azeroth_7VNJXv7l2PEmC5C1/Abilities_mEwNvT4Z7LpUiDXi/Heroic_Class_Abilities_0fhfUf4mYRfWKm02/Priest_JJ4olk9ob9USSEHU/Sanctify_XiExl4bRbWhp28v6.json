@@ -1,0 +1,39 @@
+{
+  "folder": "JJ4olk9ob9USSEHU",
+  "name": "Sanctify",
+  "type": "ability",
+  "_id": "XiExl4bRbWhp28v6",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/priest.webp",
+  "system": {
+    "itemDescription": "<p>You can activate this ability when casting a spell that heals a creature. You and all other creatures of your choice within 10 meters heal the same amount of HP.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Priest's Zeal",
+    "wp": "3",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.priest.sanctify"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

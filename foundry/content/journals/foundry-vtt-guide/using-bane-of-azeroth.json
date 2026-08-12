@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "key": "using-bane-of-azeroth",
+  "id": "BoAPgFoundryIntr",
+  "name": "Using Bane of Azeroth",
+  "sort": 100000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>This guide describes controls and workflows that Bane of Azeroth adds specifically for Foundry VTT. Character options, abilities, spells, and game rules are described in the Bane of Azeroth journals.</p><h4>Automation Settings</h4><p>The GM can enable or disable Bane of Azeroth automation per feature from <strong>Game Settings &rarr; Configure Settings &rarr; Module Settings &rarr; Automation Settings</strong>. If automation for a feature is disabled, use the normal game rules and handle that feature manually.</p><h4>Granted Spells</h4><p>When a Heroic Class Ability grants a spell, Bane of Azeroth automatically adds that spell to the character sheet. There is no need to create or copy the spell manually.</p>"
+  }
+}

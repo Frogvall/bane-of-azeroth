@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "key": "demons",
+  "id": "BoAPgAppendDmn01",
+  "name": "Demons",
+  "sort": 200000,
+  "title": {
+    "show": true,
+    "level": 1
+  },
+  "source": {
+    "type": "html",
+    "content": "<p>Warlocks with the Demonologist heroic ability can summon one of the demons below. A summoned demon follows the warlock for a shift and can be commanded to use its action in combat. The demon can communicate with the warlock in its demonic language.</p><p>@DisplayMonsterRef[boa:actor.actors.summoned-monsters.felhunter]{Felhunter}</p><p>@DisplayRef[boa:table.tables.monster-attacks.felhunter]{Monster Attacks – Felhunter}</p><p>@DisplayMonsterRef[boa:actor.actors.summoned-monsters.imp]{Imp}</p><p>@DisplayRef[boa:table.tables.monster-attacks.imp]{Monster Attacks – Imp}</p><p>@DisplayMonsterRef[boa:actor.actors.summoned-monsters.sayaad]{Sayaad}</p><p>@DisplayRef[boa:table.tables.monster-attacks.sayaad]{Monster Attacks – Sayaad}</p><p>@DisplayMonsterRef[boa:actor.actors.summoned-monsters.voidwalker]{Voidwalker}</p><p>@DisplayRef[boa:table.tables.monster-attacks.voidwalker]{Monster Attacks – Voidwalker}</p><img src=\"modules/bane-of-azeroth/assets/journals/demons/demons.webp\" style=\"width:100%;height:auto\" alt=\"Warlock demons\">"
+  },
+  "provenance": {
+    "canonicalSource": "homebrewery/Bane of Azeroth.md",
+    "section": "Appendix B: Demons",
+    "sync": "curated",
+    "presentation": "dragonbane-core-monsters",
+    "links": "generated-summoned-monsters-and-attack-tables"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "folder": "dzfzo3sELafcujKG",
+  "name": "Escape Artist",
+  "type": "ability",
+  "_id": "1NllB1cAUOMm1OA0",
+  "img": "modules/dragonbane-coreset/assets/icons/ability/ability.webp",
+  "system": {
+    "itemDescription": "<p>You get a boon on opposing a grapple attempt. Or you get a boon on breaking free from a grapple, which can be attempted as a free action.</p><p>If the optional rules for grappling are not used, the gnome can use the @UUID[Item.GiE0TwixaYnxFT6i]{Hard to Catch} kin ability from the core rules instead.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Gnome",
+    "wp": "2",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 900000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-kin.py",
+      "contentKey": "ability.escape-artist"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

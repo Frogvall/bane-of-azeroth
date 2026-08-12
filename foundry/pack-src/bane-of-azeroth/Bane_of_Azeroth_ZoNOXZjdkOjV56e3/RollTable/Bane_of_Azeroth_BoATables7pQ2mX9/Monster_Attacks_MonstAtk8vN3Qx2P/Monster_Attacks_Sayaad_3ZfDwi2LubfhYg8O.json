@@ -1,0 +1,65 @@
+{
+  "name": "Monster Attacks – Sayaad",
+  "img": "systems/dragonbane/art/icons/monster-attack.webp",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "ArDoe04Mlfua8R2J",
+      "img": "systems/dragonbane/art/icons/monster-attack.webp",
+      "flags": {
+        "bane-of-azeroth": {
+          "monsterAttack": {
+            "schemaVersion": 1,
+            "key": "soothing-kiss"
+          }
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "description": "<b>Soothing Kiss.</b> Automatically hits a non-monster creature within 6 meters (but can be dodged), and the target loses its next action.",
+      "name": ""
+    }
+  ],
+  "formula": "1",
+  "replacement": true,
+  "displayRoll": false,
+  "folder": "MonstAtk8vN3Qx2P",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-summoned-monsters.py",
+      "contentKey": "tables.monster-attacks.sayaad"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "3ZfDwi2LubfhYg8O"
+}

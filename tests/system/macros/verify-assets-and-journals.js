@@ -1,0 +1,1995 @@
+const checks = [];
+const notes = [];
+
+const DISPLAY_TABLE_PREFIX = [
+  "@DisplayTable",
+  "[RollTable.",
+].join("");
+const SYMBOLIC_DISPLAY_PREFIX = [
+  "@DisplayRef",
+  "[",
+].join("");
+const SYMBOLIC_REFERENCE_PREFIX = [
+  "@Ref",
+  "[",
+].join("");
+const UUID_ITEM_PREFIX = [
+  "@UUID",
+  "[Item.",
+].join("");
+
+function occurrences(value, marker) {
+  return String(value ?? "").split(marker).length - 1;
+}
+
+const REFERENCE_LABEL_PATTERN = new RegExp(
+  "@(?:UUID|Ref)\\[[^\\]]+\\]\\{([^{}]+)\\}",
+  "g"
+);
+
+function referenceLabels(value) {
+  return String(value ?? "").replace(
+    REFERENCE_LABEL_PATTERN,
+    "$1"
+  );
+}
+
+function worldJournal(contentKey) {
+  return boaCollectionValues(game.journal).find(
+    journal => boaContentKey(journal) === contentKey
+  );
+}
+
+function journalPage(journal, contentKey) {
+  return boaCollectionValues(journal?.pages).find(
+    page => boaContentKey(page) === contentKey
+  );
+}
+
+function htmlAssetPaths(html) {
+  const paths = new Set();
+  const pattern =
+    /(?:src|href)=["'](modules\/bane-of-azeroth\/[^"']+)["']/g;
+
+  for (const match of String(html ?? "").matchAll(pattern)) {
+    paths.add(match[1]);
+  }
+
+  return paths;
+}
+
+async function probeAsset(path) {
+  const url = foundry.utils.getRoute(path);
+
+  try {
+    let response = await fetch(url, {
+      method: "HEAD",
+      cache: "no-store",
+    });
+
+    if (
+      response.status === 405
+      || response.status === 501
+    ) {
+      response = await fetch(url, {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          Range: "bytes=0-0",
+        },
+      });
+
+      try {
+        await response.body?.cancel();
+      } catch {
+        // The response may already be complete.
+      }
+    }
+
+    return {
+      path,
+      ok: response.ok,
+      status: response.status,
+      statusText: response.statusText,
+    };
+  } catch (error) {
+    return {
+      path,
+      ok: false,
+      status: 0,
+      statusText:
+        error?.message ?? String(error),
+    };
+  }
+}
+
+try {
+  const [
+    kinContent,
+    abilityContent,
+    spellContent,
+    companionContent,
+    summonedMonsterContent,
+    journalAssets,
+  ] = await Promise.all([
+    boaFetchJson("content/kin.json"),
+    boaFetchJson(
+      "content/heroic-class-abilities.json"
+    ),
+    boaFetchJson("content/spells.json"),
+    boaFetchJson(
+      "content/hunter-companions.json"
+    ),
+    boaFetchJson(
+      "content/summoned-monsters.json"
+    ),
+    boaFetchJson(
+      "config/journal-assets.json"
+    ),
+  ]);
+
+  const kinDefinitions =
+    kinContent.kin ?? [];
+  const classDefinitions =
+    abilityContent.classes ?? [];
+  const spellDefinitions =
+    spellContent.spells ?? [];
+  const companionDefinitions =
+    companionContent.companions ?? [];
+  const demonDefinitions =
+    (summonedMonsterContent.monsters ?? [])
+      .filter(
+        monster =>
+          monster.summonType
+          === "warlock-demon"
+      );
+  const manifestAssets =
+    journalAssets.assets ?? [];
+
+  boaCheckEqual(
+    checks,
+    "Kin source contains 16 entries",
+    kinDefinitions.length,
+    16
+  );
+  boaCheckEqual(
+    checks,
+    "Heroic Class Ability source contains 13 classes",
+    classDefinitions.length,
+    13
+  );
+  boaCheckEqual(
+    checks,
+    "Spell source contains six entries",
+    spellDefinitions.length,
+    6
+  );
+  boaCheckEqual(
+    checks,
+    "Companion source contains 14 entries",
+    companionDefinitions.length,
+    14
+  );
+  boaCheckEqual(
+    checks,
+    "Demon source contains four Warlock demons",
+    demonDefinitions.length,
+    4
+  );
+  boaCheck(
+    checks,
+    "Journal asset manifest contains generated assets",
+    manifestAssets.length > 0,
+    `${manifestAssets.length} assets`
+  );
+
+  const iconPaths = new Set();
+  const abilityDefinitions = [];
+
+  for (const kin of kinDefinitions) {
+    if (typeof kin.image === "string") {
+      iconPaths.add(kin.image);
+    }
+  }
+
+  for (const classEntry of classDefinitions) {
+    for (const ability of classEntry.abilities ?? []) {
+      abilityDefinitions.push({
+        classKey: classEntry.key,
+        ...ability,
+      });
+
+      if (typeof ability.image === "string") {
+        iconPaths.add(ability.image);
+      }
+    }
+  }
+
+  boaCheckEqual(
+    checks,
+    "Heroic Class Ability source contains 52 abilities",
+    abilityDefinitions.length,
+    52
+  );
+  boaCheckEqual(
+    checks,
+    "Content source references 29 dedicated Kin and class icons",
+    iconPaths.size,
+    29
+  );
+
+  const characterOptionsTableFolder =
+    boaCollectionValues(game.folders).find(
+      folder =>
+        boaContentKey(folder)
+        === "tables.folder.player-options"
+    );
+
+  boaCheckEqual(
+    checks,
+    "Imported Character Options RollTable folder exists",
+    characterOptionsTableFolder
+      ? {
+          id: characterOptionsTableFolder.id,
+          name: characterOptionsTableFolder.name,
+          type: characterOptionsTableFolder.type,
+          sort: Number(
+            characterOptionsTableFolder.sort ?? 0
+          ),
+        }
+      : null,
+    {
+      id: "BoATblPlayerOpt1",
+      name: "Character Options",
+      type: "RollTable",
+      sort: 200000,
+    }
+  );
+
+  const journalFolder =
+    boaCollectionValues(game.folders).find(
+      folder =>
+        boaContentKey(folder)
+        === "journals.folder.bane-of-azeroth"
+    );
+
+  boaCheckEqual(
+    checks,
+    "Journal folder uses deterministic manual sorting",
+    journalFolder?.sorting,
+    "m"
+  );
+
+  const orderedGeneratedJournals =
+    boaCollectionValues(game.journal)
+      .filter(
+        journal =>
+          journal.folder?.id === journalFolder?.id
+          && [
+            "journal.credits",
+            "journal.player-options",
+            "journal.appendices",
+          ].includes(boaContentKey(journal))
+      )
+      .sort(
+        (left, right) =>
+          Number(left.sort ?? 0)
+          - Number(right.sort ?? 0)
+      )
+      .map(journal => ({
+        name: journal.name,
+        sort: Number(journal.sort ?? 0),
+      }));
+
+  boaCheckEqual(
+    checks,
+    "Generated Journals follow source sort order",
+    orderedGeneratedJournals,
+    [
+      {
+        name: "Credits",
+        sort: 100000,
+      },
+      {
+        name: "Character Options",
+        sort: 200000,
+      },
+      {
+        name: "Appendices",
+        sort: 300000,
+      },
+    ]
+  );
+
+  const playerOptions = worldJournal(
+    "journal.player-options"
+  );
+  const credits = worldJournal(
+    "journal.credits"
+  );
+
+  const appendices = worldJournal(
+    "journal.appendices"
+  );
+  boaCheck(
+    checks,
+    "Imported Character Options Journal exists",
+    Boolean(playerOptions),
+    "journal.player-options"
+  );
+  boaCheck(
+    checks,
+    "Imported Credits Journal exists",
+    Boolean(credits),
+    "journal.credits"
+  );
+
+  boaCheck(
+    checks,
+    "Imported Appendices Journal exists",
+    Boolean(appendices),
+    "journal.appendices"
+  );
+  const illustrationPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.illustration"
+  );
+  const introductionPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.introduction"
+  );
+  const kinPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.kin"
+  );
+  const derivedPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.derived-ratings"
+  );
+  const creditsPage = journalPage(
+    credits,
+    "journal-page.credits.credits"
+  );
+  const classesPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.heroic-class-abilities"
+  );
+  const gearPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.gear"
+  );
+  const spellsPage = journalPage(
+    playerOptions,
+    "journal-page.player-options.spells"
+  );
+
+  const companionsPage = journalPage(
+    appendices,
+    "journal-page.appendices.companions"
+  );
+  const demonsPage = journalPage(
+    appendices,
+    "journal-page.appendices.demons"
+  );
+  boaCheck(
+    checks,
+    "Character Options contains the Illustration page",
+    Boolean(illustrationPage)
+  );
+  boaCheck(
+    checks,
+    "Character Options contains the Introduction page",
+    Boolean(introductionPage)
+  );
+  boaCheck(
+    checks,
+    "Character Options contains the Kin page",
+    Boolean(kinPage)
+  );
+  boaCheck(
+    checks,
+    "Character Options contains the Derived Ratings page",
+    Boolean(derivedPage)
+  );
+  boaCheck(
+    checks,
+    "Character Options contains the Heroic Class Abilities page",
+    Boolean(classesPage)
+  );
+  boaCheck(
+    checks,
+    "Character Options contains the Gear page",
+    Boolean(gearPage)
+  );
+  boaCheck(
+    checks,
+    "Character Options contains the Spells page",
+    Boolean(spellsPage)
+  );
+  boaCheck(
+    checks,
+    "Credits contains its generated page",
+    Boolean(creditsPage)
+  );
+
+  boaCheck(
+    checks,
+    "Appendices contains the Companions page",
+    Boolean(companionsPage)
+  );
+  boaCheck(
+    checks,
+    "Appendices contains the Demons page",
+    Boolean(demonsPage)
+  );
+  if (appendices) {
+    const orderedAppendixPages =
+      boaCollectionValues(appendices.pages)
+        .sort(
+          (left, right) =>
+            Number(left.sort ?? 0)
+            - Number(right.sort ?? 0)
+        )
+        .map(page => ({
+          name: page.name,
+          contentKey: boaContentKey(page),
+          sort: Number(page.sort ?? 0),
+        }));
+
+    boaCheckEqual(
+      checks,
+      "Appendices has exactly two pages",
+      orderedAppendixPages.length,
+      2
+    );
+    boaCheckEqual(
+      checks,
+      "Appendices page order follows the book",
+      orderedAppendixPages,
+      [
+        {
+          name: "Companions",
+          contentKey:
+            "journal-page.appendices.companions",
+          sort: 100000,
+        },
+        {
+          name: "Demons",
+          contentKey:
+            "journal-page.appendices.demons",
+          sort: 200000,
+        },
+      ]
+    );
+  }
+
+  const introductionHtml =
+    introductionPage?.text?.content ?? "";
+  const kinHtml =
+    kinPage?.text?.content ?? "";
+  const derivedHtml =
+    derivedPage?.text?.content ?? "";
+  const creditsHtml =
+    creditsPage?.text?.content ?? "";
+  const gearHtml =
+    gearPage?.text?.content ?? "";
+  const spellsHtml =
+    spellsPage?.text?.content ?? "";
+
+  const companionsHtml =
+    companionsPage?.text?.content ?? "";
+  const demonsHtml =
+    demonsPage?.text?.content ?? "";
+  if (illustrationPage) {
+    boaCheckEqual(
+      checks,
+      "Character Options opens with the cover Illustration",
+      {
+        type: illustrationPage.type,
+        titleShown:
+          illustrationPage.title?.show,
+        src: illustrationPage.src,
+        caption:
+          illustrationPage.image?.caption ?? "",
+      },
+      {
+        type: "image",
+        titleShown: false,
+        src:
+          "modules/bane-of-azeroth/"
+          + "assets/journals/cover/"
+          + "bane_of_azeroth_cover.webp",
+        caption: "",
+      }
+    );
+  }
+
+  if (introductionPage) {
+    const introductionProblems = [];
+
+    for (const marker of [
+      "Warcraft is one of the most beloved "
+        + "and enduring fantasy franchises",
+      "Why Azeroth?",
+      "What is this book?",
+      "Design Goals",
+      "Buy-In and Creativity",
+      "Contact and More",
+      "The goal is a game that feels like "
+        + "Warcraft in the ways that matter "
+        + "most to your table.",
+    ]) {
+      if (!introductionHtml.includes(marker)) {
+        introductionProblems.push(
+          `missing ${marker}`
+        );
+      }
+    }
+
+    if (
+      introductionHtml.includes(
+        "Creating a Hero of Azeroth"
+      )
+    ) {
+      introductionProblems.push(
+        "temporary custom introduction remains"
+      );
+    }
+
+    boaCheck(
+      checks,
+      "Introduction mirrors the book chapter",
+      introductionProblems.length === 0,
+      introductionProblems.join("\n")
+    );
+  }
+
+  if (creditsPage) {
+    const headingElement =
+      document.createElement("div");
+    headingElement.innerHTML = creditsHtml;
+
+    const creditsHeadings = [
+      ...headingElement.querySelectorAll("h4"),
+    ].map(
+      heading =>
+        String(heading.textContent ?? "")
+          .trim()
+    );
+
+    boaCheckEqual(
+      checks,
+      "Credits uses readable heading capitalization",
+      creditsHeadings,
+      [
+        "Author",
+        "Version",
+        "Credits",
+        "Artwork",
+        "Made With",
+      ]
+    );
+  }
+
+  if (kinPage) {
+    boaCheckEqual(
+      checks,
+      "Kin page contains 19 rendered RollTables",
+      occurrences(
+        kinHtml,
+        DISPLAY_TABLE_PREFIX
+      ),
+      19
+    );
+    boaCheckEqual(
+      checks,
+      "Kin page contains 16 illustrations",
+      occurrences(kinHtml, "<img "),
+      16
+    );
+    boaCheck(
+      checks,
+      "Kin page has no unresolved symbolic references",
+      !kinHtml.includes(
+        SYMBOLIC_DISPLAY_PREFIX
+      )
+      && !kinHtml.includes(
+        SYMBOLIC_REFERENCE_PREFIX
+      )
+    );
+
+    const headingElement =
+      document.createElement("div");
+    headingElement.innerHTML = kinHtml;
+    const kinHeadings = [
+      ...headingElement.querySelectorAll(
+        "h2, h3"
+      ),
+    ].map(
+      heading =>
+        String(heading.textContent ?? "")
+          .trim()
+    );
+    const allCapsHeadings =
+      kinHeadings.filter(
+        heading =>
+          /[A-Za-z]/.test(heading)
+          && heading === heading.toUpperCase()
+      );
+
+    boaCheckEqual(
+      checks,
+      "Kin page contains 38 readable headings",
+      kinHeadings.length,
+      38
+    );
+    boaCheck(
+      checks,
+      "Kin source headings use normal capitalization",
+      allCapsHeadings.length === 0,
+      allCapsHeadings.join("\n")
+    );
+  }
+
+  if (derivedPage) {
+    boaCheckEqual(
+      checks,
+      "Derived Ratings contains one table",
+      occurrences(derivedHtml, "<table"),
+      1
+    );
+    boaCheck(
+      checks,
+      "Derived Ratings uses display-table markup",
+      derivedHtml.includes(
+        '<div class="display-table">'
+      )
+    );
+  }
+
+  if (gearPage) {
+    const gearSpecs = [
+      {
+        table: "melee",
+        contentKey: "gear.fist-weapon",
+        id: "FistWpnA7k2P9xQZ",
+        name: "Fist Weapon",
+        type: "weapon",
+      },
+      {
+        table: "melee",
+        contentKey: "gear.throwing-glaive",
+        id: "ThrowGlvB4m8R2zQ",
+        name: "Throwing Glaive",
+        type: "weapon",
+      },
+      {
+        table: "melee",
+        contentKey: "gear.warglaive",
+        id: "Mtrym5LUbMbXISlI",
+        name: "Warglaive",
+        type: "weapon",
+      },
+      {
+        table: "ranged",
+        contentKey: "gear.blunderbuss",
+        id: "4pgpXANRnIBz5nNF",
+        name: "Blunderbuss",
+        type: "weapon",
+      },
+      {
+        table: "ranged",
+        contentKey: "gear.pistol",
+        id: "3xoYCFEAWm88zRQq",
+        name: "Pistol",
+        type: "weapon",
+      },
+      {
+        table: "ranged",
+        contentKey: "gear.rifle",
+        id: "RifleC6n3T9vK2xP",
+        name: "Rifle",
+        type: "weapon",
+      },
+      {
+        table: "trade",
+        contentKey: "gear.ammo-pouch",
+        id: "n0yAAcVxspJur19y",
+        name: "Ammo Pouch",
+        type: "item",
+      },
+      {
+        table: "trade",
+        contentKey: "gear.sniper-scope",
+        id: "SniperScp7kQ2mPx",
+        name: "Sniper Scope",
+        type: "item",
+      },
+    ];
+    const gearProblems = [];
+
+    boaCheckEqual(
+      checks,
+      "Gear page contains three Gear tables",
+      occurrences(
+        gearHtml,
+        "@GearTableStart["
+      ),
+      3
+    );
+
+    for (const tableType of [
+      "melee",
+      "ranged",
+      "trade",
+    ]) {
+      if (
+        !gearHtml.includes(
+          `@GearTableStart[${tableType}]`
+        )
+      ) {
+        gearProblems.push(
+          `missing ${tableType} Gear table`
+        );
+      }
+    }
+
+    for (const spec of gearSpecs) {
+      const marker =
+        `@Gear[Item.${spec.id}]`
+        + `{${spec.name}}`;
+      const item = boaFindWorldItem(
+        spec.contentKey,
+        spec.type
+      );
+
+      if (
+        occurrences(gearHtml, marker) !== 1
+      ) {
+        gearProblems.push(
+          `${spec.name}: Gear link count `
+          + `${occurrences(gearHtml, marker)}`
+        );
+      }
+
+      if (!item) {
+        gearProblems.push(
+          `${spec.contentKey}: missing Item`
+        );
+      } else if (
+        item.id !== spec.id
+        || item.name !== spec.name
+      ) {
+        gearProblems.push(
+          `${spec.contentKey}: `
+          + `${item.id}/${item.name}`
+        );
+      }
+    }
+
+    boaCheck(
+      checks,
+      "Gear page links all eight generated Gear Items",
+      gearProblems.length === 0,
+      gearProblems.join("\n")
+    );
+    boaCheck(
+      checks,
+      "Gear page includes the 500 meter firearm report",
+      gearHtml.includes(
+        "audible out to 500 meters."
+      )
+    );
+    boaCheck(
+      checks,
+      "Armor Piercing links Find Weak Spot",
+      gearHtml.includes(
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.KAxnhLbO8N7kcvMl"
+        + "#special-attacks]{Find Weak Spot}"
+      )
+    );
+  }
+
+  if (spellsPage) {
+    const spellProblems = [];
+    let previousSpellIndex = -1;
+
+    boaCheckEqual(
+      checks,
+      "Spells page contains six DisplaySpell directives",
+      occurrences(
+        spellsHtml,
+        "@DisplaySpell[Item."
+      ),
+      spellDefinitions.length
+    );
+
+    for (const spell of spellDefinitions) {
+      const marker =
+        `@DisplaySpell[Item.${spell.id}]`
+        + `{${spell.name}}`;
+      const markerCount =
+        occurrences(spellsHtml, marker);
+      const markerIndex =
+        spellsHtml.indexOf(marker);
+      const item = boaFindWorldItem(
+        `spells.${spell.key}`,
+        "spell"
+      );
+
+      if (markerCount !== 1) {
+        spellProblems.push(
+          `${spell.name}: DisplaySpell count `
+          + `${markerCount}`
+        );
+      }
+
+      if (markerIndex <= previousSpellIndex) {
+        spellProblems.push(
+          `${spell.name}: wrong book order`
+        );
+      }
+      previousSpellIndex = markerIndex;
+
+      if (!item) {
+        spellProblems.push(
+          `spells.${spell.key}: missing Item`
+        );
+      } else if (
+        item.id !== spell.id
+        || item.name !== spell.name
+      ) {
+        spellProblems.push(
+          `spells.${spell.key}: `
+          + `${item.id}/${item.name}`
+        );
+      }
+    }
+
+    boaCheck(
+      checks,
+      "Spells page displays all six generated Spell Items in book order",
+      spellProblems.length === 0,
+      spellProblems.join("\n")
+    );
+    boaCheck(
+      checks,
+      "Spells page follows the book title",
+      spellsPage.name === "Spells"
+      && !spellsHtml.includes("Spell List")
+      && !spellsHtml.includes(
+        "<h2>General Magic</h2>"
+      )
+      && !spellsHtml.includes("<h3>Rank ")
+    );
+  }
+
+  function normalizedText(value) {
+    return referenceLabels(value)
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function textFromHtml(value) {
+    const element = document.createElement("div");
+    element.innerHTML = String(value ?? "");
+    return normalizedText(
+      element.textContent ?? ""
+    );
+  }
+
+  function abilityDescriptionText(ability) {
+    if (
+      typeof ability.descriptionHtml === "string"
+      && ability.descriptionHtml.trim() !== ""
+    ) {
+      return textFromHtml(
+        ability.descriptionHtml
+      );
+    }
+
+    if (Array.isArray(ability.description)) {
+      return normalizedText(
+        ability.description.join(" ")
+      );
+    }
+
+    return "";
+  }
+
+  const classPageProblems = [];
+  let classHeadingCount = 0;
+  let classIllustrationCount = 0;
+  let classAbilityBoxCount = 0;
+  let classAbilityLinkCount = 0;
+  let classAbilityDescriptionCount = 0;
+  let grantedSpellCount = 0;
+  let abilitySpellLinkCount = 0;
+  let journalSpellLinkCount = 0;
+
+  const classesHtml =
+    classesPage?.text?.content ?? "";
+  const classesText = classesPage
+    ? textFromHtml(classesHtml)
+    : "";
+
+  for (const classEntry of classDefinitions) {
+    const heading =
+      `<h2>${classEntry.name}</h2>`;
+
+    if (classesHtml.includes(heading)) {
+      classHeadingCount += 1;
+    } else {
+      classPageProblems.push(
+        `${classEntry.name}: missing class heading`
+      );
+    }
+
+    const imagePath =
+      "modules/bane-of-azeroth/"
+      + "assets/journals/classes/"
+      + `${classEntry.key.replaceAll("-", "_")}.webp`;
+
+    if (
+      classesHtml.includes(
+        `src="${imagePath}"`
+      )
+    ) {
+      classIllustrationCount += 1;
+    } else {
+      classPageProblems.push(
+        `${classEntry.name}: missing class illustration`
+      );
+    }
+
+    for (const ability of classEntry.abilities ?? []) {
+      classAbilityBoxCount += 1;
+
+      const contentKey =
+        "heroic-class-ability."
+        + `${classEntry.key}.${ability.key}`;
+      const item = boaFindWorldItem(
+        contentKey,
+        "ability"
+      );
+
+      if (!item) {
+        classPageProblems.push(
+          `${classEntry.name}: missing ${contentKey}`
+        );
+        continue;
+      }
+
+      const linkMarker =
+        `${UUID_ITEM_PREFIX}${item.id}]`;
+
+      if (classesHtml.includes(linkMarker)) {
+        classAbilityLinkCount += 1;
+      } else {
+        classPageProblems.push(
+          `${classEntry.name}: missing link to ${ability.name}`
+        );
+      }
+
+      const description =
+        abilityDescriptionText(ability);
+      const descriptionMarker =
+        description.slice(0, 80);
+
+      if (
+        descriptionMarker !== ""
+        && classesText.includes(
+          descriptionMarker
+        )
+      ) {
+        classAbilityDescriptionCount += 1;
+      } else {
+        classPageProblems.push(
+          `${classEntry.name}: missing description for ${ability.name}`
+        );
+      }
+
+      if (
+        typeof ability.grantsSpell === "string"
+      ) {
+        grantedSpellCount += 1;
+
+        const spellContentKey =
+          `spells.${ability.grantsSpell}`;
+        const spell = boaFindWorldItem(
+          spellContentKey,
+          "spell"
+        );
+
+        if (!spell) {
+          classPageProblems.push(
+            `${ability.name}: missing ${spellContentKey}`
+          );
+          continue;
+        }
+
+        const spellLinkMarker =
+          `${UUID_ITEM_PREFIX}${spell.id}]`;
+
+        if (
+          String(
+            item.system?.itemDescription ?? ""
+          ).includes(spellLinkMarker)
+        ) {
+          abilitySpellLinkCount += 1;
+        } else {
+          classPageProblems.push(
+            `${ability.name}: Ability description does not link ${spell.name}`
+          );
+        }
+
+        if (
+          classesHtml.includes(
+            spellLinkMarker
+          )
+        ) {
+          journalSpellLinkCount += 1;
+        } else {
+          classPageProblems.push(
+            `${ability.name}: Journal box does not link ${spell.name}`
+          );
+        }
+      }
+    }
+  }
+
+  boaCheckEqual(
+    checks,
+    "Heroic Class Abilities contains 13 class headings",
+    classHeadingCount,
+    13
+  );
+  boaCheckEqual(
+    checks,
+    "Heroic Class Abilities contains 13 class illustrations",
+    classIllustrationCount,
+    13
+  );
+  boaCheckEqual(
+    checks,
+    "Heroic Class Abilities contains 52 overview boxes",
+    occurrences(
+      classesHtml,
+      '<blockquote class="info">'
+    ),
+    classAbilityBoxCount
+  );
+  boaCheckEqual(
+    checks,
+    "Ability box titles link to all 52 Ability Items",
+    classAbilityLinkCount,
+    52
+  );
+  boaCheckEqual(
+    checks,
+    "Ability boxes contain all 52 descriptions",
+    classAbilityDescriptionCount,
+    52
+  );
+  boaCheckEqual(
+    checks,
+    "Heroic Class Ability source grants six Spells",
+    grantedSpellCount,
+    6
+  );
+  boaCheckEqual(
+    checks,
+    "Spell-granting Ability descriptions link all six Spell Items",
+    abilitySpellLinkCount,
+    grantedSpellCount
+  );
+  boaCheckEqual(
+    checks,
+    "Spell-granting Journal boxes link all six Spell Items",
+    journalSpellLinkCount,
+    grantedSpellCount
+  );
+  boaCheck(
+    checks,
+    "Classes are readable on one page with complete linked Ability boxes",
+    classPageProblems.length === 0,
+    classPageProblems.join("\n")
+  );
+
+  if (creditsPage) {
+    boaCheck(
+      checks,
+      "Credits references the Bane of Azeroth logo",
+      creditsHtml.includes(
+        "modules/bane-of-azeroth/"
+        + "assets/adventure/logo.webp"
+      )
+    );
+  }
+
+  if (playerOptions) {
+    boaCheckEqual(
+      checks,
+      "Character Options has exactly seven pages",
+      boaCollectionValues(
+        playerOptions.pages
+      ).length,
+      7
+    );
+    const orderedPageNames =
+      boaCollectionValues(
+        playerOptions.pages
+      )
+        .sort(
+          (left, right) =>
+            Number(left.sort ?? 0)
+            - Number(right.sort ?? 0)
+            || String(left.name ?? "")
+              .localeCompare(
+                String(right.name ?? "")
+              )
+        )
+        .map(page => page.name);
+    boaCheckEqual(
+      checks,
+      "Character Options page order starts with cover and introduction",
+      orderedPageNames,
+      [
+        "Illustration",
+        "Introduction",
+        "Kin",
+        "Derived Ratings",
+        "Heroic Class Abilities",
+        "Gear",
+        "Spells",
+      ]
+    );
+    boaCheckEqual(
+      checks,
+      "Character Options is in the blue Bane of Azeroth Journal folder",
+      {
+        name: playerOptions.folder?.name,
+        color: boaColorHex(
+          playerOptions.folder?.color
+        ),
+      },
+      {
+        name: "Bane of Azeroth",
+        color: "#0000ff",
+      }
+    );
+  }
+
+  const customWeaponFeatureLabels = {
+    freehanded: "Freehanded",
+    returning: "Returning",
+    ammunition: "Ammunition",
+    armorPiercing: "Armor Piercing",
+    scattershot: "Scattershot",
+  };
+  const featureLocalizationProblems = [];
+
+  for (
+    const [feature, expectedLabel]
+    of Object.entries(
+      customWeaponFeatureLabels
+    )
+  ) {
+    for (const namespace of [
+      "BOA",
+      "DoD",
+    ]) {
+      const key =
+        `${namespace}.weaponFeatureTypes.`
+        + feature;
+      const actual =
+        game.i18n.localize(key);
+
+      if (actual !== expectedLabel) {
+        featureLocalizationProblems.push(
+          `${key}: ${actual}`
+        );
+      }
+    }
+  }
+
+  boaCheck(
+    checks,
+    "Custom weapon features localize in Gear tables",
+    featureLocalizationProblems.length === 0,
+    featureLocalizationProblems.join("\n")
+  );
+
+  if (companionsPage) {
+    const companionProblems = [];
+    let previousCompanionIndex = -1;
+
+    boaCheckEqual(
+      checks,
+      "Companions page contains fourteen NPC cards",
+      occurrences(
+        companionsHtml,
+        "@DisplayNpcCard[Actor."
+      ),
+      companionDefinitions.length
+    );
+    boaCheck(
+      checks,
+      "Companions page uses full-width NPC cards",
+      occurrences(
+        companionsHtml,
+        '<div class="flexrow">'
+      ) === 0
+      && occurrences(
+        companionsHtml,
+        '<div style="width:50%">'
+      ) === 0
+    );
+    boaCheck(
+      checks,
+      "Companions introduction links the core Common Animals list",
+      companionsHtml.includes(
+        "@UUID[JournalEntry.RSi75ZLYMyFhBqPi."
+        + "JournalEntryPage.9gOpHO89C6YKsgH1]"
+        + "{list of such animals}"
+      )
+    );
+
+    for (const spec of [
+      ["crocolisk", "NH7xTDsdAaPgm0Xv", "Crocolisk"],
+      ["dragonhawk", "W7alXfXLGiNx7s7E", "Dragonhawk"],
+      ["giant-bat", "9da7224216cd2593", "Giant Bat"],
+      ["giant-owl", "7d6c7e2e4416f9a4", "Giant Owl"],
+      ["giant-spider", "8db68cb83b2f1331", "Giant Spider"],
+      ["gorilla", "OelrGFsAvekzqSQi", "Gorilla"],
+      ["large-cat", "d1067fe3dc538d79", "Large Cat"],
+      ["large-serpent", "um17JUy9CcBXlloq", "Large Serpent"],
+      ["raptor", "49c462b6c495e4a9", "Raptor"],
+      ["ravager", "9a7429aca7ad9296", "Ravager"],
+      ["scorpid", "0755558cf1561101", "Scorpid"],
+      ["tallstrider", "adfc46dd0aa95902", "Tallstrider"],
+      ["turtle", "9ff4f73ac72b45c4", "Turtle"],
+      ["wind-serpent", "be5c82639dabe7c1", "Wind Serpent"],
+    ]) {
+      const [key, id, name] = spec;
+      const marker =
+        `@DisplayNpcCard[Actor.${id}]`;
+      const markerCount =
+        occurrences(companionsHtml, marker);
+      const markerIndex =
+        companionsHtml.indexOf(marker);
+      const definition =
+        companionDefinitions.find(
+          companion => companion.key === key
+        );
+      const actor =
+        boaCollectionValues(game.actors).find(
+          candidate =>
+            boaContentKey(candidate)
+            === `actors.common-animals.${key}`
+        );
+
+      if (
+        !definition
+        || definition.id !== id
+        || definition.name !== name
+      ) {
+        companionProblems.push(
+          `${key}: source mismatch`
+        );
+      }
+      if (markerCount !== 1) {
+        companionProblems.push(
+          `${name}: NPC card count ${markerCount}`
+        );
+      }
+      if (markerIndex <= previousCompanionIndex) {
+        companionProblems.push(
+          `${name}: wrong Appendix A order`
+        );
+      }
+      previousCompanionIndex = markerIndex;
+
+      if (!actor) {
+        companionProblems.push(
+          `${key}: missing imported Actor`
+        );
+      } else if (
+        actor.id !== id
+        || actor.name !== name
+        || actor.type !== "npc"
+      ) {
+        companionProblems.push(
+          `${key}: ${actor.id}/${actor.name}/${actor.type}`
+        );
+      }
+    }
+
+    boaCheck(
+      checks,
+      "Companions page follows Appendix A book order",
+      companionProblems.length === 0,
+      companionProblems.join("\n")
+    );
+  }
+
+  if (demonsPage) {
+    const demonProblems = [];
+    let previousDemonIndex = -1;
+
+    boaCheckEqual(
+      checks,
+      "Demons page contains four Monster blocks",
+      occurrences(
+        demonsHtml,
+        "@DisplayMonster[Actor."
+      ),
+      demonDefinitions.length
+    );
+    boaCheckEqual(
+      checks,
+      "Demons page contains four attack tables",
+      occurrences(
+        demonsHtml,
+        "@DisplayTable[RollTable."
+      ),
+      demonDefinitions.length
+    );
+    boaCheck(
+      checks,
+      "Demons page uses full-width blocks",
+      occurrences(
+        demonsHtml,
+        '<div class="flexrow">'
+      ) === 0
+      && occurrences(
+        demonsHtml,
+        '<div style="width:50%">'
+      ) === 0
+    );
+    boaCheck(
+      checks,
+      "Demons page includes the book illustration",
+      occurrences(
+        demonsHtml,
+        "modules/bane-of-azeroth/"
+        + "assets/journals/demons/demons.webp"
+      ) === 1
+    );
+
+    for (const spec of [
+      [
+        "felhunter",
+        "syJzyyJogXrRtT8q",
+        "Felhunter",
+        "Y6MEcCH35zRiBNUw",
+        "Monster Attacks – Felhunter",
+      ],
+      [
+        "imp",
+        "Qi1FF2P06TdSMzMK",
+        "Imp",
+        "jCvoh99OvzeHfaFv",
+        "Monster Attacks – Imp",
+      ],
+      [
+        "sayaad",
+        "864KRsH0wP5fqVFi",
+        "Sayaad",
+        "3ZfDwi2LubfhYg8O",
+        "Monster Attacks – Sayaad",
+      ],
+      [
+        "voidwalker",
+        "sarzEcMOkSvjbci2",
+        "Voidwalker",
+        "xzXFOx5qZnY3FTT4",
+        "Monster Attacks – Voidwalker",
+      ],
+    ]) {
+      const [
+        key,
+        actorId,
+        name,
+        tableId,
+        tableName,
+      ] = spec;
+      const monsterMarker =
+        `@DisplayMonster[Actor.${actorId}]`
+        + `{${name}}`;
+      const tableMarker =
+        `@DisplayTable[RollTable.${tableId}]`
+        + `{${tableName}}`;
+      const monsterIndex =
+        demonsHtml.indexOf(monsterMarker);
+      const tableIndex =
+        demonsHtml.indexOf(tableMarker);
+      const definition =
+        demonDefinitions.find(
+          monster => monster.key === key
+        );
+      const actor =
+        boaCollectionValues(game.actors).find(
+          candidate =>
+            boaContentKey(candidate)
+            === `actors.summoned-monsters.${key}`
+        );
+      const table =
+        boaCollectionValues(game.tables).find(
+          candidate =>
+            boaContentKey(candidate)
+            === `tables.monster-attacks.${key}`
+        );
+
+      if (
+        !definition
+        || definition.id !== actorId
+        || definition.name !== name
+        || definition.attackTable?.id !== tableId
+        || definition.attackTable?.name !== tableName
+      ) {
+        demonProblems.push(
+          `${key}: source mismatch`
+        );
+      }
+
+      if (monsterIndex <= previousDemonIndex) {
+        demonProblems.push(
+          `${name}: wrong Appendix B order`
+        );
+      }
+      if (tableIndex <= monsterIndex) {
+        demonProblems.push(
+          `${name}: attack table not after monster`
+        );
+      }
+      previousDemonIndex = tableIndex;
+
+      if (!actor) {
+        demonProblems.push(
+          `${key}: missing imported Actor`
+        );
+      } else if (
+        actor.id !== actorId
+        || actor.name !== name
+        || actor.type !== "monster"
+      ) {
+        demonProblems.push(
+          `${key}: ${actor.id}/${actor.name}/${actor.type}`
+        );
+      }
+
+      if (!table) {
+        demonProblems.push(
+          `${key}: missing imported attack table`
+        );
+      } else if (
+        table.id !== tableId
+        || table.name !== tableName
+      ) {
+        demonProblems.push(
+          `${key}: ${table.id}/${table.name}`
+        );
+      }
+    }
+
+    boaCheck(
+      checks,
+      "Demons page follows Appendix B book order",
+      demonProblems.length === 0,
+      demonProblems.join("\n")
+    );
+  }
+
+  const itemProblems = [];
+
+  for (const kin of kinDefinitions) {
+    const contentKey = `kin.${kin.key}`;
+    const item = boaFindWorldItem(
+      contentKey,
+      "kin"
+    );
+
+    if (!item) {
+      itemProblems.push(`${contentKey}: missing`);
+    } else if (item.img !== kin.image) {
+      itemProblems.push(
+        `${contentKey}: ${item.img} != ${kin.image}`
+      );
+    }
+  }
+
+  for (const ability of abilityDefinitions) {
+    const contentKey =
+      "heroic-class-ability."
+      + `${ability.classKey}.`
+      + `${ability.key}`;
+    const item = boaFindWorldItem(
+      contentKey,
+      "ability"
+    );
+
+    if (!item) {
+      itemProblems.push(`${contentKey}: missing`);
+    } else if (item.img !== ability.image) {
+      itemProblems.push(
+        `${contentKey}: ${item.img} != ${ability.image}`
+      );
+    }
+  }
+
+  boaCheck(
+    checks,
+    "Imported Kin and Heroic Class Ability Items use their source icons",
+    itemProblems.length === 0,
+    itemProblems.join("\n")
+  );
+
+  const rulesReferenceSpecs = [
+    {
+      contentKey:
+        "ability.draconic-wings-falling",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.6WPxPxUjh4W80RNy"
+        + "#falling]{falling}",
+    },
+    {
+      contentKey: "ability.arcane-affinity",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.BHzSGEPaCGVadFsb."
+        + "JournalEntryPage.cvFSLoFtdJOQcxtU"
+        + "#magic-tricks]{Magic Tricks}",
+    },
+    {
+      contentKey: "ability.escape-artist",
+      page: "kin",
+      link:
+        "@UUID[Item.GiE0TwixaYnxFT6i]"
+        + "{Hard to Catch}",
+    },
+    {
+      contentKey: "ability.relentless",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.CJjqkHzpow39ViUi"
+        + "#death]{rally}",
+    },
+    {
+      contentKey: "ability.regeneration",
+      page: "kin",
+      link:
+        "@UUID[Item.SY62xmX9uBVml786]"
+        + "{Fast Healer}",
+    },
+    {
+      contentKey:
+        "ability.touch-of-the-grave",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.CJjqkHzpow39ViUi"
+        + "#death]{Death Roll}",
+    },
+    {
+      contentKey: "ability.luck",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.V4R4dCuKSK2mi8RF."
+        + "JournalEntryPage.eIQgHhYPUczg7kbZ"
+        + "#pushing-your-roll]"
+        + "{Pushing your Roll}",
+    },
+    {
+      contentKey: "ability.two-forms",
+      page: "kin",
+      link:
+        "@UUID[JournalEntry.BoAJrnlPlayerOpt."
+        + "JournalEntryPage.BoAPgPlayerKin01"
+        + "#human]{Human}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "death-knight.summon-ghoul",
+      page: "classes",
+      link:
+        "@UUID[Actor.GhoulAct6Kp9T2xP]"
+        + "{ghoul}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability.evoker.tailwind",
+      page: "classes",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.KrSXg7HKmfo7xRcI"
+        + "#movement]{dash}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "hunter.aimed-shot",
+      page: "classes",
+      link:
+        "@UUID[Item.J6l8QwCJhBirvg03]"
+        + "{Twin Shot}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "mage.mages-brilliance",
+      page: "classes",
+      link:
+        "@UUID[Item.RPnxXYVb8z7EG5Wl]"
+        + "{Sense Magic}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "monk.monks-serenity",
+      page: "classes",
+      link:
+        "@UUID[Item.O7p7ZWnZNgxP8PFw]"
+        + "{Iron Fist}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "rogue.roguish-cunning",
+      page: "classes",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.KrSXg7HKmfo7xRcI"
+        + "#sneak-attack]{sneak attack}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "rogue.envenom-weapons",
+      page: "classes",
+      link:
+        "@UUID[JournalEntry.SbbSMsuvWeo3HaID."
+        + "JournalEntryPage.6WPxPxUjh4W80RNy"
+        + "#poison]{poison}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "warlock.warlocks-ambition",
+      page: "classes",
+      link:
+        "@UUID[JournalEntry.BHzSGEPaCGVadFsb."
+        + "JournalEntryPage.C0stUmhj95JFgL4f"
+        + "#power-level]"
+        + "{Power from the Body}",
+    },
+    {
+      contentKey:
+        "heroic-class-ability."
+        + "warrior.warriors-rage",
+      page: "classes",
+      link:
+        "@UUID[Item.JrQqkQrSOFJzR7H9]"
+        + "{Dual Wield}",
+    },
+  ];
+
+  const ruleLinkProblems = [];
+
+  for (const spec of rulesReferenceSpecs) {
+    const item = boaFindWorldItem(
+      spec.contentKey,
+      "ability"
+    );
+    const itemHtml =
+      item?.system?.itemDescription ?? "";
+    const pageHtml =
+      spec.page === "kin"
+        ? kinHtml
+        : classesHtml;
+
+    if (!item) {
+      ruleLinkProblems.push(
+        `${spec.contentKey}: missing Item`
+      );
+    } else if (
+      occurrences(itemHtml, spec.link) !== 1
+    ) {
+      ruleLinkProblems.push(
+        `${spec.contentKey}: Item link count `
+        + `${occurrences(itemHtml, spec.link)}`
+      );
+    }
+
+    if (
+      occurrences(pageHtml, spec.link) !== 1
+    ) {
+      ruleLinkProblems.push(
+        `${spec.contentKey}: Journal link count `
+        + `${occurrences(pageHtml, spec.link)}`
+      );
+    }
+  }
+
+  boaCheck(
+    checks,
+    "Ability and Journal rule links are present",
+    ruleLinkProblems.length === 0,
+    ruleLinkProblems.join("\n")
+  );
+
+  const ghoulActor =
+    game.actors.get("GhoulAct6Kp9T2xP");
+  boaCheck(
+    checks,
+    "Ghoul rule link targets the imported Actor",
+    Boolean(
+      ghoulActor
+      && ghoulActor.name === "Ghoul"
+    ),
+    ghoulActor?.name ?? "missing"
+  );
+
+  const soulsCollector =
+    boaFindWorldItem(
+      "heroic-class-ability."
+      + "warlock.souls-collector",
+      "ability"
+    );
+  const soulsHtml =
+    soulsCollector?.system
+      ?.itemDescription ?? "";
+  boaCheck(
+    checks,
+    "Souls Collector uses an inline D3 roll",
+    soulsHtml.includes(
+      "recover [[/roll D3]] WP"
+    )
+    && classesHtml.includes(
+      "recover [[/roll D3]] WP"
+    ),
+    soulsHtml
+  );
+
+  const demonologist =
+    boaFindWorldItem(
+      "heroic-class-ability."
+      + "warlock.demonologist",
+      "ability"
+    );
+  const demonologistHtml =
+    demonologist?.system
+      ?.itemDescription ?? "";
+  boaCheck(
+    checks,
+    "Demonologist no longer references a missing appendix",
+    demonologistHtml.includes(
+      "summon a demon into an empty space"
+    )
+    && !demonologistHtml.includes(
+      "Appendix B in this book"
+    )
+    && !classesHtml.includes(
+      "Appendix B in this book"
+    ),
+    demonologistHtml
+  );
+
+  const kinTables = boaCollectionValues(
+    game.tables
+  ).filter(
+    table =>
+      boaContentKey(table).startsWith(
+        "tables.kin."
+      )
+  );
+  const nameTables = kinTables.filter(
+    table =>
+      boaContentKey(table).startsWith(
+        "tables.kin.name."
+      )
+  );
+  const documentTables = kinTables.filter(
+    table =>
+      !boaContentKey(table).startsWith(
+        "tables.kin.name."
+      )
+  );
+
+  boaCheckEqual(
+    checks,
+    "Imported world contains 19 Kin RollTables",
+    kinTables.length,
+    19
+  );
+  boaCheckEqual(
+    checks,
+    "Imported world contains 16 Kin name tables",
+    nameTables.length,
+    16
+  );
+  boaCheckEqual(
+    checks,
+    "Imported world contains 3 linked Kin tables",
+    documentTables.length,
+    3
+  );
+
+  const textProblems = [];
+  const linkProblems = [];
+  let textResultCount = 0;
+  let linkedResultCount = 0;
+
+  for (const table of nameTables) {
+    for (
+      const result
+      of boaCollectionValues(table.results)
+    ) {
+      textResultCount += 1;
+
+      if (
+        result.type !== "text"
+        || String(result.description ?? "")
+          .trim() === ""
+        || String(result.name ?? "") !== ""
+      ) {
+        textProblems.push(
+          `${table.name}: ${result.id ?? "unknown"}`
+        );
+      }
+    }
+  }
+
+  for (const table of documentTables) {
+    for (
+      const result
+      of boaCollectionValues(table.results)
+    ) {
+      if (result.type !== "document") {
+        linkProblems.push(
+          `${table.name}: non-document result`
+        );
+        continue;
+      }
+
+      linkedResultCount += 1;
+      const document = await fromUuid(
+        result.documentUuid
+      );
+
+      if (!document) {
+        linkProblems.push(
+          `${table.name}: ${result.documentUuid}`
+        );
+      } else if (document.img !== result.img) {
+        linkProblems.push(
+          `${table.name}: icon differs from `
+          + `${result.documentUuid}`
+        );
+      }
+    }
+  }
+
+  boaCheck(
+    checks,
+    "Kin name table results contain visible text",
+    textResultCount > 0
+    && textProblems.length === 0,
+    textProblems.join("\n")
+  );
+  boaCheck(
+    checks,
+    "Kin document results resolve and use linked Item icons",
+    linkedResultCount > 0
+    && linkProblems.length === 0,
+    linkProblems.join("\n")
+  );
+
+  const htmlPaths = new Set();
+
+  for (
+    const journal
+    of boaCollectionValues(game.journal)
+  ) {
+    if (
+      !boaContentKey(journal).startsWith(
+        "journal."
+      )
+    ) {
+      continue;
+    }
+
+    for (
+      const page
+      of boaCollectionValues(journal.pages)
+    ) {
+      for (
+        const path
+        of htmlAssetPaths(
+          page.text?.content
+        )
+      ) {
+        htmlPaths.add(path);
+      }
+    }
+  }
+
+  const requiredAssets = new Set([
+    ...manifestAssets
+      .map(asset => asset.modulePath)
+      .filter(
+        path =>
+          typeof path === "string"
+      ),
+    ...iconPaths,
+    ...htmlPaths,
+  ]);
+
+  const invalidPaths = [
+    ...requiredAssets,
+  ].filter(
+    path =>
+      !path.startsWith(
+        "modules/bane-of-azeroth/"
+      )
+  );
+
+  boaCheck(
+    checks,
+    "All tested assets belong to the module",
+    invalidPaths.length === 0,
+    invalidPaths.join("\n")
+  );
+
+  const assetResults = await Promise.all(
+    [...requiredAssets]
+      .sort()
+      .map(probeAsset)
+  );
+  const missingAssets = assetResults.filter(
+    result => !result.ok
+  );
+
+  boaCheck(
+    checks,
+    "All manifest, journal, Kin, and class assets are available",
+    missingAssets.length === 0,
+    missingAssets
+      .map(
+        result =>
+          `${result.path}: `
+          + `${result.status} `
+          + `${result.statusText}`
+      )
+      .join("\n")
+  );
+
+  notes.push(
+    `${assetResults.length} unique assets checked.`
+  );
+  notes.push(
+    `${linkedResultCount} linked Kin results checked.`
+  );
+  notes.push(
+    `${textResultCount} Kin name results checked.`
+  );
+} catch (error) {
+  boaCheck(
+    checks,
+    "Asset and Journal verification completed",
+    false,
+    error.stack ?? error.message
+  );
+}
+
+return boaFinish(
+  "assets-journals",
+  "BOA DEV – Verify Assets and Journals",
+  checks,
+  notes
+);

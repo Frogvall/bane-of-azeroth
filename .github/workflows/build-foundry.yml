@@ -1,0 +1,502 @@
+name: Build Foundry package
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "foundry/**"
+      - "generated/**"
+      - "tests/**"
+      - "package.json"
+      - "package-lock.json"
+      - "vitest.config.js"
+      - "tools/package-foundry.sh"
+      - "tools/generate-*.py"
+      - "tools/foundry-stable-release.py"
+      - ".github/workflows/build-foundry.yml"
+      - ".github/workflows/release-foundry.yml"
+      - ".github/workflows/release-foundry-rc.yml"
+
+  workflow_dispatch:
+
+concurrency:
+  group: build-foundry-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: ghcr.io/frogvall/bane-of-azeroth-fvtt-cli
+  IMAGE_VERSION: "3.0.4"
+
+jobs:
+
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install test dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: |
+          mkdir -p test-results
+          npm run test:coverage
+
+      - name: Upload unit test report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: unit-test-results
+          path: test-results/junit.xml
+          if-no-files-found: ignore
+          retention-days: 30
+
+
+      - name: Publish coverage summary
+        if: ${{ always() }}
+        run: node tests/write-coverage-summary.mjs >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: unit-test-coverage
+          path: coverage/
+          if-no-files-found: ignore
+          retention-days: 30
+
+  resolve-image:
+    name: Resolve build image
+
+    runs-on: ubuntu-24.04
+
+    outputs:
+      image: ${{ steps.meta.outputs.tags }}
+
+    steps:
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch,prefix=${{ env.IMAGE_VERSION }}-,enable=${{ github.ref_name != github.event.repository.default_branch }}
+            type=raw,value=${{ env.IMAGE_VERSION }},enable=${{ github.ref_name == github.event.repository.default_branch }}
+
+      - name: Show selected image
+        run: echo '${{ steps.meta.outputs.tags }}'
+
+  build:
+    name: Build package
+
+    needs:
+      - resolve-image
+      - unit-tests
+
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+      packages: read
+
+    outputs:
+      artifact_name: ${{ steps.package.outputs.artifact_name }}
+      branch_slug: ${{ steps.package.outputs.branch_slug }}
+      release_tag: ${{ steps.package.outputs.release_tag }}
+      build_version: ${{ steps.package.outputs.build_version }}
+      manifest_url: ${{ steps.package.outputs.manifest_url }}
+      download_url: ${{ steps.package.outputs.download_url }}
+
+    container:
+      image: ${{ needs.resolve-image.outputs.image }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Configure Foundry package
+        id: package
+        run: |
+          set -euo pipefail
+
+          module_json="foundry/module.json"
+
+          if [[ ! -f "$module_json" ]]; then
+            echo "Missing module manifest: $module_json" >&2
+            exit 1
+          fi
+
+          # The source manifest must remain channel-neutral.
+          if jq -e '
+            has("manifest") or has("download")
+          ' "$module_json" >/dev/null; then
+            echo \
+              "foundry/module.json must not contain manifest or download fields." \
+              >&2
+            exit 1
+          fi
+
+          source_version="$(jq -er '.version' "$module_json")"
+
+          if [[ ! "$source_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo \
+              "Expected source version in MAJOR.MINOR.PATCH format, got: ${source_version}" \
+              >&2
+            exit 1
+          fi
+
+          branch_slug="$(
+            printf '%s' "$GITHUB_REF_NAME" |
+              tr '[:upper:]' '[:lower:]' |
+              sed -E '
+                s/[^a-z0-9]+/-/g
+                s/^-+//
+                s/-+$//
+              '
+          )"
+
+          if [[ -z "$branch_slug" ]]; then
+            echo \
+              "Could not derive a package channel from branch: ${GITHUB_REF_NAME}" \
+              >&2
+            exit 1
+          fi
+
+          release_tag="branch-${branch_slug}"
+
+          build_version="${source_version}-${branch_slug}.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
+
+          repository_url="https://github.com/${GITHUB_REPOSITORY}"
+
+          manifest_url="${repository_url}/releases/download/${release_tag}/module.json"
+          download_url="${repository_url}/releases/download/${release_tag}/bane-of-azeroth.zip"
+
+          artifact_name="bane-of-azeroth-${branch_slug}"
+
+          {
+            echo "BOA_BUILD_VERSION=${build_version}"
+            echo "BOA_MANIFEST_URL=${manifest_url}"
+            echo "BOA_DOWNLOAD_URL=${download_url}"
+            echo "BOA_ZIP_NAME=bane-of-azeroth.zip"
+            echo "BOA_INCLUDE_DEV_TESTS=${{ github.ref_type == 'branch' && github.ref_name != github.event.repository.default_branch }}"
+          } >> "$GITHUB_ENV"
+
+          {
+            echo "artifact_name=${artifact_name}"
+            echo "branch_slug=${branch_slug}"
+            echo "release_tag=${release_tag}"
+            echo "build_version=${build_version}"
+            echo "manifest_url=${manifest_url}"
+            echo "download_url=${download_url}"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Foundry development build"
+            echo
+            echo "- Branch: \`${GITHUB_REF_NAME}\`"
+            echo "- Channel: \`${branch_slug}\`"
+            echo "- Source version: \`${source_version}\`"
+            echo "- Package version: \`${build_version}\`"
+            echo "- Rolling release tag: \`${release_tag}\`"
+            echo "- Manifest: \`${manifest_url}\`"
+            echo "- Download: \`${download_url}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "Branch:          $GITHUB_REF_NAME"
+          echo "Channel:         $branch_slug"
+          echo "Source version:  $source_version"
+          echo "Build version:   $build_version"
+          echo "Release tag:     $release_tag"
+          echo "Manifest URL:    $manifest_url"
+          echo "Download URL:    $download_url"
+      - name: Verify generated Foundry content
+        run: |
+          set -euo pipefail
+          python3 tools/check-foundry-generators.py
+
+      - name: Build Foundry package
+        run: |
+          set -euo pipefail
+          bash tools/package-foundry.sh
+
+      - name: Export and validate generated manifest
+        run: |
+          set -euo pipefail
+
+          zip_file="dist/bane-of-azeroth.zip"
+          manifest_file="dist/module.json"
+          expected_module_id="bane-of-azeroth"
+          expected_module_title="Bane of Azeroth"
+          if [[ "$BOA_INCLUDE_DEV_TESTS" == "true" ]]; then
+            expected_module_id="bane-of-azeroth-dev"
+            expected_module_title="Bane of Azeroth - Development"
+          fi
+
+          if [[ ! -f "$zip_file" ]]; then
+            echo "Missing generated package: $zip_file" >&2
+            exit 1
+          fi
+
+          unzip -p "$zip_file" module.json > "$manifest_file"
+
+          jq -e \
+            --arg moduleId "$expected_module_id" \
+            --arg moduleTitle "$expected_module_title" \
+            --arg version "$BOA_BUILD_VERSION" \
+            --arg manifest "$BOA_MANIFEST_URL" \
+            --arg download "$BOA_DOWNLOAD_URL" \
+            '
+              .id == $moduleId
+              and .title == $moduleTitle
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            ' \
+            "$manifest_file" >/dev/null
+
+          unzip -t "$zip_file"
+
+          (
+            cd dist
+            sha256sum bane-of-azeroth.zip \
+              > bane-of-azeroth.zip.sha256
+          )
+
+          echo "Generated manifest:"
+
+          jq '{
+            id,
+            title,
+            version,
+            manifest,
+            download
+          }' "$manifest_file"
+
+          echo
+          cat dist/bane-of-azeroth.zip.sha256
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.package.outputs.artifact_name }}
+          path: |
+            dist/bane-of-azeroth.zip
+            dist/module.json
+            dist/bane-of-azeroth.zip.sha256
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+  publish-prerelease:
+    name: Publish rolling prerelease
+
+    needs:
+      - build
+
+    if: >-
+      ${{
+        needs.build.result == 'success'
+        && github.ref_type == 'branch'
+        && github.ref_name != github.event.repository.default_branch
+      }}
+
+    runs-on: ubuntu-24.04
+
+    permissions:
+      actions: read
+      contents: write
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+
+      ARTIFACT_NAME: ${{ needs.build.outputs.artifact_name }}
+      BRANCH_SLUG: ${{ needs.build.outputs.branch_slug }}
+      RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+      BUILD_VERSION: ${{ needs.build.outputs.build_version }}
+      MANIFEST_URL: ${{ needs.build.outputs.manifest_url }}
+      DOWNLOAD_URL: ${{ needs.build.outputs.download_url }}
+
+    steps:
+      - name: Download built package
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ needs.build.outputs.artifact_name }}
+          path: release
+
+      - name: Validate downloaded package
+        run: |
+          set -euo pipefail
+
+          test -f release/bane-of-azeroth.zip
+          test -f release/module.json
+          test -f release/bane-of-azeroth.zip.sha256
+
+          jq -e \
+            --arg moduleId "bane-of-azeroth-dev" \
+            --arg moduleTitle "Bane of Azeroth - Development" \
+            --arg version "$BUILD_VERSION" \
+            --arg manifest "$MANIFEST_URL" \
+            --arg download "$DOWNLOAD_URL" \
+            '
+              .id == $moduleId
+              and .title == $moduleTitle
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            ' \
+            release/module.json >/dev/null
+
+          (
+            cd release
+            sha256sum -c bane-of-azeroth.zip.sha256
+          )
+
+          unzip -t release/bane-of-azeroth.zip
+
+      - name: Generate prerelease notes
+        run: |
+          set -euo pipefail
+
+          cat > release/RELEASE_NOTES.md <<EOF
+          Automated rolling development release for the \`${GITHUB_REF_NAME}\` branch.
+
+          - Package version: \`${BUILD_VERSION}\`
+          - Branch: \`${GITHUB_REF_NAME}\`
+          - Commit: \`${GITHUB_SHA}\`
+          - Workflow run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+
+          This is a prerelease intended for development and testing.
+          It is replaced whenever a newer build is published from the same branch.
+          EOF
+
+      - name: Replace rolling prerelease
+        run: |
+          set -euo pipefail
+
+          echo "Publishing rolling prerelease: $RELEASE_TAG"
+
+          # Remove the previous rolling release and its movable branch tag.
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release delete \
+              "$RELEASE_TAG" \
+              --cleanup-tag \
+              --yes
+          fi
+
+          # Clean up an orphaned tag left without a release.
+          if gh api \
+            "repos/${GITHUB_REPOSITORY}/git/ref/tags/${RELEASE_TAG}" \
+            >/dev/null 2>&1; then
+            gh api \
+              --method DELETE \
+              "repos/${GITHUB_REPOSITORY}/git/refs/tags/${RELEASE_TAG}"
+          fi
+
+          gh release create \
+            "$RELEASE_TAG" \
+            release/module.json \
+            release/bane-of-azeroth.zip \
+            release/bane-of-azeroth.zip.sha256 \
+            --target "$GITHUB_SHA" \
+            --title "Bane of Azeroth ${BUILD_VERSION}" \
+            --notes-file release/RELEASE_NOTES.md \
+            --prerelease \
+            --latest=false
+
+      - name: Verify published prerelease
+        run: |
+          set -euo pipefail
+
+          verify_dir="$(mktemp -d)"
+          trap 'rm -rf "$verify_dir"' EXIT
+
+          release_json="$(
+            gh release view "$RELEASE_TAG" \
+              --json url,isDraft,isPrerelease,assets
+          )"
+
+          echo "$release_json" |
+            jq -e '
+              .isDraft == false
+              and .isPrerelease == true
+              and ([.assets[].name] | index("module.json")) != null
+              and ([.assets[].name] | index("bane-of-azeroth.zip")) != null
+              and ([.assets[].name] | index("bane-of-azeroth.zip.sha256")) != null
+            ' >/dev/null
+
+          gh release download \
+            "$RELEASE_TAG" \
+            --pattern "module.json" \
+            --dir "$verify_dir"
+
+          gh release download \
+            "$RELEASE_TAG" \
+            --pattern "bane-of-azeroth.zip" \
+            --dir "$verify_dir"
+
+          jq -e \
+            --arg moduleId "bane-of-azeroth-dev" \
+            --arg moduleTitle "Bane of Azeroth - Development" \
+            --arg version "$BUILD_VERSION" \
+            --arg manifest "$MANIFEST_URL" \
+            --arg download "$DOWNLOAD_URL" \
+            '
+              .id == $moduleId
+              and .title == $moduleTitle
+              and .version == $version
+              and .manifest == $manifest
+              and .download == $download
+            ' \
+            "$verify_dir/module.json" >/dev/null
+
+          expected_checksum="$(
+            awk '{print $1}' release/bane-of-azeroth.zip.sha256
+          )"
+
+          actual_checksum="$(
+            sha256sum "$verify_dir/bane-of-azeroth.zip" |
+              awk '{print $1}'
+          )"
+
+          if [[ "$actual_checksum" != "$expected_checksum" ]]; then
+            echo "Published package checksum does not match." >&2
+            echo "Expected: $expected_checksum" >&2
+            echo "Actual:   $actual_checksum" >&2
+            exit 1
+          fi
+
+          release_url="$(
+            echo "$release_json" |
+              jq -r '.url'
+          )"
+
+          {
+            echo
+            echo "### Published prerelease"
+            echo
+            echo "- Release: ${release_url}"
+            echo "- Manifest: \`${MANIFEST_URL}\`"
+            echo "- Download: \`${DOWNLOAD_URL}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "Release:  $release_url"
+          echo "Manifest: $MANIFEST_URL"
+          echo "Download: $DOWNLOAD_URL"

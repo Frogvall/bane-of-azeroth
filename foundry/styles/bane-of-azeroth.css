@@ -1,0 +1,299 @@
+input.boa-always-prepared[type="checkbox"] {
+  accent-color: #777 !important;
+  filter: grayscale(1);
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.boa-death-knight-rune-slot {
+  display: inline-flex;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.3rem;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  text-decoration: none;
+  line-height: 1;
+}
+
+a.boa-death-knight-rune-slot {
+  cursor: pointer;
+}
+
+a.boa-death-knight-rune-slot:hover,
+a.boa-death-knight-rune-slot:focus {
+  border-color: currentColor;
+  text-shadow: none;
+}
+
+.boa-death-knight-rune-slot.active img {
+  width: 1.15rem;
+  height: 1.15rem;
+  object-fit: cover;
+  border: 0;
+}
+
+.boa-death-knight-rune-slot.empty {
+  opacity: 0.55;
+}
+
+.boa-death-knight-rune-empty-marker {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.boa-death-knight-rune-picker {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.boa-death-knight-rune-picker .hint {
+  margin: 0 0 0.4rem;
+}
+
+.boa-death-knight-rune-choice {
+  display: grid;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.35rem;
+  cursor: pointer;
+}
+
+.boa-death-knight-rune-choice img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  border: 0;
+}
+
+.boa-death-knight-rune-choice-clear {
+  min-height: 2rem;
+}
+
+.boa-death-knight-rune-choice {
+  grid-template-columns: auto 2rem minmax(0, 1fr);
+}
+
+.boa-death-knight-rune-choice-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.boa-death-knight-rune-description {
+  font-weight: 400;
+  line-height: 1.25;
+  opacity: 0.82;
+}
+
+.boa-death-knight-rune-choice-clear {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+.boa-druid-form-artwork-controls {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+  margin: 0.2rem 0 0.3rem;
+}
+
+.boa-druid-form-artwork-button {
+  display: inline-flex;
+  position: relative;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.boa-druid-form-switch-button {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.boa-druid-form-artwork-dialog {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.boa-druid-artwork-tab-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.boa-druid-artwork-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0 0 0.6rem;
+}
+
+.boa-druid-artwork-tab {
+  flex: 1 1 auto;
+  min-width: 5.5rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--color-border-light-primary, #8c7b69);
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.boa-druid-artwork-panels {
+  min-height: 22rem;
+}
+
+.boa-druid-artwork-panel {
+  display: none;
+  min-height: 22rem;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border-light-primary, #8c7b69);
+  border-radius: 5px;
+}
+
+#boa-druid-artwork-tab-travelPl1:checked
+  ~ .boa-druid-artwork-tabs
+  label[for="boa-druid-artwork-tab-travelPl1"],
+#boa-druid-artwork-tab-travelPl2:checked
+  ~ .boa-druid-artwork-tabs
+  label[for="boa-druid-artwork-tab-travelPl2"],
+#boa-druid-artwork-tab-travelPl3:checked
+  ~ .boa-druid-artwork-tabs
+  label[for="boa-druid-artwork-tab-travelPl3"],
+#boa-druid-artwork-tab-bear:checked
+  ~ .boa-druid-artwork-tabs
+  label[for="boa-druid-artwork-tab-bear"],
+#boa-druid-artwork-tab-cat:checked
+  ~ .boa-druid-artwork-tabs
+  label[for="boa-druid-artwork-tab-cat"],
+#boa-druid-artwork-tab-tree:checked
+  ~ .boa-druid-artwork-tabs
+  label[for="boa-druid-artwork-tab-tree"],
+#boa-druid-artwork-tab-moonkin:checked
+  ~ .boa-druid-artwork-tabs
+  label[for="boa-druid-artwork-tab-moonkin"] {
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+#boa-druid-artwork-tab-travelPl1:checked
+  ~ .boa-druid-artwork-panels
+  [data-profile-key="travelPl1"],
+#boa-druid-artwork-tab-travelPl2:checked
+  ~ .boa-druid-artwork-panels
+  [data-profile-key="travelPl2"],
+#boa-druid-artwork-tab-travelPl3:checked
+  ~ .boa-druid-artwork-panels
+  [data-profile-key="travelPl3"],
+#boa-druid-artwork-tab-bear:checked
+  ~ .boa-druid-artwork-panels
+  [data-profile-key="bear"],
+#boa-druid-artwork-tab-cat:checked
+  ~ .boa-druid-artwork-panels
+  [data-profile-key="cat"],
+#boa-druid-artwork-tab-tree:checked
+  ~ .boa-druid-artwork-panels
+  [data-profile-key="tree"],
+#boa-druid-artwork-tab-moonkin:checked
+  ~ .boa-druid-artwork-panels
+  [data-profile-key="moonkin"] {
+  display: block;
+}
+
+.boa-druid-artwork-previews {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.boa-druid-artwork-image-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.boa-druid-artwork-preview {
+  display: flex;
+  height: 12rem;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--color-border-light-primary, #8c7b69);
+  border-radius: 4px;
+  background: rgb(0 0 0 / 18%);
+}
+
+.boa-druid-artwork-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: 0;
+}
+
+.boa-druid-artwork-reset {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.boa-druid-form-lifecycle-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  margin: 0 0 0.35rem;
+}
+
+.boa-druid-form-lifecycle-controls .boa-druid-form-switch-button {
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/*
+ * Shadowform is intentionally static: no animation, image replacement,
+ * or persisted token/portrait presentation changes.
+ */
+.boa-shadowform-active img.profile-img,
+.boa-shadowform-active img[data-edit="img"] {
+  filter:
+    grayscale(0.72)
+    brightness(0.48)
+    sepia(0.28)
+    hue-rotate(224deg)
+    saturate(1.85);
+  opacity: 0.9;
+  box-shadow: 0 0 0.65rem rgb(96 56 145 / 55%);
+}

@@ -1,0 +1,40 @@
+{
+  "folder": "oTSQflRYChUu3iG2",
+  "name": "Chosen of Elune",
+  "type": "ability",
+  "_id": "jSyoPlsXX9CcOBQi",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
+  "system": {
+    "itemDescription": "<p>You know the general spell @UUID[Item.StarsInc6AbCdE7f]{Incarnation of the Stars}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Druidic Awakening",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.druid.chosen-of-elune",
+      "grantsSpell": "spells.incarnation-of-the-stars"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

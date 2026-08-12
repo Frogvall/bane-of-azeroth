@@ -1,0 +1,65 @@
+{
+  "name": "Monster Attacks – Imp",
+  "img": "systems/dragonbane/art/icons/monster-attack.webp",
+  "description": "",
+  "results": [
+    {
+      "type": "text",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "5GHAMcxjMhLKmyRU",
+      "img": "systems/dragonbane/art/icons/monster-attack.webp",
+      "flags": {
+        "bane-of-azeroth": {
+          "monsterAttack": {
+            "schemaVersion": 1,
+            "key": "firebolt"
+          }
+        }
+      },
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "dragonbane",
+        "systemVersion": "4.0.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "description": "<b>Firebolt.</b> Automatically hits a target within 20 meters (but can be dodged or parried with a shield) and inflicts [[/damage 2D4]] damage.",
+      "name": ""
+    }
+  ],
+  "formula": "1",
+  "replacement": true,
+  "displayRoll": false,
+  "folder": "MonstAtk8vN3Qx2P",
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {},
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-summoned-monsters.py",
+      "contentKey": "tables.monster-attacks.imp"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "jCvoh99OvzeHfaFv"
+}

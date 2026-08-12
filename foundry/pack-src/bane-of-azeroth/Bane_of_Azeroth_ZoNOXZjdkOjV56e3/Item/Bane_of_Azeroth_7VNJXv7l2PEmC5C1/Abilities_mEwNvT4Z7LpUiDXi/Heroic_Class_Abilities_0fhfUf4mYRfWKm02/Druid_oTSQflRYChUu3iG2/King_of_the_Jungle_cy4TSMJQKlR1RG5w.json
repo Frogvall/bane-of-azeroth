@@ -1,0 +1,40 @@
+{
+  "folder": "oTSQflRYChUu3iG2",
+  "name": "King of the Jungle",
+  "type": "ability",
+  "_id": "cy4TSMJQKlR1RG5w",
+  "img": "modules/bane-of-azeroth/assets/icons/classes/druid.webp",
+  "system": {
+    "itemDescription": "<p>You know the general spell @UUID[Item.FeralInc2OpQrS3t]{Feral Incarnation}. This spell is always prepared and does not count toward the number of spells you can hold prepared in your memory.</p>",
+    "gmDescription": "",
+    "abilityType": "",
+    "requirement": "Druidic Awakening",
+    "wp": "",
+    "boons": "",
+    "secondaryAttribute": "none",
+    "secondaryAttributeBonus": 0
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-heroic-class-abilities.py",
+      "contentKey": "heroic-class-ability.druid.king-of-the-jungle",
+      "grantsSpell": "spells.feral-incarnation"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

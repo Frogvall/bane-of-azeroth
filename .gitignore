@@ -3,3 +3,19 @@ dist/
 module.json.backup-*
 .DS_Store
 Thumbs.db
+__pycache__
+
+# Temporary python scripts
+apply-*.py
+patch-*.py
+fix-*.py
+refactor-*.py
+repair-*.py
+
+# LevelDB runtime and diagnostic files
+foundry/packs/
+node_modules/
+coverage/
+.vitest/
+
+test-results/
