@@ -25,6 +25,7 @@ def fixture_item(
     *,
     system_value: int | None = None,
     system_worn: bool | None = None,
+    reuse_existing: bool = False,
 ) -> dict[str, object]:
     data: dict[str, object] = {
         "key": key,
@@ -37,6 +38,8 @@ def fixture_item(
         data["systemValue"] = system_value
     if system_worn is not None:
         data["systemWorn"] = system_worn
+    if reuse_existing:
+        data["reuseExisting"] = True
     return data
 
 
@@ -222,6 +225,7 @@ ACTORS = [
                 "Languages",
                 "skill",
                 system_value=10,
+                reuse_existing=True,
             ),
             fixture_item(
                 "mages-brilliance",
@@ -487,6 +491,16 @@ def validate_definitions() -> None:
                         "Fixture weapon systemWorn must be boolean: "
                         f"{key}/{item_key}"
                     )
+
+            reuse_existing = item.get("reuseExisting")
+            if (
+                reuse_existing is not None
+                and not isinstance(reuse_existing, bool)
+            ):
+                raise SystemExit(
+                    "Fixture reuseExisting must be boolean: "
+                    f"{key}/{item_key}"
+                )
 
 def actor_document(definition: dict[str, object]) -> dict[str, object]:
     document_id = str(definition["id"])

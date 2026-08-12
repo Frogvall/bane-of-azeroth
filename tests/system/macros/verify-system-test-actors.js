@@ -23,16 +23,28 @@ function worldActorsNamed(name) {
     .filter(actor => actor.name === name);
 }
 
-function actorItem(
+function actorItems(
   actor,
   name,
   type = null,
 ) {
   return boaCollectionValues(actor?.items)
-    .find(item =>
+    .filter(item =>
       item.name === name &&
       (!type || item.type === type)
-    ) ?? null;
+    );
+}
+
+function actorItem(
+  actor,
+  name,
+  type = null,
+) {
+  return actorItems(
+    actor,
+    name,
+    type,
+  )[0] ?? null;
 }
 
 const managedActors = boaCollectionValues(game.actors)
@@ -236,10 +248,19 @@ boaCheck(
   ),
 );
 
-const mageLanguages = actorItem(
+const mageLanguagesItems = actorItems(
   mage,
   "Languages",
   "skill",
+);
+const mageLanguages =
+  mageLanguagesItems[0] ?? null;
+
+boaCheckEqual(
+  checks,
+  "Mage has exactly one Languages skill",
+  mageLanguagesItems.length,
+  1,
 );
 boaCheck(
   checks,

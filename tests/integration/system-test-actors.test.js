@@ -235,6 +235,34 @@ describe(
     );
 
     test(
+      "reuses Dragonbane-provided core skills instead of duplicating Languages",
+      () => {
+        const generator = text(GENERATOR);
+        const runtime = text(RUNTIME);
+
+        expect(generator).toContain(
+          "reuse_existing=True",
+        );
+        expect(generator).toContain(
+          'data["reuseExisting"] = True',
+        );
+
+        for (const marker of [
+          "reusableActorItemForDescriptor",
+          "descriptor?.reuseExisting !== true",
+          "getFlag(item, MANAGED_ITEM_FLAG) !== true",
+          "item.name === descriptor.name",
+          "item.type === descriptor.type",
+          "managedDuplicateIds",
+          "fixtureOverrideUpdateData",
+          "fixtureOverridesNeedUpdate",
+        ]) {
+          expect(runtime).toContain(marker);
+        }
+      },
+    );
+
+    test(
       "packages the Actor pack only in development builds",
       () => {
         const source = text(PACKAGE_SCRIPT);

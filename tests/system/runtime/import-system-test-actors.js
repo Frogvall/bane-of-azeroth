@@ -311,6 +311,61 @@
     return data;
   }
 
+  function reusableActorItemForDescriptor(
+    actor,
+    descriptor,
+  ) {
+    if (descriptor?.reuseExisting !== true) {
+      return null;
+    }
+
+    return collectionValues(actor.items)
+      .find(item =>
+        getFlag(item, MANAGED_ITEM_FLAG) !== true &&
+        item.name === descriptor.name &&
+        item.type === descriptor.type
+      ) ?? null;
+  }
+
+  function fixtureOverrideUpdateData(
+    existing,
+    descriptor,
+  ) {
+    const data = {
+      _id: existing.id,
+    };
+
+    if (descriptor?.systemValue !== undefined) {
+      data["system.value"] =
+        Number(descriptor.systemValue);
+    }
+
+    if (descriptor?.systemWorn !== undefined) {
+      data["system.worn"] =
+        descriptor.systemWorn;
+    }
+
+    return data;
+  }
+
+  function fixtureOverridesNeedUpdate(
+    existing,
+    descriptor,
+  ) {
+    return (
+      (
+        descriptor?.systemValue !== undefined &&
+        Number(existing.system?.value) !==
+          Number(descriptor.systemValue)
+      ) ||
+      (
+        descriptor?.systemWorn !== undefined &&
+        Boolean(existing.system?.worn) !==
+          descriptor.systemWorn
+      )
+    );
+  }
+
   async function reconcileFixtureItems(
     actor,
     source,
@@ -353,6 +408,47 @@
           actor,
           descriptor,
         );
+      const reusableExisting =
+        reusableActorItemForDescriptor(
+          actor,
+          descriptor,
+        );
+
+      if (reusableExisting) {
+        const managedDuplicateIds =
+          matchingManagedItems
+            .map(item => item.id);
+
+        if (managedDuplicateIds.length > 0) {
+          await actor.deleteEmbeddedDocuments(
+            "Item",
+            managedDuplicateIds,
+          );
+        }
+
+        if (
+          fixtureOverridesNeedUpdate(
+            reusableExisting,
+            descriptor,
+          )
+        ) {
+          await actor.updateEmbeddedDocuments(
+            "Item",
+            [
+              fixtureOverrideUpdateData(
+                reusableExisting,
+                descriptor,
+              ),
+            ],
+            {
+              renderSheet: false,
+            },
+          );
+        }
+
+        continue;
+      }
+
       const existing =
         matchingManagedItems[0] ?? null;
       const duplicateIds =
@@ -385,15 +481,9 @@
       }
 
       const fixtureOverrideChanged =
-        (
-          descriptor?.systemValue !== undefined &&
-          Number(existing.system?.value) !==
-            Number(descriptor.systemValue)
-        ) ||
-        (
-          descriptor?.systemWorn !== undefined &&
-          Boolean(existing.system?.worn) !==
-            descriptor.systemWorn
+        fixtureOverridesNeedUpdate(
+          existing,
+          descriptor,
         );
       const sourceChanged =
         getFlag(existing, SOURCE_ITEM_UUID_FLAG) !==
