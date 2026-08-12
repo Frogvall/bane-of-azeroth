@@ -821,12 +821,11 @@ function boaBuildAutomatedResultsHtml(results) {
 function boaBuildManualChecklistHtml() {
   return `
     <p>
-      This checklist contains tests that require visual judgment,
-      pointer interaction, multiple clients, or deliberate roll
-      outcomes. Follow the procedure in each section before marking
-      its checks as complete.
+      This checklist now contains only tests that require human visual
+      judgment, pointer interaction, multiple real Foundry clients, or
+      Dragonbane UI that should not be replaced with fabricated test data.
+      Everything else belongs in the automated Run All suites.
     </p>
-
     <p>
       Edit this page and change <code>[ ]</code> to
       <code>[x]</code> as each test is completed.
@@ -841,246 +840,98 @@ function boaBuildManualChecklistHtml() {
     </p>
 
     <h2>Before you start</h2>
-
     <ol>
-      <li>
-        Use the Foundry, Dragonbane, Core Set, YZE Combat,
-        and Bane of Azeroth versions recorded in this report.
-      </li>
       <li>
         Import or update the current Bane of Azeroth Adventure.
       </li>
       <li>
-        Run <strong>BOA DEV – Prepare Player Tests</strong>.
-        It creates the temporary Player User, assigned character,
-        required Heroic Abilities and spell, Willpower Points,
-        linked token, and isolated test scene needed below.
+        Run <strong>BOA DEV – Run All System Tests</strong> and resolve
+        every unexpected FAIL or SKIP before using this checklist.
       </li>
       <li>
-        Open the browser console before testing and leave it open.
+        Run <strong>BOA DEV – Prepare Player Tests</strong> when a
+        Player/GM check below is required.
+      </li>
+      <li>
+        Keep the GM and Player browser consoles open while testing.
+      </li>
+      <li>
+        Clean-world production installation, Adventure import/reimport,
+        package presentation, and production-console checks belong to the
+        Release Candidate checklist, not this development checklist.
       </li>
     </ol>
 
-    <h2>Elemental Totem placement and interaction</h2>
-
-  <p>
-  Automated tests cover placement-range validation and server-side
-  rejection. Use the real canvas to verify pointer interaction, grid
-  measurement, preview rendering, and cancellation behavior.
-  </p>
-
-  <ul>
-  <li>[ ] The placement preview follows the cursor.</li>
-  <li>[ ] Valid placement uses the selected totem's aura color, while invalid placement is red.</li>
-  <li>[ ] Placement snaps correctly to the active grid.</li>
-  <li>[ ] A grid position displayed as 6 meters is accepted, while one displayed beyond 6 meters is rejected.</li>
-  <li>[ ] Escape and right-click each cancel the entire placement flow.</li>
-  <li>[ ] Canceling any PL1–PL3 placement preserves the caster's existing totems.</li>
-  </ul>
-
-  <h2>Elemental Totem visual verification</h2>
-
-  <p>
-  Automated tests verify configured aura values, light and sight data,
-  redraw lifecycle, and graphics cleanup. Inspect the rendered result on
-  the real canvas, including copy, reload, overlap, and visibility.
-  </p>
-
-  <ul>
-  <li>[ ] All four totem auras visually match their configured colors and apparent radii.</li>
-  <li>[ ] Overlapping auras remain visually distinguishable.</li>
-  <li>[ ] Auras follow moved tokens smoothly.</li>
-  <li>[ ] Auras survive token copying and scene reload.</li>
-  <li>[ ] Auras disappear visually when their tokens are deleted.</li>
-  <li>[ ] Aura rendering does not visibly create light or modify token vision.</li>
-  </ul>
-
-  <h2>Elemental Totem roll workflow</h2>
-
-  <p>
-  Automated tests cover normal, pushed, dragon, and demon result
-  classification, power-level plans, duplicate prevention, and cleanup.
-  Perform a compact end-to-end smoke test through Dragonbane's real roll
-  and chat-message workflow. To reach edge results faster, temporarily
-  add nine boons for dragons or nine banes for demons.
-  </p>
-
-  <ul>
-  <li>[ ] A real normal success opens exactly one selection dialog and completed placement creates the expected totem.</li>
-  <li>[ ] A real dragon waits for the critical-effect choice and opens exactly once; a real demon opens no dialog.</li>
-  <li>[ ] PL1 and PL3 dialogs show the expected number of choices and prevent duplicate totem types.</li>
-  <li>[ ] Aborting any placement preserves the previous cast, while a completed recast replaces it.</li>
-  </ul>
-
-  <h2>Player and game-master workflow</h2>
-
-  <p>
-  The real-player harness now verifies a genuine Player User, assigned
-  character ownership, required Heroic Abilities, automatic Elemental
-  Totem grant, owned-Actor updates, active-GM presence, and a
-  player-authored demon-command payment. Existing automated tests also
-  cover request authorization, ownership propagation, Observer defaults,
-  movement-hook logic, non-position updates, and cross-scene cleanup.
-  Only the remaining spell-roll, pointer, sheet, drag, and real Elemental
-  Totem socket interactions need manual verification.
-  </p>
-
-  <ul>
-  <li>[ ] Using the prepared Player Test session, an owning player can make one real successful Elemental Totem cast, select totems, and complete pointer placement through the connected GM.</li>
-  <li>[ ] The owning player can open and edit the summoned totem Actor sheet; an observing player can open but not edit it.</li>
-  <li>[ ] The owning player cannot drag or reposition the totem, while the game master can.</li>
-  <li>[ ] The complete player/GM flow creates no duplicate tokens or dialogs and produces no unexpected console errors.</li>
-  </ul>
-
-  <h2>Frostreaper aura verification</h2>
-  <p>
-  Automated tests cover Frostreaper activation metadata, 10 meter radius,
-  light-blue aura configuration, Player-authored persisted state, and the
-  exact combat timing rule. Use the real canvas to verify the rendered aura
-  and multi-client behavior through Dragonbane's normal ability workflow.
-  </p>
-  <ul>
-  <li>[ ] With Frostreaper automation enabled, activating Frostreaper through the normal ability action during the Death Knight's turn creates one light-blue aura with an apparent 10 meter radius.</li>
-  <li>[ ] Moving the Death Knight token while Frostreaper is active moves the aura with the token and does not leave stale graphics behind.</li>
-  <li>[ ] The aura remains visible for the rest of the activation round.</li>
-  <li>[ ] At the start of the next round the aura is still visible during combatants whose turns occur before the Death Knight.</li>
-  <li>[ ] The aura disappears when the Death Knight's own turn begins in the next round, not when the round itself begins.</li>
-  <li>[ ] Repeat a real activation as the prepared owning Player: both the Player client and connected GM client see the same aura, and both lose it at the same turn boundary.</li>
-  <li>[ ] Reload or re-enter the Scene on one client while the activation is still current; the aura is reconstructed from persisted state.</li>
-  <li>[ ] Disabling Frostreaper automation hides the aura. Re-enabling it while the activation is still current restores the reminder.</li>
-  <li>[ ] Activating Frostreaper outside combat creates no aura.</li>
-  <li>[ ] Frostreaper automation does not change any creature's movement rate and does not automatically roll or prompt BUSHCRAFT to resist cold.</li>
-  <li>[ ] The complete GM and Player aura workflow produces no duplicate graphics and no unexpected console errors.</li>
-  </ul>
-
-  <h2>Death Knight rune verification</h2>
-  <p>
-  Automated tests cover one persisted rune selection per character,
-  weapon eligibility, Player ownership, localized rune descriptions, and
-  Unending Thirst as an equipped-only Movement +2 Active Effect. Fallen
-  Crusader, Razorice, and the stretch required to engrave a rune remain
-  deliberately manual.
-  </p>
-  <ul>
-  <li>[ ] A character with Death Knight's Rebirth has rune controls on Main → Weapons; no separate Death Knight Runes panel appears on the Abilities tab.</li>
-  <li>[ ] Each eligible melee weapon has a small rune slot directly after its weapon name on Main → Weapons.</li>
-  <li>[ ] The same rune slot/icon is visible beside eligible weapons on Inventory → Equipped Weapons and Inventory → Inventory.</li>
-  <li>[ ] An eligible carried weapon can be engraved from Inventory even while it is not equipped.</li>
-  <li>[ ] Ranged weapons, shields, and Unarmed have no rune slot on either Main or Inventory.</li>
-  <li>[ ] Clicking an eligible weapon's rune slot opens a compact rune picker for that specific weapon, with Fallen Crusader, Razorice, Unending Thirst, and Clear Rune.</li>
-  <li>[ ] Each rune choice in the picker shows the rule description from Death Knight's Rebirth next to the rune name/icon.</li>
-  <li>[ ] Selecting a rune immediately shows that rune's dedicated icon beside the selected weapon name everywhere that weapon is displayed.</li>
-  <li>[ ] Hovering the active rune icon shows the rune name and its localized rule description, without an extra "Engraved Rune" suffix.</li>
-  <li>[ ] Selecting another rune on the same weapon replaces the icon and active state.</li>
-  <li>[ ] Selecting a rune on another weapon moves the single active rune to that weapon.</li>
-  <li>[ ] Clear Rune removes the active rune icon and selection.</li>
-  <li>[ ] Fallen Crusader is only a visual/rules reminder: damaging a living creature does not automatically heal the Death Knight.</li>
-  <li>[ ] Razorice is only a visual/rules reminder: the module does not invent or attach a generic magical-weapon property.</li>
-  <li>[ ] With Unending Thirst selected, the character gains exactly +2 Movement while the selected weapon is wielded/equipped.</li>
-  <li>[ ] Unequipping the Unending Thirst weapon removes exactly that +2 Movement; equipping it again restores the bonus.</li>
-  <li>[ ] Replacing Unending Thirst with Fallen Crusader or Razorice removes the managed Movement effect.</li>
-  <li>[ ] A manually created Active Effect named Unending Thirst is not removed by rune cleanup unless it carries the Bane of Azeroth managed flag.</li>
-  <li>[ ] Disabling Death Knight Runes automation immediately removes rune slots/icons from open character sheets and removes the managed Unending Thirst effect while preserving rune state.</li>
-  <li>[ ] Re-enabling Death Knight Runes automation restores the rune UI and the Unending Thirst effect if the preserved selection is still valid.</li>
-  <li>[ ] Removing Death Knight's Rebirth or deleting the selected weapon clears stale rune state and any managed Unending Thirst effect.</li>
-  <li>[ ] Repeat rune selection, replacement, Clear Rune, and Unending Thirst equip/unequip as the prepared owning Player.</li>
-  <li>[ ] Rune selection never starts, enforces, or completes a stretch; the table still decides when the engraving has been completed.</li>
-  </ul>
-
-  <h2>Adventure and interface verification</h2>
-
-  <p>
-  Automated tests cover semantic-version prompt rules and preparation
-  enforcement. Use a clean world and the packaged module to verify the
-  actual import sheet, rendered layouts, localization, and visual state.
-  </p>
-
-  <ul>
-  <li>[ ] Clean-world Adventure import succeeds from the packaged prerelease module.</li>
-  <li>[ ] The import sheet and all affected dialogs are readable at normal browser zoom, with every referenced image loading.</li>
-  <li>[ ] New interface text appears as natural English without untranslated localization keys.</li>
-  <li>[ ] The always-prepared checkbox is disabled and visually distinct, and its tooltip is displayed.</li>
-  </ul>
-
-  <h2>Weapon feature verification</h2>
-
-  <p>
-  Automated tests cover Find Weak Spot eligibility and duplication,
-  Damage Types gating, Scattershot bane handling and rounded damage, and
-  both Ammo Pouch confirmation outcomes. Perform a small end-to-end smoke
-  test through Dragonbane's actual action and chat interfaces.
-  </p>
-
-  <ul>
-  <li>[ ] Armor Piercing and Scattershot appear correctly in the real action dialog for eligible weapons and settings.</li>
-  <li>[ ] One Scattershot sequence confirms point-blank handling, preserved long-range bane, and the expected halved damage result in chat.</li>
-  <li>[ ] The Ammo Pouch warning is readable; accepting continues the action and canceling stops it.</li>
-  </ul>
-
-<h2>Common Animal movement ruler</h2>
-
-  <p>
-  Automated tests verify alternate-movement metadata, token-local
-  ActorDelta updates, base-rate restoration, and world-Actor isolation.
-  Use Dragonbane's real movement-action selector and ruler on a gridded
-  scene to verify the visible movement classification at the exact limit
-  and immediately beyond it. Verify the functional classification rather
-  than relying on a specific color or wording.
-  </p>
-
-  <ul>
-  <li>[ ] With normal movement selected, a Dragonhawk path of exactly 2 meters is shown within its normal allowance, while a path immediately beyond 2 meters is visibly classified beyond that allowance.</li>
-  <li>[ ] After selecting Fly, a Dragonhawk path of exactly 14 meters is shown within its normal allowance, while a path immediately beyond 14 meters is visibly classified beyond that allowance.</li>
-  <li>[ ] Switching the Dragonhawk back from Fly to normal movement immediately restores the visible ruler limit from 14 meters to 2 meters.</li>
-  <li>[ ] With normal movement selected, a Crocolisk path of exactly 6 meters is shown within its normal allowance; Swim changes that limit to 12 meters, and switching back restores 6 meters.</li>
-  <li>[ ] Two Dragonhawk tokens from the same world Actor can simultaneously show ruler limits of 14 meters for Fly and 2 meters for normal movement, while the world Actor remains at movement 2.</li>
-  <li>[ ] Changing movement actions on a Gorilla does not change its movement limit from 8 meters or produce an unexpected ruler, warning, token, or Actor-sheet state.</li>
-  </ul>
-
-<h2>Giant Spider Web Spray</h2>
-
-  <p>
-  Automated tests verify the generated effect-only metadata, message
-  enrichment, dragon-result persistence, and compact NPC-sheet cleanup.
-  Use the real Dragonbane weapon-test workflow to verify system integration.
-  </p>
-
-  <ul>
-  <li>[ ] Giant Spider lists <strong>Web Spray 12</strong> in the compact Weapons row without empty damage parentheses.</li>
-  <li>[ ] A normal successful Web Spray attack immediately adds the Restrain 10 text to the same attack card and shows no Roll Damage button.</li>
-  <li>[ ] A failed Web Spray attack adds no Restrain text.</li>
-  <li>[ ] A demon result adds no Restrain text and uses Dragonbane's melee mishap flow.</li>
-  <li>[ ] A dragon result immediately adds Restrain 10 and still shows the Critical Hit button.</li>
-  <li>[ ] Opening Critical Hit for Web Spray offers Extra Attack but not Double Weapon Damage.</li>
-  <li>[ ] After confirming Extra Attack, the same attack card still contains exactly one copy of the Restrain 10 text.</li>
-  </ul>
-
-<h2>Compatibility and presentation</h2>
-
-    <p>
-      Review this report's Environment page, the browser console,
-      the chat log, and the created world documents. Record any
-      unexpected behavior in Manual notes, including reproduction
-      steps and screenshots where useful.
-    </p>
-
+    <h2>Elemental Totem</h2>
     <ul>
-      <li>[ ] Browser console contains no unexpected errors.</li>
-      <li>[ ] The tested Foundry version is recorded correctly.</li>
-      <li>[ ] The tested Dragonbane version is recorded correctly.</li>
-      <li>[ ] Relevant module versions are recorded correctly.</li>
-      <li>[ ] Any failures or deviations are documented below.</li>
+      <li>[ ] Through Dragonbane's normal spell-roll UI, one successful Elemental Totem cast opens one selection flow; the pointer preview follows the cursor, snaps naturally to the grid, and Escape/right-click cleanly cancels without leaving preview artifacts.</li>
+      <li>[ ] Created Totem auras look correct on the real canvas: colors and apparent radii are sensible, overlapping auras remain distinguishable, movement/reload does not leave stale graphics, and deleting a Totem removes its aura.</li>
+      <li>[ ] In the prepared Player session, an owning Player can complete one real Elemental Totem cast through the connected GM; the owner can edit the summoned Actor, an observing Player cannot edit it, the Player cannot drag the Totem, the GM can move it, and no duplicate Token/dialog or unexpected BoA console error appears.</li>
+    </ul>
+
+    <h2>Frostreaper</h2>
+    <ul>
+      <li>[ ] A real Frostreaper activation in combat renders one light-blue aura with an apparent 10 m radius that follows the Death Knight cleanly; GM and Player clients agree on the visual state, reload reconstructs it, and it disappears at the already-automated next-turn boundary.</li>
+    </ul>
+
+    <h2>Death Knight Runes</h2>
+    <ul>
+      <li>[ ] Rune slots appear only beside eligible melee weapons in Main and Inventory views; the picker is compact and readable and shows Fallen Crusader, Razorice, Unending Thirst, Clear Rune, and the localized rule descriptions.</li>
+      <li>[ ] Selecting, replacing, moving, and clearing a rune updates the dedicated icon everywhere the weapon is shown, and the active-icon tooltip shows the rune name and rule description without stale or duplicate UI.</li>
+    </ul>
+
+    <h2>Weapon Features</h2>
+    <ul>
+      <li>[ ] Armor Piercing and Scattershot integrate cleanly with Dragonbane's real action dialog and chat flow, including a readable Ammo Pouch warning and a representative Scattershot result with the expected visible damage handling.</li>
+    </ul>
+
+    <h2>Common Animal movement</h2>
+    <ul>
+      <li>[ ] On the real Dragonbane ruler, Dragonhawk Fly and Crocolisk Swim visibly use their alternate limits and switch back immediately; two Tokens from the same world Actor can show different token-local movement states without changing the world Actor.</li>
+    </ul>
+
+    <h2>Giant Spider Web Spray</h2>
+    <ul>
+      <li>[ ] Web Spray 12 renders cleanly in the compact Weapons row, and a real dragon result keeps the Critical Hit control; the Critical Hit dialog offers Extra Attack but not Double Weapon Damage, and rebuilding the attack card after Extra Attack leaves exactly one Restrain 10 text.</li>
+    </ul>
+
+    <h2>Druid Forms</h2>
+    <ul>
+      <li>[ ] The Change Form dialog and Druid Forms artwork editor are readable and intuitive; switching forms updates portrait/token artwork correctly, End Effect/rest restoration looks correct, and no stale artwork or duplicated controls remain.</li>
+    </ul>
+
+    <h2>Shadowform</h2>
+    <ul>
+      <li>[ ] Shadowform produces the intended visible token/sheet treatment on the real canvas and removes it cleanly when the effect ends, without stale filters after reload.</li>
+    </ul>
+
+    <h2>Mage's Brilliance</h2>
+    <ul>
+      <li>[ ] A real LANGUAGES roll for a Mage's Brilliance character presents the expected Roll / Take 10 / Cancel choice in a readable location and Take 10 completes without an extra roll.</li>
+    </ul>
+
+    <h2>Warlock Demon summoning</h2>
+    <ul>
+      <li>[ ] The real Demonologist demon selector and pointer-placement/cancel flow are readable and responsive, and completing or canceling the flow leaves no duplicate dialog, preview, or Token.</li>
+    </ul>
+
+    <h2>Adventure and interface presentation</h2>
+    <ul>
+      <li>[ ] In the development world, affected BoA dialogs, journal pages, images, and localization are readable at normal zoom; the always-prepared control is visually distinct and its tooltip is understandable.</li>
+    </ul>
+
+    <h2>Compatibility and presentation</h2>
+    <ul>
+      <li>[ ] GM and Player browser consoles contain no unexpected Bane of Azeroth warnings/errors during the manual smoke tests; any real deviation is documented below with reproduction steps.</li>
     </ul>
 
     <h2>Manual notes</h2>
-
     <p>
       Add observations, screenshots, failure details, and
       reproduction steps here.
     </p>
   `;
 }
-
 function boaBuildEnvironmentHtml(environment) {
   const moduleRows = environment.activeModules
     .map(module => `

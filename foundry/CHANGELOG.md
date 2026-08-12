@@ -11,6 +11,7 @@ The project is currently in early alpha. Rules, document structures, compendium 
 - Development prerelease builds auto-import and reconcile managed System Test Actors from the current imported world Items while preserving manually added embedded Items.
 ### Testing
 - Added packaging and release-channel contracts that keep System Test Actors and their import runtime out of production RC and stable packages.
+- Expanded Run All coverage for shared System Test Actors, Weapon Features, and Great Helm / Firearms integration, and reduced the manual Foundry checklist to visual, pointer, multi-client, and real-UI smoke tests.
 ## [0.12.8] - 2026-08-12
 ### Security
 - Updated transitive npm development dependencies to patched versions for `GHSA-2v37-7h3g-55p8` (Nanoid) and `GHSA-fxqj-rqcc-2cmp` (PostCSS).

@@ -313,6 +313,36 @@ MACROS = [
         "suiteMember": True,
         "img": "icons/svg/book.svg",
     },
+    {
+        "key": "system-test-actors",
+        "id": "BoaDevActors0023",
+        "name": "BOA DEV – Verify System Test Actors",
+        "file": "verify-system-test-actors.js",
+        "order": 28,
+        "suiteOrder": 23,
+        "suiteMember": True,
+        "img": "icons/svg/mystery-man.svg",
+    },
+    {
+        "key": "weapon-features",
+        "id": "BoaDevWeapon0024",
+        "name": "BOA DEV – Verify Weapon Features",
+        "file": "verify-weapon-features.js",
+        "order": 29,
+        "suiteOrder": 24,
+        "suiteMember": True,
+        "img": "icons/svg/combat.svg",
+    },
+    {
+        "key": "great-helm-firearms",
+        "id": "BoaDevHelm000025",
+        "name": "BOA DEV – Verify Great Helm / Firearms",
+        "file": "verify-great-helm-firearms.js",
+        "order": 30,
+        "suiteOrder": 25,
+        "suiteMember": True,
+        "img": "icons/svg/helmet.svg",
+    },
 ]
 
 
