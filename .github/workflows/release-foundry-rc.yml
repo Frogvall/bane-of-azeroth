@@ -1,11 +1,13 @@
 name: Publish Foundry release candidate
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 concurrency:
   group: release-foundry-candidate
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   unit-tests:
@@ -42,6 +44,7 @@ jobs:
       artifact_name: ${{ steps.candidate.outputs.artifact_name }}
       build_version: ${{ steps.candidate.outputs.build_version }}
       release_tag: ${{ steps.candidate.outputs.release_tag }}
+      immutable_tag: ${{ steps.candidate.outputs.immutable_tag }}
       manifest_url: ${{ steps.candidate.outputs.manifest_url }}
       download_url: ${{ steps.candidate.outputs.download_url }}
 
@@ -82,7 +85,53 @@ jobs:
             exit 1
           fi
 
-          build_version="${source_version}-rc.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
+          stable_tag="v${source_version}"
+          if git ls-remote \
+            --exit-code \
+            --tags \
+            --refs \
+            origin \
+            "refs/tags/${stable_tag}" \
+            >/dev/null 2>&1; then
+            echo \
+              "Source version ${source_version} already has stable tag ${stable_tag}; bump the source version before merging another RC to main." \
+              >&2
+            exit 1
+          fi
+
+          prefix="v${source_version}-rc."
+          latest=0
+          same_sha_number=""
+          while read -r sha ref; do
+            tag="${ref#refs/tags/}"
+            number="${tag#${prefix}}"
+            if [[ ! "$number" =~ ^[1-9][0-9]*$ ]]; then
+              continue
+            fi
+            if (( number > latest )); then
+              latest="$number"
+            fi
+            if [[ "$sha" == "$GITHUB_SHA" ]]; then
+              if [[ -z "$same_sha_number" ]] || (( number > same_sha_number )); then
+                same_sha_number="$number"
+              fi
+            fi
+          done < <(
+            git ls-remote \
+              --tags \
+              --refs \
+              origin \
+              "refs/tags/${prefix}*"
+          )
+
+          if [[ -n "$same_sha_number" ]]; then
+            rc_number="$same_sha_number"
+          else
+            rc_number="$((latest + 1))"
+          fi
+
+          build_version="${source_version}-rc.${rc_number}"
+          immutable_tag="v${build_version}"
           release_tag="release-candidate"
           repository_url="https://github.com/${GITHUB_REPOSITORY}"
           manifest_url="${repository_url}/releases/download/${release_tag}/module.json"
@@ -91,6 +140,7 @@ jobs:
 
           {
             echo "BOA_BUILD_VERSION=${build_version}"
+            echo "BOA_IMMUTABLE_TAG=${immutable_tag}"
             echo "BOA_MANIFEST_URL=${manifest_url}"
             echo "BOA_DOWNLOAD_URL=${download_url}"
             echo "BOA_ZIP_NAME=bane-of-azeroth.zip"
@@ -101,6 +151,7 @@ jobs:
             echo "artifact_name=${artifact_name}"
             echo "build_version=${build_version}"
             echo "release_tag=${release_tag}"
+            echo "immutable_tag=${immutable_tag}"
             echo "manifest_url=${manifest_url}"
             echo "download_url=${download_url}"
           } >> "$GITHUB_OUTPUT"
@@ -110,6 +161,7 @@ jobs:
             echo
             echo "- Source version: \`${source_version}\`"
             echo "- Candidate version: \`${build_version}\`"
+            echo "- Immutable candidate tag: \`${immutable_tag}\`"
             echo "- Rolling release tag: \`${release_tag}\`"
             echo "- Install manifest: \`${manifest_url}\`"
             echo "- Package: \`${download_url}\`"
@@ -199,6 +251,7 @@ jobs:
           Rolling Bane of Azeroth release candidate.
 
           - Candidate version: \`${BOA_BUILD_VERSION}\`
+          - Immutable candidate tag: \`${BOA_IMMUTABLE_TAG}\`
           - Commit: \`${GITHUB_SHA}\`
           - Workflow run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
           - Foundry manifest: \`${BOA_MANIFEST_URL}\`
@@ -236,6 +289,7 @@ jobs:
       ARTIFACT_NAME: ${{ needs.build-candidate.outputs.artifact_name }}
       BUILD_VERSION: ${{ needs.build-candidate.outputs.build_version }}
       RELEASE_TAG: ${{ needs.build-candidate.outputs.release_tag }}
+      IMMUTABLE_TAG: ${{ needs.build-candidate.outputs.immutable_tag }}
       MANIFEST_URL: ${{ needs.build-candidate.outputs.manifest_url }}
       DOWNLOAD_URL: ${{ needs.build-candidate.outputs.download_url }}
 
@@ -275,6 +329,36 @@ jobs:
           )
 
           unzip -t release/bane-of-azeroth.zip
+
+      - name: Create immutable release-candidate tag
+        run: |
+          set -euo pipefail
+
+          existing_sha="$(
+            gh api \
+              "repos/${GITHUB_REPOSITORY}/git/ref/tags/${IMMUTABLE_TAG}" \
+              --jq '.object.sha' \
+              2>/dev/null ||
+            true
+          )"
+
+          if [[ -n "$existing_sha" ]]; then
+            if [[ "$existing_sha" != "$GITHUB_SHA" ]]; then
+              echo \
+                "Immutable RC tag ${IMMUTABLE_TAG} already points to ${existing_sha}, not ${GITHUB_SHA}." \
+                >&2
+              exit 1
+            fi
+            echo "Reusing immutable RC tag ${IMMUTABLE_TAG} for ${GITHUB_SHA}."
+          else
+            gh api \
+              --method POST \
+              "repos/${GITHUB_REPOSITORY}/git/refs" \
+              -f ref="refs/tags/${IMMUTABLE_TAG}" \
+              -f sha="$GITHUB_SHA" \
+              >/dev/null
+            echo "Created immutable RC tag ${IMMUTABLE_TAG} for ${GITHUB_SHA}."
+          fi
 
       - name: Replace rolling release candidate
         run: |

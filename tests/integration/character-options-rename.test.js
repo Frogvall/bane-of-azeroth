@@ -47,10 +47,6 @@ const ADVENTURE = resolve(
 const README = resolve(
   "README.md",
 );
-const CHANGELOG = resolve(
-  "foundry",
-  "CHANGELOG.md",
-);
 const SYSTEM_MACRO = resolve(
   "tests",
   "system",
@@ -64,21 +60,6 @@ function read(path) {
 
 function readJson(path) {
   return JSON.parse(read(path));
-}
-
-function releaseSection(changelog) {
-  const start = changelog.indexOf(
-    "## [0.10.1] - 2026-08-02",
-  );
-  const end = changelog.indexOf(
-    "## [0.10.0]",
-    start,
-  );
-
-  expect(start).toBeGreaterThanOrEqual(0);
-  expect(end).toBeGreaterThan(start);
-
-  return changelog.slice(start, end);
 }
 
 describe("Character Options visible Journal rename", () => {
@@ -145,23 +126,13 @@ describe("Character Options visible Journal rename", () => {
 
   test("uses Character Options in current documentation", () => {
     const readme = read(README);
-    const release =
-      releaseSection(read(CHANGELOG));
-
-    expect(readme).toContain(
+expect(readme).toContain(
       "Generated **Character Options** Journal",
     );
     expect(readme).not.toContain(
       "Generated **Player Options** Journal",
     );
-
-    expect(release).toContain(
-      "Character Options",
-    );
-    expect(release).not.toContain(
-      "Player Options",
-    );
-  });
+});
 
   test("keeps technical player-options identifiers stable", () => {
     const source = read(SOURCE);

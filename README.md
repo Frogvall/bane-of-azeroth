@@ -4,9 +4,9 @@
 
 The project aims to combine the fast, dangerous, and skill-based rules of Dragonbane with heroic fantasy adventures set in Azeroth.
 
-> **Current status:** Active development / prerelease testing
+> **Current status:** Foundry VTT 1.0 release line
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 0.12.9
+> **Current Foundry module version:** 1.0.0
 ## Project goals
 
 Bane of Azeroth is intended to provide a coherent Dragonbane ruleset for adventures inspired by Azeroth, rather than attempting to reproduce every mechanic from the source material directly.
@@ -56,7 +56,7 @@ The generated `foundry/packs/` directory is build output and is not maintained a
 
 ## Foundry VTT module
 
-The Foundry module is under active development and distributes the current book content through a single Adventure compendium.
+The Foundry module distributes the current book content through a single Adventure compendium, with production releases promoted from verified release candidates.
 
 Implemented content and automation include:
 
@@ -101,11 +101,12 @@ The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.
 
 > **Package identities:** Production/release packages use `bane-of-azeroth` (**Bane of Azeroth**). Development prerelease packages use the separate Foundry package id `bane-of-azeroth-dev` (**Bane of Azeroth - Development**). They can therefore be installed side-by-side. Foundry is told that the two packages are a known conflict and only one should normally be enabled in a given world. As a safety guard, if both are enabled the Development runtime wins and the production runtime remains inert; development worlds should still use the development package and its Adventure content consistently.
 
-There is currently no stable public release. Development builds are distributed as rolling branch prereleases and may change without notice. Stable production releases are published from version tags `vMAJOR.MINOR.PATCH` once the module reaches 1.0.0; the release workflow requires the tag, module version, README, and dated Changelog section to agree before publishing.
-
+Stable production releases are published from version tags `vMAJOR.MINOR.PATCH`. The release workflow requires the tag, module version, README, and dated Changelog section to agree before publishing.
+The source version is finalized before release-candidate testing. A release-ready pull request is merged into `main`; every push to `main` automatically runs **Publish Foundry release candidate** and allocates the next candidate number for the source version from immutable `vMAJOR.MINOR.PATCH-rc.N` tags.
+Each successfully published candidate receives an immutable tag such as `v1.0.0-rc.1`, while Foundry testers stay on the rolling manifest channel `https://github.com/Frogvall/bane-of-azeroth/releases/download/release-candidate/module.json`. Rerunning the workflow for the same commit reuses its existing candidate number. The rolling candidate remains a GitHub prerelease and does not replace the stable `releases/latest` channel.
 Stable installations use the permanent manifest channel `https://github.com/Frogvall/bane-of-azeroth/releases/latest/download/module.json`. Each stable manifest points back to that same URL, while its `download` field points to the zip for that specific version.
-
-Release candidates use a separate opt-in rolling GitHub prerelease channel at `https://github.com/Frogvall/bane-of-azeroth/releases/download/release-candidate/module.json`. Trigger **Publish Foundry release candidate** manually in GitHub Actions and install the candidate through its manifest URL in Foundry. The candidate release is explicitly marked as a prerelease and does not replace the stable `releases/latest` channel. A tester who intentionally moves between the RC and stable channels may be asked by Foundry to confirm the manifest-URL change; normal stable users remain on the stable URL.
+When a release candidate is approved, create the stable `vMAJOR.MINOR.PATCH` tag on that exact `main` commit. The stable workflow verifies that the rolling `release-candidate` tag and an immutable candidate tag for the same source version both point to the stable commit before publishing.
+A tester who intentionally moves between the RC and stable channels may be asked by Foundry to confirm the manifest-URL change; normal stable users remain on the stable URL.
 
 For a manual development installation, place the packaged module contents in:
 
@@ -177,12 +178,10 @@ In a Foundry test world:
 The Actor fixtures are reconciled from the current imported world Items. Bane of Azeroth only replaces embedded Items that it marked as managed fixture data; Items added manually to a fixture Actor are left untouched. Reimport the Adventure if a fixture reports that a required source Item is missing.
 ### Release verification
 
-Use the development package for **BOA DEV – Run All System Tests** and the generated manual Player/GM report. When those checks are green, trigger **Publish Foundry release candidate**.
-
-The RC workflow runs the automated test suite, generator checks, builds the production `bane-of-azeroth` package without Developer Tests, publishes it as the rolling `release-candidate` GitHub prerelease, and verifies the public manifest/download endpoints. Install the candidate through its manifest URL in a clean Foundry test environment; do not install its zip manually for the release-path verification.
+Use the development package for **BOA DEV – Run All System Tests** and the generated manual Player/GM report. When those checks are green, open a release-ready pull request to `main`.
+Merging that pull request automatically runs **Publish Foundry release candidate**. The workflow runs the automated test suite and generator checks, builds the production `bane-of-azeroth` package without Developer Tests, assigns the next immutable `vMAJOR.MINOR.PATCH-rc.N` tag, publishes the rolling `release-candidate` GitHub prerelease, and verifies the public manifest/download endpoints. Install the candidate through its manifest URL in a clean Foundry test environment; do not install its zip manually for the release-path verification.
 
 A release candidate is ready only when:
-
 - the automated test suite passes;
 - generated content is synchronized;
 - all Foundry system tests pass in the matching development build;
@@ -191,10 +190,9 @@ A release candidate is ready only when:
 - Adventure import and reimport have been verified in a clean test world using the RC;
 - package presentation is correct; and
 - GM and Player consoles show no unexpected Bane of Azeroth warnings or errors.
-
 Foundry Core or PIXI warnings that do not indicate broken Bane of Azeroth behavior are not release blockers.
 
-Bane of Azeroth remains an alpha project. Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
+Bane of Azeroth is on its Foundry VTT 1.0 release line. Stable packages are promoted only from the exact commit of a verified release candidate.
 
 ## Contributing
 

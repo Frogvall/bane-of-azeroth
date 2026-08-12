@@ -60,6 +60,60 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
+      - name: Verify stable tag matches published release candidate
+        run: |
+          set -euo pipefail
+
+          stable_commit="$GITHUB_SHA"
+          source_version="$(
+            jq -er '.version' foundry/module.json
+          )"
+          rc_commit="$(
+            git ls-remote \
+              --tags \
+              --refs \
+              origin \
+              "refs/tags/release-candidate" |
+            awk 'NR == 1 { print $1 }'
+          )"
+
+          if [[ -z "$rc_commit" ]]; then
+            echo \
+              "No published release-candidate tag exists." \
+              >&2
+            exit 1
+          fi
+
+          if [[ "$rc_commit" != "$stable_commit" ]]; then
+            echo \
+              "Stable tag commit does not match the published release candidate." \
+              >&2
+            echo "Release candidate: ${rc_commit}" >&2
+            echo "Stable tag:        ${stable_commit}" >&2
+            exit 1
+          fi
+
+          immutable_rc_ref="$(
+            git ls-remote \
+              --tags \
+              --refs \
+              origin \
+              "refs/tags/v${source_version}-rc.*" |
+            awk -v sha="$stable_commit" \
+              '$1 == sha { print $2 }' |
+            tail -n 1
+          )"
+
+          if [[ -z "$immutable_rc_ref" ]]; then
+            echo \
+              "No immutable release-candidate tag points to the stable commit." \
+              >&2
+            exit 1
+          fi
+
+          echo "Stable commit matches published candidate: ${rc_commit}"
+          echo "Immutable candidate tag: ${immutable_rc_ref#refs/tags/}"
+
       - name: Verify stable release contract
         id: release
         run: |

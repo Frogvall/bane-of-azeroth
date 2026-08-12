@@ -70,9 +70,14 @@ describe(
           );
 
         for (const marker of [
-          "workflow_dispatch:",
+          "push:",
+          "branches:",
+          "- main",
           'release_tag="release-candidate"',
-          'build_version="${source_version}-rc.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"',
+          'prefix="v${source_version}-rc."',
+          'build_version="${source_version}-rc.${rc_number}"',
+          'immutable_tag="v${build_version}"',
+          "Create immutable release-candidate tag",
           'manifest_url="${repository_url}/releases/download/${release_tag}/module.json"',
           'download_url="${repository_url}/releases/download/${release_tag}/bane-of-azeroth.zip"',
           "BOA_INCLUDE_DEV_TESTS=false",
@@ -158,8 +163,10 @@ describe(
           "releases/latest/download/module.json",
           "releases/download/release-candidate/module.json",
           "Publish Foundry release candidate",
-          "install the candidate through its manifest URL",
+          "every push to `main` automatically runs",
+          "Install the candidate through its manifest URL",
           "does not replace the stable",
+          "immutable `vMAJOR.MINOR.PATCH-rc.N` tags",
         ]) {
           expect(source).toContain(
             marker,
