@@ -140,24 +140,37 @@ describe(
         for (
           const marker
           of [
-            "<h2>Death Knight rune verification</h2>",
-            "Main → Weapons",
-            "Inventory → Equipped Weapons",
-            "eligible carried weapon can be engraved from Inventory",
-            "localized rule description",
-            "Ranged weapons, shields, and Unarmed have no rune slot on either Main or Inventory.",
-            "dedicated icon beside the selected weapon name",
-            "Fallen Crusader is only a visual/rules reminder",
-            "Razorice is only a visual/rules reminder",
-            "exactly +2 Movement",
-            "prepared owning Player",
-            "never starts, enforces, or completes a stretch",
+            "<h2>Death Knight Runes</h2>",
+            "Rune slots appear only beside eligible melee weapons in Main and Inventory views",
+            "picker is compact and readable",
+            "Fallen Crusader",
+            "Razorice",
+            "Unending Thirst",
+            "Clear Rune",
+            "localized rule descriptions",
+            "dedicated icon everywhere the weapon is shown",
+            "active-icon tooltip",
+            "without stale or duplicate UI",
           ]
         ) {
           expect(
             library,
           ).toContain(
             marker,
+          );
+        }
+
+        for (
+          const automatedMarker
+          of [
+            "exactly +2 Movement",
+            "never starts, enforces, or completes a stretch",
+          ]
+        ) {
+          expect(
+            library,
+          ).not.toContain(
+            automatedMarker,
           );
         }
       },

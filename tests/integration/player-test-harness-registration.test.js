@@ -220,10 +220,10 @@ describe("real-player test harness registration", () => {
 
     for (const retained of [
       "BOA DEV – Prepare Player Tests",
-      "The real-player harness now verifies",
-      "Using the prepared Player Test session",
-      "sheet, drag, and real Elemental",
-      "Totem socket interactions need manual verification",
+      "This checklist now contains only tests that require human visual",
+      "real Elemental Totem cast through the connected GM",
+      "owner can edit the summoned Actor",
+      "observing Player cannot edit it",
     ]) {
       expect(library).toContain(retained);
     }
@@ -529,16 +529,23 @@ describe("real-player test harness registration", () => {
     }
 
     for (const marker of [
-      "<h2>Frostreaper aura verification</h2>",
-      "apparent 10 meter radius",
-      "Death Knight's own turn begins in the next round",
-      "Repeat a real activation as the prepared owning Player",
-      "both the Player client and connected GM client see the same aura",
+      "<h2>Frostreaper</h2>",
+      "real Frostreaper activation in combat",
+      "light-blue aura",
+      "apparent 10 m radius",
+      "GM and Player clients agree on the visual state",
+      "reload reconstructs it",
+      "already-automated next-turn boundary",
+    ]) {
+      expect(library).toContain(marker);
+    }
+
+    for (const automatedMarker of [
       "Activating Frostreaper outside combat creates no aura",
       "does not change any creature's movement rate",
       "does not automatically roll or prompt BUSHCRAFT",
     ]) {
-      expect(library).toContain(marker);
+      expect(library).not.toContain(automatedMarker);
     }
   });
 
