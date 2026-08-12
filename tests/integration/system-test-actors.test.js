@@ -147,6 +147,49 @@ describe(
     );
 
     test(
+      "prepares magic-user fixtures with professions and usable casting skills",
+      () => {
+        const generator = text(GENERATOR);
+        const runtime = text(RUNTIME);
+
+        for (const marker of [
+          '"Animist"',
+          '"Animism"',
+          '"Elementalist"',
+          '"Elementalism"',
+          '"Mentalist"',
+          '"Mentalism"',
+          "system_value=15",
+          'data["systemValue"] = system_value',
+        ]) {
+          expect(generator).toContain(marker);
+        }
+
+        for (const marker of [
+          "descriptor?.systemValue",
+          "Number.isFinite(numericValue)",
+          "data.system.value = numericValue",
+        ]) {
+          expect(runtime).toContain(marker);
+        }
+
+        // Keep external Core Set fixtures symbolic-by-name rather than
+        // adding raw Foundry UUID literals to BoA source.
+        for (const rawUuid of [
+          "5qFrwNTam2KA98jh",
+          "zhESuqKIpEaIFt3Z",
+          "xsMWmMEDLOtF4pDg",
+          "8KnQCVXH9Qx6UYCJ",
+          "fLYDNkiglRRrOcdx",
+          "Lhe9uKDkgscMRXH1",
+        ]) {
+          expect(generator).not.toContain(rawUuid);
+          expect(runtime).not.toContain(rawUuid);
+        }
+      },
+    );
+
+    test(
       "packages the Actor pack only in development builds",
       () => {
         const source = text(PACKAGE_SCRIPT);

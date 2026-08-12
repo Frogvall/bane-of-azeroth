@@ -22,14 +22,18 @@ def fixture_item(
     name: str,
     item_type: str,
     content_key: str | None = None,
-) -> dict[str, str]:
-    data = {
+    *,
+    system_value: int | None = None,
+) -> dict[str, object]:
+    data: dict[str, object] = {
         "key": key,
         "name": name,
         "type": item_type,
     }
     if content_key is not None:
         data["contentKey"] = content_key
+    if system_value is not None:
+        data["systemValue"] = system_value
     return data
 
 
@@ -98,6 +102,17 @@ ACTORS = [
         "wp": 30,
         "items": [
             fixture_item(
+                "animist",
+                "Animist",
+                "profession",
+            ),
+            fixture_item(
+                "animism",
+                "Animism",
+                "skill",
+                system_value=15,
+            ),
+            fixture_item(
                 "awakening",
                 "Druidic Awakening",
                 "ability",
@@ -131,6 +146,17 @@ ACTORS = [
         "hp": 30,
         "wp": 30,
         "items": [
+            fixture_item(
+                "elementalist",
+                "Elementalist",
+                "profession",
+            ),
+            fixture_item(
+                "elementalism",
+                "Elementalism",
+                "skill",
+                system_value=15,
+            ),
             fixture_item(
                 "shamanic-calling",
                 "Shamanic Calling",
@@ -227,6 +253,17 @@ ACTORS = [
         "hp": 30,
         "wp": 30,
         "items": [
+            fixture_item(
+                "mentalist",
+                "Mentalist",
+                "profession",
+            ),
+            fixture_item(
+                "mentalism",
+                "Mentalism",
+                "skill",
+                system_value=15,
+            ),
             fixture_item(
                 "priests-zeal",
                 "Priest's Zeal",
@@ -361,6 +398,24 @@ def validate_definitions() -> None:
                 raise SystemExit(
                     f"Fixture item requires a type: {key}/{item_key}"
                 )
+
+            system_value = item.get("systemValue")
+            if system_value is not None:
+                if item.get("type") != "skill":
+                    raise SystemExit(
+                        "Fixture systemValue is only supported for skills: "
+                        f"{key}/{item_key}"
+                    )
+                if (
+                    isinstance(system_value, bool)
+                    or not isinstance(system_value, int)
+                    or system_value < 1
+                    or system_value > 18
+                ):
+                    raise SystemExit(
+                        "Fixture skill systemValue must be an integer "
+                        f"from 1 through 18: {key}/{item_key}"
+                    )
 
 
 def actor_document(definition: dict[str, object]) -> dict[str, object]:

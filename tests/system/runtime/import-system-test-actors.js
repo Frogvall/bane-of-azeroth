@@ -228,6 +228,23 @@
     delete data._key;
     delete data.folder;
 
+    const fixtureSystemValue =
+      descriptor?.systemValue;
+    if (fixtureSystemValue !== undefined) {
+      const numericValue = Number(
+        fixtureSystemValue,
+      );
+      if (!Number.isFinite(numericValue)) {
+        throw new Error(
+          "Invalid system-test Actor fixture systemValue " +
+          `for ${descriptorLabel(descriptor)}.`,
+        );
+      }
+
+      data.system ??= {};
+      data.system.value = numericValue;
+    }
+
     data.flags = foundry.utils.deepClone(
       data.flags ?? {},
     );
