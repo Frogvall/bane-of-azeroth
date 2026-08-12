@@ -5,6 +5,13 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 The project is currently in early alpha. Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
 
 ## [Unreleased]
+### Security
+- Updated transitive npm development dependencies to patched versions for `GHSA-2v37-7h3g-55p8` (Nanoid) and `GHSA-fxqj-rqcc-2cmp` (PostCSS).
+- Confirmed the affected packages remain development/test-only dependencies and are not runtime dependencies of the delivered Foundry module.
+### Testing
+- Added an integration contract that rejects the known vulnerable Nanoid/PostCSS lockfile baselines.
+- The dependency cleanup is verified with `npm audit` through the same Docker-based Node workflow used for project tests.
+## [0.12.7] - 2026-08-12
 ### Added
 - Added a manually triggered **Publish Foundry release candidate** workflow which publishes a production-shaped rolling GitHub prerelease under the permanent `release-candidate` manifest channel.
 ### Changed
