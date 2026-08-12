@@ -114,7 +114,16 @@ describe(
         }
 
         expect(source).toContain(
+          "CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER",
+        );
+        expect(source).not.toContain(
           "CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER",
+        );
+        expect(source).toContain(
+          "existing.ownership?.default !==",
+        );
+        expect(source).toContain(
+          "desired.ownership.default",
         );
         expect(source).toContain(
           "getFlag(item, MANAGED_ITEM_FLAG) === true",

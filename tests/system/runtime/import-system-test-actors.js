@@ -141,7 +141,7 @@
       folder: folder.id,
       ownership: {
         default:
-          CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+          CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
       },
       flags,
     };
@@ -153,6 +153,8 @@
       existing.type !== desired.type ||
       existing.img !== desired.img ||
       parentFolderId(existing) !== desired.folder ||
+      existing.ownership?.default !==
+        desired.ownership.default ||
       existing.getFlag(
         MODULE_ID,
         "importedFromModuleVersion",
