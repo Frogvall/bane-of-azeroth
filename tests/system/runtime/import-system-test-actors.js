@@ -215,9 +215,13 @@
     ) ?? null;
   }
 
+  const SOURCE_ITEM_VERSION_FLAG =
+    "systemTestActorSourceModuleVersion";
+
   function cloneManagedItem(
     sourceItem,
     descriptor,
+    moduleVersion,
   ) {
     const data = sourceItem.toObject();
     delete data._id;
@@ -233,13 +237,51 @@
       descriptor.key;
     data.flags[MODULE_ID][SOURCE_ITEM_UUID_FLAG] =
       sourceItem.uuid;
+    data.flags[MODULE_ID][SOURCE_ITEM_VERSION_FLAG] =
+      moduleVersion;
 
+    return data;
+  }
+
+  function managedItemsForDescriptor(
+    actor,
+    descriptor,
+  ) {
+    return collectionValues(actor.items)
+      .filter(item =>
+        getFlag(item, MANAGED_ITEM_FLAG) === true &&
+        getFlag(item, FIXTURE_ITEM_KEY_FLAG) ===
+          descriptor.key
+      );
+  }
+
+  function managedItemUpdateData(
+    existing,
+    sourceItem,
+    descriptor,
+    moduleVersion,
+  ) {
+    const data = cloneManagedItem(
+      sourceItem,
+      descriptor,
+      moduleVersion,
+    );
+
+    // ActiveEffect is itself an embedded collection. Do not push the
+    // source Item's embedded effects through a parent Item update: the
+    // existing fixture already received them when it was first created,
+    // and avoiding embedded-collection replacement keeps synchronization
+    // stable.
+    delete data.effects;
+    delete data._stats;
+    data._id = existing.id;
     return data;
   }
 
   async function reconcileFixtureItems(
     actor,
     source,
+    moduleVersion,
   ) {
     const descriptors = fixtureItems(source);
     const desiredKeys = new Set(
@@ -256,7 +298,6 @@
         )
       )
       .map(item => item.id);
-
     if (obsoleteIds.length > 0) {
       await actor.deleteEmbeddedDocuments(
         "Item",
@@ -274,27 +315,58 @@
         continue;
       }
 
-      const existingIds = collectionValues(actor.items)
-        .filter(item =>
-          getFlag(item, MANAGED_ITEM_FLAG) === true &&
-          getFlag(item, FIXTURE_ITEM_KEY_FLAG) ===
-            descriptor.key
-        )
-        .map(item => item.id);
+      const matchingManagedItems =
+        managedItemsForDescriptor(
+          actor,
+          descriptor,
+        );
+      const existing =
+        matchingManagedItems[0] ?? null;
+      const duplicateIds =
+        matchingManagedItems
+          .slice(1)
+          .map(item => item.id);
 
-      if (existingIds.length > 0) {
+      if (duplicateIds.length > 0) {
         await actor.deleteEmbeddedDocuments(
           "Item",
-          existingIds,
+          duplicateIds,
         );
       }
 
-      await actor.createEmbeddedDocuments(
+      if (!existing) {
+        await actor.createEmbeddedDocuments(
+          "Item",
+          [
+            cloneManagedItem(
+              sourceItem,
+              descriptor,
+              moduleVersion,
+            ),
+          ],
+          {
+            renderSheet: false,
+          },
+        );
+        continue;
+      }
+
+      const sourceChanged =
+        getFlag(existing, SOURCE_ITEM_UUID_FLAG) !==
+          sourceItem.uuid ||
+        getFlag(existing, SOURCE_ITEM_VERSION_FLAG) !==
+          moduleVersion;
+
+      if (!sourceChanged) continue;
+
+      await actor.updateEmbeddedDocuments(
         "Item",
         [
-          cloneManagedItem(
+          managedItemUpdateData(
+            existing,
             sourceItem,
             descriptor,
+            moduleVersion,
           ),
         ],
         {
@@ -407,6 +479,7 @@
       const missing = await reconcileFixtureItems(
         actor,
         source,
+        module.version,
       );
       if (missing.length > 0) {
         missingByActor.push({

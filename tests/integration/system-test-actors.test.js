@@ -123,6 +123,30 @@ describe(
     );
 
     test(
+      "keeps matching managed fixture Items stable across syncs",
+      () => {
+        const source = text(RUNTIME);
+
+        for (const marker of [
+          "systemTestActorSourceModuleVersion",
+          "managedItemsForDescriptor",
+          "matchingManagedItems",
+          "matchingManagedItems\n          .slice(1)",
+          "managedItemUpdateData",
+          "await actor.updateEmbeddedDocuments(",
+        ]) {
+          expect(source).toContain(marker);
+        }
+
+        // A matching fixture must no longer be unconditionally
+        // deleted and recreated on every synchronization pass.
+        expect(source).not.toContain(
+          "const existingIds = collectionValues(actor.items)",
+        );
+      },
+    );
+
+    test(
       "packages the Actor pack only in development builds",
       () => {
         const source = text(PACKAGE_SCRIPT);
