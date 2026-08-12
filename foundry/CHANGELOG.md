@@ -6,6 +6,15 @@ The project is currently in early alpha. Rules, document structures, compendium 
 
 ## [Unreleased]
 ### Added
+- Added a manually triggered **Publish Foundry release candidate** workflow which publishes a production-shaped rolling GitHub prerelease under the permanent `release-candidate` manifest channel.
+### Changed
+- Stable release manifests now keep the permanent `releases/latest/download/module.json` update URL while retaining version-specific package download URLs.
+- Release-candidate verification now tests the same public manifest and download endpoints that Foundry testers use instead of relying on manual zip installation.
+- Normal branch CI now watches the release-candidate workflow.
+### Testing
+- Added integration coverage for stable/RC manifest-channel isolation, production RC identity, prerelease/latest behavior, public endpoint verification, and channel-neutral source metadata.
+## [0.12.6] - 2026-08-11
+### Added
 - Added a dedicated tag-driven **stable Foundry release** workflow for production packages, separate from rolling branch prereleases.
 - Added `tools/foundry-stable-release.py` to validate tag/version/README/Changelog alignment and extract release notes from the dated Changelog section.
 ### Changed

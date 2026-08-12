@@ -16,6 +16,7 @@ on:
       - "tools/foundry-stable-release.py"
       - ".github/workflows/build-foundry.yml"
       - ".github/workflows/release-foundry.yml"
+      - ".github/workflows/release-foundry-rc.yml"
 
   workflow_dispatch:
 

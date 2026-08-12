@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Active development / prerelease testing
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 0.12.6
+> **Current Foundry module version:** 0.12.7
 ## Project goals
 
 Bane of Azeroth is intended to provide a coherent Dragonbane ruleset for adventures inspired by Azeroth, rather than attempting to reproduce every mechanic from the source material directly.
@@ -103,6 +103,10 @@ The module manifest declares compatibility with Foundry VTT 14 and Dragonbane 4.
 
 There is currently no stable public release. Development builds are distributed as rolling branch prereleases and may change without notice. Stable production releases are published from version tags `vMAJOR.MINOR.PATCH` once the module reaches 1.0.0; the release workflow requires the tag, module version, README, and dated Changelog section to agree before publishing.
 
+Stable installations use the permanent manifest channel `https://github.com/Frogvall/bane-of-azeroth/releases/latest/download/module.json`. Each stable manifest points back to that same URL, while its `download` field points to the zip for that specific version.
+
+Release candidates use a separate opt-in rolling GitHub prerelease channel at `https://github.com/Frogvall/bane-of-azeroth/releases/download/release-candidate/module.json`. Trigger **Publish Foundry release candidate** manually in GitHub Actions and install the candidate through its manifest URL in Foundry. The candidate release is explicitly marked as a prerelease and does not replace the stable `releases/latest` channel. A tester who intentionally moves between the RC and stable channels may be asked by Foundry to confirm the manifest-URL change; normal stable users remain on the stable URL.
+
 For a manual development installation, place the packaged module contents in:
 
 ```text
@@ -160,7 +164,7 @@ npm run check:generated
 The npm command runs `python3 tools/check-foundry-generators.py`, which discovers every `tools/generate-*.py` script and invokes its `--check` mode. The same central check runs in GitHub Actions and at the start of `tools/package-foundry.sh`, so new generators are automatically included in build and packaging verification.
 ### Foundry system tests
 
-Developer Test macros are included in prerelease packages only.
+Developer Test macros are included in development prerelease packages only. Production release candidates use the production package identity and do not include Developer Tests.
 
 In a Foundry test world:
 
@@ -172,14 +176,22 @@ In a Foundry test world:
 
 ### Release verification
 
+Use the development package for **BOA DEV – Run All System Tests** and the generated manual Player/GM report. When those checks are green, trigger **Publish Foundry release candidate**.
+
+The RC workflow runs the automated test suite, generator checks, builds the production `bane-of-azeroth` package without Developer Tests, publishes it as the rolling `release-candidate` GitHub prerelease, and verifies the public manifest/download endpoints. Install the candidate through its manifest URL in a clean Foundry test environment; do not install its zip manually for the release-path verification.
+
 A release candidate is ready only when:
 
 - the automated test suite passes;
 - generated content is synchronized;
-- all Foundry system tests pass;
-- the manual verification report has no unresolved failures;
-- Adventure import and reimport have been verified in a clean test world; and
-- package validation succeeds.
+- all Foundry system tests pass in the matching development build;
+- the manual verification report has no unresolved BoA failures;
+- the production RC installs and updates through the RC manifest URL;
+- Adventure import and reimport have been verified in a clean test world using the RC;
+- package presentation is correct; and
+- GM and Player consoles show no unexpected Bane of Azeroth warnings or errors.
+
+Foundry Core or PIXI warnings that do not indicate broken Bane of Azeroth behavior are not release blockers.
 
 Bane of Azeroth remains an alpha project. Rules, document structures, compendium identifiers, and Foundry integrations may change between versions.
 

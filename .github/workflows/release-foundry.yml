@@ -69,7 +69,7 @@ jobs:
 
           version="$(jq -er '.version' foundry/module.json)"
           repository_url="https://github.com/${GITHUB_REPOSITORY}"
-          manifest_url="${repository_url}/releases/download/${GITHUB_REF_NAME}/module.json"
+          manifest_url="${repository_url}/releases/latest/download/module.json"
           download_url="${repository_url}/releases/download/${GITHUB_REF_NAME}/bane-of-azeroth.zip"
           artifact_name="bane-of-azeroth-${version}-stable"
 
@@ -242,6 +242,26 @@ jobs:
               and .manifest == $manifest
               and .download == $download
             '             "$verify_dir/module.json" >/dev/null
+
+          curl \
+            --fail \
+            --location \
+            --silent \
+            --show-error \
+            --retry 5 \
+            --retry-all-errors \
+            --retry-delay 2 \
+            "$MANIFEST_URL" \
+            --output "$verify_dir/channel-module.json"
+
+          if ! cmp \
+            "$verify_dir/module.json" \
+            "$verify_dir/channel-module.json"; then
+            echo \
+              "Stable releases/latest manifest does not match the published release." \
+              >&2
+            exit 1
+          fi
 
           expected_checksum="$(
             awk '{print $1}' release/bane-of-azeroth.zip.sha256
