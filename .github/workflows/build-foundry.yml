@@ -77,14 +77,22 @@ jobs:
 
   resolve-image:
     name: Resolve build image
-
     runs-on: ubuntu-24.04
 
+    permissions:
+      contents: read
+      packages: read
+
     outputs:
-      image: ${{ steps.meta.outputs.tags }}
+      image: ${{ steps.select.outputs.image }}
 
     steps:
-      - name: Generate image metadata
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Generate normal image metadata
         id: meta
         uses: docker/metadata-action@v6
         with:
@@ -93,8 +101,74 @@ jobs:
             type=ref,event=branch,prefix=${{ env.IMAGE_VERSION }}-,enable=${{ github.ref_name != github.event.repository.default_branch }}
             type=raw,value=${{ env.IMAGE_VERSION }},enable=${{ github.ref_name == github.event.repository.default_branch }}
 
-      - name: Show selected image
-        run: echo '${{ steps.meta.outputs.tags }}'
+      - name: Detect whether an exact SHA image is required
+        id: exact
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          require_sha=false
+
+          if [[ "$GITHUB_EVENT_NAME" == "push" ]] \
+            && [[ "${BEFORE_SHA:-}" =~ ^0+$ ]]; then
+            require_sha=true
+          elif [[ "$GITHUB_EVENT_NAME" == "push" ]] \
+            && [[ -n "${BEFORE_SHA:-}" ]]; then
+            if git diff --name-only "$BEFORE_SHA" "$GITHUB_SHA" | \
+              grep -Eq '^(tools/foundryvtt-cli/Dockerfile|\.github/workflows/publish-fvtt-cli-image\.yml)$'; then
+              require_sha=true
+            fi
+          fi
+
+          echo "require_sha=${require_sha}" >> "$GITHUB_OUTPUT"
+          echo "Exact SHA image required: ${require_sha}"
+
+      - name: Select expected build image
+        id: select
+        env:
+          NORMAL_IMAGE: ${{ steps.meta.outputs.tags }}
+          REQUIRE_SHA: ${{ steps.exact.outputs.require_sha }}
+        run: |
+          set -euo pipefail
+          normal_image="$(printf '%s\n' "$NORMAL_IMAGE" | head -n 1)"
+          sha_image="${IMAGE_NAME}:${IMAGE_VERSION}-sha-${GITHUB_SHA}"
+
+          if [[ "$REQUIRE_SHA" == "true" ]]; then
+            image="$sha_image"
+          else
+            image="$normal_image"
+          fi
+
+          if [[ -z "$image" ]]; then
+            echo "Could not resolve a Foundry CLI build image." >&2
+            exit 1
+          fi
+
+          echo "image=${image}" >> "$GITHUB_OUTPUT"
+          echo "Selected build image: ${image}"
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait for selected build image
+        env:
+          BUILD_IMAGE: ${{ steps.select.outputs.image }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            if docker manifest inspect "$BUILD_IMAGE" >/dev/null 2>&1; then
+              echo "Build image is available: ${BUILD_IMAGE}"
+              exit 0
+            fi
+            echo "Waiting for ${BUILD_IMAGE} in GHCR (${attempt}/90)..."
+            sleep 10
+          done
+          echo "Timed out waiting for build image: ${BUILD_IMAGE}" >&2
+          exit 1
 
   build:
     name: Build package
