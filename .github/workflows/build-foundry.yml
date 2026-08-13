@@ -2,8 +2,8 @@ name: Build Foundry package
 
 on:
   push:
-    branches:
-      - "**"
+    branches-ignore:
+      - main
     paths:
       - "foundry/**"
       - "generated/**"

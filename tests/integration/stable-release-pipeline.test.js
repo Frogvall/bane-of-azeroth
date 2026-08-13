@@ -44,6 +44,7 @@ describe(
         for (const marker of [
           "tags:",
           '"v*.*.*"',
+          '"!v*.*.*-rc.*"',
           "tools/foundry-stable-release.py",
           "Verify stable tag matches published release candidate",
           "refs/tags/release-candidate",

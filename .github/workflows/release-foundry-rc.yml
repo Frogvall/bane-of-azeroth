@@ -334,13 +334,17 @@ jobs:
         run: |
           set -euo pipefail
 
-          existing_sha="$(
+          existing_sha=""
+          if existing_sha="$(
             gh api \
               "repos/${GITHUB_REPOSITORY}/git/ref/tags/${IMMUTABLE_TAG}" \
               --jq '.object.sha' \
-              2>/dev/null ||
-            true
-          )"
+              2>/dev/null
+          )"; then
+            :
+          else
+            existing_sha=""
+          fi
 
           if [[ -n "$existing_sha" ]]; then
             if [[ "$existing_sha" != "$GITHUB_SHA" ]]; then
