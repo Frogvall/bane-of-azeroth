@@ -878,7 +878,7 @@
   }
 }
 
-/*--------------BLACKWHITE----------------*/
+/*--------------BLACKWHITE / PRINTER FRIENDLY / ILLUSTRATION FREE----------------*/
 .page:has(.blackwhite),
 .pages:has(.allblackwhite) .page {
   /* DB Colors */
@@ -897,7 +897,34 @@
   background: white;
 
   img {
-    filter: grayscale(1);
+    visibility: hidden;
+    filter: none;
+  }
+  &:has(.coverimage),
+  &:has(.backimage) {
+    background-image: none;
+    background-color: white;
+  }
+  .baneOfAzerothLogo {
+    background-image: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+      content: "BANE OF AZEROTH";
+      color: black;
+      font-family: "Colus";
+      font-size: 42pt;
+      font-weight: 700;
+      letter-spacing: .08em;
+      line-height: 1;
+      text-align: center;
+    }
+  }
+  .marker,
+  .attribution {
+    visibility: hidden;
   }
 
   .dragonbaneLogo {
