@@ -48,6 +48,8 @@ describe(
           "tools/foundry-stable-release.py",
           "Verify stable tag matches published release candidate",
           "refs/tags/release-candidate",
+          'repository_url="https://github.com/${GITHUB_REPOSITORY}.git"',
+          '"$repository_url"',
           "No immutable release-candidate tag points to the stable commit",
           "BOA_INCLUDE_DEV_TESTS=false",
           "BOA_ZIP_NAME=bane-of-azeroth.zip",

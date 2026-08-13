@@ -69,11 +69,12 @@ jobs:
           source_version="$(
             jq -er '.version' foundry/module.json
           )"
+          repository_url="https://github.com/${GITHUB_REPOSITORY}.git"
           rc_commit="$(
             git ls-remote \
               --tags \
               --refs \
-              origin \
+              "$repository_url" \
               "refs/tags/release-candidate" |
             awk 'NR == 1 { print $1 }'
           )"
@@ -98,7 +99,7 @@ jobs:
             git ls-remote \
               --tags \
               --refs \
-              origin \
+              "$repository_url" \
               "refs/tags/v${source_version}-rc.*" |
             awk -v sha="$stable_commit" \
               '$1 == sha { print $2 }' |
