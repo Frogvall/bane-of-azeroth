@@ -95,6 +95,46 @@ describe(
     );
 
     test(
+      "treats a missing immutable RC tag as absent rather than as an error-body SHA",
+      () => {
+        const source =
+          read(
+            RC_WORKFLOW,
+          );
+
+        expect(source).toContain(
+          'if existing_sha="$(',
+        );
+        expect(source).toContain(
+          'existing_sha=""',
+        );
+        expect(source).not.toContain(
+          '2>/dev/null ||\n            true',
+        );
+      },
+    );
+
+    test(
+      "leaves main exclusively to the release-candidate pipeline",
+      () => {
+        const source =
+          read(
+            BUILD_WORKFLOW,
+          );
+
+        expect(source).toContain(
+          "branches-ignore:",
+        );
+        expect(source).toContain(
+          "- main",
+        );
+        expect(source).not.toContain(
+          'branches:\n      - "**"',
+        );
+      },
+    );
+
+    test(
       "verifies the same public endpoints that Foundry testers use",
       () => {
         const rc =
