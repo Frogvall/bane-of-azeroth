@@ -14,6 +14,8 @@ on:
       - "tools/package-foundry.sh"
       - "tools/generate-*.py"
       - "tools/foundry-stable-release.py"
+      - "tools/foundryvtt-cli/Dockerfile"
+      - ".github/workflows/publish-fvtt-cli-image.yml"
       - ".github/workflows/build-foundry.yml"
       - ".github/workflows/release-foundry.yml"
       - ".github/workflows/release-foundry-rc.yml"
