@@ -95,6 +95,29 @@ describe(
     );
 
     test(
+      "queries explicit remote refs when choosing the next RC number",
+      () => {
+        const source =
+          read(
+            RC_WORKFLOW,
+          );
+
+        expect(source).toContain(
+          'repository_git_url="https://github.com/${GITHUB_REPOSITORY}.git"',
+        );
+        expect(source).toContain(
+          '"$repository_git_url"',
+        );
+        expect(source).not.toContain(
+          'git ls-remote \\\n            --exit-code \\\n            --tags \\\n            --refs \\\n            origin',
+        );
+        expect(source).not.toContain(
+          'git ls-remote \\\n              --tags \\\n              --refs \\\n              origin',
+        );
+      },
+    );
+
+    test(
       "treats a missing immutable RC tag as absent rather than as an error-body SHA",
       () => {
         const source =
