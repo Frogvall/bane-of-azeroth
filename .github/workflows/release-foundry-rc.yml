@@ -167,12 +167,13 @@ jobs:
             exit 1
           fi
 
+          repository_git_url="https://github.com/${GITHUB_REPOSITORY}.git"
           stable_tag="v${source_version}"
           if git ls-remote \
             --exit-code \
             --tags \
             --refs \
-            origin \
+            "$repository_git_url" \
             "refs/tags/${stable_tag}" \
             >/dev/null 2>&1; then
             echo \
@@ -202,7 +203,7 @@ jobs:
             git ls-remote \
               --tags \
               --refs \
-              origin \
+              "$repository_git_url" \
               "refs/tags/${prefix}*"
           )
 
