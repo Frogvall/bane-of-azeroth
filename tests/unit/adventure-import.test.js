@@ -62,11 +62,17 @@ describe("Adventure import version handling", () => {
     game.settings.get.mockReturnValue("0.6.0");
     foundry.utils.isNewerVersion.mockReturnValue(true);
 
-    const adventure = {
-      sheet: {
-        render: vi.fn(async () => undefined),
-      },
-    };
+    const render = vi.fn(async () => undefined);
+    const AdventureImporterV2 = vi.fn(function (options) {
+      this.options = options;
+      this.render = render;
+    });
+    foundry.applications ??= {};
+    foundry.applications.sheets ??= {};
+    foundry.applications.sheets.AdventureImporterV2 =
+      AdventureImporterV2;
+
+    const adventure = {};
     const pack = {
       getIndex: vi.fn(async () => ({
         contents: [
@@ -82,7 +88,10 @@ describe("Adventure import version handling", () => {
     await promptAdventureImport();
 
     expect(pack.getDocument).toHaveBeenCalledWith("adventure-id");
-    expect(adventure.sheet.render).toHaveBeenCalledWith(true);
+    expect(AdventureImporterV2).toHaveBeenCalledWith({
+      document: adventure,
+    });
+    expect(render).toHaveBeenCalledWith(true);
     expect(game.settings.set).toHaveBeenCalledWith(
       "bane-of-azeroth",
       "adventurePromptVersion",

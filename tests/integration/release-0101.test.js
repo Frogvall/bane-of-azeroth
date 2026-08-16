@@ -13,6 +13,10 @@ import {
 const README = resolve(
   "README.md",
 );
+const MODULE = resolve(
+  "foundry",
+  "module.json",
+);
 const SYSTEM_MACRO = resolve(
   "tests",
   "system",
@@ -24,6 +28,22 @@ function read(path) {
   return readFileSync(path, "utf8");
 }
 
+function dragonbaneVerifiedVersion() {
+  const manifest =
+    JSON.parse(
+      read(MODULE),
+    );
+
+  return manifest.relationships.systems
+    .find(
+      system =>
+        system.id ===
+          "dragonbane",
+    )
+    ?.compatibility
+    ?.verified;
+}
+
 describe("Foundry Journal release baseline", () => {
   test("keeps the verified compatibility baseline recorded", () => {
     const readme = read(README);
@@ -32,7 +52,7 @@ describe("Foundry Journal release baseline", () => {
       "| Foundry Virtual Tabletop | 14.365 |",
     );
     expect(readme).toContain(
-      "| Dragonbane system | 4.0.1 |",
+      `| Dragonbane system | ${dragonbaneVerifiedVersion()} |`,
     );
     expect(readme).toContain(
       "| Dragonbane Core Set | 2.2 |",
@@ -46,7 +66,7 @@ test("documents the current Foundry Journal and test workflow in README", () => 
       "Generated **Appendices** Journal",
       "deterministic Journal ordering",
       "| Foundry Virtual Tabletop | 14.365 |",
-      "| Dragonbane system | 4.0.1 |",
+      `| Dragonbane system | ${dragonbaneVerifiedVersion()} |`,
       "| Dragonbane Core Set | 2.2 |",
       "npm run test:coverage",
       "npm run check:generated",

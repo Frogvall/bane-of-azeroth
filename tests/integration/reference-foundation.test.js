@@ -95,9 +95,27 @@ describe("reference foundation", () => {
 
   test("uses one verified environment for the whole module", () => {
     const compatibility = readJson(COMPATIBILITY);
+    const module = readJson(MODULE);
     const readme = fs.readFileSync(
       README,
       "utf8",
+    );
+
+    const dragonbaneSystem =
+      module.relationships.systems.find(
+        system =>
+          system.id ===
+          "dragonbane",
+      );
+    const verifiedDragonbaneVersion =
+      dragonbaneSystem
+        ?.compatibility
+        ?.verified;
+
+    expect(
+      verifiedDragonbaneVersion,
+    ).toMatch(
+      /^\d+(?:\.\d+){1,2}$/,
     );
 
     expect(compatibility).toEqual({
@@ -106,7 +124,8 @@ describe("reference foundation", () => {
         foundry: "14.365",
         system: {
           id: "dragonbane",
-          version: "4.0.1",
+          version:
+            verifiedDragonbaneVersion,
         },
         modules: {
           "dragonbane-coreset": {
@@ -123,7 +142,7 @@ describe("reference foundation", () => {
 
     for (const version of [
       "14.365",
-      "4.0.1",
+      verifiedDragonbaneVersion,
       "2.2",
       "1.7.0",
     ]) {

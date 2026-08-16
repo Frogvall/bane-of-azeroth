@@ -45,6 +45,10 @@ def transform_line(
             f"flags.{target_id}.",
         ),
         (
+            f"{CANONICAL_ID}.AdventureImporterV2",
+            f"{target_id}.AdventureImporterV2",
+        ),
+        (
             f"{CANONICAL_ID}.{CANONICAL_ID}-dev-tests",
             f"{target_id}.{CANONICAL_ID}-dev-tests",
         ),
@@ -267,6 +271,10 @@ def self_test() -> None:
         "moduleId":
             "bane-of-azeroth",
         "flags": {
+            "core": {
+                "sheetClass":
+                    "bane-of-azeroth.AdventureImporterV2",
+            },
             "bane-of-azeroth": {
                 "systemTestKey":
                     "smoke",
@@ -341,6 +349,18 @@ def self_test() -> None:
     ):
         raise AssertionError(
             "Canonical JSON object key unexpectedly remained."
+        )
+
+    if (
+        flags[
+            "core"
+        ][
+            "sheetClass"
+        ]
+        != f"{target_id}.AdventureImporterV2"
+    ):
+        raise AssertionError(
+            "Adventure sheet class id was not rebranded."
         )
 
     command = transformed[

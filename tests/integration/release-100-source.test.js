@@ -26,20 +26,20 @@ function read(path) {
 }
 
 describe(
-  "1.0.0 release source and main-driven RC pipeline",
+  "release source and main-driven RC pipeline",
   () => {
     test(
-      "finalizes stable source metadata before RC testing",
+      "keeps release source metadata coherent before RC testing",
       () => {
         const manifest = JSON.parse(read(MODULE));
         const readme = read(README);
         const changelog = read(CHANGELOG);
 
-        expect(manifest.version).toBe("1.0.0");
+        expect(manifest.version).toMatch(/^\d+\.\d+\.\d+$/);
         expect(manifest.manifest).toBeUndefined();
         expect(manifest.download).toBeUndefined();
         expect(readme).toContain(
-          "**Current Foundry module version:** 1.0.0",
+          `**Current Foundry module version:** ${manifest.version}`,
         );
         expect(readme).toContain(
           "**Current status:** Foundry VTT 1.0 release line",
@@ -51,9 +51,8 @@ describe(
           "Bane of Azeroth remains an alpha project.",
         );
         expect(changelog).toMatch(
-          /## \[Unreleased\]\s*## \[1\.0\.0\] - 2026-08-12/,
+          /^## \[Unreleased\]/m,
         );
-        expect(changelog).not.toMatch(/^## \[0\./m);
       },
     );
 

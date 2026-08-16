@@ -32,6 +32,7 @@ import {
 import {
   getContentVersion,
   promptAdventureImport,
+  registerAdventureImporterSheet,
   registerSettings,
   } from "./adventure-import.js";
 import {
@@ -235,6 +236,7 @@ import {
 import {
   canBoACastSpell,
   getBoASpellCost,
+  registerBoASpellTestAdapter,
 } from "./spellcasting.js";
 // BOA Great Helm + Firearms compatibility.
 import {
@@ -258,6 +260,7 @@ import {
 Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
+  registerAdventureImporterSheet();
   if (!claimPackageRuntime()) return;
   registerAutomationSettings();
   registerDeveloperSettings();
@@ -576,6 +579,14 @@ Hooks.once("ready", async () => {
     );
   }
 
+  try {
+    await registerBoASpellTestAdapter();
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize the shared spell-test adapter.`,
+      error,
+    );
+  }
 
   try {
     await patchWarStompWeaponTest();

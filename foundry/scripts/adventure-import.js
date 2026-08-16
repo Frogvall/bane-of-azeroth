@@ -4,6 +4,48 @@ import {
   MODULE_ID,
 } from "./core/constants.js";
 
+export function registerAdventureImporterSheet() {
+  const DocumentSheetConfig =
+    globalThis.foundry
+      ?.applications
+      ?.apps
+      ?.DocumentSheetConfig;
+  const Adventure =
+    globalThis.foundry
+      ?.documents
+      ?.Adventure;
+  const AdventureImporterV2 =
+    globalThis.foundry
+      ?.applications
+      ?.sheets
+      ?.AdventureImporterV2;
+
+  if (
+    typeof DocumentSheetConfig
+      ?.registerSheet !== "function" ||
+    typeof Adventure !== "function" ||
+    typeof AdventureImporterV2 !== "function"
+  ) {
+    console.error(
+      `${MODULE_ID} | Foundry AdventureImporterV2 sheet APIs were not available.`
+    );
+    return false;
+  }
+
+  DocumentSheetConfig.registerSheet(
+    Adventure,
+    MODULE_ID,
+    AdventureImporterV2,
+    {
+      label:
+        "Bane of Azeroth Adventure Importer",
+      makeDefault: false,
+    },
+  );
+
+  return true;
+}
+
 export function registerSettings() {
   game.settings.register(MODULE_ID, ADVENTURE_PROMPT_VERSION_SETTING, {
     scope: "world",
@@ -62,7 +104,28 @@ export async function promptAdventureImport() {
     return;
   }
 
-  await adventure.sheet.render(true);
+  const AdventureImporterV2 =
+    globalThis.foundry
+      ?.applications
+      ?.sheets
+      ?.AdventureImporterV2;
+
+  if (
+    typeof AdventureImporterV2 !==
+      "function"
+  ) {
+    console.error(
+      `${MODULE_ID} | Foundry AdventureImporterV2 was not available.`
+    );
+    return;
+  }
+
+  const importer =
+    new AdventureImporterV2({
+      document: adventure,
+    });
+
+  await importer.render(true);
 
   await game.settings.set(
     MODULE_ID,

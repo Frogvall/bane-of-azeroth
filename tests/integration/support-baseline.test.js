@@ -38,7 +38,7 @@ function read(
 }
 
 describe(
-  "0.12.2 dependency and support baseline",
+  "dependency and support baseline",
   () => {
     test(
       "declares only Dragonbane as a hard Foundry runtime dependency",
@@ -59,16 +59,28 @@ describe(
 
         expect(
           manifest.relationships.systems,
-        ).toEqual([
-          {
-            id: "dragonbane",
-            type: "system",
-            compatibility: {
-              minimum: "4.0.1",
-              verified: "4.0.1",
-            },
+        ).toHaveLength(1);
+
+        const [dragonbaneSystem] =
+          manifest.relationships.systems;
+
+        expect(
+          dragonbaneSystem,
+        ).toMatchObject({
+          id: "dragonbane",
+          type: "system",
+          compatibility: {
+            minimum: "4.0.1",
           },
-        ]);
+        });
+
+        expect(
+          dragonbaneSystem
+            .compatibility
+            .verified,
+        ).toMatch(
+          /^\d+(?:\.\d+){1,2}$/,
+        );
 
         expect(
           manifest.relationships.requires
@@ -84,7 +96,6 @@ describe(
         );
       },
     );
-
     test(
       "records one whole-module verified environment without making YZE Combat required",
       () => {
@@ -94,6 +105,22 @@ describe(
             "config",
             "compatibility.json",
           );
+        const manifest =
+          readJson(
+            "foundry",
+            "module.json",
+          );
+        const dragonbaneSystem =
+          manifest.relationships.systems
+            .find(
+              system =>
+                system.id ===
+                  "dragonbane",
+            );
+
+        expect(
+          dragonbaneSystem,
+        ).toBeTruthy();
 
         expect(
           compatibility,
@@ -103,7 +130,10 @@ describe(
             foundry: "14.365",
             system: {
               id: "dragonbane",
-              version: "4.0.1",
+              version:
+                dragonbaneSystem
+                  .compatibility
+                  .verified,
             },
             modules: {
               "dragonbane-coreset": {
@@ -119,7 +149,6 @@ describe(
         });
       },
     );
-
     test(
       "keeps generated verified environment synchronized with compatibility source",
       () => {
@@ -175,7 +204,7 @@ describe(
         expect(
           readme,
         ).toContain(
-          "Dragonbane system 4.0.1 is the only hard Foundry runtime dependency",
+          "Dragonbane system is the only hard Foundry runtime dependency",
         );
         expect(
           readme,

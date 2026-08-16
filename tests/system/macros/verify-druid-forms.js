@@ -1757,6 +1757,436 @@ notes.push(
     }
   }
 
+  // BOA 1.1.0 Dragonbane 4.1 Moonkin native magic-trick dialog regression contract.
+  {
+    let nativeDialogActor = null;
+    let previousMoonkinCostSetting =
+      null;
+    const moonkinCostSettingKey =
+      "druidMoonkinSpellCostAutomation";
+
+    try {
+      const moonkinCostSetting =
+        game.settings
+          ?.settings
+          ?.get?.(
+            `${BOA_TEST_MODULE_ID}.${moonkinCostSettingKey}`
+          ) ?? null;
+
+      boaCheck(
+        checks,
+        "Moonkin native-dialog regression has the spell-cost automation setting",
+        Boolean(
+          moonkinCostSetting
+        ),
+        moonkinCostSetting
+          ?.default ?? null
+      );
+
+      if (!moonkinCostSetting) {
+        throw new Error(
+          "druidMoonkinSpellCostAutomation is not registered."
+        );
+      }
+
+      previousMoonkinCostSetting =
+        game.settings.get(
+          BOA_TEST_MODULE_ID,
+          moonkinCostSettingKey
+        );
+      await game.settings.set(
+        BOA_TEST_MODULE_ID,
+        moonkinCostSettingKey,
+        true
+      );
+
+      const senseMagicUuid =
+        "Item.RPnxXYVb8z7EG5Wl";
+      const sourceMagicTrick =
+        await fromUuid(
+          senseMagicUuid
+        );
+
+      boaCheck(
+        checks,
+        "Moonkin native-dialog regression resolves a Dragonbane rank-0 spell",
+        Boolean(
+          sourceMagicTrick &&
+          sourceMagicTrick.type ===
+            "spell" &&
+          Number(
+            sourceMagicTrick
+              .system
+              ?.rank
+          ) === 0
+        ),
+        {
+          uuid:
+            senseMagicUuid,
+          name:
+            sourceMagicTrick
+              ?.name ?? null,
+          rank:
+            sourceMagicTrick
+              ?.system
+              ?.rank ?? null,
+        }
+      );
+
+      if (!sourceMagicTrick) {
+        throw new Error(
+          `Could not resolve ${senseMagicUuid}.`
+        );
+      }
+
+      nativeDialogActor =
+        await Actor.create(
+          {
+            name:
+              "[BOA TEST] Moonkin Native Dialog " +
+              foundry.utils.randomID(6),
+            type:
+              "character",
+            flags: {
+              [BOA_TEST_MODULE_ID]: {
+                [BOA_TEST_FIXTURE_FLAG]:
+                  true,
+              },
+            },
+          },
+          {
+            renderSheet:
+              false,
+          }
+        );
+
+      const [moonkinMagicTrick] =
+        await nativeDialogActor
+          .createEmbeddedDocuments(
+            "Item",
+            [
+              boaCloneEmbeddedItem(
+                sourceMagicTrick
+              ),
+            ]
+          );
+
+      await nativeDialogActor.setFlag(
+        BOA_TEST_MODULE_ID,
+        "druidFormState",
+        {
+          currentForm:
+            "moonkin",
+          activations: {
+            stars: {
+              active:
+                true,
+              powerLevel:
+                2,
+            },
+          },
+        }
+      );
+
+      boaCheckEqual(
+        checks,
+        "Owned Moonkin magic trick uses the installed Dragonbane Item#getSpellCost wrapper",
+        moonkinMagicTrick
+          .getSpellCost(0),
+        0
+      );
+
+      const spellTestPath =
+        "systems/dragonbane/modules/tests/spell-test.js";
+      const spellTestRoute =
+        foundry.utils.getRoute?.(
+          spellTestPath
+        ) ?? `/${spellTestPath}`;
+      const {
+        default: SpellTestClass,
+      } = await import(
+        spellTestRoute
+      );
+      const dialogPatchSymbol =
+        Symbol.for(
+          `${BOA_TEST_MODULE_ID}.spellcasting.spell-test-dialog`
+        );
+
+      boaCheck(
+        checks,
+        "Dragonbane native SpellTest used by Moonkin has the shared BoA magic-trick dialog adapter",
+        SpellTestClass
+          ?.prototype
+          ?.updateDialogData
+          ?.[dialogPatchSymbol] === true,
+        SpellTestClass
+          ?.prototype
+          ?.updateDialogData
+          ?.[dialogPatchSymbol] ?? false
+      );
+
+      const nativeMagicTrickTitle =
+        game.i18n.localize(
+          "DoD.ui.dialog.castMagicTrickTitle"
+        );
+      const stockMoonkinContent =
+        game.i18n.format(
+          "DoD.ui.dialog.castMagicTrickContent",
+          {
+            spell:
+              moonkinMagicTrick.name,
+          }
+        );
+      const moonkinTest =
+        new SpellTestClass(
+          nativeDialogActor,
+          moonkinMagicTrick,
+          {
+            autoSuccess:
+              true,
+            title:
+              nativeMagicTrickTitle,
+            label:
+              nativeMagicTrickTitle,
+            content:
+              stockMoonkinContent,
+          }
+        );
+
+      const DialogV2 =
+        foundry.applications
+          ?.api
+          ?.DialogV2;
+      const originalDialogInput =
+        DialogV2?.input;
+      let capturedMoonkinDialog =
+        null;
+
+      try {
+        if (
+          typeof originalDialogInput !==
+            "function"
+        ) {
+          throw new Error(
+            "Foundry DialogV2.input is unavailable."
+          );
+        }
+
+        DialogV2.input =
+          async options => {
+            capturedMoonkinDialog =
+              options;
+            return null;
+          };
+
+        moonkinTest
+          .updateDialogData();
+        await moonkinTest
+          .getRollOptions();
+      } finally {
+        if (
+          DialogV2 &&
+          typeof originalDialogInput ===
+            "function"
+        ) {
+          DialogV2.input =
+            originalDialogInput;
+        }
+      }
+
+      const moonkinRenderedContent =
+        String(
+          capturedMoonkinDialog
+            ?.content ?? ""
+        );
+
+      boaCheck(
+        checks,
+        "Dragonbane 4.1 native Moonkin magic-trick dialog reflects 0 WP",
+        Boolean(
+          moonkinTest.options
+            ?.noWpCost === true &&
+          moonkinTest.options
+            ?.content !==
+            stockMoonkinContent &&
+          moonkinTest.options
+            ?.content &&
+          moonkinRenderedContent
+            .includes(
+              moonkinTest.options
+                .content
+            ) &&
+          !moonkinRenderedContent
+            .includes(
+              stockMoonkinContent
+            )
+        ),
+        {
+          spell:
+            moonkinMagicTrick
+              .name,
+          getSpellCost:
+            moonkinMagicTrick
+              .getSpellCost(0),
+          noWpCost:
+            moonkinTest.options
+              ?.noWpCost ?? null,
+          stockContent:
+            stockMoonkinContent,
+          effectiveContent:
+            moonkinTest.options
+              ?.content ?? null,
+          renderedContent:
+            moonkinRenderedContent,
+        }
+      );
+
+      await nativeDialogActor.setFlag(
+        BOA_TEST_MODULE_ID,
+        "druidFormState",
+        {
+          currentForm:
+            "humanoid",
+          activations: {},
+        }
+      );
+
+      boaCheckEqual(
+        checks,
+        "Leaving Moonkin restores the owned magic trick to 1 WP",
+        moonkinMagicTrick
+          .getSpellCost(0),
+        1
+      );
+
+      const stockHumanoidContent =
+        game.i18n.format(
+          "DoD.ui.dialog.castMagicTrickContent",
+          {
+            spell:
+              moonkinMagicTrick.name,
+          }
+        );
+      const humanoidControlTest =
+        new SpellTestClass(
+          nativeDialogActor,
+          moonkinMagicTrick,
+          {
+            autoSuccess:
+              true,
+            title:
+              nativeMagicTrickTitle,
+            label:
+              nativeMagicTrickTitle,
+            content:
+              stockHumanoidContent,
+          }
+        );
+      let capturedHumanoidDialog =
+        null;
+
+      try {
+        DialogV2.input =
+          async options => {
+            capturedHumanoidDialog =
+              options;
+            return null;
+          };
+
+        humanoidControlTest
+          .updateDialogData();
+        await humanoidControlTest
+          .getRollOptions();
+      } finally {
+        DialogV2.input =
+          originalDialogInput;
+      }
+
+      const humanoidRenderedContent =
+        String(
+          capturedHumanoidDialog
+            ?.content ?? ""
+        );
+
+      boaCheck(
+        checks,
+        "Dragonbane 4.1 native non-Moonkin control keeps the normal 1 WP magic-trick dialog",
+        Boolean(
+          humanoidControlTest
+            .options
+            ?.noWpCost !== true &&
+          humanoidControlTest
+            .options
+            ?.content ===
+            stockHumanoidContent &&
+          humanoidRenderedContent
+            .includes(
+              stockHumanoidContent
+            )
+        ),
+        {
+          getSpellCost:
+            moonkinMagicTrick
+              .getSpellCost(0),
+          noWpCost:
+            humanoidControlTest
+              .options
+              ?.noWpCost ?? null,
+          stockContent:
+            stockHumanoidContent,
+          effectiveContent:
+            humanoidControlTest
+              .options
+              ?.content ?? null,
+          renderedContent:
+            humanoidRenderedContent,
+        }
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        "Dragonbane 4.1 native Moonkin magic-trick dialog regression workflow completed",
+        false,
+        error.stack ??
+          error.message ??
+          String(error)
+      );
+    } finally {
+      if (nativeDialogActor) {
+        try {
+          await nativeDialogActor.delete();
+        } catch (error) {
+          boaCheck(
+            checks,
+            "Temporary Moonkin native-dialog Actor cleanup succeeded",
+            false,
+            error.message
+          );
+        }
+      }
+
+      if (
+        previousMoonkinCostSetting !==
+          null
+      ) {
+        try {
+          await game.settings.set(
+            BOA_TEST_MODULE_ID,
+            moonkinCostSettingKey,
+            previousMoonkinCostSetting
+          );
+        } catch (error) {
+          boaCheck(
+            checks,
+            "Moonkin native-dialog spell-cost setting was restored",
+            false,
+            error.message
+          );
+        }
+      }
+    }
+  }
+
   // BOA 0.11.7 Cat + Moonkin shared roll-boon RED/GREEN contract.
   {
     boaCheck(

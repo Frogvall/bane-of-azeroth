@@ -11,11 +11,11 @@
   ],
   "counts": {
     "display-table": 2,
-    "runtime-uuid-lookup": 7,
+    "runtime-uuid-lookup": 8,
     "symbolic-display-reference": 23,
     "symbolic-reference": 105,
     "uuid-link": 27,
-    "uuid-literal": 21
+    "uuid-literal": 22
   },
   "entries": [
     {
@@ -1781,6 +1781,24 @@
       "classification": "unclassified",
       "snippet": "`@UUID[${poisonRuleUuid}]{lethal poison}`,",
       "label": "lethal poison"
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "tests/system/macros/verify-druid-forms.js",
+      "line": 1804,
+      "column": 9,
+      "target": "Item.RPnxXYVb8z7EG5Wl",
+      "classification": "unclassified",
+      "snippet": "\"Item.RPnxXYVb8z7EG5Wl\";"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "tests/system/macros/verify-druid-forms.js",
+      "line": 1806,
+      "column": 15,
+      "function": "fromUuid",
+      "classification": "runtime",
+      "snippet": "await fromUuid("
     },
     {
       "kind": "runtime-uuid-lookup",
