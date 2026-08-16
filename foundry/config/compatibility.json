@@ -4,7 +4,7 @@
     "foundry": "14.365",
     "system": {
       "id": "dragonbane",
-      "version": "4.0.1"
+      "version": "4.1"
     },
     "modules": {
       "dragonbane-coreset": {
