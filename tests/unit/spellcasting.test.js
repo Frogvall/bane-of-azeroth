@@ -315,4 +315,121 @@ describe("shared BoA spellcasting", () => {
         },
       );
   });
+  test("native Dragonbane spell-test dialog reflects a free magic trick", () => {
+    class SpellTest {
+      constructor(spell) {
+        this.spell = spell;
+        this.options = {
+          content:
+            "Spend 1 WP to cast Sense Magic?",
+        };
+        this.dialogData = {};
+      }
+
+      updateDialogData() {
+        this.dialogData.wpSources = [
+          {
+            name: "Actor",
+          },
+          {
+            name: "Power Source",
+          },
+        ];
+        return "native";
+      }
+    }
+
+    const spell = {
+      name: "Sense Magic",
+      type: "spell",
+      system: {
+        rank: 0,
+      },
+      getSpellCost: vi.fn(
+        () => 0,
+      ),
+    };
+
+    expect(
+      api.patchBoASpellTestDialog({
+        SpellTestClass: SpellTest,
+      }),
+    ).toBe(true);
+
+    const testInstance =
+      new SpellTest(spell);
+
+    expect(
+      testInstance.updateDialogData(),
+    ).toBe("native");
+    expect(
+      testInstance.options.noWpCost,
+    ).toBe(true);
+    expect(
+      testInstance.options.content,
+    ).toBe(
+      "Cast Sense Magic without spending WP?",
+    );
+    expect(
+      testInstance.dialogData.wpSources,
+    ).toBeUndefined();
+  });
+
+  test("native Dragonbane spell-test dialog leaves an ordinary 1 WP trick unchanged", () => {
+    class SpellTest {
+      constructor(spell) {
+        this.spell = spell;
+        this.options = {
+          content:
+            "Spend 1 WP to cast Magic Trick?",
+        };
+        this.dialogData = {};
+      }
+
+      updateDialogData() {
+        this.dialogData.wpSources = [
+          {
+            name: "Actor",
+          },
+          {
+            name: "Power Source",
+          },
+        ];
+      }
+    }
+
+    const spell = {
+      name: "Magic Trick",
+      type: "spell",
+      system: {
+        rank: 0,
+      },
+      getSpellCost: vi.fn(
+        () => 1,
+      ),
+    };
+
+    expect(
+      api.patchBoASpellTestDialog({
+        SpellTestClass: SpellTest,
+      }),
+    ).toBe(true);
+
+    const testInstance =
+      new SpellTest(spell);
+    testInstance.updateDialogData();
+
+    expect(
+      testInstance.options.noWpCost,
+    ).toBeUndefined();
+    expect(
+      testInstance.options.content,
+    ).toBe(
+      "Spend 1 WP to cast Magic Trick?",
+    );
+    expect(
+      testInstance.dialogData.wpSources,
+    ).toHaveLength(2);
+  });
+
 });

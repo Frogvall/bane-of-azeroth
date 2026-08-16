@@ -62,7 +62,28 @@ export async function promptAdventureImport() {
     return;
   }
 
-  await adventure.sheet.render(true);
+  const AdventureImporterV2 =
+    globalThis.foundry
+      ?.applications
+      ?.sheets
+      ?.AdventureImporterV2;
+
+  if (
+    typeof AdventureImporterV2 !==
+      "function"
+  ) {
+    console.error(
+      `${MODULE_ID} | Foundry AdventureImporterV2 was not available.`
+    );
+    return;
+  }
+
+  const importer =
+    new AdventureImporterV2({
+      document: adventure,
+    });
+
+  await importer.render(true);
 
   await game.settings.set(
     MODULE_ID,

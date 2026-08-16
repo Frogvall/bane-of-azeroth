@@ -235,6 +235,7 @@ import {
 import {
   canBoACastSpell,
   getBoASpellCost,
+  registerBoASpellTestAdapter,
 } from "./spellcasting.js";
 // BOA Great Helm + Firearms compatibility.
 import {
@@ -576,6 +577,14 @@ Hooks.once("ready", async () => {
     );
   }
 
+  try {
+    await registerBoASpellTestAdapter();
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize the shared spell-test adapter.`,
+      error,
+    );
+  }
 
   try {
     await patchWarStompWeaponTest();

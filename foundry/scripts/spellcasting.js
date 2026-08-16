@@ -1,6 +1,9 @@
 import { MODULE_ID } from "./core/constants.js";
 
 const COST_PATCH = Symbol.for(`${MODULE_ID}.spellcasting.cost`);
+const SPELL_TEST_DIALOG_PATCH = Symbol.for(
+  `${MODULE_ID}.spellcasting.spell-test-dialog`,
+);
 const LEGACY_STATE = Symbol.for(`${MODULE_ID}.spellcasting.legacy`);
 const costPolicies = new Map();
 const castPolicies = new Map();
@@ -131,6 +134,152 @@ export function patchBoASpellCost({
 
   prototype.getSpellCost = boaGetSpellCost;
   return true;
+}
+
+/**
+ * Dragonbane 4.1 routes magic tricks through DoDSpellTest, but the Actor
+ * sheet still prepares the stock rank-0 dialog copy before the spell test
+ * evaluates Item#getSpellCost(). Normalize the dialog from the same live
+ * cost method used for affordability and payment.
+ *
+ * This is intentionally behavior-based rather than version-based. On the
+ * Dragonbane 4.0.1 Actor-sheet path this code is dormant and the existing
+ * legacy adapter remains responsible for rank-0 casting.
+ */
+export function applyBoAMagicTrickDialogCost(
+  test,
+) {
+  const spell = test?.spell;
+  if (
+    spell?.type !== "spell" ||
+    Number(spell?.system?.rank) !== 0 ||
+    typeof spell?.getSpellCost !== "function"
+  ) {
+    return false;
+  }
+
+  const cost = Number(
+    spell.getSpellCost(0),
+  );
+  if (
+    !Number.isFinite(cost) ||
+    cost === 1
+  ) {
+    return false;
+  }
+
+  test.options ??= {};
+  test.dialogData ??= {};
+
+  if (cost <= 0) {
+    /*
+     * Tell Dragonbane's native SpellTest that this cast has no WP cost.
+     * This keeps the dialog, affordability check, power-source handling,
+     * pre-roll data, and final payment on the same interpretation.
+     */
+    test.options.noWpCost = true;
+    delete test.dialogData.wpSources;
+
+    test.options.content = localize(
+      "BOA.dialog.spellcastingFreeMagicTrickContent",
+      `Cast ${spell.name} without spending WP?`,
+      {
+        spell: spell.name,
+      },
+    );
+  } else {
+    test.options.content = localize(
+      "BOA.dialog.spellcastingMagicTrickContent",
+      `Cast ${spell.name} for ${cost} WP?`,
+      {
+        spell: spell.name,
+        cost,
+      },
+    );
+  }
+
+  return true;
+}
+
+export function patchBoASpellTestDialog({
+  SpellTestClass,
+} = {}) {
+  const prototype =
+    SpellTestClass?.prototype;
+  const current =
+    prototype?.updateDialogData;
+
+  if (typeof current !== "function") {
+    return false;
+  }
+  if (
+    current[
+      SPELL_TEST_DIALOG_PATCH
+    ] === true
+  ) {
+    return true;
+  }
+
+  const original = current;
+  function boaSpellTestUpdateDialogData(
+    ...args
+  ) {
+    const result =
+      original.apply(
+        this,
+        args,
+      );
+    applyBoAMagicTrickDialogCost(
+      this,
+    );
+    return result;
+  }
+
+  Object.defineProperty(
+    boaSpellTestUpdateDialogData,
+    SPELL_TEST_DIALOG_PATCH,
+    {
+      value: true,
+    },
+  );
+
+  prototype.updateDialogData =
+    boaSpellTestUpdateDialogData;
+  return true;
+}
+
+async function loadDragonbaneSpellTestClass() {
+  const relativePath =
+    "systems/dragonbane/modules/tests/spell-test.js";
+  const route =
+    globalThis.foundry
+      ?.utils
+      ?.getRoute?.(relativePath) ??
+    `/${relativePath}`;
+  const module =
+    await import(route);
+
+  if (
+    typeof module?.default !== "function"
+  ) {
+    throw new Error(
+      `${MODULE_ID} | Dragonbane DoDSpellTest could not be loaded.`,
+    );
+  }
+
+  return module.default;
+}
+
+export async function registerBoASpellTestAdapter({
+  SpellTestClass = null,
+} = {}) {
+  const TestClass =
+    SpellTestClass ??
+    await loadDragonbaneSpellTestClass();
+
+  return patchBoASpellTestDialog({
+    SpellTestClass: TestClass,
+  });
 }
 
 export function isLegacyDragonbaneMagicTrickHandler(
