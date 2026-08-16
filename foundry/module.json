@@ -4,7 +4,7 @@
   "description": "Unofficial Warcraft-inspired rules, content, and automation for Dragonbane.",
   "url": "https://github.com/Frogvall/bane-of-azeroth",
   "bugs": "https://github.com/Frogvall/bane-of-azeroth/issues",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14",

@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Foundry VTT 1.0 release line
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 1.0.0
+> **Current Foundry module version:** 1.1.0
 ## Project goals
 
 Bane of Azeroth is intended to provide a coherent Dragonbane ruleset for adventures inspired by Azeroth, rather than attempting to reproduce every mechanic from the source material directly.
