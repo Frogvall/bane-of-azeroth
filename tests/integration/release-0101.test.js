@@ -32,7 +32,7 @@ describe("Foundry Journal release baseline", () => {
       "| Foundry Virtual Tabletop | 14.365 |",
     );
     expect(readme).toContain(
-      "| Dragonbane system | 4.0.1 |",
+      "| Dragonbane system | 4.1 |",
     );
     expect(readme).toContain(
       "| Dragonbane Core Set | 2.2 |",
@@ -46,7 +46,7 @@ test("documents the current Foundry Journal and test workflow in README", () => 
       "Generated **Appendices** Journal",
       "deterministic Journal ordering",
       "| Foundry Virtual Tabletop | 14.365 |",
-      "| Dragonbane system | 4.0.1 |",
+      "| Dragonbane system | 4.1 |",
       "| Dragonbane Core Set | 2.2 |",
       "npm run test:coverage",
       "npm run check:generated",
