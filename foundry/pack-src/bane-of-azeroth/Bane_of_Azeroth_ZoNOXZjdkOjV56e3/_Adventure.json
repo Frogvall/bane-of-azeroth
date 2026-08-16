@@ -214,7 +214,11 @@
   ],
   "_id": "ZoNOXZjdkOjV56e3",
   "folder": null,
-  "flags": {},
+  "flags": {
+    "core": {
+      "sheetClass": "bane-of-azeroth.AdventureImporterV2"
+    }
+  },
   "_stats": {
     "coreVersion": "14.364",
     "systemId": "dragonbane",

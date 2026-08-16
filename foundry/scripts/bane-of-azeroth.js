@@ -32,6 +32,7 @@ import {
 import {
   getContentVersion,
   promptAdventureImport,
+  registerAdventureImporterSheet,
   registerSettings,
   } from "./adventure-import.js";
 import {
@@ -259,6 +260,7 @@ import {
 Hooks.once("init", () => {
 
   if (game.system.id !== "dragonbane") return;
+  registerAdventureImporterSheet();
   if (!claimPackageRuntime()) return;
   registerAutomationSettings();
   registerDeveloperSettings();
