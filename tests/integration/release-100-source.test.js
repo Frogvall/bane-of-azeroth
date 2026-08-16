@@ -86,6 +86,32 @@ describe(
     );
 
     test(
+      "validates stable release metadata before building an RC",
+      () => {
+        const rc = read(RC_WORKFLOW);
+        const preflight =
+          rc.indexOf(
+            "Verify stable release contract before RC",
+          );
+        const build =
+          rc.indexOf(
+            "      - name: Build production release candidate",
+          );
+
+        expect(preflight).toBeGreaterThan(-1);
+        expect(build).toBeGreaterThan(-1);
+        expect(preflight).toBeLessThan(build);
+
+        for (const marker of [
+          "python3 tools/foundry-stable-release.py",
+          "check \\",
+          '--tag "v${source_version}"',
+        ]) {
+          expect(rc).toContain(marker);
+        }
+      },
+    );
+    test(
       "stable publication requires the exact published RC commit",
       () => {
         const stable = read(STABLE_WORKFLOW);
