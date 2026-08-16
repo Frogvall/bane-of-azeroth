@@ -349,6 +349,239 @@ if (
         0
       );
 
+      // BOA 1.1.0 Dragonbane 4.1 native magic-trick dialog regression contract.
+      try {
+        const spellTestPath =
+          "systems/dragonbane/modules/tests/spell-test.js";
+        const spellTestRoute =
+          foundry.utils.getRoute?.(
+            spellTestPath
+          ) ?? `/${spellTestPath}`;
+        const {
+          default: SpellTestClass,
+        } = await import(
+          spellTestRoute
+        );
+        const dialogPatchSymbol =
+          Symbol.for(
+            `${BOA_TEST_MODULE_ID}.spellcasting.spell-test-dialog`
+          );
+
+        boaCheck(
+          checks,
+          "Dragonbane native SpellTest has the shared BoA magic-trick dialog adapter",
+          SpellTestClass
+            ?.prototype
+            ?.updateDialogData
+            ?.[dialogPatchSymbol] === true,
+          SpellTestClass
+            ?.prototype
+            ?.updateDialogData
+            ?.[dialogPatchSymbol] ?? false
+        );
+
+        const nativeMagicTrickTitle =
+          game.i18n.localize(
+            "DoD.ui.dialog.castMagicTrickTitle"
+          );
+        const stockFreeCandidateContent =
+          game.i18n.format(
+            "DoD.ui.dialog.castMagicTrickContent",
+            {
+              spell:
+                managedSenseMagic.name,
+            }
+          );
+        const freeTest =
+          new SpellTestClass(
+            actor,
+            managedSenseMagic,
+            {
+              autoSuccess: true,
+              title:
+                nativeMagicTrickTitle,
+              label:
+                nativeMagicTrickTitle,
+              content:
+                stockFreeCandidateContent,
+            }
+          );
+
+        let capturedFreeNativeDialog =
+          null;
+        const DialogV2 =
+          foundry.applications
+            ?.api
+            ?.DialogV2;
+        const originalDialogInput =
+          DialogV2?.input;
+
+        try {
+          if (
+            typeof originalDialogInput !==
+              "function"
+          ) {
+            throw new Error(
+              "Foundry DialogV2.input is unavailable."
+            );
+          }
+
+          DialogV2.input =
+            async options => {
+              capturedFreeNativeDialog =
+                options;
+              return null;
+            };
+
+          freeTest.updateDialogData();
+          await freeTest.getRollOptions();
+        } finally {
+          if (
+            DialogV2 &&
+            typeof originalDialogInput ===
+              "function"
+          ) {
+            DialogV2.input =
+              originalDialogInput;
+          }
+        }
+
+        const freeNativeContent =
+          String(
+            capturedFreeNativeDialog
+              ?.content ?? ""
+          );
+
+        boaCheck(
+          checks,
+          "Dragonbane 4.1 native Mage's Brilliance magic-trick dialog reflects 0 WP",
+          Boolean(
+            freeTest.options
+              ?.noWpCost === true &&
+            freeTest.options
+              ?.content !==
+              stockFreeCandidateContent &&
+            freeTest.options
+              ?.content &&
+            freeNativeContent.includes(
+              freeTest.options.content
+            ) &&
+            !freeNativeContent.includes(
+              stockFreeCandidateContent
+            )
+          ),
+          {
+            spell:
+              managedSenseMagic.name,
+            getSpellCost:
+              managedSenseMagic
+                .getSpellCost(0),
+            noWpCost:
+              freeTest.options
+                ?.noWpCost ?? null,
+            stockContent:
+              stockFreeCandidateContent,
+            effectiveContent:
+              freeTest.options
+                ?.content ?? null,
+            renderedContent:
+              freeNativeContent,
+          }
+        );
+
+        const stockPaidContent =
+          game.i18n.format(
+            "DoD.ui.dialog.castMagicTrickContent",
+            {
+              spell:
+                sourceSenseMagic.name,
+            }
+          );
+        const paidControlTest =
+          new SpellTestClass(
+            actor,
+            sourceSenseMagic,
+            {
+              autoSuccess: true,
+              title:
+                nativeMagicTrickTitle,
+              label:
+                nativeMagicTrickTitle,
+              content:
+                stockPaidContent,
+            }
+          );
+
+        let capturedPaidNativeDialog =
+          null;
+        try {
+          DialogV2.input =
+            async options => {
+              capturedPaidNativeDialog =
+                options;
+              return null;
+            };
+
+          paidControlTest
+            .updateDialogData();
+          await paidControlTest
+            .getRollOptions();
+        } finally {
+          DialogV2.input =
+            originalDialogInput;
+        }
+
+        const paidNativeContent =
+          String(
+            capturedPaidNativeDialog
+              ?.content ?? ""
+          );
+
+        boaCheck(
+          checks,
+          "Dragonbane 4.1 native ordinary magic-trick dialog remains the normal 1 WP path",
+          Boolean(
+            sourceSenseMagic
+              .getSpellCost(0) ===
+              nativeSenseMagicCost &&
+            nativeSenseMagicCost ===
+              1 &&
+            paidControlTest.options
+              ?.noWpCost !== true &&
+            paidControlTest.options
+              ?.content ===
+              stockPaidContent &&
+            paidNativeContent.includes(
+              stockPaidContent
+            )
+          ),
+          {
+            getSpellCost:
+              sourceSenseMagic
+                .getSpellCost(0),
+            noWpCost:
+              paidControlTest.options
+                ?.noWpCost ?? null,
+            stockContent:
+              stockPaidContent,
+            effectiveContent:
+              paidControlTest.options
+                ?.content ?? null,
+            renderedContent:
+              paidNativeContent,
+          }
+        );
+      } catch (error) {
+        boaCheck(
+          checks,
+          "Dragonbane 4.1 native Mage's Brilliance magic-trick dialog regression workflow completed",
+          false,
+          error.stack ??
+            error.message ??
+            String(error)
+        );
+      }
+
       const reconcile =
         game.modules
           ?.get?.(BOA_TEST_MODULE_ID)
