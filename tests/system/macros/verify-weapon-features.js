@@ -13,6 +13,45 @@ try {
     )
   ).default;
 
+  const customFeatureRegistry = {
+    freehanded:
+      "BOA.weaponFeatureTypes.freehanded",
+    returning:
+      "BOA.weaponFeatureTypes.returning",
+    ammunition:
+      "BOA.weaponFeatureTypes.ammunition",
+    armorPiercing:
+      "BOA.weaponFeatureTypes.armorPiercing",
+    scattershot:
+      "BOA.weaponFeatureTypes.scattershot",
+  };
+
+  const liveFeatureTypes =
+    CONFIG.DoD?.weaponFeatureTypes ?? {};
+
+  boaCheck(
+    checks,
+    "Custom weapon features are present in Dragonbane's live CONFIG registry",
+    Object.entries(
+      customFeatureRegistry,
+    ).every(
+      ([feature, label]) =>
+        liveFeatureTypes[feature] ===
+        label,
+    ),
+    Object.fromEntries(
+      Object.keys(
+        customFeatureRegistry,
+      ).map(
+        feature => [
+          feature,
+          liveFeatureTypes[feature] ??
+            null,
+        ],
+      ),
+    ),
+  );
+
   weaponFeatures.patchWeaponTests();
 
   boaCheckEqual(
@@ -118,6 +157,35 @@ try {
   );
 
   if (scattershotSource) {
+    boaCheck(
+      checks,
+      "Dragonbane weapon-sheet lookup resolves the real Scattershot feature",
+      scattershotSource.system.features
+        .filter(
+          feature =>
+            feature ===
+            "scattershot",
+        )
+        .every(
+          feature =>
+            Boolean(
+              CONFIG.DoD
+                ?.weaponFeatureTypes
+                ?.[feature],
+            ),
+        ),
+      {
+        features:
+          scattershotSource.system
+            .features,
+        scattershotLabel:
+          CONFIG.DoD
+            ?.weaponFeatureTypes
+            ?.scattershot ??
+          null,
+      },
+    );
+
     boaCheckEqual(
       checks,
       "Real imported Scattershot weapon is recognized by the runtime adapter",
