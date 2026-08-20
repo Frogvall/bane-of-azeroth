@@ -4,6 +4,11 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-08-20
+
+### Fixed
+- Restored Bane of Azeroth weapon features in Dragonbane 4.1 weapon sheets (1.1.0 regression).
+
 ## [1.1.0] - 2026-08-16
 
 ### Changed

@@ -7,10 +7,45 @@ import DoDWeaponTest from
 import DoD_Utility from
   "/systems/dragonbane/modules/utility.js";
 
-import { MODULE_ID } from "./core/constants.js";
+import {
+  MODULE_ID,
+  WEAPON_FEATURES,
+} from "./core/constants.js";
 import {
   applyWarlockDemonDefenseBane,
 } from "./warlock-demons/defenses.js";
+
+export function registerWeaponFeatures({
+  config =
+    globalThis.CONFIG?.DoD,
+} = {}) {
+  const featureTypes =
+    config?.weaponFeatureTypes;
+
+  if (
+    !featureTypes ||
+    typeof featureTypes !== "object"
+  ) {
+    return false;
+  }
+
+  /*
+   * Extend the live Dragonbane registry rather than replacing it.
+   * Dragonbane 4.1 adds native Penetrating entries which must survive.
+   */
+  Object.assign(
+    featureTypes,
+    WEAPON_FEATURES,
+  );
+
+  return Object.entries(
+    WEAPON_FEATURES,
+  ).every(
+    ([feature, label]) =>
+      featureTypes[feature] ===
+      label,
+  );
+}
 
 export function isArmorPiercingRangedWeapon(weapon) {
   return Boolean(
