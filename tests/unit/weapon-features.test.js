@@ -12,6 +12,7 @@ import {
   actorHasAmmoPouch,
   isArmorPiercingRangedWeapon,
   isScattershotRangedWeapon,
+  registerWeaponFeatures,
 } from "../../foundry/scripts/weapon-features.js";
 
 function makeWeapon({
@@ -26,6 +27,86 @@ function makeWeapon({
       featureSet.has(feature),
   };
 }
+
+describe("Weapon feature registry", () => {
+  test("extends the live registry without replacing native Dragonbane 4.1 features", () => {
+    const config = {
+      weaponFeatureTypes: {
+        piercing:
+          "DoD.weaponFeatureTypes.piercing",
+        penetrating1:
+          "DoD.weaponFeatureTypes.penetrating1",
+      },
+    };
+
+    expect(
+      registerWeaponFeatures({
+        config,
+      }),
+    ).toBe(true);
+
+    expect(
+      config.weaponFeatureTypes,
+    ).toMatchObject({
+      piercing:
+        "DoD.weaponFeatureTypes.piercing",
+      penetrating1:
+        "DoD.weaponFeatureTypes.penetrating1",
+      freehanded:
+        "BOA.weaponFeatureTypes.freehanded",
+      returning:
+        "BOA.weaponFeatureTypes.returning",
+      ammunition:
+        "BOA.weaponFeatureTypes.ammunition",
+      armorPiercing:
+        "BOA.weaponFeatureTypes.armorPiercing",
+      scattershot:
+        "BOA.weaponFeatureTypes.scattershot",
+    });
+  });
+
+  test("is idempotent", () => {
+    const config = {
+      weaponFeatureTypes: {},
+    };
+
+    expect(
+      registerWeaponFeatures({
+        config,
+      }),
+    ).toBe(true);
+    expect(
+      registerWeaponFeatures({
+        config,
+      }),
+    ).toBe(true);
+
+    expect(
+      Object.keys(
+        config.weaponFeatureTypes,
+      ).sort(),
+    ).toEqual([
+      "ammunition",
+      "armorPiercing",
+      "freehanded",
+      "returning",
+      "scattershot",
+    ]);
+  });
+
+  test("fails safely when the Dragonbane registry is unavailable", () => {
+    expect(
+      registerWeaponFeatures({
+        config: {},
+      }),
+    ).toBe(false);
+    expect(
+      registerWeaponFeatures({
+        config: null,
+      }),
+    ).toBe(false);
+  });
+});
 
 describe("Armor Piercing eligibility", () => {
   beforeEach(() => {

@@ -27,7 +27,6 @@ import {
   } from "./common-animal-status-effects.js";
 import {
   MODULE_ID,
-  WEAPON_FEATURES,
   } from "./core/constants.js";
 import {
   getContentVersion,
@@ -56,6 +55,7 @@ import {
 import {
   onScattershotDamageClick,
   patchWeaponTests,
+  registerWeaponFeatures,
   } from "./weapon-features.js";
 
 
@@ -539,16 +539,11 @@ Hooks.on(
   Hooks.on("preUpdateItem", protectAutoGrantedSpellPreparation);
   Hooks.on("preUpdateItem", onPreUpdateDruidFormArmorItem);
 
-  const featureTypes = CONFIG.DoD?.weaponFeatureTypes;
-
-  if (!featureTypes) {
+  if (!registerWeaponFeatures()) {
     console.error(
-      `${MODULE_ID} | Dragonbane weapon features were not available during init.`
+      `${MODULE_ID} | Dragonbane weapon feature registry was unavailable during init.`
     );
-    return;
   }
-
-  Object.assign(featureTypes, WEAPON_FEATURES);
   patchWeaponTests();
   patchVoidwalkerSuffering({
     useAuthority: true,
@@ -559,6 +554,18 @@ Hooks.on(
 Hooks.once("ready", async () => {
   if (game.system.id !== "dragonbane") return;
   if (!shouldActivatePackageRuntime()) return;
+
+  /*
+   * Dragonbane 4.1's V2 weapon sheet reads CONFIG.DoD.weaponFeatureTypes
+   * at render time. Re-assert our additions after initialization so a later
+   * system/config refresh cannot leave the sheet without BoA features.
+   */
+  if (!registerWeaponFeatures()) {
+    console.error(
+      `${MODULE_ID} | Dragonbane weapon feature registry was unavailable during ready.`
+    );
+  }
+  patchWeaponTests();
   notifyPackageConflictIfNeeded();
 
   try {

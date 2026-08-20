@@ -60,12 +60,17 @@ describe(
     );
 
     test(
-      "keeps real weapon-feature initialization failures visible",
+      "keeps real weapon-feature registry failures visible",
       () => {
         expect(
           entrypoint,
         ).toContain(
-          "Dragonbane weapon features were not available during init.",
+          "Dragonbane weapon feature registry was unavailable during init.",
+        );
+        expect(
+          entrypoint,
+        ).toContain(
+          "Dragonbane weapon feature registry was unavailable during ready.",
         );
         expect(
           entrypoint,
