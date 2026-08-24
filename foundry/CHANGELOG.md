@@ -4,6 +4,11 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-08-24
+
+### Added
+- New Dragonbane characters and NPCs automatically receive the Bane of Azeroth Firearms weapon skill, making Firearms available on the Actor sheet from creation.
+
 ## [1.1.1] - 2026-08-20
 
 ### Fixed

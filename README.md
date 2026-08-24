@@ -6,7 +6,7 @@ The project aims to combine the fast, dangerous, and skill-based rules of Dragon
 
 > **Current status:** Foundry VTT 1.0 release line
 > **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 1.1.1
+> **Current Foundry module version:** 1.2.0
 ## Project goals
 
 Bane of Azeroth is intended to provide a coherent Dragonbane ruleset for adventures inspired by Azeroth, rather than attempting to reproduce every mechanic from the source material directly.
@@ -81,6 +81,7 @@ Implemented content and automation include:
 - Druid incarnation/form automation with persistent configurable artwork, movement, natural attacks, armor, spell restrictions/costs, roll boons, Maul Marked, and managed Stretch/Shift lifecycle
 - Player convenience Macros for changing active Druid form and opening the shared End Effects dialog
 - Best-effort English Core Set compatibility that extends Great Helm's ranged-attack Banes to the Bane of Azeroth Firearms skill
+- New Dragonbane characters and NPCs automatically receive the Bane of Azeroth Firearms weapon skill so it is available on the Actor sheet from creation.
 - Static Shadowform visual state for active Scene tokens and character-sheet portraits, integrated with End Effects and Stretch/Shift lifecycle cleanup
 Generated content uses stable Foundry document identifiers and is checked against its structured source during development and packaging.
 
