@@ -8,6 +8,132 @@ try {
     `/modules/${BOA_TEST_MODULE_ID}/scripts/great-helm-firearms.js`
   );
 
+  // BOA Firearms base-skill regression contract.
+  const freshActors = [];
+  try {
+    for (
+      const actorType
+      of [
+        "character",
+        "npc",
+      ]
+    ) {
+      const freshActor =
+        await Actor.create(
+          {
+            name:
+              `[BOA TEST] Firearms ${actorType} ` +
+              foundry.utils.randomID(6),
+            type:
+              actorType,
+            flags: {
+              [BOA_TEST_MODULE_ID]: {
+                [BOA_TEST_FIXTURE_FLAG]:
+                  true,
+              },
+            },
+          },
+          {
+            renderSheet:
+              false,
+          },
+        );
+
+      freshActors.push(
+        freshActor,
+      );
+
+      const firearms =
+        freshActor.items.find(
+          item =>
+            item.type ===
+              "skill" &&
+            item.system
+              ?.skillType ===
+              "weapon" &&
+            item.name ===
+              helmModule
+                .GREAT_HELM_FIREARMS_BANE,
+        ) ??
+        null;
+
+      boaCheck(
+        checks,
+        `New Dragonbane ${actorType} includes Firearms in its embedded skills`,
+        Boolean(
+          firearms,
+        ),
+        freshActor.items
+          .filter(
+            item =>
+              item.type ===
+                "skill" &&
+              item.system
+                ?.skillType ===
+                "weapon",
+          )
+          .map(
+            item =>
+              item.name,
+          ),
+      );
+
+      boaCheck(
+        checks,
+        `New Dragonbane ${actorType} includes Firearms in its weapon skills`,
+        Boolean(
+          freshActor.system
+            ?.weaponSkills
+            ?.some(
+              skill =>
+                skill.name ===
+                  helmModule
+                    .GREAT_HELM_FIREARMS_BANE,
+            ),
+        ),
+        freshActor.system
+          ?.weaponSkills
+          ?.map(
+            skill =>
+              skill.name,
+          ) ??
+          [],
+      );
+    }
+
+    boaCheck(
+      checks,
+      "New Dragonbane Actors include Firearms in their weapon skills",
+      freshActors.length ===
+        2,
+      freshActors.map(
+        actor => ({
+          type:
+            actor.type,
+          id:
+            actor.id,
+        }),
+      ),
+    );
+  } finally {
+    for (
+      const freshActor
+      of freshActors
+        .reverse()
+    ) {
+      try {
+        await freshActor.delete();
+      } catch (error) {
+        boaCheck(
+          checks,
+          `Temporary Firearms ${freshActor.type} cleanup succeeded`,
+          false,
+          error.message,
+        );
+      }
+    }
+  }
+
   const reconcileResult =
     await helmModule.reconcileGreatHelmFirearms();
 
