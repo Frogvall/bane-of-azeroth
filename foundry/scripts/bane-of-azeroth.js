@@ -244,6 +244,9 @@ import {
   reconcileGreatHelmFirearms,
 } from "./great-helm-firearms.js";
 import {
+  registerFirearmsBaseSkillAdapter,
+} from "./firearms-base-skill.js";
+import {
   activateShadowform,
   endShadowform,
   getShadowformState,
@@ -554,6 +557,15 @@ Hooks.on(
 Hooks.once("ready", async () => {
   if (game.system.id !== "dragonbane") return;
   if (!shouldActivatePackageRuntime()) return;
+
+  try {
+    await registerFirearmsBaseSkillAdapter();
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize the Firearms base-skill adapter.`,
+      error,
+    );
+  }
 
   /*
    * Dragonbane 4.1's V2 weapon sheet reads CONFIG.DoD.weaponFeatureTypes
