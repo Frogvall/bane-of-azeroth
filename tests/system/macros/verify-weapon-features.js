@@ -136,6 +136,11 @@ try {
         item.type === "item" &&
         item.name === "Ammo Pouch"
       ) ?? null;
+  const throwingGlaiveSource =
+    worldWeapons.find(item =>
+      item.name ===
+        "Throwing Glaive"
+    ) ?? null;
 
   boaCheck(
     checks,
@@ -154,6 +159,16 @@ try {
     "Imported Adventure contains the Ammo Pouch source Item",
     Boolean(ammoPouchSource),
     ammoPouchSource?.uuid ?? "",
+  );
+  boaCheck(
+    checks,
+    "Imported Adventure contains the Throwing Glaive source Item",
+    Boolean(
+      throwingGlaiveSource,
+    ),
+    throwingGlaiveSource
+      ?.uuid ??
+      "",
   );
 
   if (scattershotSource) {
@@ -194,6 +209,168 @@ try {
       ),
       true,
     );
+  }
+
+  if (
+    throwingGlaiveSource
+  ) {
+    let testActor =
+      null;
+    let rollMessage =
+      null;
+
+    try {
+      testActor =
+        await Actor.create(
+          {
+            name:
+              "[BOA TEST] Throwing Glaive " +
+              foundry.utils
+                .randomID(6),
+            type:
+              "character",
+            flags: {
+              [BOA_TEST_MODULE_ID]: {
+                [BOA_TEST_FIXTURE_FLAG]:
+                  true,
+              },
+            },
+          },
+          {
+            renderSheet:
+              false,
+          },
+        );
+
+      await testActor.update({
+        "system.attributes.str.base":
+          12,
+      });
+
+      const glaiveData =
+        throwingGlaiveSource
+          .toObject();
+
+      delete glaiveData._id;
+      delete glaiveData.folder;
+      delete glaiveData.ownership;
+      delete glaiveData._stats;
+
+      const [
+        throwingGlaive,
+      ] =
+        await testActor
+          .createEmbeddedDocuments(
+            "Item",
+            [
+              glaiveData,
+            ],
+          );
+
+      boaCheckEqual(
+        checks,
+        "Throwing Glaive resolves its range from the wielder's STR",
+        throwingGlaive
+          .calculateRange(),
+        testActor
+          .getAttribute(
+            "str",
+          ),
+      );
+
+      const weaponTest =
+        new DoDWeaponTest(
+          testActor,
+          throwingGlaive,
+          {
+            noBanesBoons:
+              true,
+            action:
+              "throw",
+          },
+        );
+
+      weaponTest
+        .updateDialogData();
+
+      boaCheck(
+        checks,
+        "Dragonbane native weapon test exposes Throw for Throwing Glaive",
+        weaponTest
+          .dialogData
+          .actions
+          ?.some(
+            action =>
+              action.id ===
+              "throw",
+          ) ??
+          false,
+        weaponTest
+          .dialogData
+          .actions ??
+          [],
+      );
+
+      const throwResult =
+        await weaponTest.roll();
+
+      rollMessage =
+        weaponTest
+          .rollMessage ??
+        null;
+
+      boaCheckEqual(
+        checks,
+        "Dragonbane native Throwing Glaive test executes the throw action",
+        throwResult
+          ?.postRollData
+          ?.action,
+        "throw",
+      );
+
+      boaCheckEqual(
+        checks,
+        "Dragonbane native Throwing Glaive test marks the attack as ranged",
+        throwResult
+          ?.postRollData
+          ?.isRanged,
+        true,
+      );
+    } catch (error) {
+      boaCheck(
+        checks,
+        "Dragonbane native Throwing Glaive flow completes without an exception",
+        false,
+        error.stack ??
+          error.message,
+      );
+    } finally {
+      if (rollMessage) {
+        try {
+          await rollMessage
+            .delete();
+        } catch (error) {
+          notes.push(
+            "Could not delete temporary Throwing Glaive chat message: " +
+              error.message,
+          );
+        }
+      }
+
+      if (testActor) {
+        try {
+          await testActor
+            .delete();
+        } catch (error) {
+          boaCheck(
+            checks,
+            "Temporary Throwing Glaive actor cleanup succeeded",
+            false,
+            error.message,
+          );
+        }
+      }
+    }
   }
 
   if (ammoPouchSource) {

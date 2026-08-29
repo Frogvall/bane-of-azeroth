@@ -20,7 +20,7 @@
       "value": "grip1h"
     },
     "str": 10,
-    "range": "STR",
+    "range": "@str",
     "damage": "2D6",
     "durability": 12,
     "skill": {

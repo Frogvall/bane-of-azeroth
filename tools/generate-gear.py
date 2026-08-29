@@ -35,6 +35,10 @@ GENERATOR_NAME = "tools/generate-gear.py"
 ID_PATTERN = re.compile(r"^[A-Za-z0-9]{16}$")
 VALID_DOCUMENT_TYPES = {"weapon", "item"}
 VALID_GRIPS = {"grip1h", "grip2h"}
+BARE_ATTRIBUTE_RANGE_PATTERN = re.compile(
+    r"(?<!@)\b(?:str|con|agl|int|wil|cha)\b",
+    re.IGNORECASE,
+)
 
 
 class GenerationError(RuntimeError):
@@ -413,10 +417,20 @@ def validate_content(
                     raw_item.get("str"),
                     f"weapon {item_name!r}.str",
                 )
-                require_string(
+                weapon_range = require_string(
                     raw_item.get("range"),
                     f"weapon {item_name!r}.range",
                 )
+                bare_attribute = BARE_ATTRIBUTE_RANGE_PATTERN.search(
+                    weapon_range
+                )
+                if bare_attribute:
+                    attribute = bare_attribute.group(0)
+                    raise GenerationError(
+                        f"weapon {item_name!r}.range contains bare "
+                        f"Dragonbane attribute {attribute!r}; use "
+                        f"'@{attribute.lower()}' in range formulas."
+                    )
                 require_string(
                     raw_item.get("damage"),
                     f"weapon {item_name!r}.damage",
