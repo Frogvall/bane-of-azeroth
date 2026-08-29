@@ -4,6 +4,14 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-08-29
+
+### Fixed
+- Fixed the Throwing Glaive range formula so thrown attacks correctly use the wielder's Strength instead of causing a roll error.
+
+### Changed
+- Added regression coverage for actually throwing a Throwing Glaive and hardened gear generation against invalid bare attribute references in weapon range formulas.
+
 ## [1.2.0] - 2026-08-24
 
 ### Added
