@@ -158,7 +158,9 @@
         "druidMoonkinSpellcastingBoonName": "Druid Moonkin Spellcasting Boon",
         "druidMoonkinSpellcastingBoonHint": "Add one default-selected boon to spellcasting rolls while Moonkin Form is the current physical form and Incarnation of the Stars is active.",
         "druidMaulMarkedName": "Druid Maul — Marked",
-        "druidMaulMarkedHint": "When a Bear Form Maul damage roll has a target, apply the Marked reminder status. Marked is never removed automatically."
+        "druidMaulMarkedHint": "When a Bear Form Maul damage roll has a target, apply the Marked reminder status. Marked is never removed automatically.",
+        "vulperaLuckName": "Vulpera Luck",
+        "vulperaLuckHint": "Offer the Vulpera Luck reroll on eligible Dragonbane D20 tests, spending 3 WP and preserving the original boon/bane pool."
       },
       "developer": {
         "menuName": "Developer / Diagnostics",
