@@ -84,7 +84,9 @@
         "eyeBeamConfirm": "Spend 3 WP to automatically hit {target} with Eye Beam for 2D8 magical damage?",
         "warStompResolveHint": "{count} creature(s) are within 2 m. Resolve each creature's defense, then apply the corresponding D6 damage card if hit. Applied War Stomp damage also knocks the creature prone.",
         "warStompConfirm": "Spend 3 WP to use War Stomp?"
-      }
+      },
+      "vulperaLuckTitle": "Vulpera Luck",
+      "vulperaLuckContent": "Spend 3 WP to re-roll this test? The new result must be used."
     },
     "spellAutomation": {
       "alwaysPreparedTooltip": "Granted by a Heroic Class Ability and always prepared."
@@ -106,7 +108,8 @@
       "monsterCommandWpSpent": "{actor} spent {amount} WP to command {demon} to use {attack}.",
       "voidwalkerSuffering": "{caster} would take {originalDamage} damage. <strong>Suffering</strong> halves it: {displayFormula}. {caster} and {voidwalker} lose {damage} HP each.",
       "sufferingRoundedUp": "rounded up",
-      "eyeBeamHit": "{actor} uses Eye Beam against {target}. The attack automatically hits, cannot be parried, and its damage is magical."
+      "eyeBeamHit": "{actor} uses Eye Beam against {target}. The attack automatically hits, cannot be parried, and its damage is magical.",
+      "vulperaLuck": "Luck (3 WP)"
     },
     "settings": {
       "automation": {
@@ -181,7 +184,8 @@
       "abilityActionNoSourceToken": "A token for the acting character is required for range automation.",
       "warStompNoTargets": "There are no other visible creatures within 2 m.",
       "eyeBeamOneTarget": "Eye Beam requires exactly one targeted creature.",
-      "eyeBeamOutOfRange": "The Eye Beam target is more than 20 m away."
+      "eyeBeamOutOfRange": "The Eye Beam target is more than 20 m away.",
+      "vulperaLuckFailed": "Vulpera Luck could not be completed."
     },
     "deathKnightRunes": {
       "title": "Death Knight Runes",

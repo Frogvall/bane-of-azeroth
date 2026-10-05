@@ -112,6 +112,12 @@ describe("Foundry hook registration", () => {
     const {
       onCreateWarlockDemonChatMessage,
 } = warlockDemons;
+    const vulperaLuck = await import(
+      "../../foundry/scripts/vulpera-luck.js"
+    );
+    const {
+      onRenderVulperaLuckChatMessage,
+    } = vulperaLuck;
     const shadowformVisuals = await import(
       "../../foundry/scripts/shadowform-visuals.js"
     );
@@ -135,6 +141,13 @@ describe("Foundry hook registration", () => {
         .filter(
           ([name]) =>
             name === "updateChatMessage"
+        )
+        .map(([, callback]) => callback);
+    const renderChatMessageCallbacks =
+      registeredHooks
+        .filter(
+          ([name]) =>
+            name === "renderChatMessageHTML"
         )
         .map(([, callback]) => callback);
 const updateTokenCallbacks =
@@ -170,6 +183,7 @@ expect([
       "deleteCombatant",
       "deleteCombat",
       "updateChatMessage",
+      "renderChatMessageHTML",
       "renderDoDActorBaseSheet",
       "preUpdateItem",
     ]);
@@ -244,6 +258,14 @@ expect(
         onCommonAnimalWeaponTestChatMessage
       );
     }
+    expect(
+      renderChatMessageCallbacks
+    ).toHaveLength(1);
+    expect(
+      renderChatMessageCallbacks
+    ).toContain(
+      onRenderVulperaLuckChatMessage,
+    );
     // BOA 0.11.7 managed effect sheet hook expectation
         expect(
       new Set(
