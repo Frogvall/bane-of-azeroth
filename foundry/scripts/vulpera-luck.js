@@ -495,19 +495,25 @@ async function buildVulperaLuckTest(message) {
 }
 
 async function confirmVulperaLuck() {
-  const confirm =
+  const DialogV2 =
     globalThis.foundry
       ?.applications
       ?.api
-      ?.DialogV2
-      ?.confirm;
+      ?.DialogV2;
 
-  if (typeof confirm !== "function") {
+  if (
+    typeof DialogV2?.confirm !==
+      "function"
+  ) {
     return true;
   }
 
+  /*
+   * Foundry V14's static confirm() calls this.wait(...), so the class
+   * receiver must be preserved.
+   */
   return Boolean(
-    await confirm({
+    await DialogV2.confirm({
       window: {
         title:
           globalThis.game
