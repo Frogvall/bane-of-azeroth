@@ -247,6 +247,10 @@ import {
   registerFirearmsBaseSkillAdapter,
 } from "./firearms-base-skill.js";
 import {
+  onRenderVulperaLuckChatMessage,
+  registerVulperaLuckAdapter,
+} from "./vulpera-luck.js";
+import {
   activateShadowform,
   endShadowform,
   getShadowformState,
@@ -493,6 +497,10 @@ Hooks.on(
     "updateChatMessage",
     onUpdateAbilityActionChatMessage,
   );
+  Hooks.on(
+    "renderChatMessageHTML",
+    onRenderVulperaLuckChatMessage,
+  );
   Hooks.on("renderDoDActorBaseSheet", lockAutoGrantedSpellPreparation);
   Hooks.on(
     "renderDoDActorBaseSheet",
@@ -563,6 +571,15 @@ Hooks.once("ready", async () => {
   } catch (error) {
     console.error(
       `${MODULE_ID} | Failed to initialize the Firearms base-skill adapter.`,
+      error,
+    );
+  }
+
+  try {
+    await registerVulperaLuckAdapter();
+  } catch (error) {
+    console.error(
+      `${MODULE_ID} | Failed to initialize Vulpera Luck roll adapter.`,
       error,
     );
   }

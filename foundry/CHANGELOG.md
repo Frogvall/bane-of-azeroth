@@ -4,6 +4,20 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-05
+
+### Added
+- Added automation for the Vulpera **Luck** kin ability.
+  - Eligible D20 tests can be rerolled for 3 WP.
+  - The complete boon/bane pool is rerolled and the new result must be used.
+  - Luck can be combined with pushing a roll, while respecting the latest result in the reroll chain.
+  - A demon result prevents any further Luck or Push reroll.
+  - Luck can only be used once per reroll chain.
+- Added a world setting for enabling or disabling Vulpera Luck automation.
+
+### Fixed
+- Added regression coverage for Vulpera Luck rerolls, WP cost, boon/bane preservation, Push interaction, demon results, and Foundry V14 confirmation dialogs.
+
 ## [1.2.1] - 2026-08-29
 
 ### Fixed

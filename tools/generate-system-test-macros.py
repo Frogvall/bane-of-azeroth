@@ -343,6 +343,16 @@ MACROS = [
         "suiteMember": True,
         "img": "icons/svg/helmet.svg",
     },
+    {
+        "key": "vulpera-luck",
+        "id": "BoaDevLuck000026",
+        "name": "BOA DEV – Verify Vulpera Luck",
+        "file": "verify-vulpera-luck.js",
+        "order": 31,
+        "suiteOrder": 26,
+        "suiteMember": True,
+        "img": "icons/svg/d20.svg",
+    },
 ]
 
 

@@ -6,6 +6,7 @@ export const AUTOMATION_SETTING_KEYS = Object.freeze({
   MAGES_BRILLIANCE: "mageBrillianceAutomation",
   EVOKERS_LEGACY: "evokersLegacyAutomation",
   WAR_STOMP: "warStompAutomation",
+  VULPERA_LUCK: "vulperaLuckAutomation",
   EYE_BEAM: "eyeBeamAutomation",
   SERENITY: "serenityAutomation",
   DEMON_HUNTER_INITIATION: "demonHunterInitiationAutomation",
@@ -152,6 +153,14 @@ export function isWarStompAutomationEnabled(
 ) {
   return isAutomationEnabled(
     AUTOMATION_SETTING_KEYS.WAR_STOMP,
+    settings,
+  );
+}
+export function isVulperaLuckAutomationEnabled(
+  settings = globalThis.game?.settings,
+) {
+  return isAutomationEnabled(
+    AUTOMATION_SETTING_KEYS.VULPERA_LUCK,
     settings,
   );
 }
@@ -527,6 +536,10 @@ export class AutomationSettingsForm
       "BOA.settings.automation.warStompName",
       "BOA.settings.automation.warStompHint",
     ),
+    vulperaLuckAutomation: booleanField(
+      "BOA.settings.automation.vulperaLuckName",
+      "BOA.settings.automation.vulperaLuckHint",
+    ),
     eyeBeamAutomation: booleanField(
       "BOA.settings.automation.eyeBeamName",
       "BOA.settings.automation.eyeBeamHint",
@@ -614,6 +627,8 @@ export class AutomationSettingsForm
           isEvokersLegacyAutomationEnabled(),
         warStompAutomation:
           isWarStompAutomationEnabled(),
+        vulperaLuckAutomation:
+          isVulperaLuckAutomationEnabled(),
         eyeBeamAutomation:
           isEyeBeamAutomationEnabled(),
         serenityAutomation:
@@ -706,6 +721,15 @@ export class AutomationSettingsForm
         Boolean(
           values[
             AUTOMATION_SETTING_KEYS.WAR_STOMP
+          ],
+        ),
+      ),
+      settings.set(
+        MODULE_ID,
+        AUTOMATION_SETTING_KEYS.VULPERA_LUCK,
+        Boolean(
+          values[
+            AUTOMATION_SETTING_KEYS.VULPERA_LUCK
           ],
         ),
       ),
@@ -893,6 +917,14 @@ export function registerAutomationSettings(
       onChange:
         reconcileAbilityActionsOnChange,
     },
+  );
+  settings.register(
+    MODULE_ID,
+    AUTOMATION_SETTING_KEYS.VULPERA_LUCK,
+    settingDefinition(
+      "BOA.settings.automation.vulperaLuckName",
+      "BOA.settings.automation.vulperaLuckHint",
+    ),
   );
   settings.register(
     MODULE_ID,
