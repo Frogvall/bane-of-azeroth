@@ -11,7 +11,7 @@
   ],
   "counts": {
     "display-table": 2,
-    "runtime-uuid-lookup": 8,
+    "runtime-uuid-lookup": 9,
     "symbolic-display-reference": 23,
     "symbolic-reference": 105,
     "uuid-link": 27,
@@ -1488,6 +1488,15 @@
       "function": "fromUuid",
       "classification": "runtime",
       "snippet": "const actorDocument = await fromUuid(plan.actorUuid);"
+    },
+    {
+      "kind": "runtime-uuid-lookup",
+      "path": "foundry/scripts/vulpera-luck.js",
+      "line": 85,
+      "column": 25,
+      "function": "fromUuidSync",
+      "classification": "runtime",
+      "snippet": "return globalThis.fromUuidSync(actorUuid);"
     },
     {
       "kind": "runtime-uuid-lookup",
