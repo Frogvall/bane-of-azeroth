@@ -14,6 +14,7 @@ import {
   actorHasVulperaLuck,
   canUseVulperaLuck,
   patchVulperaLuckRollMetadata,
+  useVulperaLuck,
 } from "../../foundry/scripts/vulpera-luck.js";
 
 const MODULE_ID =
@@ -110,6 +111,78 @@ describe(
         expect(
           VULPERA_LUCK_WP_COST,
         ).toBe(3);
+      },
+    );
+
+    test(
+      "uses Foundry DialogV2.confirm through its class receiver",
+      async () => {
+        const actor =
+          luckActor();
+
+        const message =
+          makeMessage({
+            actor,
+          });
+
+        globalThis.game
+          .messages
+          .contents = [
+          message,
+        ];
+
+        const wait =
+          vi.fn(
+            async () =>
+              false,
+          );
+
+        class FakeDialogV2 {
+          static wait =
+            wait;
+
+          static confirm(
+            config,
+          ) {
+            return this.wait(
+              config,
+            );
+          }
+        }
+
+        globalThis.foundry = {
+          applications: {
+            api: {
+              DialogV2:
+                FakeDialogV2,
+            },
+          },
+        };
+
+        globalThis.game.i18n = {
+          localize:
+            vi.fn(
+              key =>
+                key,
+            ),
+        };
+
+        await expect(
+          useVulperaLuck(
+            message,
+          ),
+        ).resolves.toEqual({
+          handled:
+            false,
+          test:
+            null,
+        });
+
+        expect(
+          wait,
+        ).toHaveBeenCalledTimes(
+          1,
+        );
       },
     );
 
