@@ -498,13 +498,54 @@ try {
       null,
   );
 
+    const luckCanPushOption =
+    luckRuntime
+      .VULPERA_LUCK_CAN_PUSH_OPTION;
+
+  boaCheck(
+    checks,
+    "Vulpera Luck exposes a Push capability roll-option key",
+    typeof luckCanPushOption ===
+      "string" &&
+      luckCanPushOption.length >
+        0,
+    luckCanPushOption,
+  );
+
+  const luckRollOptions =
+    luckTest
+      ?.rollMessage
+      ?.rolls
+      ?.[0]
+      ?.options ??
+    {};
+
   boaCheckEqual(
     checks,
-    "Push remains available after Luck when the new current result is a non-demon failure",
+    "Luck reroll preserves unused Push capability",
+    luckRollOptions[
+      luckCanPushOption
+    ],
+    true,
+  );
+
+  const luckResultShouldOfferPush =
+    luckTest
+      ?.postRollData
+      ?.success ===
+      false &&
+    luckTest
+      ?.postRollData
+      ?.isDemon ===
+      false;
+
+  boaCheckEqual(
+    checks,
+    "Luck result exposes Push exactly for a non-demon failure",
     luckTest
       ?.postRollData
       ?.canPush,
-    true,
+    luckResultShouldOfferPush,
   );
 
   const pushedControl =

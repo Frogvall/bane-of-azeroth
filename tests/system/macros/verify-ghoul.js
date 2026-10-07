@@ -165,17 +165,33 @@ if (boaCheck(
     claws.includes("<b>Claws.</b>"),
     claws,
   );
-  boaCheck(
+    boaCheck(
     checks,
     "Claws rolls D6 damage",
-    claws.includes("[[/damage D6]]"),
-    claws,
+    /\[\[\/damage\s+D6(?:\s+[^\]]+)?\]\]/i.test(
+      String(
+        results[0]?._source?.description ??
+        "",
+      ),
+    ),
+    String(
+      results[0]?._source?.description ??
+      "",
+    ),
   );
-  boaCheck(
+    boaCheck(
     checks,
     "Claws is slashing damage",
-    claws.includes("slashing damage"),
-    claws,
+    /\[\[\/damage\s+D6\s+slashing\]\]/i.test(
+      String(
+        results[0]?._source?.description ??
+        "",
+      ),
+    ),
+    String(
+      results[0]?._source?.description ??
+      "",
+    ),
   );
   boaCheck(
     checks,
@@ -191,17 +207,33 @@ if (boaCheck(
     bite.includes("<b>Infectious Bite.</b>"),
     bite,
   );
-  boaCheck(
+    boaCheck(
     checks,
     "Infectious Bite rolls 2D6 damage",
-    bite.includes("[[/damage 2D6]]"),
-    bite,
+    /\[\[\/damage\s+2D6(?:\s+[^\]]+)?\]\]/i.test(
+      String(
+        results[1]?._source?.description ??
+        "",
+      ),
+    ),
+    String(
+      results[1]?._source?.description ??
+      "",
+    ),
   );
-  boaCheck(
+    boaCheck(
     checks,
     "Infectious Bite is piercing damage",
-    bite.includes("piercing damage"),
-    bite,
+    /\[\[\/damage\s+2D6\s+piercing\]\]/i.test(
+      String(
+        results[1]?._source?.description ??
+        "",
+      ),
+    ),
+    String(
+      results[1]?._source?.description ??
+      "",
+    ),
   );
   boaCheck(
     checks,
