@@ -156,6 +156,55 @@ describe("Summoned monster source contract", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  test("keeps damage types inside /damage commands for every summoned monster", () => {
+    const source = requireJson(CONTENT_SOURCE);
+    const descriptions =
+      source.monsters.flatMap(
+        monster =>
+          monster.attackTable.results.map(
+            result => ({
+              monster: monster.key,
+              attack: result.name,
+              description: result.description,
+            }),
+          ),
+      );
+
+    const trailingDamageText =
+      /\[\[\/damage\s+[^\]]+\]\]\s+(?:[A-Za-z-]+\s+)?damage\b/i;
+
+    for (const {
+      monster,
+      attack,
+      description,
+    } of descriptions) {
+      expect(
+        description,
+        `${monster}/${attack}`,
+      ).not.toMatch(
+        trailingDamageText,
+      );
+    }
+
+    const damageCommands =
+      descriptions.flatMap(
+        ({ description }) =>
+          description.match(
+            /\[\[\/damage\s+[^\]]+\]\]/gi,
+          ) ?? [],
+      );
+
+    expect(damageCommands).toEqual(
+      expect.arrayContaining([
+        "[[/damage D6 slashing]]",
+        "[[/damage 2D6 piercing]]",
+        "[[/damage D10 slashing]]",
+        "[[/damage 2D4]]",
+        "[[/damage D6]]",
+      ]),
+    );
+  });
+
   test("ships Ghoul portrait and token artwork", () => {
     const portrait = resolve(
       "foundry",
@@ -213,6 +262,34 @@ describe("Summoned monster source contract", () => {
     expect(GENERATOR_NAME).toMatch(
       /^tools\/generate-.+\.py$/,
     );
+  });
+});
+
+describe("Generated summoned-monster damage commands", () => {
+  test("copies the corrected source descriptions into every generated attack table", () => {
+    const source = requireJson(CONTENT_SOURCE);
+
+    for (const monster of source.monsters) {
+      const entry =
+        entryByContentKey(
+          `tables.monster-attacks.${monster.key}`,
+        );
+
+      expect(
+        entry,
+        `generated attack table for ${monster.key}`,
+      ).toBeDefined();
+
+      expect(
+        entry.document.results.map(
+          result => result.description,
+        ),
+      ).toEqual(
+        monster.attackTable.results.map(
+          result => result.description,
+        ),
+      );
+    }
   });
 });
 
@@ -346,13 +423,15 @@ describe("Generated Ghoul content", () => {
       [2, 2],
     ]);
     expect(table.results[0].description).toContain("<b>Claws.</b>");
-    expect(table.results[0].description).toContain("[[/damage D6]]");
-    expect(table.results[0].description).toContain("slashing damage");
+    expect(table.results[0].description).toContain(
+      "[[/damage D6 slashing]]",
+    );
     expect(table.results[1].description).toContain(
       "<b>Infectious Bite.</b>",
     );
-    expect(table.results[1].description).toContain("[[/damage 2D6]]");
-    expect(table.results[1].description).toContain("piercing damage");
+    expect(table.results[1].description).toContain(
+      "[[/damage 2D6 piercing]]",
+    );
     expect(table.results[1].description).toContain(
       "bane on its next attack or spell roll",
     );

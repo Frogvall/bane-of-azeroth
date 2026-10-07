@@ -4,6 +4,17 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-10-07
+
+### Fixed
+
+- Fixed summoned-monster attack damage links so Dragonbane receives valid `/damage` commands, including slashing and piercing damage types where applicable.
+- Corrected Ghoul, Felhunter, Imp, and Voidwalker attack descriptions affected by the invalid damage-command syntax.
+
+### Changed
+
+- Added generator and regression checks to prevent damage text or damage types from being placed outside summoned-monster `/damage` commands.
+
 ## [1.3.0] - 2026-10-05
 
 ### Added

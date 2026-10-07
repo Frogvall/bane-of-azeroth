@@ -32,7 +32,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "<b>Torment.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] damage. The target has a bane when attacking any other creature but the voidwalker, until the warlock's turn in the next round.",
+      "description": "<b>Torment.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]]. The target has a bane when attacking any other creature but the voidwalker, until the warlock's turn in the next round.",
       "name": ""
     }
   ],

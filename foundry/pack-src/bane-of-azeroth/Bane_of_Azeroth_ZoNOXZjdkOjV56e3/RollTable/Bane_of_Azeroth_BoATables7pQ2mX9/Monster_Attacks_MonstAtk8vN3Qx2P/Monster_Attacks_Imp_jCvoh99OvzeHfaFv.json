@@ -32,7 +32,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "<b>Firebolt.</b> Automatically hits a target within 20 meters (but can be dodged or parried with a shield) and inflicts [[/damage 2D4]] damage.",
+      "description": "<b>Firebolt.</b> Automatically hits a target within 20 meters (but can be dodged or parried with a shield) and inflicts [[/damage 2D4]].",
       "name": ""
     }
   ],

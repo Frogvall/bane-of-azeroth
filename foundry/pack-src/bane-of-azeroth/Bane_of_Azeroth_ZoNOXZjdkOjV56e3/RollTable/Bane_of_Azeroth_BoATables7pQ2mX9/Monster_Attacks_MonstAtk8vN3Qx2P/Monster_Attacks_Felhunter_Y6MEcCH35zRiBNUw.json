@@ -32,7 +32,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "description": "<b>Mana Bite.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D10]] slashing damage. The next damage-dealing spell cast at the target gets a boon. The effect lasts until the warlock's turn in the next round.",
+      "description": "<b>Mana Bite.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D10 slashing]]. The next damage-dealing spell cast at the target gets a boon. The effect lasts until the warlock's turn in the next round.",
       "name": ""
     }
   ],
