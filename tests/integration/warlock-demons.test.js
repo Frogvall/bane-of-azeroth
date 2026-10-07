@@ -44,8 +44,7 @@ const EXPECTED = Object.freeze({
     attackName: "Mana Bite",
     attackKey: "mana-bite",
     attackText: [
-      "[[/damage D10]]",
-      "slashing damage",
+      "[[/damage D10 slashing]]",
       "damage-dealing spell",
       "gets a boon",
     ],

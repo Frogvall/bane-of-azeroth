@@ -76,7 +76,7 @@
               1
             ],
             "weight": 1,
-            "description": "<b>Claws.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] slashing damage.",
+            "description": "<b>Claws.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6 slashing]].",
             "name": "Claws",
             "monsterAttack": {
               "schemaVersion": 1,
@@ -90,7 +90,7 @@
               2
             ],
             "weight": 1,
-            "description": "<b>Infectious Bite.</b> Hits automatically in melee combat (can be dodged, but not parried) and inflicts [[/damage 2D6]] piercing damage. The target has a bane on its next attack or spell roll. Costs 2 WP, paid by the Death Knight.",
+            "description": "<b>Infectious Bite.</b> Hits automatically in melee combat (can be dodged, but not parried) and inflicts [[/damage 2D6 piercing]]. The target has a bane on its next attack or spell roll. Costs 2 WP, paid by the Death Knight.",
             "name": "Infectious Bite",
             "monsterAttack": {
               "schemaVersion": 1,
@@ -145,7 +145,7 @@
               1
             ],
             "weight": 1,
-            "description": "<b>Mana Bite.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D10]] slashing damage. The next damage-dealing spell cast at the target gets a boon. The effect lasts until the warlock's turn in the next round.",
+            "description": "<b>Mana Bite.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D10 slashing]]. The next damage-dealing spell cast at the target gets a boon. The effect lasts until the warlock's turn in the next round.",
             "name": "Mana Bite",
             "monsterAttack": {
               "schemaVersion": 1,
@@ -198,7 +198,7 @@
               1
             ],
             "weight": 1,
-            "description": "<b>Firebolt.</b> Automatically hits a target within 20 meters (but can be dodged or parried with a shield) and inflicts [[/damage 2D4]] damage.",
+            "description": "<b>Firebolt.</b> Automatically hits a target within 20 meters (but can be dodged or parried with a shield) and inflicts [[/damage 2D4]].",
             "name": "Firebolt",
             "monsterAttack": {
               "schemaVersion": 1,
@@ -304,7 +304,7 @@
               1
             ],
             "weight": 1,
-            "description": "<b>Torment.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]] damage. The target has a bane when attacking any other creature but the voidwalker, until the warlock's turn in the next round.",
+            "description": "<b>Torment.</b> Hits automatically in melee combat (but can be dodged or parried) and inflicts [[/damage D6]]. The target has a bane when attacking any other creature but the voidwalker, until the warlock's turn in the next round.",
             "name": "Torment",
             "monsterAttack": {
               "schemaVersion": 1,

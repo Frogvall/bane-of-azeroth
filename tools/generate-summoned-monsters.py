@@ -14,6 +14,14 @@ MODULE_ID = "bane-of-azeroth"
 GENERATOR_NAME = "tools/generate-summoned-monsters.py"
 ID_PATTERN = re.compile(r"^[A-Za-z0-9]{16}$")
 
+# A /damage command is itself the damage expression. Any trailing
+# "damage" or "<type> damage" text means Foundry cannot receive the
+# damage type as part of the command, which breaks typed damage.
+TRAILING_DAMAGE_TEXT_PATTERN = re.compile(
+    r"\[\[/damage\s+[^\]]+\]\]\s+(?:[A-Za-z-]+\s+)?damage\b",
+    re.IGNORECASE,
+)
+
 
 class GenerationError(RuntimeError):
     """Raised when source data or the Adventure structure is invalid."""
@@ -67,6 +75,20 @@ def require_string(value: Any, context: str, *, allow_empty: bool = False) -> st
         raise GenerationError(f"{context} must be a string.")
     if not allow_empty and not value.strip():
         raise GenerationError(f"{context} must not be empty.")
+    return value
+
+
+def validate_damage_command_text(
+    value: str,
+    context: str,
+) -> str:
+    match = TRAILING_DAMAGE_TEXT_PATTERN.search(value)
+    if match:
+        raise GenerationError(
+            f"{context} has damage text outside its /damage command: "
+            f"{match.group(0)!r}. Put the damage type inside [[/damage ...]] "
+            "and do not repeat the word damage after the command."
+        )
     return value
 
 
@@ -633,9 +655,15 @@ def validate_content(
                 f"monster {key!r} result {result_index}.weight",
                 minimum=1,
             )
-            require_string(
-                result.get("description"),
-                f"monster {key!r} result {result_index}.description",
+            description_context = (
+                f"monster {key!r} result {result_index}.description"
+            )
+            result["description"] = validate_damage_command_text(
+                require_string(
+                    result.get("description"),
+                    description_context,
+                ),
+                description_context,
             )
             result["name"] = require_string(
                 result.get("name"),
