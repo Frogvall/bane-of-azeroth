@@ -1,0 +1,45 @@
+{
+  "folder": "Elementalism8vN3",
+  "name": "Arcane Missiles",
+  "type": "spell",
+  "_id": "ArcMissQ7vN3xK2m",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "Elementalism",
+    "rank": 1,
+    "prerequisite": "Elementalism",
+    "requirement": "Word, gesture",
+    "castingTime": "action",
+    "rangeType": "range",
+    "range": 20,
+    "areaOfEffect": "none",
+    "duration": "instant",
+    "damage": "D4",
+    "damagePerPowerlevel": "",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You launch two missiles of pure arcane energy at targets within range. Each missile must target a different creature and can be dodged or parried as a ranged attack. Each missile deals D4 damage, rolled separately, and armor has no effect against this damage. Each power level beyond the first launches one additional missile, which must also target a different creature. Any missile for which there is no valid target is lost.</p>"
+  },
+  "effects": [],
+  "sort": 100000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.arcane-missiles"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

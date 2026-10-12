@@ -1,0 +1,27 @@
+{
+  "type": "Item",
+  "folder": "Spells8Kp2Qm7VxN",
+  "name": "Elementalism",
+  "color": null,
+  "sorting": "m",
+  "_id": "Elementalism8vN3",
+  "description": "",
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.folder.elementalism"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": "Folder.Elementalism8vN3",
+    "exportSource": null
+  }
+}

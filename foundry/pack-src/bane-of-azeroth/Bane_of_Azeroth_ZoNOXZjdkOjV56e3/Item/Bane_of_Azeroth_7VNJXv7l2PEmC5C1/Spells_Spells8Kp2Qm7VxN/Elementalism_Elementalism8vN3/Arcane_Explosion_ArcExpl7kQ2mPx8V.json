@@ -1,0 +1,45 @@
+{
+  "folder": "Elementalism8vN3",
+  "name": "Arcane Explosion",
+  "type": "spell",
+  "_id": "ArcExpl7kQ2mPx8V",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "Elementalism",
+    "rank": 3,
+    "prerequisite": "ARCANE BLAST",
+    "requirement": "Word, gesture",
+    "castingTime": "action",
+    "rangeType": "sphere",
+    "range": 4,
+    "areaOfEffect": "sphere",
+    "duration": "instant",
+    "damage": "2D4",
+    "damagePerPowerlevel": "D4",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You release a violent burst of arcane energy in all directions. All creatures within the area of effect suffer 2D4 damage, and armor has no effect against this damage. Each power level beyond the first increases the range by 4 meters and the damage by D4.</p>"
+  },
+  "effects": [],
+  "sort": 400000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.arcane-explosion"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

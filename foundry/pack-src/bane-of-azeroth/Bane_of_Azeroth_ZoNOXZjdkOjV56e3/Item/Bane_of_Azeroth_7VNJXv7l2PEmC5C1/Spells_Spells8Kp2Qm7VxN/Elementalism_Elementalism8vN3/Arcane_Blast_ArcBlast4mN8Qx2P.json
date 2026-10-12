@@ -1,0 +1,45 @@
+{
+  "folder": "Elementalism8vN3",
+  "name": "Arcane Blast",
+  "type": "spell",
+  "_id": "ArcBlast4mN8Qx2P",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "Elementalism",
+    "rank": 2,
+    "prerequisite": "ARCANE MISSILES",
+    "requirement": "Word, gesture",
+    "castingTime": "action",
+    "rangeType": "range",
+    "range": 20,
+    "areaOfEffect": "none",
+    "duration": "instant",
+    "damage": "2D8",
+    "damagePerPowerlevel": "D8",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You concentrate raw arcane energy into a single powerful blast and hurl it at a target within range. The blast can be dodged or parried as a ranged attack. It deals 2D8 damage, and armor has no effect against this damage. Each power level beyond the first increases the damage by D8.</p>"
+  },
+  "effects": [],
+  "sort": 200000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.arcane-blast"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "folder": "Elementalism8vN3",
+  "name": "Frostfire Bolt",
+  "type": "spell",
+  "_id": "Frostfire3mN7Qx2",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "Elementalism",
+    "rank": 3,
+    "prerequisite": "FROST BOLT or FIRE BLAST",
+    "requirement": "Word, gesture",
+    "castingTime": "action",
+    "rangeType": "range",
+    "range": 30,
+    "areaOfEffect": "none",
+    "duration": "instant",
+    "damage": "2D8",
+    "damagePerPowerlevel": "D8",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You launch a bolt of frostfire from your hand or focus at the target. The bolt can be dodged or parried as a ranged attack. The bolt deals 2D8 damage, sets fire to flammable objects and the target's movement rate is reduced by 4 until your turn in the next round. Each power level beyond the first increases the damage by D8 and reduces the target's movement rate by an additional 4.</p>"
+  },
+  "effects": [],
+  "sort": 500000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.frostfire-bolt"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}
