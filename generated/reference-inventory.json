@@ -1549,7 +1549,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1233,
+      "line": 1239,
       "column": 10,
       "target": "JournalEntry.RSi75ZLYMyFhBqPi.\"\n        + \"JournalEntryPage.9gOpHO89C6YKsgH1",
       "classification": "unclassified",
@@ -1558,7 +1558,7 @@
     {
       "kind": "display-table",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1335,
+      "line": 1341,
       "column": 10,
       "target": "RollTable.\"\n      ),\n      demonDefinitions.length\n    );\n    boaCheck(\n      checks,\n      \"Demons page uses full-width blocks\",\n      occurrences(\n        demonsHtml,\n        '<div class=\"flexrow\">'\n      ) === 0\n      && occurrences(\n        demonsHtml,\n        '<div style=\"width:50%\">'\n      ) === 0\n    );\n    boaCheck(\n      checks,\n      \"Demons page includes the book illustration\",\n      occurrences(\n        demonsHtml,\n        \"modules/bane-of-azeroth/\"\n        + \"assets/journals/demons/demons.webp\"\n      ) === 1\n    );\n\n    for (const spec of [\n      [\n        \"felhunter\",\n        \"syJzyyJogXrRtT8q\",\n        \"Felhunter\",\n        \"Y6MEcCH35zRiBNUw\",\n        \"Monster Attacks – Felhunter\",\n      ",
       "classification": "unclassified",
@@ -1567,7 +1567,7 @@
     {
       "kind": "display-table",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1402,
+      "line": 1408,
       "column": 10,
       "target": "RollTable.${tableId}",
       "classification": "unclassified",
@@ -1576,7 +1576,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1535,
+      "line": 1541,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#falling",
       "classification": "unclassified",
@@ -1586,7 +1586,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1543,
+      "line": 1549,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.cvFSLoFtdJOQcxtU\"\n        + \"#magic-tricks",
       "classification": "unclassified",
@@ -1596,7 +1596,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1551,
+      "line": 1557,
       "column": 10,
       "target": "Item.GiE0TwixaYnxFT6i",
       "classification": "unclassified",
@@ -1605,7 +1605,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1558,
+      "line": 1564,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1615,7 +1615,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1566,
+      "line": 1572,
       "column": 10,
       "target": "Item.SY62xmX9uBVml786",
       "classification": "unclassified",
@@ -1624,7 +1624,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1574,
+      "line": 1580,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.CJjqkHzpow39ViUi\"\n        + \"#death",
       "classification": "unclassified",
@@ -1634,7 +1634,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1582,
+      "line": 1588,
       "column": 10,
       "target": "JournalEntry.V4R4dCuKSK2mi8RF.\"\n        + \"JournalEntryPage.eIQgHhYPUczg7kbZ\"\n        + \"#pushing-your-roll",
       "classification": "unclassified",
@@ -1643,7 +1643,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1591,
+      "line": 1597,
       "column": 10,
       "target": "JournalEntry.BoAJrnlPlayerOpt.\"\n        + \"JournalEntryPage.BoAPgPlayerKin01\"\n        + \"#human",
       "classification": "unclassified",
@@ -1653,7 +1653,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1601,
+      "line": 1607,
       "column": 10,
       "target": "Actor.GhoulAct6Kp9T2xP",
       "classification": "unclassified",
@@ -1662,7 +1662,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1609,
+      "line": 1615,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#movement",
       "classification": "unclassified",
@@ -1672,7 +1672,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1619,
+      "line": 1625,
       "column": 10,
       "target": "Item.J6l8QwCJhBirvg03",
       "classification": "unclassified",
@@ -1681,7 +1681,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1628,
+      "line": 1634,
       "column": 10,
       "target": "Item.RPnxXYVb8z7EG5Wl",
       "classification": "unclassified",
@@ -1690,7 +1690,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1637,
+      "line": 1643,
       "column": 10,
       "target": "Item.O7p7ZWnZNgxP8PFw",
       "classification": "unclassified",
@@ -1699,7 +1699,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1646,
+      "line": 1652,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.KrSXg7HKmfo7xRcI\"\n        + \"#sneak-attack",
       "classification": "unclassified",
@@ -1709,7 +1709,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1656,
+      "line": 1662,
       "column": 10,
       "target": "JournalEntry.SbbSMsuvWeo3HaID.\"\n        + \"JournalEntryPage.6WPxPxUjh4W80RNy\"\n        + \"#poison",
       "classification": "unclassified",
@@ -1719,7 +1719,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1666,
+      "line": 1672,
       "column": 10,
       "target": "JournalEntry.BHzSGEPaCGVadFsb.\"\n        + \"JournalEntryPage.C0stUmhj95JFgL4f\"\n        + \"#power-level",
       "classification": "unclassified",
@@ -1728,7 +1728,7 @@
     {
       "kind": "uuid-link",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1677,
+      "line": 1683,
       "column": 10,
       "target": "Item.JrQqkQrSOFJzR7H9",
       "classification": "unclassified",
@@ -1737,7 +1737,7 @@
     {
       "kind": "runtime-uuid-lookup",
       "path": "tests/system/macros/verify-assets-and-journals.js",
-      "line": 1861,
+      "line": 1867,
       "column": 30,
       "function": "fromUuid",
       "classification": "runtime",
