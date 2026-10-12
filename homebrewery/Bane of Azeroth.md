@@ -1566,7 +1566,7 @@ You instantly turn into your moonkin form. For the duration you can change betwe
 
 ## Elementalism Spells
 
-In order to better represent the mages of Azeroth, primarily the frost and arcane mages, this book adds a set of elementalist spells to help fill that fantasy. This does not meant that they are exlusive to mages, and a Shaman could pick up FROST BOLT to fill the fantasy of frost shock, for example. In addition to the below spells, add FROST BOLT as an optional prerequisite to UNDINE. If Book of Magic is used, add UNDINE as an optional prerequisite to HAILSTORM and ARCANE ORB as an optional prerequisite for CONJURE.
+In order to better represent the mages of Azeroth, primarily the frost and arcane mages, this book adds a set of elementalist spells to help fill that fantasy. This does not mean that they are exlusive to mages, and a Shaman could pick up FROST BOLT to fill the fantasy of frost shock, for example. In addition to the below spells, add FROST BOLT as an optional prerequisite to UNDINE. If Book of Magic is used, add UNDINE as an optional prerequisite to HAILSTORM and ARCANE ORB as an optional prerequisite for CONJURE.
 
 ### Arcane Missiles
 
@@ -1592,11 +1592,11 @@ You concentrate raw arcane energy into a single powerful blast and hurl it at a 
 
 ### Frost Bolt
 
-- **Rank:** 2 
+- **Rank:** 2
 - **Requirement:** FROST
-- **Requisite:** Word, gesture  
-- **Casting Time:** Action  
-- **Range:** 20 meters  
+- **Requisite:** Word, gesture
+- **Casting Time:** Action
+- **Range:** 20 meters
 - **Duration:** Instant
 
 You hurl a bolt of freezing energy from your hand or focus at the target. The bolt can be dodged or parried as a ranged attack. The bolt deals 2D6 damage and the target's movement rate is reduced by 4 until your turn in the next round. Each power level beyond the first increases the damage by D6 and reduces the target's movement rate by an additional 4.
@@ -1614,11 +1614,11 @@ You release a violent burst of arcane energy in all directions. All creatures wi
 
 ### Frostfire Bolt
 
-- **Rank:** 3 
+- **Rank:** 3
 - **Requirement:** FROST BOLT or FIRE BLAST
-- **Requisite:** Word, gesture  
-- **Casting Time:** Action  
-- **Range:** 30 meters  
+- **Requisite:** Word, gesture
+- **Casting Time:** Action
+- **Range:** 30 meters
 - **Duration:** Instant
 
 You launch a bolt of frostfire from your hand or focus at the target. The bolt can be dodged or parried as a ranged attack. The bolt deals 2D8 damage, sets fire to flammable objects and the target's movement rate is reduced by 4 until your turn in the next round. Each power level beyond the first increases the damage by D8 and reduces the target's movement rate by an additional 4.
