@@ -4,6 +4,17 @@ All notable changes to **Bane of Azeroth** will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-13
+
+### Added
+- Added six Elementalism spells: Arcane Missiles, Arcane Blast, Frost Bolt, Arcane Explosion, Frostfire Bolt, and Arcane Orb.
+- Added the new spells to the Character Options Spells journal, including optional prerequisite guidance for Undine, Hailstorm, and Conjure.
+- Added optional Book of Magic references for Hailstorm and Conjure, linking directly to their compendium entries without requiring world imports.
+
+### Changed
+- Extended external-reference validation to support Foundry compendium UUIDs alongside world-document UUIDs.
+- Updated the reference registries, regression tests, and compatibility documentation for Book of Magic as an optional external content source.
+
 ## [1.3.1] - 2026-10-07
 
 ### Fixed

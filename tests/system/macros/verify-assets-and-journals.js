@@ -160,9 +160,9 @@ try {
   );
   boaCheckEqual(
     checks,
-    "Spell source contains six entries",
+    "Spell source contains twelve entries",
     spellDefinitions.length,
-    6
+    12
   );
   boaCheckEqual(
     checks,
@@ -797,7 +797,7 @@ try {
 
     boaCheckEqual(
       checks,
-      "Spells page contains six DisplaySpell directives",
+      "Spells page contains twelve DisplaySpell directives",
       occurrences(
         spellsHtml,
         "@DisplaySpell[Item."
@@ -849,15 +849,21 @@ try {
 
     boaCheck(
       checks,
-      "Spells page displays all six generated Spell Items in book order",
+      "Spells page displays all twelve generated Spell Items in book order",
       spellProblems.length === 0,
       spellProblems.join("\n")
     );
     boaCheck(
       checks,
-      "Spells page follows the book title",
+      "Spells page follows the book structure",
       spellsPage.name === "Spells"
       && !spellsHtml.includes("Spell List")
+      && spellsHtml.includes(
+        "<h2>Heroic Ability Spells</h2>"
+      )
+      && spellsHtml.includes(
+        "<h2>Elementalism Spells</h2>"
+      )
       && !spellsHtml.includes(
         "<h2>General Magic</h2>"
       )

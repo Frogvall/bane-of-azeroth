@@ -1,0 +1,45 @@
+{
+  "folder": "Elementalism8vN3",
+  "name": "Frost Bolt",
+  "type": "spell",
+  "_id": "FrostBolt6pR2vN8",
+  "img": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
+  "system": {
+    "school": "Elementalism",
+    "rank": 2,
+    "prerequisite": "FROST",
+    "requirement": "Word, gesture",
+    "castingTime": "action",
+    "rangeType": "range",
+    "range": 20,
+    "areaOfEffect": "none",
+    "duration": "instant",
+    "damage": "2D6",
+    "damagePerPowerlevel": "D6",
+    "memorized": false,
+    "gmDescription": "",
+    "itemDescription": "<p>You hurl a bolt of freezing energy from your hand or focus at the target. The bolt can be dodged or parried as a ranged attack. The bolt deals 2D6 damage and the target's movement rate is reduced by 4 until your turn in the next round. Each power level beyond the first increases the damage by D6 and reduces the target's movement rate by an additional 4.</p>"
+  },
+  "effects": [],
+  "sort": 300000,
+  "flags": {
+    "bane-of-azeroth": {
+      "generatedBy": "tools/generate-spells.py",
+      "contentKey": "spells.frost-bolt"
+    }
+  },
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dragonbane",
+    "systemVersion": "4.0.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  }
+}

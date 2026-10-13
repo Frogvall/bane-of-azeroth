@@ -136,7 +136,7 @@ function materializeSpellSource(content, spells) {
   return rendered;
 }
 describe("Character Options Spells Journal page", () => {
-  test("defines the book's Spells page without Spell List headings", () => {
+  test("defines the book's Spells page with the two book sections", () => {
     const page = readJson(PAGE_SOURCE);
 
     expect(page).toMatchObject({
@@ -172,25 +172,30 @@ describe("Character Options Spells Journal page", () => {
       + "as are presented in the core rules.",
     );
     expect(html).toContain(
-      "explicitly gained by selecting the "
-      + "corresponding heroic ability in the "
-      + "Heroic Class Abilities chapter.",
+      "In addition, this chapter adds spells "
+      + "that fit well in the world of Azeroth.",
     );
     expect(html).not.toContain("Spell List");
+    expect(html).toContain(
+      "<h2>Heroic Ability Spells</h2>",
+    );
+    expect(html).toContain(
+      "<h2>Elementalism Spells</h2>",
+    );
     expect(html).not.toContain(
       "<h2>General Magic</h2>",
     );
     expect(html).not.toContain("<h3>Rank ");
   });
 
-  test("renders all six spells in book order through DisplaySpell", () => {
+  test("renders all twelve spells in book order through DisplaySpell", () => {
     const source = readJson(SPELL_SOURCE);
     const page = readJson(PAGE_SOURCE);
     const html = page.source.content;
     const spells = source.spells;
 
-    expect(source.expectedCount).toBe(6);
-    expect(spells).toHaveLength(6);
+    expect(source.expectedCount).toBe(12);
+    expect(spells).toHaveLength(12);
     expect(
       spells.map(spell => spell.name),
     ).toEqual([
@@ -200,6 +205,12 @@ describe("Character Options Spells Journal page", () => {
       "Feral Incarnation",
       "Incarnation of Harmony",
       "Incarnation of the Stars",
+      "Arcane Missiles",
+      "Arcane Blast",
+      "Frost Bolt",
+      "Arcane Explosion",
+      "Frostfire Bolt",
+      "Arcane Orb",
     ]);
     expect(
       spells.map(spell => spell.rank),
@@ -210,18 +221,24 @@ describe("Character Options Spells Journal page", () => {
       2,
       2,
       2,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4,
     ]);
     expect(
       new Set(
         spells.map(spell => spell.school),
       ),
-    ).toEqual(new Set(["General"]));
+    ).toEqual(new Set(["General", "Elementalism"]));
     expect(
       occurrences(
         html,
         "@DisplaySpellRef[boa:item.spells.",
       ),
-    ).toBe(6);
+    ).toBe(12);
 
     let previousIndex = -1;
 
@@ -283,14 +300,34 @@ describe("Character Options Spells Journal page", () => {
       materializeSpellSource(
         pageSource.source.content,
         spells,
-      ),
+      )
+        .replaceAll(
+          "@Ref[boa:item.spells.frost-bolt]{Frost Bolt}",
+          "@UUID[Item.FrostBolt6pR2vN8]{Frost Bolt}",
+        )
+        .replaceAll(
+          "@Ref[dragonbane-core:spell.undine]{Undine}",
+          "@UUID[Item.OHBAF6m2OgA1cZin]{Undine}",
+        )
+        .replaceAll(
+          "@Ref[dragonbane-book-of-magic:spell.hailstorm]{Hailstorm}",
+          "@UUID[Compendium.dragonbane-book-of-magic.items.Item.vW7kcORmnfySnaC8]{Hailstorm}",
+        )
+        .replaceAll(
+          "@Ref[boa:item.spells.arcane-orb]{Arcane Orb}",
+          "@UUID[Item.ArcOrb8vN3Qx2P4m]{Arcane Orb}",
+        )
+        .replaceAll(
+          "@Ref[dragonbane-book-of-magic:spell.conjure]{Conjure}",
+          "@UUID[Compendium.dragonbane-book-of-magic.items.Item.5WIDtxhQkHeeeyTg]{Conjure}",
+        ),
     );
     expect(
       occurrences(
         page.text.content,
         "@DisplaySpell[Item.",
       ),
-    ).toBe(6);
+    ).toBe(12);
     for (const spell of spells) {
       expect(page.text.content).toContain(
         generatedDisplayMarker(spell),
@@ -305,7 +342,7 @@ describe("Character Options Spells Journal page", () => {
     const source = readJson(SPELL_SOURCE);
     const items = generatedSpells();
 
-    expect(items.size).toBe(6);
+    expect(items.size).toBe(12);
 
     for (const spell of source.spells) {
       const contentKey =
@@ -316,6 +353,28 @@ describe("Character Options Spells Journal page", () => {
       expect(item._id).toBe(spell.id);
       expect(item.name).toBe(spell.name);
       expect(item.type).toBe("spell");
+      expect(item.folder).toBe(
+        new Map(
+          source.folder.children.map(
+            child => [child.school, child.id],
+          ),
+        ).get(spell.school),
+      );
+      expect(item.system).toMatchObject({
+        school: spell.school,
+        rank: spell.rank,
+        prerequisite: spell.prerequisite,
+        requirement: spell.requirement,
+        castingTime: spell.castingTime,
+        rangeType: spell.rangeType,
+        range: spell.range,
+        areaOfEffect: spell.areaOfEffect,
+        duration: spell.duration,
+        damage: spell.damage,
+        damagePerPowerlevel:
+          spell.damagePerPowerlevel,
+        itemDescription: spell.descriptionHtml,
+      });
     }
   });
 
@@ -323,11 +382,11 @@ describe("Character Options Spells Journal page", () => {
     const macro = read(SYSTEM_MACRO);
 
     for (const marker of [
-      "Spell source contains six entries",
+      "Spell source contains twelve entries",
       "Character Options contains the Spells page",
-      "Spells page contains six DisplaySpell directives",
-      "Spells page displays all six generated Spell Items in book order",
-      "Spells page follows the book title",
+      "Spells page contains twelve DisplaySpell directives",
+      "Spells page displays all twelve generated Spell Items in book order",
+      "Spells page follows the book structure",
       "Character Options has exactly seven pages",
     ]) {
       expect(macro).toContain(marker);

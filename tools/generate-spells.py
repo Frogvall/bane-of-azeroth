@@ -13,10 +13,10 @@ from typing import Any, Sequence
 MODULE_ID = "bane-of-azeroth"
 GENERATOR_NAME = "tools/generate-spells.py"
 ID_PATTERN = re.compile(r"^[A-Za-z0-9]{16}$")
-VALID_RANGE_TYPES = {"personal", "touch", "range"}
+VALID_RANGE_TYPES = {"personal", "touch", "range", "sphere", "cone"}
 VALID_CASTING_TIMES = {"action"}
-VALID_AREAS = {"none"}
-VALID_DURATIONS = {"instant", "round", "stretch", "shift"}
+VALID_AREAS = {"none", "sphere", "cone"}
+VALID_DURATIONS = {"instant", "round", "stretch", "shift", "concentration"}
 
 
 class GenerationError(RuntimeError):
@@ -179,26 +179,65 @@ def build_folder(
 
 
 def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    if content.get("schemaVersion") != 1:
-        raise GenerationError("spells.json schemaVersion must be 1.")
+    if content.get("schemaVersion") != 2:
+        raise GenerationError("spells.json schemaVersion must be 2.")
 
     expected_count = require_integer(
         content.get("expectedCount"),
         "spells.json expectedCount",
         minimum=1,
     )
-
     folder = content.get("folder")
     if not isinstance(folder, dict):
         raise GenerationError("spells.json folder must be an object.")
     require_id(folder.get("id"), "folder.id")
     require_string(folder.get("name"), "folder.name")
 
-    child = folder.get("child")
-    if not isinstance(child, dict):
-        raise GenerationError("spells.json folder.child must be an object.")
-    require_id(child.get("id"), "folder.child.id")
-    require_string(child.get("name"), "folder.child.name")
+    children = folder.get("children")
+    if not isinstance(children, list) or not children:
+        raise GenerationError(
+            "spells.json folder.children must be a non-empty array."
+        )
+
+    child_keys: set[str] = set()
+    child_names: set[str] = set()
+    child_schools: set[str] = set()
+    ids: set[str] = {folder["id"]}
+    for index, child in enumerate(children):
+        if not isinstance(child, dict):
+            raise GenerationError(
+                f"spells.json folder.children[{index}] must be an object."
+            )
+        key = require_string(
+            child.get("key"),
+            f"folder.children[{index}].key",
+        )
+        child_id = require_id(
+            child.get("id"),
+            f"folder.children[{index}].id",
+        )
+        name = require_string(
+            child.get("name"),
+            f"folder.children[{index}].name",
+        )
+        school = require_string(
+            child.get("school"),
+            f"folder.children[{index}].school",
+        )
+        if key in child_keys:
+            raise GenerationError(f"Duplicate spell folder key: {key}")
+        if name in child_names:
+            raise GenerationError(f"Duplicate spell folder name: {name}")
+        if school in child_schools:
+            raise GenerationError(
+                f"Duplicate spell folder school: {school}"
+            )
+        if child_id in ids:
+            raise GenerationError(f"Duplicate Foundry ID: {child_id}")
+        child_keys.add(key)
+        child_names.add(name)
+        child_schools.add(school)
+        ids.add(child_id)
 
     raw_spells = content.get("spells")
     if not isinstance(raw_spells, list):
@@ -210,7 +249,6 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
 
     keys: set[str] = set()
     names: set[str] = set()
-    ids: set[str] = {folder["id"], child["id"]}
     validated: list[dict[str, Any]] = []
 
     for index, raw_spell in enumerate(raw_spells):
@@ -220,7 +258,6 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
         key = require_string(raw_spell.get("key"), f"spells[{index}].key")
         document_id = require_id(raw_spell.get("id"), f"spell {key!r}.id")
         name = require_string(raw_spell.get("name"), f"spell {key!r}.name")
-
         if key in keys:
             raise GenerationError(f"Duplicate spell key: {key}")
         if name in names:
@@ -232,7 +269,14 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
         names.add(name)
         ids.add(document_id)
 
-        require_string(raw_spell.get("school"), f"spell {name!r}.school")
+        school = require_string(
+            raw_spell.get("school"),
+            f"spell {name!r}.school",
+        )
+        if school not in child_schools:
+            raise GenerationError(
+                f"spell {name!r}.school has no configured child folder: {school!r}."
+            )
         require_integer(raw_spell.get("rank"), f"spell {name!r}.rank", minimum=1)
         require_string(
             raw_spell.get("prerequisite"),
@@ -242,7 +286,6 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
             raw_spell.get("requirement"),
             f"spell {name!r}.requirement",
         )
-
         casting_time = require_string(
             raw_spell.get("castingTime"),
             f"spell {name!r}.castingTime",
@@ -252,7 +295,6 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
                 f"spell {name!r}.castingTime must be one of "
                 f"{sorted(VALID_CASTING_TIMES)}."
             )
-
         range_type = require_string(
             raw_spell.get("rangeType"),
             f"spell {name!r}.rangeType",
@@ -262,20 +304,18 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
                 f"spell {name!r}.rangeType must be one of "
                 f"{sorted(VALID_RANGE_TYPES)}."
             )
-
         spell_range = require_integer(
             raw_spell.get("range"),
             f"spell {name!r}.range",
         )
-        if range_type != "range" and spell_range != 0:
+        if range_type in {"personal", "touch"} and spell_range != 0:
             raise GenerationError(
                 f"spell {name!r}.range must be 0 for {range_type!r}."
             )
-        if range_type == "range" and spell_range < 1:
+        if range_type in {"range", "sphere", "cone"} and spell_range < 1:
             raise GenerationError(
-                f"spell {name!r}.range must be at least 1 for ranged spells."
+                f"spell {name!r}.range must be at least 1 for {range_type!r} spells."
             )
-
         area = require_string(
             raw_spell.get("areaOfEffect"),
             f"spell {name!r}.areaOfEffect",
@@ -285,7 +325,6 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
                 f"spell {name!r}.areaOfEffect must be one of "
                 f"{sorted(VALID_AREAS)}."
             )
-
         duration = require_string(
             raw_spell.get("duration"),
             f"spell {name!r}.duration",
@@ -295,7 +334,6 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
                 f"spell {name!r}.duration must be one of "
                 f"{sorted(VALID_DURATIONS)}."
             )
-
         require_string(
             raw_spell.get("damage"),
             f"spell {name!r}.damage",
@@ -313,7 +351,6 @@ def validate_content(content: dict[str, Any]) -> tuple[dict[str, Any], list[dict
         validated.append(raw_spell)
 
     return folder, validated
-
 
 def build_spell_document(
     spell: dict[str, Any],
@@ -412,23 +449,15 @@ def main() -> int:
         adventure_file = find_single_file(args.pack_root, "_Adventure.json")
         adventure_dir = adventure_file.parent
         adventure = load_json(adventure_file)
-
         item_root = adventure_dir / "Item"
         root_dir, root_folder_id = find_item_folder(item_root, "Bane of Azeroth")
 
         spells_folder_id = folder_config["id"]
         spells_folder_name = folder_config["name"]
-        general = folder_config["child"]
-        general_folder_id = general["id"]
-        general_folder_name = general["name"]
-
+        children = folder_config["children"]
         spells_dir = root_dir / folder_filename(
             spells_folder_name,
             spells_folder_id,
-        )
-        general_dir = spells_dir / folder_filename(
-            general_folder_name,
-            general_folder_id,
         )
 
         spells_folder = build_folder(
@@ -439,27 +468,56 @@ def main() -> int:
             sorting="a",
             color=None,
         )
-        general_folder = build_folder(
-            name=general_folder_name,
-            folder_id=general_folder_id,
-            parent_id=spells_folder_id,
-            sort=100000,
-            sorting="m",
-            color=None,
-        )
+
+        child_directories: dict[str, Path] = {}
+        child_ids: dict[str, str] = {}
+        child_folder_documents: list[tuple[Path, dict[str, Any]]] = []
+
+        for index, child in enumerate(children):
+            school = child["school"]
+            child_id = child["id"]
+            child_name = child["name"]
+            child_dir = spells_dir / folder_filename(
+                child_name,
+                child_id,
+            )
+            child_directories[school] = child_dir
+            child_ids[school] = child_id
+            child_folder_documents.append(
+                (
+                    child_dir / "_Folder.json",
+                    build_folder(
+                        name=child_name,
+                        folder_id=child_id,
+                        parent_id=spells_folder_id,
+                        sort=(index + 1) * 100000,
+                        sorting="m",
+                        color=None,
+                    ),
+                )
+            )
 
         generated_documents: list[tuple[Path, dict[str, Any]]] = []
         generated_paths: list[str] = []
-        generated_ids: set[str] = {spells_folder_id, general_folder_id}
+        generated_ids: set[str] = {
+            spells_folder_id,
+            *child_ids.values(),
+        }
+        school_sort: dict[str, int] = {
+            school: 0
+            for school in child_ids
+        }
 
-        for index, spell in enumerate(spells):
+        for spell in spells:
+            school = spell["school"]
+            school_sort[school] += 100000
             document = build_spell_document(
                 spell,
-                general_folder_id,
+                child_ids[school],
                 default_image,
-                (index + 1) * 100000,
+                school_sort[school],
             )
-            output_path = general_dir / safe_filename(
+            output_path = child_directories[school] / safe_filename(
                 document["name"],
                 document["_id"],
             )
@@ -469,36 +527,34 @@ def main() -> int:
             )
             generated_ids.add(document["_id"])
 
+        expected_files: list[tuple[Path, dict[str, Any]]] = [
+            (spells_dir / "_Folder.json", spells_folder),
+            *child_folder_documents,
+            *generated_documents,
+        ]
+        expected_paths = {
+            path.resolve()
+            for path, _ in expected_files
+        }
+
         for path in item_root.rglob("*.json"):
-            if path.name == "_Folder.json":
-                data = load_json(path)
-                existing_id = data.get("_id")
-            else:
-                data = load_json(path)
-                existing_id = data.get("_id")
+            data = load_json(path)
+            existing_id = data.get("_id")
             if existing_id not in generated_ids:
                 continue
-            if path.resolve() in {
-                (spells_dir / "_Folder.json").resolve(),
-                (general_dir / "_Folder.json").resolve(),
-                *[generated_path.resolve() for generated_path, _ in generated_documents],
-            }:
+            if path.resolve() in expected_paths:
                 continue
             raise GenerationError(
                 f"Generated Foundry ID {existing_id} collides with {path}."
             )
 
-        spells_prefix = spells_dir.relative_to(adventure_dir).as_posix() + "/"
-        general_prefix = (
-            general_dir.relative_to(adventure_dir).as_posix() + "/"
+        spells_prefix = (
+            spells_dir.relative_to(adventure_dir).as_posix() + "/"
         )
         generated_folder_paths = [
-            (spells_dir / "_Folder.json")
-            .relative_to(adventure_dir)
-            .as_posix(),
-            (general_dir / "_Folder.json")
-            .relative_to(adventure_dir)
-            .as_posix(),
+            path.relative_to(adventure_dir).as_posix()
+            for path, _ in expected_files
+            if path.name == "_Folder.json"
         ]
 
         expected_adventure = dict(adventure)
@@ -511,22 +567,15 @@ def main() -> int:
         expected_adventure["items"] = update_adventure_paths(
             adventure.get("items", []),
             field_name="items",
-            managed_prefix=general_prefix,
+            managed_prefix=spells_prefix,
             generated_paths=generated_paths,
         )
 
-        expected_files: list[tuple[Path, dict[str, Any]]] = [
-            (spells_dir / "_Folder.json", spells_folder),
-            (general_dir / "_Folder.json", general_folder),
-            *generated_documents,
-        ]
-
-        expected_paths = {path.resolve() for path, _ in expected_files}
-        stale_paths = []
-        if general_dir.is_dir():
+        stale_paths: list[Path] = []
+        if spells_dir.is_dir():
             stale_paths = sorted(
                 path
-                for path in general_dir.glob("*.json")
+                for path in spells_dir.rglob("*.json")
                 if path.resolve() not in expected_paths
             )
 
@@ -552,7 +601,6 @@ def main() -> int:
             print(f"Spell content is up to date: {len(spells)} spells.")
             return 0
 
-        general_dir.mkdir(parents=True, exist_ok=True)
         for stale in stale_paths:
             stale.unlink()
         for path, data in expected_files:
@@ -562,14 +610,12 @@ def main() -> int:
             dump_json(expected_adventure),
             encoding="utf-8",
         )
-
         print(f"Generated {len(spells)} spells.")
         print(f"Updated {adventure_file}")
         return 0
     except GenerationError as exc:
         print(f"generate-spells.py: {exc}", file=sys.stderr)
         return 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

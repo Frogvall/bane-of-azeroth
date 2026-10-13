@@ -133,7 +133,13 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/Shadowform_Shadowform0JkLmN.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/Feral_Incarnation_FeralInc2OpQrS3t.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/Incarnation_of_Harmony_Harmony4UvWxY5zQ.json",
-    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/Incarnation_of_the_Stars_StarsInc6AbCdE7f.json"
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/Incarnation_of_the_Stars_StarsInc6AbCdE7f.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/Elementalism_Elementalism8vN3/Arcane_Missiles_ArcMissQ7vN3xK2m.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/Elementalism_Elementalism8vN3/Arcane_Blast_ArcBlast4mN8Qx2P.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/Elementalism_Elementalism8vN3/Frost_Bolt_FrostBolt6pR2vN8.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/Elementalism_Elementalism8vN3/Arcane_Explosion_ArcExpl7kQ2mPx8V.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/Elementalism_Elementalism8vN3/Frostfire_Bolt_Frostfire3mN7Qx2.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/Elementalism_Elementalism8vN3/Arcane_Orb_ArcOrb8vN3Qx2P4m.json"
   ],
   "journal": [
     "JournalEntry/Bane_of_Azeroth_BoAJournals00001/Credits_BoAJrnlCredits01.json",
@@ -201,6 +207,7 @@
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Gear_nEfDPWplZRRhcv4C/Trade_Goods_Qzw4Jrv7yAOJw0bJ/_Folder.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/_Folder.json",
     "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/General_Magic_GeneralMagic8vN3/_Folder.json",
+    "Item/Bane_of_Azeroth_7VNJXv7l2PEmC5C1/Spells_Spells8Kp2Qm7VxN/Elementalism_Elementalism8vN3/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Elemental_Totems_ElemTotems8vN3Qx/_Folder.json",
     "Actor/Bane_of_Azeroth_BoAActors7pQ2mX9/Common_Animals_2dkrC4gndsTQ383p/_Folder.json",

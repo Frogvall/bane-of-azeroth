@@ -107,7 +107,7 @@ describe("external UUID system verification", () => {
     expect(source.schemaVersion).toBe(1);
     expect(
       Object.keys(source.references),
-    ).toHaveLength(17);
+    ).toHaveLength(20);
     expect(
       source.references[REFERENCE_KEY],
     ).toEqual({
@@ -117,11 +117,11 @@ describe("external UUID system verification", () => {
         "JournalEntryPage",
     });
     for (
-      const reference
-      of Object.values(source.references)
+      const [key, reference]
+      of Object.entries(source.references)
     ) {
       expect(reference.source).toBe(
-        "dragonbane-core",
+        key.split(":")[0],
       );
     }
   });

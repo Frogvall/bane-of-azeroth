@@ -85,6 +85,21 @@
       "source": "dragonbane-core",
       "uuid": "Item.RPnxXYVb8z7EG5Wl",
       "documentType": "Item"
+    },
+    "dragonbane-core:spell.undine": {
+      "source": "dragonbane-core",
+      "uuid": "Item.OHBAF6m2OgA1cZin",
+      "documentType": "Item"
+    },
+    "dragonbane-book-of-magic:spell.hailstorm": {
+      "source": "dragonbane-book-of-magic",
+      "uuid": "Compendium.dragonbane-book-of-magic.items.Item.vW7kcORmnfySnaC8",
+      "documentType": "Item"
+    },
+    "dragonbane-book-of-magic:spell.conjure": {
+      "source": "dragonbane-book-of-magic",
+      "uuid": "Compendium.dragonbane-book-of-magic.items.Item.5WIDtxhQkHeeeyTg",
+      "documentType": "Item"
     }
   }
 }

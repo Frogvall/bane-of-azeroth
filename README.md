@@ -5,8 +5,8 @@
 The project aims to combine the fast, dangerous, and skill-based rules of Dragonbane with heroic fantasy adventures set in Azeroth.
 
 > **Current status:** Foundry VTT 1.0 release line
-> **Current Homebrewery document version:** 1.0
-> **Current Foundry module version:** 1.3.1
+> **Current Homebrewery document version:** 1.1
+> **Current Foundry module version:** 1.4.0
 ## Project goals
 
 Bane of Azeroth is intended to provide a coherent Dragonbane ruleset for adventures inspired by Azeroth, rather than attempting to reproduce every mechanic from the source material directly.
@@ -87,16 +87,25 @@ Generated content uses stable Foundry document identifiers and is checked agains
 
 ## Compatibility
 
-The current version has been developed and verified with:
+The current version targets the following compatibility environment:
 
 | Component | Version |
 |---|---:|
 | Foundry Virtual Tabletop | 14.365 |
 | Dragonbane system | 4.1 |
 | Dragonbane Core Set | 2.2 |
+| Dragonbane Book of Magic | 1.0.1 |
 | YZE Combat | 1.7.0 |
 
-The module manifest declares compatibility with Foundry VTT 14 and Dragonbane system versions 4.0.1 through 4.1, with 4.0.1 as the minimum supported version and 4.1 as the highest verified version. **Dragonbane system is the only hard Foundry runtime dependency declared by Bane of Azeroth.** Dragonbane Core Set 2.2 is the required external content source for the registered Dragonbane Core references used by generated Bane of Azeroth content; those links are verified against Core Set content imported into the test world. **YZE Combat 1.7.0 is optional** and is included in the verified environment because it is the combat module recommended for Dragonbane; Bane of Azeroth does not require YZE Combat to be installed or enabled. Dragonbane versions newer than 4.1 have not yet been verified.
+The module manifest declares compatibility with Foundry VTT 14 and Dragonbane system versions 4.0.1 through 4.1, with 4.0.1 as the minimum supported version and 4.1 as the highest verified version. **Dragonbane system is the only hard Foundry runtime dependency declared by Bane of Azeroth.**
+
+Dragonbane Core Set 2.2 is the required external content source for the registered Dragonbane Core references used by generated Bane of Azeroth content; those links are verified against Core Set content imported into the test world.
+
+**Dragonbane Book of Magic 1.0.1 is optional** and provides additional external spell references used by Bane of Azeroth. These references link directly to the Book of Magic compendium, so the referenced spells do not need to be imported into the game world. The links require Book of Magic to be installed and enabled, but Bane of Azeroth can otherwise be used without it.
+
+**YZE Combat 1.7.0 is optional** and is included in the compatibility environment because it is the combat module recommended for Dragonbane; Bane of Azeroth does not require YZE Combat to be installed or enabled.
+
+Dragonbane versions newer than 4.1 have not yet been verified.
 
 ## Installation
 

@@ -27,7 +27,7 @@ Auvreannia
 
 ### VERSION:
 
-v1.0
+v1.1
 
 ### CREDITS:
 
@@ -159,9 +159,13 @@ The Homebrewery
 
 [**Chapter 4: Spells**](#p31) {{number 30}}
 
-[**Appendix A: Companions**](#p34) {{number 33}}
+&emsp;[Heroic Ability Spells](#p31) {{number 30}}
 
-[**Appendix B: Demons**](#p35) {{number 34}}
+&emsp;[Elementalism Spells](#p34) {{number 33}}
+
+[**Appendix A: Companions**](#p35) {{number 34}}
+
+[**Appendix B: Demons**](#p36) {{number 35}}
 
 }}
 
@@ -1211,7 +1215,7 @@ You know the general spell SHADOWFORM. This spell is always prepared, and doesn'
 - **Requirement:** Priest's Zeal
 - **Willpower Points:** 2
 
-If you or a creature within 10 meters of you gets hit by an attack a ,spell or a monster attack, you can activate this ability to shield the target. The damage the target takes from the attack or spell is reduced by 2D6. Using this ability can be done out of turn and it does not count as an action.
+If you or a creature within 10 meters of you gets hit by an attack, a spell or a monster attack, you can activate this ability to shield the target. The damage the target takes from the attack or spell is reduced by 2D6. Using this ability can be done out of turn and it does not count as an action.
 
 ### Sanctify
 - **Requirement:** Priest's Zeal
@@ -1440,7 +1444,11 @@ Warglaives and throwing glaives are typical elven weapons, used primarly by the 
 # Spells
 {title="Chapter 4"}
 
-Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the DMs discretion). Spells presented in this chapters are in addition to those rules, and are explicitly gained by selecting the corresponding heroic ability in the Heroic Class Abilities chapter.
+Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the DMs discretion). In addition, this chapter adds spells that fit well in the world of Azeroth.
+
+## Heroic Ability Spells
+
+Heroic Ability Spells are General Magic spells that can only be gained by selecting the corresponding heroic ability from the [Heroic Class Abilities](#p16) chapter.
 
 ### Elemental Totem
 - **Rank:** 1
@@ -1475,6 +1483,7 @@ You instantly turn into your travel form. For the duration you can change betwee
 At power level 1, your movement rate is doubled. At power level 2, you can also breathe underwater, your movement rate in water equals your normal movement rate, and you don't have to roll for SWIMMING. At power level 3, you can also move freely through the air.
 
 ### Shadowform
+
 - **Rank:** 1
 - **Prerequisite:** Any School of Magic, Darkness heroic ability
 - **Requirement:** Word
@@ -1482,7 +1491,7 @@ At power level 1, your movement rate is doubled. At power level 2, you can also 
 - **Range:** Personal
 - **Duration:** Stretch
 
-![shadowform](https://i.imgur.com/TM82ZwN.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:-2.4cm,margin-bottom:-1cm}
+![shadowform](https://i.imgur.com/TM82ZwN.png) {height:450px,mix-blend-mode:multiply,margin-left:0.5cm,margin-top:-2.3cm,margin-bottom:-3.8cm}
 
 \page
 {{pageNumber,auto Spells}}
@@ -1551,6 +1560,83 @@ You instantly turn into your moonkin form. For the duration you can change betwe
 ![tree form](https://i.imgur.com/nJgdFAc.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:0cm,margin-bottom:-1cm,transform:scaleX(-1)}
 
 ![moonkin form](https://i.imgur.com/gwMEiur.png) {height:500px,mix-blend-mode:multiply,margin-left:0cm,margin-top:0cm,margin-bottom:-2cm,transform:scaleX(-1)}
+
+\page
+{{pageNumber,auto Spells}}
+
+## Elementalism Spells
+
+In order to better represent the mages of Azeroth, primarily the frost and arcane mages, this book adds a set of elementalist spells to help fill that fantasy. This does not mean that they are exlusive to mages, and a Shaman could pick up FROST BOLT to fill the fantasy of frost shock, for example. In addition to the below spells, add FROST BOLT as an optional prerequisite to UNDINE. If Book of Magic is used, add UNDINE as an optional prerequisite to HAILSTORM and ARCANE ORB as an optional prerequisite for CONJURE.
+
+### Arcane Missiles
+
+- **Rank:** 1
+- **Requirement:** Elementalism
+- **Requisite:** Word, gesture
+- **Casting Time:** Action
+- **Range:** 20 meters
+- **Duration:** Instant
+
+You launch two missiles of pure arcane energy at targets within range. Each missile must target a different creature and can be dodged or parried as a ranged attack. Each missile deals D4 damage, rolled separately, and armor has no effect against this damage. Each power level beyond the first launches one additional missile, which must also target a different creature. Any missile for which there is no valid target is lost.
+
+### Arcane Blast
+
+- **Rank:** 2
+- **Requirement:** ARCANE MISSILES
+- **Requisite:** Word, gesture
+- **Casting Time:** Action
+- **Range:** 20 meters
+- **Duration:** Instant
+
+You concentrate raw arcane energy into a single powerful blast and hurl it at a target within range. The blast can be dodged or parried as a ranged attack. It deals 2D8 damage, and armor has no effect against this damage. Each power level beyond the first increases the damage by D8.
+
+### Frost Bolt
+
+- **Rank:** 2
+- **Requirement:** FROST
+- **Requisite:** Word, gesture
+- **Casting Time:** Action
+- **Range:** 20 meters
+- **Duration:** Instant
+
+You hurl a bolt of freezing energy from your hand or focus at the target. The bolt can be dodged or parried as a ranged attack. The bolt deals 2D6 damage and the target's movement rate is reduced by 4 until your turn in the next round. Each power level beyond the first increases the damage by D6 and reduces the target's movement rate by an additional 4.
+
+### Arcane Explosion
+
+- **Rank:** 3
+- **Requirement:** ARCANE BLAST
+- **Requisite:** Word, gesture
+- **Casting Time:** Action
+- **Range:** 4 meters (sphere)
+- **Duration:** Instant
+
+You release a violent burst of arcane energy in all directions. All creatures within the area of effect suffer 2D4 damage, and armor has no effect against this damage. Each power level beyond the first increases the range by 4 meters and the damage by D4.
+
+### Frostfire Bolt
+
+- **Rank:** 3
+- **Requirement:** FROST BOLT or FIRE BLAST
+- **Requisite:** Word, gesture
+- **Casting Time:** Action
+- **Range:** 30 meters
+- **Duration:** Instant
+
+You launch a bolt of frostfire from your hand or focus at the target. The bolt can be dodged or parried as a ranged attack. The bolt deals 2D8 damage, sets fire to flammable objects and the target's movement rate is reduced by 4 until your turn in the next round. Each power level beyond the first increases the damage by D8 and reduces the target's movement rate by an additional 4.
+
+### Arcane Orb
+
+- **Rank:** 4
+- **Requirement:** ARCANE EXPLOSION
+- **Requisite:** Word, gesture
+- **Casting Time:** Action
+- **Range:** 20 meters
+- **Duration:** Concentration
+
+You conjure an orb of concentrated arcane energy at a point within range, which then releases a burst of energy. Everyone within 2 meters of the orb takes 2D6 damage. The attack can be dodged, but not parried and armor has no effect against this damage.
+
+At the start of each of your turns while concentrating on the spell, you may move the orb up to 6 meters. It then releases another burst of energy.
+
+Each power level beyond the first increases the damage by D6.
 
 \page
 {{pageNumber,auto Appendix A -- Companions}}

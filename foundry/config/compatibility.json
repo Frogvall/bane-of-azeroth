@@ -11,6 +11,10 @@
         "version": "2.2",
         "required": true
       },
+      "dragonbane-book-of-magic": {
+        "version": "1.0.1",
+        "required": false
+      },
       "yze-combat": {
         "version": "1.7.0",
         "required": false

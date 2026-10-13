@@ -5,6 +5,11 @@
       "packageType": "module",
       "packageId": "dragonbane-coreset",
       "required": true
+    },
+    "dragonbane-book-of-magic": {
+      "packageType": "module",
+      "packageId": "dragonbane-book-of-magic",
+      "required": false
     }
   }
 }

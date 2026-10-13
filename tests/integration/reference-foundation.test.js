@@ -128,6 +128,10 @@ describe("reference foundation", () => {
             verifiedDragonbaneVersion,
         },
         modules: {
+          "dragonbane-book-of-magic": {
+            version: "1.0.1",
+            required: false,
+          },
           "dragonbane-coreset": {
             version: "2.2",
             required: true,
@@ -157,6 +161,11 @@ describe("reference foundation", () => {
 
     expect(sources.schemaVersion).toBe(1);
     expect(sources.sources).toEqual({
+      "dragonbane-book-of-magic": {
+        packageType: "module",
+        packageId: "dragonbane-book-of-magic",
+        required: false,
+      },
       "dragonbane-core": {
         packageType: "module",
         packageId: "dragonbane-coreset",
@@ -167,11 +176,9 @@ describe("reference foundation", () => {
     const externalEntries = Object.entries(
       references.references,
     );
-    expect(externalEntries).toHaveLength(17);
+    expect(externalEntries).toHaveLength(20);
     for (const [key, reference] of externalEntries) {
-      expect(key).toMatch(
-        /^dragonbane-core:/,
-      );
+      expect(key.split(":")[0]).toBe(reference.source);
       expect(
         sources.sources,
       ).toHaveProperty(

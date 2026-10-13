@@ -4,6 +4,10 @@ export const BOA_VERIFIED_ENVIRONMENT =
   Object.freeze({
   "foundry": "14.365",
   "modules": {
+    "dragonbane-book-of-magic": {
+      "required": false,
+      "version": "1.0.1"
+    },
     "dragonbane-coreset": {
       "required": true,
       "version": "2.2"
@@ -21,6 +25,11 @@ export const BOA_VERIFIED_ENVIRONMENT =
 
 export const BOA_EXTERNAL_SOURCES =
   Object.freeze({
+  "dragonbane-book-of-magic": {
+    "packageId": "dragonbane-book-of-magic",
+    "packageType": "module",
+    "required": false
+  },
   "dragonbane-core": {
     "packageId": "dragonbane-coreset",
     "packageType": "module",
@@ -30,6 +39,16 @@ export const BOA_EXTERNAL_SOURCES =
 
 export const BOA_EXTERNAL_REFERENCES =
   Object.freeze({
+  "dragonbane-book-of-magic:spell.conjure": {
+    "documentType": "Item",
+    "source": "dragonbane-book-of-magic",
+    "uuid": "Compendium.dragonbane-book-of-magic.items.Item.5WIDtxhQkHeeeyTg"
+  },
+  "dragonbane-book-of-magic:spell.hailstorm": {
+    "documentType": "Item",
+    "source": "dragonbane-book-of-magic",
+    "uuid": "Compendium.dragonbane-book-of-magic.items.Item.vW7kcORmnfySnaC8"
+  },
   "dragonbane-core:heroic-ability.dual-wield": {
     "documentType": "Item",
     "source": "dragonbane-core",
@@ -114,6 +133,11 @@ export const BOA_EXTERNAL_REFERENCES =
     "documentType": "Item",
     "source": "dragonbane-core",
     "uuid": "Item.RPnxXYVb8z7EG5Wl"
+  },
+  "dragonbane-core:spell.undine": {
+    "documentType": "Item",
+    "source": "dragonbane-core",
+    "uuid": "Item.OHBAF6m2OgA1cZin"
   }
 });
 

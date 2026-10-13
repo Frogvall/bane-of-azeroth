@@ -1,15 +1,24 @@
 {
-  "schemaVersion": 1,
-  "expectedCount": 6,
+  "schemaVersion": 2,
+  "expectedCount": 12,
   "folder": {
     "key": "spells",
     "id": "Spells8Kp2Qm7VxN",
     "name": "Spells",
-    "child": {
-      "key": "general-magic",
-      "id": "GeneralMagic8vN3",
-      "name": "General Magic"
-    }
+    "children": [
+      {
+        "key": "general-magic",
+        "id": "GeneralMagic8vN3",
+        "name": "General Magic",
+        "school": "General"
+      },
+      {
+        "key": "elementalism",
+        "id": "Elementalism8vN3",
+        "name": "Elementalism",
+        "school": "Elementalism"
+      }
+    ]
   },
   "defaultImage": "modules/dragonbane-coreset/assets/icons/gear/grimoire.webp",
   "spells": [
@@ -114,6 +123,108 @@
       "damage": "",
       "damagePerPowerlevel": "",
       "descriptionHtml": "<p>You instantly turn into your moonkin form. For the duration you can change between your moonkin form, humanoid form, and any other forms you have activated as an action, or as a free action if you spend 1 WP. The exact look or species of your form is up to you. While in your moonkin form you cannot attack with anything ither than unarmed attacks. You also don't benefit from any armor you wear in your humanoid form. Anything you are wearing transforms with you and remains on you when you turn back to your humanoid form. You can still speak while in your moonkin form.</p><p>You gain the following benefits while in moonkin form:</p><ul><li><strong>Moonfire:</strong> The cost for casting spells is reduced by 1 WP per power level. This cannot decrease the cost of casting a spell below 1 WP. Magic tricks are cast for free.</li><li><strong>Sunfire:</strong> Casting spells is done with a boon.</li></ul>"
+    },
+    {
+      "key": "arcane-missiles",
+      "id": "ArcMissQ7vN3xK2m",
+      "name": "Arcane Missiles",
+      "school": "Elementalism",
+      "rank": 1,
+      "prerequisite": "Elementalism",
+      "requirement": "Word, gesture",
+      "castingTime": "action",
+      "rangeType": "range",
+      "range": 20,
+      "areaOfEffect": "none",
+      "duration": "instant",
+      "damage": "D4",
+      "damagePerPowerlevel": "",
+      "descriptionHtml": "<p>You launch two missiles of pure arcane energy at targets within range. Each missile must target a different creature and can be dodged or parried as a ranged attack. Each missile deals D4 damage, rolled separately, and armor has no effect against this damage. Each power level beyond the first launches one additional missile, which must also target a different creature. Any missile for which there is no valid target is lost.</p>"
+    },
+    {
+      "key": "arcane-blast",
+      "id": "ArcBlast4mN8Qx2P",
+      "name": "Arcane Blast",
+      "school": "Elementalism",
+      "rank": 2,
+      "prerequisite": "ARCANE MISSILES",
+      "requirement": "Word, gesture",
+      "castingTime": "action",
+      "rangeType": "range",
+      "range": 20,
+      "areaOfEffect": "none",
+      "duration": "instant",
+      "damage": "2D8",
+      "damagePerPowerlevel": "D8",
+      "descriptionHtml": "<p>You concentrate raw arcane energy into a single powerful blast and hurl it at a target within range. The blast can be dodged or parried as a ranged attack. It deals 2D8 damage, and armor has no effect against this damage. Each power level beyond the first increases the damage by D8.</p>"
+    },
+    {
+      "key": "frost-bolt",
+      "id": "FrostBolt6pR2vN8",
+      "name": "Frost Bolt",
+      "school": "Elementalism",
+      "rank": 2,
+      "prerequisite": "FROST",
+      "requirement": "Word, gesture",
+      "castingTime": "action",
+      "rangeType": "range",
+      "range": 20,
+      "areaOfEffect": "none",
+      "duration": "instant",
+      "damage": "2D6",
+      "damagePerPowerlevel": "D6",
+      "descriptionHtml": "<p>You hurl a bolt of freezing energy from your hand or focus at the target. The bolt can be dodged or parried as a ranged attack. The bolt deals 2D6 damage and the target's movement rate is reduced by 4 until your turn in the next round. Each power level beyond the first increases the damage by D6 and reduces the target's movement rate by an additional 4.</p>"
+    },
+    {
+      "key": "arcane-explosion",
+      "id": "ArcExpl7kQ2mPx8V",
+      "name": "Arcane Explosion",
+      "school": "Elementalism",
+      "rank": 3,
+      "prerequisite": "ARCANE BLAST",
+      "requirement": "Word, gesture",
+      "castingTime": "action",
+      "rangeType": "sphere",
+      "range": 4,
+      "areaOfEffect": "sphere",
+      "duration": "instant",
+      "damage": "2D4",
+      "damagePerPowerlevel": "D4",
+      "descriptionHtml": "<p>You release a violent burst of arcane energy in all directions. All creatures within the area of effect suffer 2D4 damage, and armor has no effect against this damage. Each power level beyond the first increases the range by 4 meters and the damage by D4.</p>"
+    },
+    {
+      "key": "frostfire-bolt",
+      "id": "Frostfire3mN7Qx2",
+      "name": "Frostfire Bolt",
+      "school": "Elementalism",
+      "rank": 3,
+      "prerequisite": "FROST BOLT or FIRE BLAST",
+      "requirement": "Word, gesture",
+      "castingTime": "action",
+      "rangeType": "range",
+      "range": 30,
+      "areaOfEffect": "none",
+      "duration": "instant",
+      "damage": "2D8",
+      "damagePerPowerlevel": "D8",
+      "descriptionHtml": "<p>You launch a bolt of frostfire from your hand or focus at the target. The bolt can be dodged or parried as a ranged attack. The bolt deals 2D8 damage, sets fire to flammable objects and the target's movement rate is reduced by 4 until your turn in the next round. Each power level beyond the first increases the damage by D8 and reduces the target's movement rate by an additional 4.</p>"
+    },
+    {
+      "key": "arcane-orb",
+      "id": "ArcOrb8vN3Qx2P4m",
+      "name": "Arcane Orb",
+      "school": "Elementalism",
+      "rank": 4,
+      "prerequisite": "ARCANE EXPLOSION",
+      "requirement": "Word, gesture",
+      "castingTime": "action",
+      "rangeType": "range",
+      "range": 20,
+      "areaOfEffect": "none",
+      "duration": "concentration",
+      "damage": "2D6",
+      "damagePerPowerlevel": "D6",
+      "descriptionHtml": "<p>You conjure an orb of concentrated arcane energy at a point within range, which then releases a burst of energy. Everyone within 2 meters of the orb takes 2D6 damage. The attack can be dodged, but not parried and armor has no effect against this damage.</p><p>At the start of each of your turns while concentrating on the spell, you may move the orb up to 6 meters. It then releases another burst of energy.</p><p>Each power level beyond the first increases the damage by D6.</p>"
     }
   ]
 }

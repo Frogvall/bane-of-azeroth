@@ -59,7 +59,12 @@ describe(
             registry.references,
           ).sort(),
         ).toEqual(
-          migratedKeys.slice().sort(),
+          [
+            ...migratedKeys,
+            "dragonbane-book-of-magic:spell.conjure",
+            "dragonbane-book-of-magic:spell.hailstorm",
+            "dragonbane-core:spell.undine",
+          ].sort(),
         );
       },
     );
