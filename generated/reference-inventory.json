@@ -13,9 +13,9 @@
     "display-table": 2,
     "runtime-uuid-lookup": 9,
     "symbolic-display-reference": 23,
-    "symbolic-reference": 105,
+    "symbolic-reference": 112,
     "uuid-link": 27,
-    "uuid-literal": 22
+    "uuid-literal": 25
   },
   "entries": [
     {
@@ -170,6 +170,33 @@
       "target": "Item.RPnxXYVb8z7EG5Wl",
       "classification": "external-registry",
       "snippet": "\"uuid\": \"Item.RPnxXYVb8z7EG5Wl\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 91,
+      "column": 15,
+      "target": "Item.OHBAF6m2OgA1cZin",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Item.OHBAF6m2OgA1cZin\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 96,
+      "column": 15,
+      "target": "Compendium.dragonbane-book-of-magic.items.Item.vW7kcORmnfySnaC8",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Compendium.dragonbane-book-of-magic.items.Item.vW7kcORmnfySnaC8\","
+    },
+    {
+      "kind": "uuid-literal",
+      "path": "foundry/config/references/external-references.json",
+      "line": 101,
+      "column": 15,
+      "target": "Compendium.dragonbane-book-of-magic.items.Item.5WIDtxhQkHeeeyTg",
+      "classification": "external-registry",
+      "snippet": "\"uuid\": \"Compendium.dragonbane-book-of-magic.items.Item.5WIDtxhQkHeeeyTg\","
     },
     {
       "kind": "symbolic-reference",
@@ -1370,6 +1397,76 @@
       "classification": "unclassified",
       "snippet": "\"content\": \"<p>There are 14 playable kin in Azeroth. Humans and Orcs are the most common kin, but you are free to choose any of them. You can also roll your kin using one of the tables below. All kin are briefly described below.</p><p>@Disp",
       "label": "Name - Worgen"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 1275,
+      "target": "boa:item.spells.frost-bolt",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D",
+      "label": "Frost Bolt"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 1406,
+      "target": "boa:item.spells.frost-bolt",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D",
+      "label": "Frost Bolt"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 1482,
+      "target": "dragonbane-core:spell.undine",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D",
+      "label": "Undine"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 1556,
+      "target": "dragonbane-core:spell.undine",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D",
+      "label": "Undine"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 1630,
+      "target": "dragonbane-book-of-magic:spell.hailstorm",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D",
+      "label": "Hailstorm"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 1692,
+      "target": "boa:item.spells.arcane-orb",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D",
+      "label": "Arcane Orb"
+    },
+    {
+      "kind": "symbolic-reference",
+      "path": "foundry/content/journals/player-options/spells.json",
+      "line": 13,
+      "column": 1769,
+      "target": "dragonbane-book-of-magic:spell.conjure",
+      "classification": "unclassified",
+      "snippet": "\"content\": \"<p>Spell casters in Bane of Azeroth uses the same spell casting rules and spells as are presented in the core rules. If you have access to The Book of Magic, feel free to use the rules and spells from that book instead (at the D",
+      "label": "Conjure"
     },
     {
       "kind": "symbolic-reference",

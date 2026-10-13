@@ -300,7 +300,27 @@ describe("Character Options Spells Journal page", () => {
       materializeSpellSource(
         pageSource.source.content,
         spells,
-      ),
+      )
+        .replaceAll(
+          "@Ref[boa:item.spells.frost-bolt]{Frost Bolt}",
+          "@UUID[Item.FrostBolt6pR2vN8]{Frost Bolt}",
+        )
+        .replaceAll(
+          "@Ref[dragonbane-core:spell.undine]{Undine}",
+          "@UUID[Item.OHBAF6m2OgA1cZin]{Undine}",
+        )
+        .replaceAll(
+          "@Ref[dragonbane-book-of-magic:spell.hailstorm]{Hailstorm}",
+          "@UUID[Compendium.dragonbane-book-of-magic.items.Item.vW7kcORmnfySnaC8]{Hailstorm}",
+        )
+        .replaceAll(
+          "@Ref[boa:item.spells.arcane-orb]{Arcane Orb}",
+          "@UUID[Item.ArcOrb8vN3Qx2P4m]{Arcane Orb}",
+        )
+        .replaceAll(
+          "@Ref[dragonbane-book-of-magic:spell.conjure]{Conjure}",
+          "@UUID[Compendium.dragonbane-book-of-magic.items.Item.5WIDtxhQkHeeeyTg]{Conjure}",
+        ),
     );
     expect(
       occurrences(

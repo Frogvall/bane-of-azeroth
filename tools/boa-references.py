@@ -23,6 +23,16 @@ FOUNDRY_UUID_PATTERN = re.compile(
     r"(?:#[^\s\]]+)?$"
 )
 
+COMPENDIUM_UUID_PATTERN = re.compile(
+    r"^Compendium\."
+    r"(?P<package_id>[A-Za-z0-9_-]+)\."
+    r"(?P<pack_id>[A-Za-z0-9_-]+)\."
+    r"(?P<document_type>[A-Za-z][A-Za-z0-9]*)\."
+    r"[A-Za-z0-9]{16}"
+    r"(?:\.[A-Za-z][A-Za-z0-9]*\.[A-Za-z0-9]{16})?"
+    r"(?:#[^\s\]]+)?$"
+)
+
 
 class ReferenceError(ValueError):
     """Raised when reference source data is invalid or unresolved."""
@@ -60,6 +70,9 @@ def resolved_document_type(
         "#",
         1,
     )[0]
+    if COMPENDIUM_UUID_PATTERN.fullmatch(uuid):
+        return document_uuid.split(".")[-2]
+
     parts = document_uuid.split(".")
     if (
         len(parts) < 2
@@ -187,7 +200,10 @@ def validate_reference_sources(
                 f"External reference {key} uses unknown source "
                 f"{source_key!r}."
             )
-        if not isinstance(uuid, str) or not FOUNDRY_UUID_PATTERN.fullmatch(uuid):
+        if not isinstance(uuid, str) or not (
+            FOUNDRY_UUID_PATTERN.fullmatch(uuid)
+            or COMPENDIUM_UUID_PATTERN.fullmatch(uuid)
+        ):
             raise ReferenceError(
                 f"External reference {key} has invalid Foundry UUID {uuid!r}."
             )
@@ -205,6 +221,18 @@ def validate_reference_sources(
                 f"{document_type}, but its UUID resolves "
                 f"to {resolved_type}."
             )
+
+        # A Compendium reference must point into the package declared by
+        # its symbolic source. A syntactically valid UUID alone is insufficient.
+        compendium_match = COMPENDIUM_UUID_PATTERN.fullmatch(uuid)
+        if compendium_match is not None:
+            source_package_id = sources[source_key]["packageId"]
+            if compendium_match.group("package_id") != source_package_id:
+                raise ReferenceError(
+                    f"External reference {key} points to Compendium package "
+                    f"{compendium_match.group('package_id')!r}, but source "
+                    f"{source_key!r} declares {source_package_id!r}."
+                )
 
         for forbidden_key in (
             "testedVersion",

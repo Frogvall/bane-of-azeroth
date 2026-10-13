@@ -136,6 +136,10 @@ describe(
                   .verified,
             },
             modules: {
+              "dragonbane-book-of-magic": {
+                version: "1.0.1",
+                required: false,
+              },
               "dragonbane-coreset": {
                 version: "2.2",
                 required: true,
@@ -182,6 +186,11 @@ describe(
         ).toEqual({
           schemaVersion: 1,
           sources: {
+            "dragonbane-book-of-magic": {
+              packageType: "module",
+              packageId: "dragonbane-book-of-magic",
+              required: false,
+            },
             "dragonbane-core": {
               packageType: "module",
               packageId:
